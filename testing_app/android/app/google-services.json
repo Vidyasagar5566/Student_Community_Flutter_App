@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "755978359706",
+    "project_id": "instabook-sign-in",
+    "storage_bucket": "instabook-sign-in.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:755978359706:android:6a3aec97d8fa73c833a023",
+        "android_client_info": {
+          "package_name": "com.nitc.InstaBook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "755978359706-9ijj24rtlkjukqie2jj74eloicj70qkf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMjkM9rISID2nVFz8fO269qUunLAChm14"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "755978359706-9ijj24rtlkjukqie2jj74eloicj70qkf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
