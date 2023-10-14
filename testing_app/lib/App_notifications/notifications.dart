@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '/servers/servers.dart';
-import '/models/models.dart';
+import 'Servers.dart';
+import 'Models.dart';
+import 'package:testing_app/User_profile/Models.dart';
 //import 'package:link_text/link_text.dart';
 import 'dart:convert' show utf8;
 
@@ -31,7 +32,7 @@ class _notificationsState extends State<notifications> {
           backgroundColor: Colors.white70,
         ),
         body: FutureBuilder<List<Notifications>>(
-          future: servers().get_notifications_list(),
+          future: app_notif_servers().get_notifications_list(),
           builder: (ctx, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               if (snapshot.hasError) {
@@ -168,8 +169,10 @@ class _notifications1State extends State<notifications1> {
                                       color: Colors.blue[900],
                                       child: OutlinedButton(
                                           onPressed: () async {
-                                            bool error = await servers()
-                                                .delete_notification(notif.id!);
+                                            bool error =
+                                                await app_notif_servers()
+                                                    .delete_notification(
+                                                        notif.id!);
                                             if (!error) {
                                               Navigator.pop(context);
                                               setState(() {

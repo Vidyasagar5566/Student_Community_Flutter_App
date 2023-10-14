@@ -1,17 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
-import 'package:image_picker/image_picker.dart';
-import '/first_page.dart';
-import '/models/models.dart';
-import '/servers/servers.dart';
-import '../Circular_designs/circular indicator.dart';
-import 'package:video_player/video_player.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:path/path.dart';
-import '../Files_disply_download/pdf_videos_images.dart';
-import 'package:intl/intl.dart';
-import 'package:testing_app/Side_menu_bar/switch.dart';
 
 List<bool> _lights1 = [
   true,

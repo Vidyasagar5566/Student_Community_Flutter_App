@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import '/first_page.dart';
-import '/models/models.dart';
+import 'Servers.dart';
+import 'package:testing_app/User_profile/Models.dart';
 import '/servers/servers.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:path/path.dart';
 import '../Files_disply_download/pdf_videos_images.dart';
 
 class upload_postwidget extends StatefulWidget {
@@ -308,11 +308,9 @@ class _upload_postwidgetState extends State<upload_postwidget> {
                                                       ]),
                                                 ));
                                           });
-                                      bool error = await servers().post_post(
-                                          description,
-                                          image,
-                                          image_ratio,
-                                          all_university);
+                                      bool error = await post_servers()
+                                          .post_post(description, image,
+                                              image_ratio, all_university);
                                       Navigator.pop(context);
                                       if (!error) {
                                         Navigator.of(context)

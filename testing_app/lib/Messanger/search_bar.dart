@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import '/models/models.dart';
+import 'Servers.dart';
+import 'Models.dart';
+import 'package:testing_app/User_profile/Models.dart';
 import '/servers/servers.dart';
 import 'messanger.dart';
 import 'package:testing_app/first_page.dart';
@@ -67,7 +69,7 @@ class _search_barState extends State<search_bar> {
         backgroundColor: Colors.white70,
       ),
       body: FutureBuilder<List<SmallUsername>>(
-        future: servers().get_searched_user_list(
+        future: messanger_servers().get_searched_user_list(
             username_match, domains1[widget.domain]!, 0),
         builder: (ctx, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
@@ -119,7 +121,7 @@ class _user_list_displayState extends State<user_list_display> {
   bool _circularind = false;
   bool total_loaded = true;
   void load_data_fun() async {
-    List<SmallUsername> latest_search_users = await servers()
+    List<SmallUsername> latest_search_users = await messanger_servers()
         .get_searched_user_list(widget.username_match, domains1[widget.domain]!,
             all_search_users.length);
     if (latest_search_users.length != 0) {
@@ -198,7 +200,7 @@ class _user_list_displayState extends State<user_list_display> {
         setState(() {
           _circularind = !_circularind;
         });
-        List<Messanger> user_conversation = await servers()
+        List<Messanger> user_conversation = await messanger_servers()
             .user_user_messages(search_user.email!, "load", false);
         setState(() {
           _circularind = !_circularind;

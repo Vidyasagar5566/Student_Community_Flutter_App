@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 //import 'package:testing_app/dataset.dart';
-import '/models/models.dart';
+import 'Servers.dart';
+import 'Models.dart';
 import '/servers/servers.dart';
 
 List<Tab> tabs = const [
@@ -208,7 +209,8 @@ class _TimingsState extends State<Timings> {
                 tabs: tabs,
               )),
           body: FutureBuilder<List<ACADEMIC_LIST>>(
-            future: servers().get_academic_list(domains1[widget.domain]!),
+            future:
+                timings_servers().get_academic_list(domains1[widget.domain]!),
             builder: (ctx, AsyncSnapshot snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.hasError) {
@@ -220,7 +222,7 @@ class _TimingsState extends State<Timings> {
                   );
                 } else if (snapshot.hasData) {
                   List<ACADEMIC_LIST> academic_list = snapshot.data;
-                  return _buildListView(academic_list, []);
+                  return _buildListView(academic_list);
                 }
               }
               return const Center(
@@ -231,8 +233,7 @@ class _TimingsState extends State<Timings> {
         ));
   }
 
-  Widget _buildListView(
-      List<ACADEMIC_LIST> academic_list, List<MESS_LIST> mess_list) {
+  Widget _buildListView(List<ACADEMIC_LIST> academic_list) {
     return Container(child: TabBarView(children: tabscontent1(academic_list)));
   }
 }

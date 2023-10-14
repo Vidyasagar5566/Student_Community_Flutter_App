@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_launcher_icons/xml_templates.dart';
 import 'calender_test.dart';
-import '/models/models.dart';
-import '/servers/servers.dart';
+import 'Servers.dart';
+import 'Models.dart';
+import 'package:testing_app/User_profile/Models.dart';
 import 'package:testing_app/Activities/activities.dart';
 import 'dart:io';
 import '../Files_disply_download/pdf_videos_images.dart';
@@ -12,7 +12,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:video_player/video_player.dart';
 import 'dart:async';
 import 'package:testing_app/circular_designs/cure_clip.dart';
-import '../App_notifications/remainder_nitifications.dart';
+import '../App_notifications/Remainder_nitifications.dart';
+import 'package:testing_app/Activities/Models.dart';
 
 class calender_events_display extends StatefulWidget {
   Username app_user;
@@ -341,7 +342,7 @@ class _calender_events_displayState extends State<calender_events_display> {
                                             File temp_image =
                                                 File('images/profile.jpg');
                                             List<dynamic> error =
-                                                await servers()
+                                                await calendar_servers()
                                                     .post_calender_event(
                                                         "self",
                                                         title,
@@ -535,7 +536,7 @@ class _calender_events_displayState extends State<calender_events_display> {
                                 ),
                                 IconButton(
                                     onPressed: () async {
-                                      bool error = await servers()
+                                      bool error = await calendar_servers()
                                           .delete_calender_event(cal_event.id!);
                                       if (!error) {
                                         setState(() {
@@ -864,7 +865,7 @@ class _calender_events_displayState extends State<calender_events_display> {
                                                                     temp_image =
                                                                     File(
                                                                         'images/profile.jpg');
-                                                                List<dynamic> error = await servers().edit_calender_event(
+                                                                List<dynamic> error = await calendar_servers().edit_calender_event(
                                                                     cal_event
                                                                         .id!,
                                                                     "self",

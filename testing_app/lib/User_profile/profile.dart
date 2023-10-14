@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import '../Posts/post.dart';
 import '../circular_designs/cure_clip.dart';
-import '/models/models.dart';
+import 'Servers.dart';
+import 'Models.dart';
+import '/Posts/Models.dart';
+import '/Posts/Servers.dart';
 import '/servers/servers.dart';
 import '/first_page.dart';
-import 'edit_profile.dart';
+import 'Edit_profile.dart';
 //import 'package:link_text/link_text.dart';
-import '../Uploads/edit_club_sport.dart';
 import 'package:flutter/services.dart';
 import 'dart:convert' show utf8;
 import 'package:video_player/video_player.dart';
@@ -122,7 +124,7 @@ class _profilewidgetState extends State<profilewidget> {
                                                                       onPressed: () async {
                                                                         bool
                                                                             error =
-                                                                            await servers().delete_profile_pic();
+                                                                            await user_profile_servers().delete_profile_pic();
                                                                         if (!error) {
                                                                           Navigator.of(context).pushAndRemoveUntil(
                                                                               MaterialPageRoute(builder: (BuildContext context) => get_ueser_widget(1)),
@@ -187,9 +189,9 @@ class _profilewidgetState extends State<profilewidget> {
                                                                             () {
                                                                           if (app_user.adminRole! ==
                                                                               "club") {
-                                                                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => edit_club(widget.app_user, app_user.adminRole!)));
-                                                                          } else {
-                                                                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => edit_sport(widget.app_user)));
+                                                                            //   Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => edit_club(widget.app_user, app_user.adminRole!)));
+                                                                            // } else {
+                                                                            //   Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => edit_sport(widget.app_user)));
                                                                           }
                                                                         },
                                                                         child:
@@ -280,7 +282,7 @@ class _profilewidgetState extends State<profilewidget> {
 }
 
 class user_postswidget extends StatefulWidget {
-  final String username;
+  String username;
   Username app_user;
   user_postswidget(this.username, this.app_user);
   // const user_postswidget({super.key});
@@ -293,7 +295,7 @@ class _user_postswidgetState extends State<user_postswidget> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<POST_LIST>>(
-      future: servers().get_user_post_list(widget.username),
+      future: user_profile_servers().get_user_post_list(widget.username),
       builder: (ctx, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
@@ -513,8 +515,10 @@ class _single_postState extends State<single_post> {
                                               child: OutlinedButton(
                                                   onPressed: () async {
                                                     Navigator.pop(context);
-                                                    bool error = await servers()
-                                                        .delete_post(post.id!);
+                                                    bool error =
+                                                        await post_servers()
+                                                            .delete_post(
+                                                                post.id!);
                                                     user_posts.remove(post);
 
                                                     if (!error) {
@@ -647,7 +651,7 @@ class _single_postState extends State<single_post> {
                     setState(() {
                       post.likeCount = post.likeCount! + 1;
                     });
-                    bool error = await servers().post_post_like(post.id!);
+                    bool error = await post_servers().post_post_like(post.id!);
                     if (error) {
                       setState(() {
                         post.likeCount = post.likeCount! - 1;
@@ -658,7 +662,8 @@ class _single_postState extends State<single_post> {
                     setState(() {
                       post.likeCount = post.likeCount! - 1;
                     });
-                    bool error = await servers().delete_post_like(post.id!);
+                    bool error =
+                        await post_servers().delete_post_like(post.id!);
                     if (error) {
                       setState(() {
                         post.likeCount = post.likeCount! + 1;
@@ -775,7 +780,8 @@ class _single_postState extends State<single_post> {
                         setState(() {
                           post.likeCount = post.likeCount! + 1;
                         });
-                        bool error = await servers().post_post_like(post.id!);
+                        bool error =
+                            await post_servers().post_post_like(post.id!);
                         if (error) {
                           setState(() {
                             post.likeCount = post.likeCount! - 1;
@@ -786,7 +792,8 @@ class _single_postState extends State<single_post> {
                         setState(() {
                           post.likeCount = post.likeCount! - 1;
                         });
-                        bool error = await servers().delete_post_like(post.id!);
+                        bool error =
+                            await post_servers().delete_post_like(post.id!);
                         if (error) {
                           setState(() {
                             post.likeCount = post.likeCount! + 1;

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import '/main.dart';
 import 'package:localstorage/localstorage.dart';
-import '/models/models.dart';
-import 'package:testing_app/user_profile/edit_profile.dart';
-import 'about_app.dart';
+import 'package:testing_app/User_profile/Models.dart';
+import 'package:testing_app/User_profile/Edit_profile.dart';
+import 'About_app.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../side_menu_bar/settings.dart';
 import 'package:testing_app/Login/login.dart';

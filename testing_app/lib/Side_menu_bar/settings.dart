@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import '/models/models.dart';
-import '/servers/servers.dart';
-import '/main.dart';
-import 'package:localstorage/localstorage.dart';
+import 'Servers.dart';
+import 'package:testing_app/User_profile/Models.dart';
+
 
 class notif_settings extends StatefulWidget {
   Username app_user;
@@ -137,7 +136,7 @@ class _SwitchListTileExampleState extends State<SwitchListTileExample> {
               bool_int(widget.notif) +
               settings.substring(int.parse(widget.index) + 1, settings.length);
         });
-        await servers()
+        await menu_bar_servers()
             .edit_notif_settings(widget.index, bool_int(widget.notif));
       },
       secondary: const Icon(Icons.lightbulb_outline),

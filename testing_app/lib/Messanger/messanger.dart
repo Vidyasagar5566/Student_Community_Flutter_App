@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '/servers/servers.dart';
-import '/models/models.dart';
+import 'Servers.dart';
+import 'Models.dart';
+import 'package:testing_app/User_profile/Models.dart';
 import 'dart:convert' show utf8;
 import 'dart:io';
 import 'package:video_player/video_player.dart';
@@ -9,10 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import '../Files_disply_download/pdf_videos_images.dart';
 import 'search_bar.dart';
 import 'dart:async';
-import 'package:http/http.dart' as http;
-import 'package:dio/dio.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:path_provider/path_provider.dart';
+
 
 String utf8convert(String text) {
   List<int> bytes = text.toString().codeUnits;
@@ -58,7 +57,7 @@ class _messangerState extends State<messanger> {
           backgroundColor: Colors.white70,
         ),
         body: FutureBuilder<List<List<Messanger>>>(
-          future: servers().get_messages_list("load"),
+          future: messanger_servers().get_messages_list("load"),
           builder: (ctx, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               if (snapshot.hasError) {
@@ -111,7 +110,7 @@ class _messanger1State extends State<messanger1> {
             ',' +
             widget.users_induvidual_messages_lists[i].length.toString();
       }
-      List<List<Messanger>> a = await servers().get_messages_list(lens);
+      List<List<Messanger>> a = await messanger_servers().get_messages_list(lens);
       if (a.length != 0) {
         setState(() {
           periodic = true;
@@ -323,7 +322,7 @@ class _messages_viewerState extends State<messages_viewer> {
   void repeat() {
     Timer.periodic(const Duration(seconds: 5), (Timer t) async {
       int msgs_len = widget.user_messages.length;
-      List<Messanger> a = await servers().user_user_messages(
+      List<Messanger> a = await messanger_servers().user_user_messages(
           widget.message_user.email!,
           msgs_len.toString(),
           widget.user_messages[msgs_len - 1].messageSeen!);
@@ -720,7 +719,7 @@ class _messages_viewerState extends State<messages_viewer> {
                                     new_message = null;
                                   });
                                   String message_replyto = "";
-                                  List<dynamic> ans = await servers()
+                                  List<dynamic> ans = await messanger_servers()
                                       .post_message(
                                           widget.message_user.email!,
                                           curr_message,

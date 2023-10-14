@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import '/first_page.dart';
-import '/models/models.dart';
+import 'Servers.dart';
+import 'package:testing_app/User_profile/Models.dart';
 import '/servers/servers.dart';
 
 class lst_found_upload extends StatefulWidget {
@@ -200,7 +201,7 @@ class _lst_found_uploadState extends State<lst_found_upload> {
                                       if (image_ratio == "0") {
                                         image = File("images/background.jpg");
                                       }
-                                      bool error = await servers().post_lst(
+                                      bool error = await bs_lf_servers().post_lst(
                                           title,
                                           description,
                                           image,
@@ -497,7 +498,7 @@ class _buy_sell_uploadState extends State<buy_sell_upload> {
                                       if (image_ratio == "0") {
                                         image = File("images/background.jpg");
                                       }
-                                      bool error = await servers().post_lst(
+                                      bool error = await bs_lf_servers().post_lst(
                                           title,
                                           description,
                                           image,

@@ -1,20 +1,14 @@
-// import 'dart:html';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_core/firebase_core.dart';
 import '/first_page.dart';
 import '../Circular_designs/cure_clip.dart';
-import 'package:localstorage/localstorage.dart';
-import '/servers/servers.dart';
 import '../Circular_designs/circular indicator.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 //import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'dart:io';
-import 'package:timezone/data/latest.dart' as tz;
-import '../App_notifications/remainder_nitifications.dart';
+import 'Servers.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final GoogleSignIn googleSignIn = GoogleSignIn();
@@ -443,7 +437,7 @@ class _email_checkState extends State<email_check> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<dynamic>>(
-      future: servers().register_email_check(widget.email),
+      future: login_servers().register_email_check(widget.email),
       builder: (ctx, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
@@ -482,7 +476,7 @@ class _logincheck1State extends State<logincheck1> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<bool>(
-      future: servers().loginNow(widget.email, widget.password),
+      future: login_servers().loginNow(widget.email, widget.password),
       builder: (ctx, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {

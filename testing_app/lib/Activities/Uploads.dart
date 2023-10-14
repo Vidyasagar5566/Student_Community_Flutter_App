@@ -2,28 +2,32 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import '/first_page.dart';
-import '/models/models.dart';
+import 'package:testing_app/User_profile/Models.dart';
 import '/servers/servers.dart';
+import 'Servers.dart';
 import 'package:video_player/video_player.dart';
-import 'package:file_picker/file_picker.dart';
-import '../Files_disply_download/pdf_videos_images.dart';
-import 'package:testing_app/Uploads/uploads.dart';
+import 'package:intl/intl.dart';
 
-class upload_alertowidget extends StatefulWidget {
+class upload_eventwidget extends StatefulWidget {
   Username app_user;
-  upload_alertowidget(this.app_user);
+  upload_eventwidget(this.app_user);
 
   @override
-  State<upload_alertowidget> createState() => _upload_alertowidgetState();
+  State<upload_eventwidget> createState() => _upload_eventwidgetState();
 }
 
-class _upload_alertowidgetState extends State<upload_alertowidget> {
+class _upload_eventwidgetState extends State<upload_eventwidget> {
   var title;
   var description;
-  var file;
-  var file_type;
+  var image;
+  String image_ratio = "";
+  String image_vedio = "";
   bool _showController = true;
   VideoPlayerController? _videoPlayerController;
+  String formattedTime = "12:00";
+  String formattedDate = "2023-05-29";
+  TextEditingController timeinput = TextEditingController();
+  TextEditingController dateinput = TextEditingController();
 
   loadVideoPlayer(File file) {
     if (_videoPlayerController != null) {
@@ -40,7 +44,6 @@ class _upload_alertowidgetState extends State<upload_alertowidget> {
   String all_university = 'All';
   @override
   Widget build(BuildContext context) {
-    var wid = MediaQuery.of(context).size.width;
     return Scaffold(
         appBar: AppBar(
           leading: const BackButton(
@@ -48,7 +51,7 @@ class _upload_alertowidgetState extends State<upload_alertowidget> {
           ),
           centerTitle: true,
           title: const Text(
-            "Alerts",
+            "Events",
             style: TextStyle(color: Colors.black),
           ),
           actions: [
@@ -93,7 +96,7 @@ class _upload_alertowidgetState extends State<upload_alertowidget> {
                     height: 50,
                   ),
                   const Text(
-                    "Upload Your alert",
+                    "Upload Your Event",
                     style: TextStyle(
                         color: Colors.indigo,
                         fontSize: 20,
@@ -104,47 +107,42 @@ class _upload_alertowidgetState extends State<upload_alertowidget> {
                     child: Column(
                       children: [
                         Container(
-                            padding: EdgeInsets.only(left: 40, right: 40),
-                            child: TextFormField(
-                              keyboardType: TextInputType.emailAddress,
-                              decoration: const InputDecoration(
-                                labelText: 'title',
-                                hintText: 'lost my id card',
-                                prefixIcon: Icon(Icons.text_fields),
-                                border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10))),
-                              ),
-                              onChanged: (String value) {
-                                setState(() {
-                                  title = value;
-                                  if (title == "") {
-                                    title = null;
-                                  }
-                                });
-                              },
-                              validator: (value) {
-                                return value!.isEmpty
-                                    ? 'please enter password'
-                                    : null;
-                              },
-                            )),
-                        const SizedBox(height: 10),
-                        Container(
                           padding: EdgeInsets.only(left: 40, right: 40),
-                          child: TextFormField(
-                            keyboardType: TextInputType.multiline,
-                            minLines:
-                                4, //Normal textInputField will be displayed
-                            maxLines: 10,
+                          child: TextField(
+                            keyboardType: TextInputType.emailAddress,
                             decoration: const InputDecoration(
-                              labelText: 'Description',
-                              hintText: 'i lost my id before atm circle.....',
+                              labelText: 'title',
+                              hintText: 'event name',
                               prefixIcon: Icon(Icons.text_fields),
                               border: OutlineInputBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10))),
                             ),
+                            onChanged: (String value) {
+                              setState(() {
+                                title = value;
+                                if (title == "") {
+                                  title = null;
+                                }
+                              });
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Container(
+                          padding: EdgeInsets.only(left: 40, right: 40),
+                          child: TextField(
+                            keyboardType: TextInputType.multiline,
+                            minLines:
+                                4, //Normal textInputField will be displayed
+                            maxLines: 10,
+                            decoration: const InputDecoration(
+                                labelText: 'Description',
+                                hintText: 'about the event and timings.....',
+                                prefixIcon: Icon(Icons.text_fields),
+                                border: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)))),
                             onChanged: (String value) {
                               setState(() {
                                 description = value;
@@ -153,18 +151,70 @@ class _upload_alertowidgetState extends State<upload_alertowidget> {
                                 }
                               });
                             },
-                            validator: (value) {
-                              return value!.isEmpty
-                                  ? 'please enter password'
-                                  : null;
-                            },
                           ),
                         ),
                         const SizedBox(height: 10),
-                        select_branch_year(),
+                        Container(
+                          padding: EdgeInsets.only(left: 40, right: 40),
+                          child: TextField(
+                              //initialValue: "00-00-00",
+                              controller: dateinput,
+                              decoration: const InputDecoration(
+                                  labelText: "Enter Date",
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10)))),
+                              readOnly: true,
+                              onTap: () async {
+                                DateTime? pickedDate = await showDatePicker(
+                                    context: context,
+                                    initialDate:
+                                        DateTime.now(), //get today's date
+                                    firstDate: DateTime(
+                                        2000), //DateTime.now() - not to allow to choose before today.
+                                    lastDate: DateTime(2101));
+                                formattedDate = DateFormat('yyyy-MM-dd')
+                                    .format(pickedDate!);
+
+                                setState(() {
+                                  dateinput.text =
+                                      formattedDate; //set foratted date to TextField value.
+                                });
+                              }),
+                        ),
+                        const SizedBox(height: 10),
+                        Container(
+                            padding: EdgeInsets.only(left: 40, right: 40),
+                            child: TextField(
+                              //initialValue: "12:00:00",
+                              controller:
+                                  timeinput, //editing controller of this TextField
+                              decoration: const InputDecoration(
+                                  labelText: "Enter Time",
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(
+                                              10))) //label text of field
+                                  ),
+                              readOnly:
+                                  true, //set it true, so that user will not able to edit text
+                              onTap: () async {
+                                TimeOfDay? pickedTime = await showTimePicker(
+                                  initialTime: TimeOfDay.now(),
+                                  context: context,
+                                );
+                                formattedTime = pickedTime!.hour.toString() +
+                                    ":" +
+                                    pickedTime.minute.toString() +
+                                    ':00';
+                                setState(() {
+                                  timeinput.text = formattedTime;
+                                });
+                              },
+                            )),
                         const SizedBox(height: 10),
                         const Text(
-                          "Add an image (Optional)",
+                          "Add an image",
                           style: TextStyle(
                               color: Colors.indigo,
                               fontSize: 20,
@@ -178,7 +228,7 @@ class _upload_alertowidgetState extends State<upload_alertowidget> {
                                 barrierDismissible: false,
                                 builder: (context) {
                                   return AlertDialog(
-                                    contentPadding: EdgeInsets.all(15),
+                                    contentPadding: EdgeInsets.all(25),
                                     content: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
@@ -201,32 +251,20 @@ class _upload_alertowidgetState extends State<upload_alertowidget> {
                                           children: [
                                             IconButton(
                                                 onPressed: () async {
-                                                  if (Platform.isAndroid) {
-                                                    final ImagePicker _picker =
-                                                        ImagePicker();
-                                                    final XFile? image1 =
-                                                        await _picker.pickImage(
-                                                            source: ImageSource
-                                                                .gallery,
-                                                            imageQuality: 35);
-                                                    setState(() {
-                                                      file = File(image1!.path);
-                                                      file_type = 1;
-                                                    });
-                                                  } else {
-                                                    final ImagePicker _picker =
-                                                        ImagePicker();
-                                                    final XFile? image1 =
-                                                        await _picker.pickImage(
-                                                            source: ImageSource
-                                                                .gallery,
-                                                            imageQuality: 5);
-                                                    setState(() {
-                                                      file = File(image1!.path);
-
-                                                      file_type = 1;
-                                                    });
-                                                  }
+                                                  final ImagePicker _picker =
+                                                      ImagePicker();
+                                                  final XFile? image1 =
+                                                      await _picker.pickImage(
+                                                          source: ImageSource
+                                                              .gallery,
+                                                          imageQuality: 35);
+                                                  //final bytes = await File(image1!.path).readAsBytes();
+                                                  setState(() {
+                                                    image = File(image1!.path);
+                                                    image_vedio = "image";
+                                                    image_ratio = "1";
+                                                    //final img.Image image = img.decodeImage(bytes)!;
+                                                  });
                                                 },
                                                 icon: const Icon(
                                                     Icons
@@ -243,39 +281,18 @@ class _upload_alertowidgetState extends State<upload_alertowidget> {
 
                                                   //final bytes = await File(image1!.path).readAsBytes();
                                                   setState(() {
-                                                    file = File(image1!.path);
-
-                                                    file_type = 2;
+                                                    image = File(image1!.path);
+                                                    image_vedio = "vedio";
+                                                    image_ratio = "2";
                                                     //final img.Image image = img.decodeImage(bytes)!;
                                                   });
-                                                  loadVideoPlayer(file);
+                                                  loadVideoPlayer(image);
                                                 },
                                                 icon: const Icon(
                                                   Icons
                                                       .video_collection_outlined,
                                                   size: 20,
                                                 )),
-                                            IconButton(
-                                                onPressed: () async {
-                                                  final result =
-                                                      await FilePicker.platform
-                                                          .pickFiles(
-                                                    type: FileType.custom,
-                                                    allowedExtensions: ['pdf'],
-                                                  );
-
-                                                  setState(() {
-                                                    file = File(
-                                                        result!.paths.first ??
-                                                            '');
-
-                                                    file_type = 3;
-                                                    //final img.Image image = img.decodeImage(bytes)!;
-                                                  });
-                                                },
-                                                icon: const Icon(
-                                                    Icons.file_copy_sharp,
-                                                    size: 20)),
                                           ],
                                         )
                                       ],
@@ -290,7 +307,7 @@ class _upload_alertowidgetState extends State<upload_alertowidget> {
                           color: Colors.blue,
                         ),
                         const SizedBox(height: 10),
-                        (title != null && description != null)
+                        (title != null && description != null && image != null)
                             ? Container(
                                 padding: EdgeInsets.only(left: 40, right: 40),
                                 margin: EdgeInsets.only(top: 40),
@@ -303,11 +320,12 @@ class _upload_alertowidgetState extends State<upload_alertowidget> {
                                   minWidth: double.infinity,
                                   onPressed: () async {
                                     if (widget.app_user.email ==
-                                        "guest@nitc.ac.in") {
+                                            "guest@nitc.ac.in" ||
+                                        !widget.app_user.isAdmin!) {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(
                                               content: Text(
-                                                  "guest cannot share any feedback/etc..",
+                                                  "only admins can upload events..",
                                                   style: TextStyle(
                                                       color: Colors.white))));
                                     } else {
@@ -331,17 +349,15 @@ class _upload_alertowidgetState extends State<upload_alertowidget> {
                                                       ]),
                                                 ));
                                           });
-                                      if (file_type == null) {
-                                        file = File('images/club.jpg');
-                                        file_type = 0;
-                                      }
-                                      bool error = await servers().post_alert(
+                                      bool error = await activity_servers().post_event(
                                           title,
                                           description,
-                                          file,
-                                          file_type,
-                                          notif_years.join(''),
-                                          notif_branchs.join("@"),
+                                          image,
+                                          image_ratio,
+                                          formattedDate +
+                                              'T' +
+                                              formattedTime +
+                                              'Z',
                                           all_university);
                                       Navigator.pop(context);
                                       if (!error) {
@@ -349,19 +365,16 @@ class _upload_alertowidgetState extends State<upload_alertowidget> {
                                             .pushAndRemoveUntil(
                                                 MaterialPageRoute(builder:
                                                     (BuildContext context) {
-                                          return firstpage(3, widget.app_user);
+                                          return firstpage(2, widget.app_user);
                                         }), (Route<dynamic> route) => false);
 
                                         await Future.delayed(
                                             Duration(seconds: 2));
-                                        /*           bool error = await servers()
+                                        bool error = await servers()
                                             .send_notifications(
-                                                widget.app_user.email!,
-                                                "Shared new isuues" +
-                                                    title +
-                                                    " : " +
-                                                    description,
-                                                4);
+                                                "Event :  $title",
+                                                description,
+                                                3);
                                         if (error) {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(const SnackBar(
@@ -370,7 +383,7 @@ class _upload_alertowidgetState extends State<upload_alertowidget> {
                                                       style: TextStyle(
                                                           color:
                                                               Colors.white))));
-                                        }    */
+                                        }
                                       } else {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
@@ -408,7 +421,7 @@ class _upload_alertowidgetState extends State<upload_alertowidget> {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                         content: Text(
-                                          "Fill all the above details",
+                                          "Fill all the details",
                                           style: TextStyle(color: Colors.white),
                                         ),
                                       ),
@@ -422,7 +435,7 @@ class _upload_alertowidgetState extends State<upload_alertowidget> {
                                           fontWeight: FontWeight.w500)),
                                 )),
                         const SizedBox(height: 10),
-                        file != null
+                        image != null
                             ? Container(
                                 //height: width * 1.4, // image_ratio,
                                 //width: width,
@@ -430,9 +443,9 @@ class _upload_alertowidgetState extends State<upload_alertowidget> {
                                 decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(20)),
-                                child: file_type == 1
-                                    ? Image.file(file)
-                                    : file_type == 2
+                                child: image_vedio == "image"
+                                    ? Image.file(image)
+                                    : image_vedio == "vedio"
                                         ? GestureDetector(
                                             onTap: () {
                                               setState(() {
@@ -497,32 +510,8 @@ class _upload_alertowidgetState extends State<upload_alertowidget> {
                                               ),
                                             ),
                                           )
-                                        : file_type == "3"
-                                            ? GestureDetector(
-                                                onTap: () {
-                                                  Navigator.of(context).push(
-                                                      MaterialPageRoute(builder:
-                                                          (BuildContext
-                                                              context) {
-                                                    return pdfviewer(file);
-                                                  }));
-                                                },
-                                                child: Center(
-                                                  child: Container(
-                                                      height: wid * (0.7),
-                                                      width: wid,
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(8),
-                                                          image: const DecorationImage(
-                                                              image: AssetImage(
-                                                                  "images/Explorer.png"),
-                                                              fit: BoxFit
-                                                                  .cover))),
-                                                ))
-                                            : Container())
-                            : Container()
+                                        : Container())
+                            : Container(),
                       ],
                     ),
                   ),
@@ -531,5 +520,11 @@ class _upload_alertowidgetState extends State<upload_alertowidget> {
             ),
           ),
         ));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _videoPlayerController!.dispose();
   }
 }

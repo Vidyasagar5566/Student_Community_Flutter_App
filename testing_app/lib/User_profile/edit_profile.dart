@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import '/models/models.dart';
+import 'Servers.dart';
+import 'Models.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import '/first_page.dart';
-import '/servers/servers.dart';
 
 class editprofile extends StatefulWidget {
   Username app_user;
-  //lst_found_upload(this.image_file, this.image1);
   editprofile(this.app_user);
 
   @override
@@ -201,7 +200,7 @@ class _editprofileState extends State<editprofile> {
                                                 ));
                                           });
 
-                                      bool error = await servers()
+                                      bool error = await user_profile_servers()
                                           .edit_profile2(
                                               widget.app_user.username!,
                                               widget.app_user.phnNum!,

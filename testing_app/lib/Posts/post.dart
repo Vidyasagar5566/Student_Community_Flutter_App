@@ -1,17 +1,18 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../models/models.dart';
+import 'Servers.dart';
+import 'Models.dart';
+import 'package:testing_app/User_profile/Models.dart';
 import '../servers/servers.dart';
 //import 'package:link_text/link_text.dart';
 import 'package:flutter/services.dart';
 import 'dart:convert' show utf8;
 import 'package:video_player/video_player.dart';
-import '../Uploads/uploads.dart';
 import '../Files_disply_download/pdf_videos_images.dart';
 import '../First_page.dart';
 import 'package:get_time_ago/get_time_ago.dart';
-import 'package:testing_app/Reports/upload_report.dart';
+import 'package:testing_app/Reports/Uploads.dart';
 
 String utf8convert(String text) {
   List<int> bytes = text.toString().codeUnits;
@@ -31,7 +32,7 @@ class _postwidgetState extends State<postwidget> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<POST_LIST>>(
-      future: servers().get_post_list(domains1[widget.domain]!, 0),
+      future: post_servers().get_post_list(domains1[widget.domain]!, 0),
       builder: (ctx, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
@@ -88,7 +89,7 @@ class _appBarState extends State<appBar> {
           backgroundColor: Colors.indigoAccent[700],
         ),
         body: FutureBuilder<List<POST_LIST>>(
-          future: servers().get_post_list(domains1[widget.domain]!, 0),
+          future: post_servers().get_post_list(domains1[widget.domain]!, 0),
           builder: (ctx, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               if (snapshot.hasError) {
@@ -139,7 +140,7 @@ class postwidget1 extends StatefulWidget {
 class _postwidget1State extends State<postwidget1> {
   bool total_loaded = true;
   void load_data_fun() async {
-    List<POST_LIST> latest_post_list = await servers()
+    List<POST_LIST> latest_post_list = await post_servers()
         .get_post_list(domains1[widget.domain]!, all_posts.length);
     if (latest_post_list.length != 0) {
       all_posts += latest_post_list;
@@ -430,7 +431,7 @@ class _single_postState extends State<single_post> {
                                                           ]),
                                                     ));
                                               });
-                                          bool error = await servers()
+                                          bool error = await post_servers()
                                               .hide_post(post.id!);
                                           Navigator.pop(context);
                                           if (!error) {
@@ -538,7 +539,7 @@ class _single_postState extends State<single_post> {
                     setState(() {
                       post.likeCount = post.likeCount! + 1;
                     });
-                    bool error = await servers().post_post_like(post.id!);
+                    bool error = await post_servers().post_post_like(post.id!);
                     if (error) {
                       setState(() {
                         post.likeCount = post.likeCount! - 1;
@@ -549,7 +550,7 @@ class _single_postState extends State<single_post> {
                     setState(() {
                       post.likeCount = post.likeCount! - 1;
                     });
-                    bool error = await servers().delete_post_like(post.id!);
+                    bool error = await post_servers().delete_post_like(post.id!);
                     if (error) {
                       setState(() {
                         post.likeCount = post.likeCount! + 1;
@@ -676,7 +677,7 @@ class _single_postState extends State<single_post> {
                           setState(() {
                             post.likeCount = post.likeCount! + 1;
                           });
-                          bool error = await servers().post_post_like(post.id!);
+                          bool error = await post_servers().post_post_like(post.id!);
                           if (error) {
                             setState(() {
                               post.likeCount = post.likeCount! - 1;
@@ -688,7 +689,7 @@ class _single_postState extends State<single_post> {
                             post.likeCount = post.likeCount! - 1;
                           });
                           bool error =
-                              await servers().delete_post_like(post.id!);
+                              await post_servers().delete_post_like(post.id!);
                           if (error) {
                             setState(() {
                               post.likeCount = post.likeCount! + 1;
@@ -785,7 +786,7 @@ class _commentwidgetState extends State<commentwidget> {
           backgroundColor: Colors.white70,
         ),
         body: FutureBuilder<List<PST_CMNT>>(
-          future: servers().get_post_cmnt_list(widget.post.id!),
+          future: post_servers().get_post_cmnt_list(widget.post.id!),
           builder: (ctx, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               if (snapshot.hasError) {
@@ -936,7 +937,7 @@ class _commentwidget1State extends State<commentwidget1> {
                                       comment = null;
                                       sending_cmnt = true;
                                     });
-                                    List<dynamic> error = await servers()
+                                    List<dynamic> error = await post_servers()
                                         .post_post_cmnt(
                                             curr_comment, widget.post.id!);
                                     setState(() {
@@ -1065,7 +1066,7 @@ class _commentwidget1State extends State<commentwidget1> {
                                                         .remove(pst_cmnt);
                                                     Navigator.pop(context);
                                                   });
-                                                  bool error = await servers()
+                                                  bool error = await post_servers()
                                                       .delete_post_cmnt(
                                                           pst_cmnt.id!,
                                                           widget.post.id!);

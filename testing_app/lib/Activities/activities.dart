@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '/models/models.dart';
-import '/servers/servers.dart';
+import 'Models.dart';
+import '/User_profile/Models.dart';
+import 'Servers.dart';
 import '/first_page.dart';
 import 'package:flutter/services.dart';
 import 'dart:convert' show utf8;
@@ -18,7 +19,7 @@ String utf8convert(String text) {
 class activitieswidget extends StatefulWidget {
   Username app_user;
   String domain;
-  activitieswidget(this.app_user, this.domain);
+  activitieswidget(this.app_user, this.domain, {super.key});
 
   @override
   State<activitieswidget> createState() => _activitieswidgetState();
@@ -28,31 +29,31 @@ class _activitieswidgetState extends State<activitieswidget> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<EVENT_LIST>>(
-      future: servers().get_event_list(widget.domain, 0),
+      future: activity_servers().get_event_list(widget.domain, 0),
       builder: (ctx, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
             return Center(
               child: Text(
                 '${snapshot.error} occurred',
-                style: TextStyle(fontSize: 18),
+                style: const TextStyle(fontSize: 18),
               ),
             );
           } else if (snapshot.hasData) {
-            List<EVENT_LIST> event_list = snapshot.data;
-            if (event_list.isEmpty) {
+            List<EVENT_LIST> eventList = snapshot.data;
+            if (eventList.isEmpty) {
               return Container(
-                  margin: EdgeInsets.all(30),
-                  padding: EdgeInsets.all(30),
+                  margin: const EdgeInsets.all(30),
+                  padding: const EdgeInsets.all(30),
                   child: const Center(
                     child: Text(
                       "No Data Was Found",
                     ),
                   ));
             } else {
-              all_events = event_list;
+              all_events = eventList;
               return activitieswidget1(
-                  event_list, widget.app_user, widget.domain);
+                  eventList, widget.app_user, widget.domain);
             }
           }
         }
@@ -64,6 +65,7 @@ class _activitieswidgetState extends State<activitieswidget> {
   }
 }
 
+// ignore: must_be_immutable
 class activitieswidget1 extends StatefulWidget {
   List<EVENT_LIST> event_list;
   Username app_user;
@@ -77,10 +79,10 @@ class activitieswidget1 extends StatefulWidget {
 class _activitieswidget1State extends State<activitieswidget1> {
   bool total_loaded = true;
   void load_data_fun() async {
-    List<EVENT_LIST> latest_event_list =
-        await servers().get_event_list(widget.domain, all_events.length);
-    if (latest_event_list.length != 0) {
-      all_events += latest_event_list;
+    List<EVENT_LIST> latestEventList = await activity_servers()
+        .get_event_list(widget.domain, all_events.length);
+    if (latestEventList.length != 0) {
+      all_events += latestEventList;
       setState(() {
         widget.event_list = all_events;
       });
@@ -162,6 +164,7 @@ class _activitieswidget1State extends State<activitieswidget1> {
   }
 }
 
+// ignore: must_be_immutable
 class single_event extends StatefulWidget {
   EVENT_LIST event;
   Username app_user;
@@ -192,16 +195,14 @@ class _single_eventState extends State<single_event> {
   @override
   Widget build(BuildContext context) {
     EVENT_LIST event = widget.event;
-    Username app_user = widget.app_user;
     var width = MediaQuery.of(context).size.width;
-    Username user = event.username!;
-    List<String> event_updates;
-    event_updates = event.eventUpdate.toString().split('`');
+    List<String> eventUpdates;
+    eventUpdates = event.eventUpdate.toString().split('`');
     return GestureDetector(
       onTap: () {
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (BuildContext context) {
-          return event_photowidget(event, widget.app_user, event_updates,
+          return event_photowidget(event, widget.app_user, eventUpdates,
               _videoPlayerController!); //event_photowidget
         }));
       },
@@ -223,7 +224,7 @@ class _single_eventState extends State<single_event> {
             setState(() {
               event.likeCount = event.likeCount! + 1;
             });
-            bool error = await servers().post_event_like(event.id!);
+            bool error = await activity_servers().post_event_like(event.id!);
             if (error) {
               setState(() {
                 event.likeCount = event.likeCount! - 1;
@@ -234,7 +235,7 @@ class _single_eventState extends State<single_event> {
             setState(() {
               event.likeCount = event.likeCount! - 1;
             });
-            bool error = await servers().delete_event_like(event.id!);
+            bool error = await activity_servers().delete_event_like(event.id!);
             if (error) {
               setState(() {
                 event.likeCount = event.likeCount! + 1;
@@ -301,7 +302,7 @@ class _single_eventState extends State<single_event> {
                                     return event_photowidget(
                                         event,
                                         widget.app_user,
-                                        event_updates,
+                                        eventUpdates,
                                         _videoPlayerController!); //event_photowidget
                                   }));
                                 },
@@ -342,7 +343,8 @@ class _single_eventState extends State<single_event> {
                       setState(() {
                         event.likeCount = event.likeCount! + 1;
                       });
-                      bool error = await servers().post_event_like(event.id!);
+                      bool error =
+                          await activity_servers().post_event_like(event.id!);
                       if (error) {
                         setState(() {
                           event.likeCount = event.likeCount! - 1;
@@ -353,7 +355,8 @@ class _single_eventState extends State<single_event> {
                       setState(() {
                         event.likeCount = event.likeCount! - 1;
                       });
-                      bool error = await servers().delete_event_like(event.id!);
+                      bool error =
+                          await activity_servers().delete_event_like(event.id!);
                       if (error) {
                         setState(() {
                           event.likeCount = event.likeCount! + 1;
@@ -395,6 +398,7 @@ class _single_eventState extends State<single_event> {
   }
 }
 
+// ignore: must_be_immutable
 class event_photowidget extends StatefulWidget {
   EVENT_LIST event;
   Username app_user;
@@ -414,8 +418,8 @@ class _event_photowidgetState extends State<event_photowidget> {
   @override
   Widget build(BuildContext context) {
     EVENT_LIST event = widget.event;
-    String delete_error = "";
-    final Username app_user = widget.app_user;
+    String deleteError = "";
+    final Username appUser = widget.app_user;
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
         appBar: AppBar(
@@ -548,7 +552,7 @@ class _event_photowidgetState extends State<event_photowidget> {
                                 ),
                               ),
                         const SizedBox(height: 10),
-                        (app_user.isSuperuser! ||
+                        (appUser.isSuperuser! ||
                                 widget.app_user.username ==
                                     widget.event.username!.username)
                             ? Center(
@@ -601,7 +605,7 @@ class _event_photowidgetState extends State<event_photowidget> {
                                                       child: OutlinedButton(
                                                           onPressed: () async {
                                                             bool error =
-                                                                await servers()
+                                                                await activity_servers()
                                                                     .delete_event(
                                                                         widget
                                                                             .event
@@ -623,7 +627,7 @@ class _event_photowidgetState extends State<event_photowidget> {
                                                                       false);
                                                             } else {
                                                               setState(() {
-                                                                delete_error =
+                                                                deleteError =
                                                                     "check your connection";
                                                               });
                                                             }
@@ -637,10 +641,10 @@ class _event_photowidgetState extends State<event_photowidget> {
                                                           ))),
                                                     ),
                                                     const SizedBox(height: 10),
-                                                    delete_error != ""
+                                                    deleteError != ""
                                                         ? Center(
                                                             child: Text(
-                                                                delete_error,
+                                                                deleteError,
                                                                 style: const TextStyle(
                                                                     color: Color
                                                                         .fromARGB(
@@ -723,9 +727,11 @@ class _event_photowidgetState extends State<event_photowidget> {
                                                               .insert(0,
                                                                   '&&&' + temp);
                                                         });
-                                                        servers().update_event(
-                                                            widget.event.id!,
-                                                            temp);
+                                                        activity_servers()
+                                                            .update_event(
+                                                                widget
+                                                                    .event.id!,
+                                                                temp);
                                                       },
                                                       child: const Text(
                                                         "Update",
@@ -787,6 +793,7 @@ class _event_photowidgetState extends State<event_photowidget> {
   }
 }
 
+// ignore: must_be_immutable
 class video_display extends StatefulWidget {
   EVENT_LIST event;
   VideoPlayerController _videoPlayerController;
@@ -868,9 +875,9 @@ class _video_displayState extends State<video_display> {
                         print("Downloading");
                         try {
                           List<String> urls = widget.event.eventImg!.split('?');
-                          List<String> sub_urls = urls[0].split("/");
+                          List<String> subUrls = urls[0].split("/");
                           await Dio().download(widget.event.eventImg!,
-                              _localPath + sub_urls[sub_urls.length - 1]);
+                              _localPath + subUrls[subUrls.length - 1]);
                           setState(() {
                             ret = "sucess";
                           });

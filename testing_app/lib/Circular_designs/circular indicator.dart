@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../first_page.dart';
-import '../main.dart';
 import 'package:testing_app/Login/login.dart';
 
 class crclr_ind extends StatefulWidget {

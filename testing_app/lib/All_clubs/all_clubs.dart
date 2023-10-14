@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'club_page.dart';
-import '/models/models.dart';
+import 'Models.dart';
+import 'package:testing_app/User_profile/Models.dart';
 import '/servers/servers.dart';
+import 'Servers.dart';
 import 'package:flutter/services.dart';
 import 'dart:convert' show utf8;
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import '/first_page.dart';
-import 'package:testing_app/Reports/upload_report.dart';
+import 'package:testing_app/Reports/Uploads.dart';
 
 String utf8convert(String text) {
   List<int> bytes = text.toString().codeUnits;
@@ -66,7 +68,7 @@ class _clubpagewidgetState extends State<clubpagewidget> {
           backgroundColor: Colors.white70,
         ),
         body: FutureBuilder<List<CLB_SPRT_LIST>>(
-          future: servers()
+          future: all_clubs_servers()
               .get_club_sprt_list(widget.club_fest, domains1[widget.domain]!),
           builder: (ctx, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
@@ -166,7 +168,7 @@ class _clubpagewidget1State extends State<clubpagewidget1> {
                     club_sport.likeCount = club_sport.likeCount! + 1;
                   });
                   bool error =
-                      await servers().post_club_sport_like(club_sport.id!);
+                      await all_clubs_servers().post_club_sport_like(club_sport.id!);
                   if (error) {
                     setState(() {
                       club_sport.likeCount = club_sport.likeCount! - 1;
@@ -178,7 +180,7 @@ class _clubpagewidget1State extends State<clubpagewidget1> {
                     club_sport.likeCount = club_sport.likeCount! - 1;
                   });
                   bool error =
-                      await servers().delete_club_sport_like(club_sport.id!);
+                      await all_clubs_servers().delete_club_sport_like(club_sport.id!);
                   if (error) {
                     setState(() {
                       club_sport.likeCount = club_sport.likeCount! + 1;
@@ -369,7 +371,7 @@ class _clubpagewidget1State extends State<clubpagewidget1> {
                                   club_sport.likeCount =
                                       club_sport.likeCount! + 1;
                                 });
-                                bool error = await servers()
+                                bool error = await all_clubs_servers()
                                     .post_club_sport_like(club_sport.id!);
                                 if (error) {
                                   setState(() {
@@ -383,7 +385,7 @@ class _clubpagewidget1State extends State<clubpagewidget1> {
                                   club_sport.likeCount =
                                       club_sport.likeCount! - 1;
                                 });
-                                bool error = await servers()
+                                bool error = await all_clubs_servers()
                                     .delete_club_sport_like(club_sport.id!);
                                 if (error) {
                                   setState(() {
@@ -718,7 +720,7 @@ class _edit_clubState extends State<edit_club> {
                                                     ]),
                                               ));
                                         });
-                                    bool error = await servers().edit_club_list(
+                                    bool error = await all_clubs_servers().edit_club_list(
                                         image,
                                         widget.title,
                                         widget.email,

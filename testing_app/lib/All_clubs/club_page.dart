@@ -1,11 +1,9 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-//import 'package:testing_app/post.dart';
-//import 'package:testing_app/dataset.dart';
-import '/models/models.dart';
+import 'Models.dart';
+import 'package:testing_app/User_profile/Models.dart';
+import 'package:testing_app/User_profile/profile.dart';
 import '/servers/servers.dart';
-import '/user_profile/profile.dart';
+import 'Servers.dart';
 //import 'package:link_text/link_text.dart';
 import 'dart:convert' show utf8;
 
@@ -223,7 +221,7 @@ class _club_membersState extends State<club_members> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Username>>(
-      future: servers().get_club_sprt_membs(widget.team_mem),
+      future: all_clubs_servers().get_club_sprt_membs(widget.team_mem),
       builder: (ctx, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {

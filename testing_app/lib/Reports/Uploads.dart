@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '/models/models.dart';
-import '/servers/servers.dart';
+import 'package:testing_app/User_profile/Models.dart';
+import 'Servers.dart';
 
 class report_upload extends StatefulWidget {
   Username app_user;
@@ -131,9 +131,10 @@ class _report_uploadState extends State<report_upload> {
                                                       ]),
                                                 ));
                                           });
-                                      List<dynamic> error = await servers()
-                                          .report_upload(description,
-                                              widget.report_belongs);
+                                      List<dynamic> error =
+                                          await report_servers()
+                                              .report_upload(description,
+                                                  widget.report_belongs);
                                       Navigator.pop(context);
                                       if (!error[0]) {
                                         ScaffoldMessenger.of(context)
@@ -179,7 +180,7 @@ class _report_uploadState extends State<report_upload> {
                                                                 ));
                                                           });
                                                       bool error1 =
-                                                          await servers()
+                                                          await report_servers()
                                                               .report_delete(
                                                                   error[1]);
                                                       Navigator.pop(context);

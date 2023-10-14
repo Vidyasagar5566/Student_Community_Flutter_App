@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import '../circular_designs/cure_clip.dart';
-import '/models/models.dart';
+import 'Servers.dart';
+import 'Models.dart';
+import 'package:testing_app/User_profile/Models.dart';
 import '../Files_disply_download/pdf_videos_images.dart';
-import '/servers/servers.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -81,7 +82,7 @@ class _Giving_RatingState extends State<Giving_Rating> {
             setState(() {
               selected_rating.rating = index;
             });
-            List<dynamic> error = await servers().post_sub_rating(
+            List<dynamic> error = await placemeny_servers().post_sub_rating(
                 selected_rating.rating!, widget.sub_id.toString());
             print(error);
             if (!error[0]) {
@@ -161,7 +162,7 @@ class _Show_all_sub_ratingsState extends State<Show_all_sub_ratings> {
                                   widget.all_sub_ratings[index].id != -1
                               ? IconButton(
                                   onPressed: () async {
-                                    bool error = await servers()
+                                    bool error = await placemeny_servers()
                                         .delete_sub_rating(widget
                                             .all_sub_ratings[index].id
                                             .toString());
@@ -237,7 +238,7 @@ class _placementsState extends State<placements> {
 
   void load_data_fun() async {
     List<CAL_SUB_NAMES> plac_names =
-        await servers().get_sub_place_list("CPC", '@nitc.ac.in', 'B.Tech');
+        await placemeny_servers().get_sub_place_list("CPC", '@nitc.ac.in', 'B.Tech');
     setState(() {
       loaded_data = true;
       widget.cal_sub_names = plac_names;
@@ -395,7 +396,7 @@ class _placementsState extends State<placements> {
                                 } else {
                                   Navigator.pop(context);
 
-                                  List<dynamic> error = await servers()
+                                  List<dynamic> error = await placemeny_servers()
                                       .post_cal_sub(sub_name, 'CPC');
                                   if (!error[0]) {
                                     var new_sub_name = CAL_SUB_NAMES();
@@ -505,7 +506,7 @@ class _placementsState extends State<placements> {
                                           _loaded[index] = false;
                                         });
                                         List<RATINGS> sub_ratings1 =
-                                            await servers()
+                                            await placemeny_servers()
                                                 .get_sub_ratings_list(widget
                                                     .cal_sub_names[index].id
                                                     .toString());
@@ -694,7 +695,7 @@ class _placementsState extends State<placements> {
                                                                     Navigator.pop(
                                                                         context);
 
-                                                                    bool error = await servers().edit_cal_sub(
+                                                                    bool error = await placemeny_servers().edit_cal_sub(
                                                                         sub_name!,
                                                                         widget
                                                                             .cal_sub_names[index]
@@ -865,7 +866,7 @@ class _place_yearsState extends State<place_years> {
 
   void load_data_fun() async {
     List<CAL_SUB_YEARS> sub_years1 =
-        await servers().get_sub_years_list(widget.cal_sub_name.id.toString());
+        await placemeny_servers().get_sub_years_list(widget.cal_sub_name.id.toString());
     setState(() {
       sub_years = sub_years1;
       sub_years.sort((a, b) => a.yearName!.compareTo(b.yearName!));
@@ -1033,7 +1034,7 @@ class _place_yearsState extends State<place_years> {
                                 } else {
                                   Navigator.pop(context);
 
-                                  List<dynamic> error = await servers()
+                                  List<dynamic> error = await placemeny_servers()
                                       .add_cal_sub_year(
                                           widget.cal_sub_name.id.toString(),
                                           year_name,
@@ -1270,7 +1271,7 @@ class _place_yearsState extends State<place_years> {
                                                                   Navigator.pop(
                                                                       context);
 
-                                                                  bool error = await servers().edit_cal_year(
+                                                                  bool error = await placemeny_servers().edit_cal_year(
                                                                       year_name!,
                                                                       sub_years[
                                                                               index]
@@ -1345,7 +1346,7 @@ class _yearFilesState extends State<yearFiles> {
 
   void load_data_fun() async {
     List<CAL_SUB_FILES> sub_files1 =
-        await servers().get_sub_files_list(widget.sub_year.id.toString());
+        await placemeny_servers().get_sub_files_list(widget.sub_year.id.toString());
     setState(() {
       sub_files = sub_files1;
       sub_files.sort((a, b) => a.fileName!.compareTo(b.fileName!));
@@ -1370,7 +1371,7 @@ class _yearFilesState extends State<yearFiles> {
     setState(() {
       widget.cal_sub_files.add(new_file);
     });
-    List<dynamic> error = await servers()
+    List<dynamic> error = await placemeny_servers()
         .post_cal_sub_files(file, widget.sub_year.id.toString(), file_type);
     if (!error[0]) {
       setState(() {
@@ -1695,7 +1696,7 @@ class _yearFilesState extends State<yearFiles> {
                             widget.cal_sub_files[index].username!.email
                         ? IconButton(
                             onPressed: () async {
-                              bool error = await servers()
+                              bool error = await placemeny_servers()
                                   .delete_sub_files_list(widget
                                       .cal_sub_files[index].id
                                       .toString());
@@ -1736,7 +1737,7 @@ class _yearFilesState extends State<yearFiles> {
                                     widget.cal_sub_files[index].qnAnsFile = "";
                                     widget.cal_sub_files[index].username =
                                         widget.cal_sub_files[index].username;
-                                    List<dynamic> error = await servers()
+                                    List<dynamic> error = await placemeny_servers()
                                         .edit_cal_sub_files(
                                             widget.cal_sub_files[index]
                                                 .username!.email!,

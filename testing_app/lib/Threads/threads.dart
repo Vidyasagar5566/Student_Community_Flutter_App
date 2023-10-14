@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:testing_app/uploads/uploads.dart';
-import '/models/models.dart';
+import 'Servers.dart';
+import 'Models.dart';
+import 'package:testing_app/User_profile/Models.dart';
 import '/servers/servers.dart';
 import 'package:get_time_ago/get_time_ago.dart';
 import 'package:image_picker/image_picker.dart';
@@ -9,6 +10,7 @@ import 'dart:io';
 import 'package:video_player/video_player.dart';
 import '/Files_disply_download/pdf_videos_images.dart';
 import '/first_page.dart';
+import 'package:testing_app/Year_Branch_Selection/Year_Branch_Selection.dart';
 
 //import 'package:link_text/link_text.dart';
 import 'dart:convert' show utf8;
@@ -31,7 +33,7 @@ class _alertwidgetState extends State<alertwidget> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<ALERT_LIST>>(
-      future: servers().get_alert_list(widget.domain, 0),
+      future: threads_servers().get_alert_list(widget.domain, 0),
       builder: (ctx, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
@@ -79,8 +81,8 @@ class alertwidget1 extends StatefulWidget {
 class _alertwidget1State extends State<alertwidget1> {
   bool total_loaded = true;
   void load_data_fun() async {
-    List<ALERT_LIST> latest_alert_list =
-        await servers().get_alert_list(widget.domain, all_alerts.length);
+    List<ALERT_LIST> latest_alert_list = await threads_servers()
+        .get_alert_list(widget.domain, all_alerts.length);
     if (latest_alert_list.length != 0) {
       all_alerts += latest_alert_list;
       setState(() {
@@ -271,7 +273,7 @@ class _alert_commentwidgetState extends State<alert_commentwidget> {
 
   bool load_data = false;
   load_data_fun(int id) async {
-    alert_cmnt_list = await servers().get_alert_cmnt_list(id);
+    alert_cmnt_list = await threads_servers().get_alert_cmnt_list(id);
     setState(() {
       load_data = true;
     });
@@ -333,7 +335,7 @@ class _alert_commentwidgetState extends State<alert_commentwidget> {
                                     color: Colors.blue[900],
                                     child: OutlinedButton(
                                         onPressed: () async {
-                                          bool error = await servers()
+                                          bool error = await threads_servers()
                                               .delete_alert(widget.alert.id!);
                                           if (!error) {
                                             Navigator.pop(context);
@@ -637,10 +639,11 @@ class _lst_cmnt_pageState extends State<lst_cmnt_page> {
                                                     .remove(alert_cmnt);
                                                 Navigator.pop(context);
                                               });
-                                              bool error = await servers()
-                                                  .delete_alert_cmnt(
-                                                      alert_cmnt.id!,
-                                                      widget.alert.id!);
+                                              bool error =
+                                                  await threads_servers()
+                                                      .delete_alert_cmnt(
+                                                          alert_cmnt.id!,
+                                                          widget.alert.id!);
                                               if (error) {
                                                 setState(() {
                                                   alert_cmnt_list
@@ -968,14 +971,15 @@ class _upload_alert_cmntwidgetState extends State<upload_alert_cmntwidget> {
                                         file = File('images/club.jpg');
                                         file_type = 0;
                                       }
-                                      List<dynamic> error = await servers()
-                                          .post_alert_cmnt(
-                                              description,
-                                              widget.alert.id!,
-                                              file,
-                                              file_type,
-                                              notif_years.join(''),
-                                              notif_branchs.join("@"));
+                                      List<dynamic> error =
+                                          await threads_servers()
+                                              .post_alert_cmnt(
+                                                  description,
+                                                  widget.alert.id!,
+                                                  file,
+                                                  file_type,
+                                                  notif_years.join(''),
+                                                  notif_branchs.join("@"));
 
                                       Navigator.pop(context);
                                       if (!error[0]) {
@@ -989,7 +993,7 @@ class _upload_alert_cmntwidgetState extends State<upload_alert_cmntwidget> {
                                         await Future.delayed(
                                             Duration(seconds: 2));
 
-                                        /*              bool error = await servers()
+                                        /*              bool error = await threads_servers()
                                             .send_notifications(
                                                 widget.app_user.email!,
                                                 " shared a new opinion on " +

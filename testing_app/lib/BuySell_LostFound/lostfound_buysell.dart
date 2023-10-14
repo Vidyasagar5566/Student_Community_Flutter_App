@@ -1,12 +1,13 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import '../first_page.dart';
-import '../models/models.dart';
+import 'Servers.dart';
+import 'Models.dart';
+import 'package:testing_app/User_profile/Models.dart';
 import '../servers/servers.dart';
 import 'dart:convert' show utf8;
-import 'upload_bs_lf.dart';
-import 'package:testing_app/Reports/upload_report.dart';
+import 'Uploads.dart';
+import 'package:testing_app/Reports/Uploads.dart';
 import 'package:get_time_ago/get_time_ago.dart';
 import 'dart:io';
 import '../Files_disply_download/pdf_videos_images.dart';
@@ -30,8 +31,9 @@ class all_lostwidget1 extends StatefulWidget {
 class _all_lostwidget1State extends State<all_lostwidget1> {
   bool total_loaded = false;
   void load_data_fun() async {
-    List<Lost_Found> latest_lst_list = await servers()
-        .get_lst_list(lst_buy_list.length, domains1[widget.domain]!);
+    List<Lost_Found> latest_lst_list =
+        await bs_lf_servers().get_lst_list(10, 'domain'); //servers()
+    //     .get_lst_list(lst_buy_list.length, domains1[widget.domain]!);
     if (latest_lst_list.length != 0) {
       lst_buy_list += latest_lst_list;
       setState(() {
@@ -491,7 +493,7 @@ class _lost_photowidgetState extends State<lost_photowidget> {
                                     color: Colors.blue[900],
                                     child: OutlinedButton(
                                         onPressed: () async {
-                                          bool error = await servers()
+                                          bool error = await bs_lf_servers()
                                               .delete_lst(widget.lst.id!);
                                           if (!error) {
                                             Navigator.pop(context);
@@ -594,7 +596,7 @@ class _lost_photowidgetState extends State<lost_photowidget> {
                                                           ]),
                                                     ));
                                               });
-                                          bool error = await servers()
+                                          bool error = await bs_lf_servers()
                                               .hide_lst(widget.lst.id!);
                                           Navigator.pop(context);
                                           if (!error) {
@@ -766,7 +768,7 @@ class _lst_commentwidgetState extends State<lst_commentwidget> {
           backgroundColor: Colors.white70,
         ),
         body: FutureBuilder<List<LST_CMNT>>(
-          future: servers().get_lst_cmnt_list(widget.lst.id!),
+          future: bs_lf_servers().get_lst_cmnt_list(widget.lst.id!),
           builder: (ctx, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               if (snapshot.hasError) {
@@ -918,7 +920,7 @@ class _lst_cmnt_pageState extends State<lst_cmnt_page> {
                                       comment = null;
                                       sending_cmnt = true;
                                     });
-                                    List<dynamic> error = await servers()
+                                    List<dynamic> error = await bs_lf_servers()
                                         .post_lst_cmnt(
                                             curr_comment, widget.lst.id!);
                                     setState(() {
@@ -1048,7 +1050,7 @@ class _lst_cmnt_pageState extends State<lst_cmnt_page> {
                                                         .remove(lst_cmnt);
                                                     Navigator.pop(context);
                                                   });
-                                                  bool error = await servers()
+                                                  bool error = await bs_lf_servers()
                                                       .delete_lst_cmnt(
                                                           lst_cmnt.id!,
                                                           widget.lst.id!);

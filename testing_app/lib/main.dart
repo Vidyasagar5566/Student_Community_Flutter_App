@@ -6,7 +6,7 @@ import 'package:localstorage/localstorage.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 //import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:timezone/data/latest.dart' as tz;
-import 'App_notifications/remainder_nitifications.dart';
+import 'App_notifications/Remainder_nitifications.dart';
 import 'Login/login.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(message) async {

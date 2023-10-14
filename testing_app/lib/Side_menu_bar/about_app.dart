@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '/models/models.dart';
-import '/servers/servers.dart';
+import 'package:testing_app/User_profile/Models.dart';
+import 'package:testing_app/Reports/Servers.dart';
 
 class about_app extends StatefulWidget {
   Username app_user;
@@ -108,7 +108,7 @@ class _about_appState extends State<about_app> {
                                             ]),
                                       ));
                                 });
-                            List<dynamic> error = await servers()
+                            List<dynamic> error = await report_servers()
                                 .report_upload(report, "student");
                             Navigator.pop(context);
                             if (!error[0]) {
@@ -146,7 +146,7 @@ class _about_appState extends State<about_app> {
                                                             ]),
                                                       ));
                                                 });
-                                            bool error1 = await servers()
+                                            bool error1 = await report_servers()
                                                 .report_delete(error[1]);
                                             Navigator.pop(context);
                                             if (!error1) {

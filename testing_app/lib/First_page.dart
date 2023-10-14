@@ -1,7 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:testing_app/Activities/Models.dart';
+import 'package:testing_app/BuySell_LostFound/Models.dart';
+import 'package:testing_app/Login/Servers.dart';
 import 'package:testing_app/Mess_menus/mess_menu.dart';
-import 'models/models.dart';
+import 'package:testing_app/Posts/Models.dart';
+import 'package:testing_app/Side_menu_bar/Servers.dart';
+import 'package:testing_app/Threads/Models.dart';
 import 'Posts/post.dart';
 import 'All_clubs/all_clubs.dart';
 import 'User_profile/profile.dart';
@@ -9,14 +14,13 @@ import 'All_sports/all_sports.dart';
 import 'package:testing_app/Calender/calender_test.dart';
 import 'Timings/timings.dart';
 import 'Activities/activities.dart';
-
-import 'BuySell_LostFound/upload_bs_lf.dart';
-import 'Posts/upload_post.dart';
-import 'Activities/upload_activity.dart';
-import 'Threads/upload_threads.dart';
-import 'App_notifications/upload_notification.dart';
-import 'calender/upload_cal_event.dart';
-
+import 'BuySell_LostFound/Uploads.dart';
+import 'Posts/Uploads.dart';
+import 'Activities/Uploads.dart';
+import 'Threads/Uploads.dart';
+import 'App_notifications/Uploads.dart';
+import 'calender/Uploads.dart';
+import '/User_profile/Models.dart';
 import 'servers/servers.dart';
 import 'Side_menu_bar/side_menu.dart';
 import 'BuySell_LostFound/lostfound_buysell.dart';
@@ -50,7 +54,7 @@ class _get_ueser_widgetState extends State<get_ueser_widget> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Username>(
-      future: servers().get_user(),
+      future: login_servers().get_user(),
       builder: (ctx, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
@@ -92,7 +96,7 @@ class _firstpageState extends State<firstpage> {
   bool drop_colors = true;
   void repeat() {
     Timer.periodic(const Duration(seconds: 10), (Timer t) async {
-      Username updated_app_user = await servers().get_user();
+      Username updated_app_user = await login_servers().get_user();
       setState(() {
         notif_count = updated_app_user.notifCount!;
       });
@@ -212,7 +216,7 @@ class _firstpageState extends State<firstpage> {
                             setState(() {
                               widget.app_user.notifCount = 0;
                             });
-                            servers().notif_seen();
+                            menu_bar_servers().notif_seen();
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (BuildContext context) {
                               return notifications(widget.app_user);
@@ -224,7 +228,7 @@ class _firstpageState extends State<firstpage> {
                                 setState(() {
                                   widget.app_user.notifCount = 0;
                                 });
-                                servers().notif_seen();
+                                menu_bar_servers().notif_seen();
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (BuildContext context) {
                                   return notifications(widget.app_user);

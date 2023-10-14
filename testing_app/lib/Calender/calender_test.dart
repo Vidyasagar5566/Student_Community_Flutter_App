@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
-//import 'package:testing_app/dataset.dart';
-import '/models/models.dart';
-import '/servers/servers.dart';
-import 'calender_date_event.dart';
-import '/Notes/qn_paper.dart';
-import '/first_page.dart';
+import 'Calender_date_event.dart';
+import 'Servers.dart';
+import 'Models.dart';
+import 'package:testing_app/User_profile/Models.dart';
+import 'package:testing_app/Activities/Models.dart';
 //import 'package:intl/intl.dart';
 
 List<String> all_dates = [];
-List<CAL_SUB_NAMES> cal_sub_names = [];
 
 List<String> timetable_list = [
   "Upcoming Events",
@@ -50,66 +48,6 @@ Map<int, String> weeks = {
   7: 'SUN'
 };
 
-class SwitchListTileExample extends StatefulWidget {
-  String notif_id;
-  Username app_user;
-  String title;
-  SwitchListTileExample(this.notif_id, this.app_user, this.title);
-
-  @override
-  State<SwitchListTileExample> createState() => _SwitchListTileExampleState();
-}
-
-class _SwitchListTileExampleState extends State<SwitchListTileExample> {
-  @override
-  Widget build(BuildContext context) {
-    List<String> notif_ids = widget.app_user.notifIds!.split("@");
-    bool _lights = false;
-    for (int i = 0; i < notif_ids.length; i++) {
-      if (notif_ids[i] == widget.notif_id) {
-        _lights = true;
-        notif_ids.remove(widget.notif_id);
-        notif_ids.add(widget.notif_id);
-        break;
-      }
-    }
-    return SwitchListTile(
-      title: Text(
-        widget.title,
-        style: TextStyle(fontWeight: FontWeight.w200),
-      ),
-      activeColor: Colors.blue,
-      value: _lights,
-      onChanged: (bool value) async {
-        setState(() {
-          _lights = !_lights;
-        });
-        if (_lights) {
-          setState(() {
-            notif_ids.add(widget.notif_id);
-            widget.app_user.notifIds = notif_ids.join("@");
-          });
-          await servers()
-              .edit_timetable_subscription(widget.app_user.notifIds!);
-        } else {
-          setState(() {
-            notif_ids.remove(widget.notif_id);
-            widget.app_user.notifIds = notif_ids.join("@");
-          });
-          await servers()
-              .edit_timetable_subscription(widget.app_user.notifIds!);
-        }
-      },
-      secondary: const Icon(Icons.lightbulb_outline),
-    );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-}
-
 class calenderwidget extends StatefulWidget {
   Username app_user;
   String domain;
@@ -122,8 +60,8 @@ class calenderwidget extends StatefulWidget {
 class _calenderwidgetState extends State<calenderwidget> {
   Widget build(BuildContext context) {
     print(widget.domain);
-    return FutureBuilder<Map<List<CAL_SUB_NAMES>, List<String>>>(
-      future: servers().get_cal_list(widget.domain),
+    return FutureBuilder<List<String>>(
+      future: calendar_servers().get_cal_list(widget.domain),
       builder: (ctx, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
@@ -134,11 +72,8 @@ class _calenderwidgetState extends State<calenderwidget> {
               ),
             );
           } else if (snapshot.hasData) {
-            Map<List<CAL_SUB_NAMES>, List<String>> total_data = snapshot.data;
-            cal_sub_names = total_data.keys.toList()[0];
-            all_dates = total_data.values.toList()[0];
-            print(all_dates);
-            return calenderwidget1(cal_sub_names, widget.app_user);
+            all_dates = snapshot.data;
+            return calenderwidget1(widget.app_user);
           }
         }
         return const Center(
@@ -150,9 +85,8 @@ class _calenderwidgetState extends State<calenderwidget> {
 }
 
 class calenderwidget1 extends StatefulWidget {
-  List<CAL_SUB_NAMES> timetable_list;
   Username app_user;
-  calenderwidget1(this.timetable_list, this.app_user);
+  calenderwidget1(this.app_user);
 
   @override
   State<calenderwidget1> createState() => _calenderwidget1State();
@@ -181,14 +115,6 @@ class _calenderwidget1State extends State<calenderwidget1> {
 
   @override
   Widget build(BuildContext context) {
-    String week_day = weeks[today.weekday].toString();
-    String roll_num = widget.app_user.rollNum!;
-    String branch = "";
-    try {
-      branch = roll_num[7] + roll_num[8];
-    } catch (e) {
-      branch = "";
-    }
     var wid = MediaQuery.of(context).size.width;
 
     return DefaultTabController(
@@ -226,7 +152,7 @@ class _calenderwidget1State extends State<calenderwidget1> {
                                         ));
                                   });
                               Map<List<CALENDER_EVENT>, List<EVENT_LIST>>
-                                  total_data = await servers()
+                                  total_data = await calendar_servers()
                                       .get_calender_event_list(
                                           today.toString().split(" ")[0]);
                               Navigator.pop(context);
@@ -336,123 +262,6 @@ class _calenderwidget1State extends State<calenderwidget1> {
   }
 }
 
-class branch_display extends StatefulWidget {
-  List<CAL_SUB_NAMES> cal_subjects;
-  Username app_user;
-  String week_day;
-  String branch;
-  branch_display(this.cal_subjects, this.app_user, this.week_day, this.branch);
-
-  @override
-  State<branch_display> createState() => _branch_displayState();
-}
-
-class _branch_displayState extends State<branch_display> {
-  @override
-  Widget build(BuildContext context) {
-    String week_day = widget.week_day;
-    var wid = MediaQuery.of(context).size.width;
-    return Container(
-        padding: EdgeInsets.only(top: 30),
-        decoration: const BoxDecoration(
-            image: DecorationImage(
-                //image: post.post_pic,
-                image: AssetImage("images/event background.jpg"),
-                fit: BoxFit.cover)),
-        child: SingleChildScrollView(
-            child: ListView.builder(
-                itemCount: 3,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                padding: const EdgeInsets.only(bottom: 10),
-                itemBuilder: (BuildContext context, int index) {
-                  Map<int, String> years = {
-                    0: "1st year",
-                    1: "2nd year",
-                    2: "3rd year",
-                    3: "4rth year",
-                    4: "Electives",
-                    5: "Placements"
-                  };
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          List<CAL_SUB_NAMES> sub_names = [];
-                          for (int i = 0; i < widget.cal_subjects.length; i++) {
-                            if (widget.cal_subjects[i].subId!.substring(0, 3) ==
-                                widget.branch + (index * 2 + 1).toString()) {
-                              sub_names.add(widget.cal_subjects[i]);
-                            }
-                          }
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) => cal_subjects(
-                                  widget.app_user,
-                                  sub_names,
-                                  widget.branch,
-                                  years[index * 2]!,
-                                  '@nitc.ac.in',
-                                  'B.TECH')));
-                        },
-                        child: Container(
-                            width: wid / 2.8,
-                            height: 60,
-                            margin: const EdgeInsets.all(20),
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Center(
-                              child: Text(
-                                years[index * 2]!,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 15),
-                              ),
-                            )),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          List<CAL_SUB_NAMES> sub_names = [];
-                          for (int i = 0; i < widget.cal_subjects.length; i++) {
-                            if (widget.cal_subjects[i].subId!.substring(0, 3) ==
-                                widget.branch + (index * 2 + 2).toString()) {
-                              sub_names.add(widget.cal_subjects[i]);
-                            }
-                          }
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) => cal_subjects(
-                                  widget.app_user,
-                                  sub_names,
-                                  widget.branch,
-                                  years[index * 2 + 1]!,
-                                  '@nitc.ac.in',
-                                  'B.TECH')));
-                        },
-                        child: Container(
-                            width: wid / 2.8,
-                            height: 60,
-                            margin: const EdgeInsets.all(20),
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Center(
-                              child: Text(
-                                years[index * 2 + 1]!,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 15),
-                              ),
-                            )),
-                      ),
-                    ],
-                  );
-                })));
-  }
-}
-
 List<String> filter_all_dates = [];
 void event_filter_from_today(String selected_day) {
   filter_all_dates = [];
@@ -549,8 +358,8 @@ class _allEventsState extends State<allEvents> {
                                     ));
                               });
                           Map<List<CALENDER_EVENT>, List<EVENT_LIST>>
-                              total_data =
-                              await servers().get_calender_event_list(temp);
+                              total_data = await calendar_servers()
+                                  .get_calender_event_list(temp);
                           Navigator.pop(context);
                           List<CALENDER_EVENT> cal_event_data =
                               total_data.keys.toList()[0];
@@ -721,6 +530,80 @@ class _dailyTimeTableState extends State<dailyTimeTable> {
                     })));
   }
 }
+
+
+
+
+
+
+
+
+
+
+/*
+
+
+class SwitchListTileExample extends StatefulWidget {
+  String notif_id;
+  Username app_user;
+  String title;
+  SwitchListTileExample(this.notif_id, this.app_user, this.title);
+
+  @override
+  State<SwitchListTileExample> createState() => _SwitchListTileExampleState();
+}
+
+class _SwitchListTileExampleState extends State<SwitchListTileExample> {
+  @override
+  Widget build(BuildContext context) {
+    List<String> notif_ids = widget.app_user.notifIds!.split("@");
+    bool _lights = false;
+    for (int i = 0; i < notif_ids.length; i++) {
+      if (notif_ids[i] == widget.notif_id) {
+        _lights = true;
+        notif_ids.remove(widget.notif_id);
+        notif_ids.add(widget.notif_id);
+        break;
+      }
+    }
+    return SwitchListTile(
+      title: Text(
+        widget.title,
+        style: TextStyle(fontWeight: FontWeight.w200),
+      ),
+      activeColor: Colors.blue,
+      value: _lights,
+      onChanged: (bool value) async {
+        setState(() {
+          _lights = !_lights;
+        });
+        if (_lights) {
+          setState(() {
+            notif_ids.add(widget.notif_id);
+            widget.app_user.notifIds = notif_ids.join("@");
+          });
+          await calendar_servers()
+              .edit_timetable_subscription(widget.app_user.notifIds!);
+        } else {
+          setState(() {
+            notif_ids.remove(widget.notif_id);
+            widget.app_user.notifIds = notif_ids.join("@");
+          });
+          await calendar_servers()
+              .edit_timetable_subscription(widget.app_user.notifIds!);
+        }
+      },
+      secondary: const Icon(Icons.lightbulb_outline),
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+}
+
+
 
 class year_display extends StatefulWidget {
   Username app_user;
@@ -1298,5 +1181,5 @@ class _edit_timetableState extends State<edit_timetable> {
 }
 
 
-//// CALENDER EVENTS PAGE
+*/
 

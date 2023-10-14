@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import '../circular_designs/cure_clip.dart';
-import '/models/models.dart';
+import 'Servers.dart';
+import 'Models.dart';
+import 'package:testing_app/User_profile/Models.dart';
 import '../Files_disply_download/pdf_videos_images.dart';
 import '/servers/servers.dart';
 import 'package:file_picker/file_picker.dart';
@@ -106,7 +108,7 @@ class _branchAndSemsState extends State<branchAndSems> {
           backgroundColor: Colors.white70,
         ),
         body: FutureBuilder<List<ALL_BRANCHES>>(
-          future: servers()
+          future: notes_servers()
               .get_branches_list(domains1[widget.domain]!, widget.course),
           builder: (ctx, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
@@ -334,7 +336,7 @@ class _cal_subjectsState extends State<cal_subjects> {
   List<CAL_SUB_NAMES> subject_names = [];
 
   void load_data_fun() async {
-    List<CAL_SUB_NAMES> subject_names1 = await servers()
+    List<CAL_SUB_NAMES> subject_names1 = await notes_servers()
         .get_sub_place_list(widget.sub_ids, widget.domain, widget.course);
     subject_names1.sort((a, b) => a.subName!.compareTo(b.subName!));
     setState(() {
@@ -494,7 +496,7 @@ class _cal_subjectsState extends State<cal_subjects> {
                               } else {
                                 Navigator.pop(context);
 
-                                List<dynamic> error = await servers()
+                                List<dynamic> error = await notes_servers()
                                     .post_cal_sub(sub_name, widget.sub_ids);
                                 if (!error[0]) {
                                   var new_sub_name = CAL_SUB_NAMES();
@@ -625,7 +627,7 @@ class _cal_subjectsState extends State<cal_subjects> {
                                                   /*                if (widget.cal_year ==
                                                   "Placements") {
                                                 List<RATINGS> sub_ratings1 =
-                                                    await servers()
+                                                    await notes_servers()
                                                         .get_sub_ratings_list(
                                                             widget
                                                                 .subject_names[
@@ -816,7 +818,7 @@ class _cal_subjectsState extends State<cal_subjects> {
                                                                               } else {
                                                                                 Navigator.pop(context);
 
-                                                                                bool error = await servers().edit_cal_sub(sub_name!, widget.subject_names[index].id.toString());
+                                                                                bool error = await notes_servers().edit_cal_sub(sub_name!, widget.subject_names[index].id.toString());
                                                                                 if (!error) {
                                                                                   setState(() {
                                                                                     widget.subject_names[index].subName = sub_name;
@@ -984,7 +986,7 @@ class _cal_sub_yearsState extends State<cal_sub_years> {
 
   void load_data_fun() async {
     List<CAL_SUB_YEARS> sub_years1 =
-        await servers().get_sub_years_list(widget.cal_sub_name.id.toString());
+        await notes_servers().get_sub_years_list(widget.cal_sub_name.id.toString());
     setState(() {
       sub_years = sub_years1;
       sub_years.sort((a, b) => a.yearName!.compareTo(b.yearName!));
@@ -1151,7 +1153,7 @@ class _cal_sub_yearsState extends State<cal_sub_years> {
                               } else {
                                 Navigator.pop(context);
 
-                                List<dynamic> error = await servers()
+                                List<dynamic> error = await notes_servers()
                                     .add_cal_sub_year(
                                         widget.cal_sub_name.id.toString(),
                                         year_name,
@@ -1388,7 +1390,7 @@ class _cal_sub_yearsState extends State<cal_sub_years> {
                                                                   Navigator.pop(
                                                                       context);
 
-                                                                  bool error = await servers().edit_cal_year(
+                                                                  bool error = await notes_servers().edit_cal_year(
                                                                       year_name!,
                                                                       sub_years[
                                                                               index]
@@ -1468,7 +1470,7 @@ class _CalSubFilesState extends State<CalSubFiles> {
 
   void load_data_fun() async {
     List<CAL_SUB_FILES> sub_files1 =
-        await servers().get_sub_files_list(widget.sub_year.id.toString());
+        await notes_servers().get_sub_files_list(widget.sub_year.id.toString());
     setState(() {
       sub_files = sub_files1;
       sub_files.sort((a, b) => a.fileName!.compareTo(b.fileName!));
@@ -1493,7 +1495,7 @@ class _CalSubFilesState extends State<CalSubFiles> {
     setState(() {
       widget.cal_sub_files.add(new_file);
     });
-    List<dynamic> error = await servers()
+    List<dynamic> error = await notes_servers()
         .post_cal_sub_files(file, widget.sub_year.id.toString(), file_type);
     if (!error[0]) {
       setState(() {
@@ -1826,7 +1828,7 @@ class _CalSubFilesState extends State<CalSubFiles> {
                                   style: TextStyle(color: Colors.white),
                                 )));
                               } else {
-                                bool error = await servers()
+                                bool error = await notes_servers()
                                     .delete_sub_files_list(widget
                                         .cal_sub_files[index].id
                                         .toString());
@@ -1868,7 +1870,7 @@ class _CalSubFilesState extends State<CalSubFiles> {
                                     widget.cal_sub_files[index].qnAnsFile = "";
                                     widget.cal_sub_files[index].username =
                                         widget.cal_sub_files[index].username;
-                                    List<dynamic> error = await servers()
+                                    List<dynamic> error = await notes_servers()
                                         .edit_cal_sub_files(
                                             widget.cal_sub_files[index]
                                                 .username!.email!,
