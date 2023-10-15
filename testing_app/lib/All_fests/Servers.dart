@@ -9,48 +9,45 @@ class all_fests_servers {
   LocalStorage storage = LocalStorage("usertoken");
   String base_url = 'http://StudentCommunity.pythonanywhere.com';
 
-// CLUBS_OR_SPORTS LIST FUNCTIONS
+// FESTS LIST FUNCTIONS
 
-  Future<List<CLB_SPRT_LIST>> get_club_sprt_list(
-      String club_sport, String domain) async {
+  Future<List<ALL_FESTS>> get_fests_list(String domain) async {
     try {
       var token = storage.getItem('token');
-      Map<String, String> queryParameters = {
-        'club_sport': club_sport,
-        'domain': domain
-      };
+      Map<String, String> queryParameters = {'domain': domain};
       String queryString = Uri(queryParameters: queryParameters).query;
-      String finalUrl = "$base_url/club_sport/list1?$queryString";
+      String finalUrl = "$base_url/allfests?$queryString";
       var url = Uri.parse(finalUrl);
       http.Response response = await http.get(url, headers: {
         'Authorization': 'token $token',
         "Content-Type": "application/json",
       });
       var data = json.decode(response.body) as List;
-      List<CLB_SPRT_LIST> temp = [];
+      List<ALL_FESTS> temp = [];
       data.forEach((element) {
-        CLB_SPRT_LIST post = CLB_SPRT_LIST.fromJson(element);
+        ALL_FESTS post = ALL_FESTS.fromJson(element);
         temp.add(post);
       });
       return temp;
     } catch (e) {
-      List<CLB_SPRT_LIST> temp = [];
+      List<ALL_FESTS> temp = [];
       return temp;
     }
   }
 
-  Future<bool> edit_club_list(
-      File image,
-      String title,
-      String email,
-      String team_members,
-      String description,
-      String websites,
-      String image_type,
-      String club_fest) async {
+  Future<bool> edit_fest_list(
+    int id,
+    File image,
+    String title,
+    String name,
+    String team_members,
+    String description,
+    String websites,
+    String image_type,
+  ) async {
     try {
       var token = storage.getItem('token');
-      String finalUrl = "$base_url/club_sport/list1";
+      String finalUrl = "$base_url/allfests";
       var url = Uri.parse(finalUrl);
       String base64file = "";
       String fileName = "";
@@ -59,22 +56,22 @@ class all_fests_servers {
         fileName = image.path.split("/").last;
       }
 
-      http.Response response = await http.post(
+      http.Response response = await http.put(
         url,
         headers: {
           'Authorization': 'token $token',
           "Content-Type": "application/json",
         },
         body: jsonEncode({
+          'id': id,
           'file': base64file,
           'file_name': fileName,
           'title': title,
-          'email': email,
+          'name': name,
           'team_members': team_members,
           'description': description,
           'websites': websites,
           'image_type': image_type,
-          'club_fest': club_fest
         }),
       );
       var data = json.decode(response.body) as Map;
@@ -85,71 +82,31 @@ class all_fests_servers {
     }
   }
 
-// CLUBS_OR_SPORTS LIST EDIT FUNCTIONS
-
-  Future<bool> edit_sport_list(
-      File image,
-      String title,
-      String email,
-      String team_members,
-      String description,
-      String websites,
-      String sport_ground,
-      File image1,
-      String image_type,
-      String image2_type) async {
+  Future<bool> change_fest_head(int id, String new_head_email) async {
     try {
       var token = storage.getItem('token');
-      String finalUrl = "$base_url/club_sport/edit1";
+      String finalUrl = "$base_url/allfests";
       var url = Uri.parse(finalUrl);
-      String base64file = "";
-      String fileName = "";
-      String base64file1 = "";
-      String fileName1 = "";
-      if (image_type == "file") {
-        base64file = base64Encode(image.readAsBytesSync());
-        fileName = image.path.split("/").last;
-      }
-      if (image2_type == "file") {
-        base64file1 = base64Encode(image1.readAsBytesSync());
-        fileName1 = image1.path.split("/").last;
-      }
-
-      http.Response response = await http.post(
+      http.Response response = await http.patch(
         url,
         headers: {
           'Authorization': 'token $token',
           "Content-Type": "application/json",
         },
-        body: jsonEncode({
-          'file': base64file,
-          'file_name': fileName,
-          'file1': base64file1,
-          'file_name1': fileName1,
-          'title': title,
-          'email': email,
-          'team_members': team_members,
-          'description': description,
-          'websites': websites,
-          'sport_ground': sport_ground,
-          'image_type': image_type,
-          'image2_type': image2_type
-        }),
+        body: jsonEncode({'id': id, 'new_head_email': new_head_email}),
       );
       var data = json.decode(response.body) as Map;
-
       return data['error'];
     } catch (e) {
       return true;
     }
   }
-
 // CLUBS_SPORTS_LIKES
 
-  Future<bool> post_club_sport_like(int club_sport_id) async {
+  Future<bool> post_fest_like(int fest_id) async {
     try {
       var token = storage.getItem('token');
-      String finalUrl = "$base_url/club_sport/like_list1";
+      String finalUrl = "$base_url/fest/likes";
       var url = Uri.parse(finalUrl);
       http.Response response = await http.post(
         url,
@@ -158,7 +115,7 @@ class all_fests_servers {
           "Content-Type": "application/json",
         },
         body: jsonEncode({
-          'club_sport_id': club_sport_id,
+          'fest_id': fest_id,
         }),
       );
       var data = json.decode(response.body) as Map;
@@ -169,14 +126,12 @@ class all_fests_servers {
     }
   }
 
-  Future<bool> delete_club_sport_like(int club_sport_id) async {
+  Future<bool> delete_fest_like(int fest_id) async {
     try {
       var token = storage.getItem('token');
-      Map<String, String> queryParameters = {
-        'club_sport_id': club_sport_id.toString()
-      };
+      Map<String, String> queryParameters = {'fest_id': fest_id.toString()};
       String queryString = Uri(queryParameters: queryParameters).query;
-      String finalUrl = "$base_url/club_sport/like_list1?$queryString";
+      String finalUrl = "$base_url/fest/likes?$queryString";
       var url = Uri.parse(finalUrl);
       http.Response response = await http.delete(url, headers: {
         'Authorization': 'token $token',
@@ -192,14 +147,14 @@ class all_fests_servers {
 
 // CLUB_OR_SPORT_MEMBS
 
-  Future<List<Username>> get_club_sprt_membs(String team_mem) async {
+  Future<List<Username>> get_club_sprt_fest_membs(String team_mem) async {
     try {
       var token = storage.getItem('token');
       Map<String, String> queryParameters = {
         'team_mem': team_mem,
       };
       String queryString = Uri(queryParameters: queryParameters).query;
-      String finalUrl = "$base_url/club_sport/memb1?$queryString";
+      String finalUrl = "$base_url/club_sport_fest/mems?$queryString";
       var url = Uri.parse(finalUrl);
       http.Response response = await http.get(url, headers: {
         'Authorization': 'token $token',
@@ -217,4 +172,48 @@ class all_fests_servers {
       return temp;
     }
   }
+
+// SEARCH USERS LIST ,
+
+  Future<List<SmallUsername>> get_searched_user_list(
+      String username_match, String domain, int num_list) async {
+    try {
+      var token = storage.getItem('token');
+      Map<String, String> queryParameters = {
+        'username_match': username_match,
+        'domain': domain,
+        'num_list': num_list.toString()
+      };
+      String queryString = Uri(queryParameters: queryParameters).query;
+      String finalUrl = "$base_url/user_messanger1?$queryString";
+      var url = Uri.parse(finalUrl);
+      http.Response response = await http.get(url, headers: {
+        'Authorization': 'token $token',
+        "Content-Type": "application/json",
+      });
+      var data = json.decode(response.body) as List;
+      List<SmallUsername> temp = [];
+      data.forEach((element) {
+        SmallUsername post = SmallUsername.fromJson(element);
+        temp.add(post);
+      });
+      return temp;
+    } catch (e) {
+      List<SmallUsername> temp = [];
+      return temp;
+    }
+  }
 }
+
+
+
+
+// #CLUBS/SPORTS/FESTS
+//     path('allclubs', views.ALLCLUBS_list.as_view(),name = 'ALLCLUBS_list'),
+//     path('club/likes', views.CLUB_like_list.as_view(),name = 'CLUB_like_list'),
+//     path('allsports', views.ALLSPORTS_list.as_view(),name = 'ALLSPORTS_list'),
+//     path('sport/likes', views.SPORT_like_list.as_view(),name = 'SPORT_like_list'),
+//     path('allfests', views.ALLFESTS_list.as_view(),name = 'ALLFESTS_list'),
+//     path('fest/likes', views.FEST_like_list.as_view(),name = 'FEST_like_list'),
+
+//     path('club_sport_fest/mems', views.CLUB_SPORT_FEST_MEMB.as_view(),name = 'CLUB_SPORT_FEST_MEMB'),

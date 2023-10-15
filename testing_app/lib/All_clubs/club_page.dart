@@ -38,8 +38,8 @@ List<Tab> tabs = const [
   )
 ];
 
-List<Widget> tabscontent_funct(CLB_SPRT_LIST club_sport, Username app_user) {
-  SmallUsername user = club_sport.username!;
+List<Widget> tabscontent_funct(ALL_CLUBS club, Username app_user) {
+  SmallUsername user = club.head!;
   return [
     SingleChildScrollView(
         child: Container(
@@ -54,7 +54,7 @@ List<Widget> tabscontent_funct(CLB_SPRT_LIST club_sport, Username app_user) {
           ),
           //Link
           Text(
-            utf8convert(club_sport.description!),
+            utf8convert(club.description!),
           ),
         ],
       ),
@@ -62,7 +62,7 @@ List<Widget> tabscontent_funct(CLB_SPRT_LIST club_sport, Username app_user) {
     SingleChildScrollView(
         child: Container(
       margin: EdgeInsets.only(top: 20),
-      child: club_members(club_sport.teamMembers!),
+      child: club_members(club.teamMembers!),
     )),
     SingleChildScrollView(
         child: Container(
@@ -81,30 +81,29 @@ List<Widget> tabscontent_funct(CLB_SPRT_LIST club_sport, Username app_user) {
               ),
               //Link
               Text(
-                club_sport.websites!,
+                club.websites!,
                 //style: TextStyle(color: Colors.blueAccent),
               )
             ])))
   ];
 }
 
-class dndpagewidget extends StatefulWidget {
-  final CLB_SPRT_LIST club_sport;
+class clubpagewidget extends StatefulWidget {
+  final ALL_CLUBS club;
   Username app_user;
-  String club_fest;
-  dndpagewidget(this.club_sport, this.app_user, this.club_fest);
-  //const dndpagewidget({super.key});
+  clubpagewidget(this.club, this.app_user);
+  //const clubpagewidget({super.key});
 
   @override
-  State<dndpagewidget> createState() => _dndpagewidgetState();
+  State<clubpagewidget> createState() => _clubpagewidgetState();
 }
 
-class _dndpagewidgetState extends State<dndpagewidget> {
+class _clubpagewidgetState extends State<clubpagewidget> {
   @override
   Widget build(BuildContext context) {
     final double coverheight = 100;
     final double profileheight = 50;
-    SmallUsername user = widget.club_sport.username!;
+    SmallUsername user = widget.club.head!;
     return DefaultTabController(
         length: 10,
         child: Scaffold(
@@ -114,7 +113,7 @@ class _dndpagewidgetState extends State<dndpagewidget> {
             ),
             centerTitle: true,
             title: Text(
-              widget.club_sport.username!.username!,
+              widget.club.head!.username!,
               style: TextStyle(color: Colors.black),
             ),
             backgroundColor: Colors.white70,
@@ -142,21 +141,13 @@ class _dndpagewidgetState extends State<dndpagewidget> {
                               right: 4,
                               top: 4),
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: widget.club_fest == "club"
-                                ? Image.asset(
-                                    "images/Clubs.jpg",
-                                    width: double.infinity,
-                                    height: coverheight,
-                                    fit: BoxFit.cover,
-                                  )
-                                : Image.asset(
-                                    "images/fests.webp",
-                                    width: double.infinity,
-                                    height: coverheight,
-                                    fit: BoxFit.cover,
-                                  ),
-                          )),
+                              borderRadius: BorderRadius.circular(20),
+                              child: Image.asset(
+                                "images/Clubs.jpg",
+                                width: double.infinity,
+                                height: coverheight,
+                                fit: BoxFit.cover,
+                              ))),
                       Positioned(
                         top: coverheight - profileheight / 2,
                         child: CircleAvatar(
@@ -165,10 +156,9 @@ class _dndpagewidgetState extends State<dndpagewidget> {
                             child: CircleAvatar(
                               radius: profileheight / 2,
                               backgroundColor: Colors.grey,
-                              backgroundImage:
-                                  NetworkImage(widget.club_sport.logo!
-                                      //"images/DND-clun-profile.png"
-                                      ),
+                              backgroundImage: NetworkImage(widget.club.logo!
+                                  //"images/club-clun-profile.png"
+                                  ),
                             )),
                       ),
                     ],
@@ -177,7 +167,7 @@ class _dndpagewidgetState extends State<dndpagewidget> {
                     height: 4,
                   ),
                   Text(
-                    "CLUB " + user.username!,
+                    widget.club.name!,
                     style: const TextStyle(
                         fontWeight: FontWeight.w600, color: Colors.white),
                   ),
@@ -200,8 +190,8 @@ class _dndpagewidgetState extends State<dndpagewidget> {
                           ))),
                   Expanded(
                       child: TabBarView(
-                          children: tabscontent_funct(
-                              widget.club_sport, widget.app_user))),
+                          children:
+                              tabscontent_funct(widget.club, widget.app_user))),
                 ],
               )),
         ));
@@ -221,7 +211,7 @@ class _club_membersState extends State<club_members> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Username>>(
-      future: all_clubs_servers().get_club_sprt_membs(widget.team_mem),
+      future: all_clubs_servers().get_club_sprt_fest_membs(widget.team_mem),
       builder: (ctx, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
@@ -232,8 +222,8 @@ class _club_membersState extends State<club_members> {
               ),
             );
           } else if (snapshot.hasData) {
-            List<Username> club_sport_mem_list = snapshot.data;
-            if (club_sport_mem_list.isEmpty) {
+            List<Username> club_mem_list = snapshot.data;
+            if (club_mem_list.isEmpty) {
               return Container(
                   margin: EdgeInsets.all(30),
                   padding: EdgeInsets.all(30),
@@ -241,7 +231,7 @@ class _club_membersState extends State<club_members> {
                       style: TextStyle(
                           fontWeight: FontWeight.w500, fontSize: 24)));
             } else {
-              return club_members1(club_sport_mem_list);
+              return club_members1(club_mem_list);
             }
           }
         }
@@ -254,8 +244,8 @@ class _club_membersState extends State<club_members> {
 }
 
 class club_members1 extends StatefulWidget {
-  List<Username> club_sport_mem_list;
-  club_members1(this.club_sport_mem_list);
+  List<Username> club_mem_list;
+  club_members1(this.club_mem_list);
 
   @override
   State<club_members1> createState() => _club_members1State();
@@ -265,17 +255,17 @@ class _club_members1State extends State<club_members1> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        itemCount: widget.club_sport_mem_list.length,
+        itemCount: widget.club_mem_list.length,
         shrinkWrap: true,
         padding: EdgeInsets.zero,
         physics: NeverScrollableScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
-          Username club_sport_mem = widget.club_sport_mem_list[index];
-          return _buildLoadingScreen(club_sport_mem);
+          Username club_mem = widget.club_mem_list[index];
+          return _buildLoadingScreen(club_mem);
         });
   }
 
-  Widget _buildLoadingScreen(Username club_sport_mem) {
+  Widget _buildLoadingScreen(Username club_mem) {
     var width = MediaQuery.of(context).size.width;
     return Container(
         margin: EdgeInsets.all(2),
@@ -292,11 +282,11 @@ class _club_members1State extends State<club_members1> {
                   children: [
                     Container(
                         width: 48,
-                        child: club_sport_mem.fileType! == '1'
+                        child: club_mem.fileType! == '1'
                             ? CircleAvatar(
                                 backgroundImage:
                                     //post.profile_pic
-                                    NetworkImage(club_sport_mem.profilePic!))
+                                    NetworkImage(club_mem.profilePic!))
                             : const CircleAvatar(
                                 backgroundImage:
                                     //post.profile_pic
@@ -313,7 +303,7 @@ class _club_members1State extends State<club_members1> {
                                   constraints: BoxConstraints(
                                       maxWidth: (width - 36) / 2.4),
                                   child: Text(
-                                    club_sport_mem.username!,
+                                    club_mem.username!,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     //"Vidya Sagar",
@@ -338,9 +328,9 @@ class _club_members1State extends State<club_members1> {
                             ),
                             Text(
                               //"B190838EC",
-                              domains[club_sport_mem.domain!]! +
+                              domains[club_mem.domain!]! +
                                   " (" +
-                                  club_sport_mem.userMark! +
+                                  club_mem.userMark! +
                                   ")",
                               overflow: TextOverflow.ellipsis,
                               //lst_list.username.rollNum,
@@ -358,7 +348,7 @@ class _club_members1State extends State<club_members1> {
               height: 5,
             ),
             Text(
-              "contact no " + club_sport_mem.phnNum!,
+              "contact no " + club_mem.phnNum!,
               //post.description,
               style: TextStyle(fontSize: 15),
             ),

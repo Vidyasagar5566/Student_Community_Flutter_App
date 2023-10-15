@@ -550,7 +550,8 @@ class _single_postState extends State<single_post> {
                     setState(() {
                       post.likeCount = post.likeCount! - 1;
                     });
-                    bool error = await post_servers().delete_post_like(post.id!);
+                    bool error =
+                        await post_servers().delete_post_like(post.id!);
                     if (error) {
                       setState(() {
                         post.likeCount = post.likeCount! + 1;
@@ -677,7 +678,8 @@ class _single_postState extends State<single_post> {
                           setState(() {
                             post.likeCount = post.likeCount! + 1;
                           });
-                          bool error = await post_servers().post_post_like(post.id!);
+                          bool error =
+                              await post_servers().post_post_like(post.id!);
                           if (error) {
                             setState(() {
                               post.likeCount = post.likeCount! - 1;
@@ -1066,10 +1068,11 @@ class _commentwidget1State extends State<commentwidget1> {
                                                         .remove(pst_cmnt);
                                                     Navigator.pop(context);
                                                   });
-                                                  bool error = await post_servers()
-                                                      .delete_post_cmnt(
-                                                          pst_cmnt.id!,
-                                                          widget.post.id!);
+                                                  bool error =
+                                                      await post_servers()
+                                                          .delete_post_cmnt(
+                                                              pst_cmnt.id!,
+                                                              widget.post.id!);
                                                   if (error) {
                                                     setState(() {
                                                       widget.pst_cmnt_list
@@ -1083,15 +1086,7 @@ class _commentwidget1State extends State<commentwidget1> {
                                                   style: TextStyle(
                                                       color: Colors.white),
                                                 ))),
-                                          ),
-                                          const SizedBox(height: 10),
-                                          delete_error != ""
-                                              ? Center(
-                                                  child: Text(delete_error,
-                                                      style: const TextStyle(
-                                                          color: Colors.black)),
-                                                )
-                                              : Container()
+                                          )
                                         ],
                                       ),
                                     );

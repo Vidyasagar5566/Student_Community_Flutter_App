@@ -45,8 +45,8 @@ List<Tab> tabs = const [
 ];
 
 List<Widget> tabscontent_funct(
-    double width, CLB_SPRT_LIST club_sport, Username app_user) {
-  SmallUsername user = club_sport.username!;
+    double width, ALL_SPORTS sport, Username app_user) {
+  SmallUsername user = sport.head!;
   return [
     SingleChildScrollView(
         child: Container(
@@ -61,7 +61,7 @@ List<Widget> tabscontent_funct(
           ),
           //Link
           Text(
-            utf8convert(club_sport.description!),
+            utf8convert(sport.description!),
             //'''Cricket is the most played game by all the students in nit-calicut, the main ground is located at the 12th mile, it participates in inter nitc every year. Runners up in inter nitc 2018 with nit surat''',
             /*style: const TextStyle(
                   fontSize: 15,
@@ -76,7 +76,7 @@ List<Widget> tabscontent_funct(
     SingleChildScrollView(
         child: Container(
       margin: EdgeInsets.only(top: 20),
-      child: club_members(club_sport.teamMembers!),
+      child: club_members(sport.teamMembers!),
     )),
     SingleChildScrollView(
         child: Container(
@@ -92,7 +92,7 @@ List<Widget> tabscontent_funct(
                 Container(
                   margin: const EdgeInsets.all(10),
                   child: //Link
-                      Text(club_sport.sportGround!
+                      Text(sport.sportGround!
                           //"One is at 12th mile and the other is at backside of main building"
                           ),
                 ),
@@ -112,7 +112,7 @@ List<Widget> tabscontent_funct(
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           color: Colors.white),
-                      child: Image.network(club_sport.sportGroundImage!)),
+                      child: Image.network(sport.sportGroundImg!)),
                 ),
               ],
             ))),
@@ -128,7 +128,7 @@ List<Widget> tabscontent_funct(
               ),
               //Link
               Text(
-                club_sport.websites!,
+                sport.websites!,
                 //"https://www.crichq.com",
                 //style: TextStyle(color: Colors.blueAccent),
               )
@@ -136,22 +136,22 @@ List<Widget> tabscontent_funct(
   ];
 }
 
-class dndpagewidget extends StatefulWidget {
-  CLB_SPRT_LIST club_sport;
+class sportpagewidget extends StatefulWidget {
+  ALL_SPORTS sport;
   Username app_user;
-  dndpagewidget(this.club_sport, this.app_user);
+  sportpagewidget(this.sport, this.app_user);
   //const dndpagewidget({super.key});
 
   @override
-  State<dndpagewidget> createState() => _dndpagewidgetState();
+  State<sportpagewidget> createState() => _sportpagewidgetState();
 }
 
-class _dndpagewidgetState extends State<dndpagewidget> {
+class _sportpagewidgetState extends State<sportpagewidget> {
   @override
   Widget build(BuildContext context) {
     final double coverheight = 100;
     final double profileheight = 50;
-    SmallUsername sport = widget.club_sport.username!;
+    SmallUsername head = widget.sport.head!;
     var width = MediaQuery.of(context).size.width;
     return DefaultTabController(
         length: 10,
@@ -162,7 +162,7 @@ class _dndpagewidgetState extends State<dndpagewidget> {
             ),
             centerTitle: true,
             title: Text(
-              widget.club_sport.username!.username!,
+              widget.sport.head!.username!,
               style: TextStyle(color: Colors.black),
             ),
             backgroundColor: Colors.white70,
@@ -206,10 +206,9 @@ class _dndpagewidgetState extends State<dndpagewidget> {
                             child: CircleAvatar(
                               radius: profileheight / 2,
                               backgroundColor: Colors.grey,
-                              backgroundImage:
-                                  NetworkImage(widget.club_sport.logo!
-                                      //"images/sports/cricket-profile.jpg"
-                                      ),
+                              backgroundImage: NetworkImage(widget.sport.logo!
+                                  //"images/sports/cricket-profile.jpg"
+                                  ),
                             )),
                       ),
                     ],
@@ -218,7 +217,7 @@ class _dndpagewidgetState extends State<dndpagewidget> {
                     height: 4,
                   ),
                   Text(
-                    sport.username! + " SPORT",
+                    head.username! + " SPORT",
                     style: const TextStyle(
                         fontWeight: FontWeight.w600, color: Colors.white),
                   ),
@@ -242,7 +241,7 @@ class _dndpagewidgetState extends State<dndpagewidget> {
                   Expanded(
                       child: TabBarView(
                           children: tabscontent_funct(
-                              width, widget.club_sport, widget.app_user)))
+                              width, widget.sport, widget.app_user)))
                 ],
               )),
         ));
@@ -262,7 +261,7 @@ class _club_membersState extends State<club_members> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Username>>(
-      future: all_sports_servers().get_club_sprt_membs(widget.team_mem),
+      future: all_sports_servers().get_club_sprt_fest_membs(widget.team_mem),
       builder: (ctx, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
@@ -273,8 +272,8 @@ class _club_membersState extends State<club_members> {
               ),
             );
           } else if (snapshot.hasData) {
-            List<Username> club_sport_mem_list = snapshot.data;
-            return club_members1(club_sport_mem_list);
+            List<Username> sport_mem_list = snapshot.data;
+            return club_members1(sport_mem_list);
           }
         }
         return const Center(
@@ -286,8 +285,8 @@ class _club_membersState extends State<club_members> {
 }
 
 class club_members1 extends StatefulWidget {
-  List<Username> club_sport_mem_list;
-  club_members1(this.club_sport_mem_list);
+  List<Username> sport_mem_list;
+  club_members1(this.sport_mem_list);
 
   @override
   State<club_members1> createState() => _club_members1State();
@@ -297,17 +296,17 @@ class _club_members1State extends State<club_members1> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        itemCount: widget.club_sport_mem_list.length,
+        itemCount: widget.sport_mem_list.length,
         shrinkWrap: true,
         padding: EdgeInsets.zero,
         physics: NeverScrollableScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
-          Username club_sport_mem = widget.club_sport_mem_list[index];
-          return _buildLoadingScreen(club_sport_mem);
+          Username sport_mem = widget.sport_mem_list[index];
+          return _buildLoadingScreen(sport_mem);
         });
   }
 
-  Widget _buildLoadingScreen(Username club_sport_mem) {
+  Widget _buildLoadingScreen(Username sport_mem) {
     var width = MediaQuery.of(context).size.width;
     return Container(
         margin: EdgeInsets.all(2),
@@ -324,11 +323,11 @@ class _club_members1State extends State<club_members1> {
                   children: [
                     Container(
                       width: 48,
-                      child: club_sport_mem.fileType! == '1'
+                      child: sport_mem.fileType! == '1'
                           ? CircleAvatar(
                               backgroundImage:
                                   //post.profile_pic
-                                  NetworkImage(club_sport_mem.profilePic!))
+                                  NetworkImage(sport_mem.profilePic!))
                           : const CircleAvatar(
                               backgroundImage:
                                   //post.profile_pic
@@ -346,7 +345,7 @@ class _club_members1State extends State<club_members1> {
                                   constraints: BoxConstraints(
                                       maxWidth: (width - 36) / 2.4),
                                   child: Text(
-                                    club_sport_mem.username!,
+                                    sport_mem.username!,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     //"Vidya Sagar",
@@ -371,9 +370,9 @@ class _club_members1State extends State<club_members1> {
                             ),
                             Text(
                               //"B190838EC",
-                              domains[club_sport_mem.domain!]! +
+                              domains[sport_mem.domain!]! +
                                   " (" +
-                                  club_sport_mem.userMark! +
+                                  sport_mem.userMark! +
                                   ")",
                               overflow: TextOverflow.ellipsis,
                               //lst_list.username.rollNum,
@@ -391,7 +390,7 @@ class _club_members1State extends State<club_members1> {
               height: 5,
             ),
             Text(
-              "contact no " + club_sport_mem.phnNum!,
+              "contact no " + sport_mem.phnNum!,
               //post.description,
               style: TextStyle(fontSize: 15),
             ),

@@ -3,7 +3,6 @@ import 'package:localstorage/localstorage.dart';
 import 'dart:convert';
 import 'Models.dart';
 
-
 class mess_menu_servers {
   LocalStorage storage = LocalStorage("usertoken");
   String base_url = 'http://StudentCommunity.pythonanywhere.com';
@@ -17,7 +16,7 @@ class mess_menu_servers {
         'domain': domain,
       };
       String queryString = Uri(queryParameters: queryParameters).query;
-      String finalUrl = "$base_url/mess/list1?$queryString";
+      String finalUrl = "$base_url/mess?$queryString";
       var url = Uri.parse(finalUrl);
       http.Response response = await http.get(url, headers: {
         'Authorization': 'token $token',
@@ -37,3 +36,8 @@ class mess_menu_servers {
     }
   }
 }
+
+
+    // path('sac', views.SAC_list.as_view(),name = 'SAC_list1'),
+    // path('mess', views.MESS_list.as_view(),name = 'ACADEMIC_list1'),
+    // path('academic', views.ACADEMIC_list.as_view(),name = 'ACADEMIC_list1'),

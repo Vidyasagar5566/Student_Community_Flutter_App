@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:testing_app/Activities/Models.dart';
+import 'package:testing_app/All_fests/All_fests.dart';
 import 'package:testing_app/BuySell_LostFound/Models.dart';
 import 'package:testing_app/Login/Servers.dart';
 import 'package:testing_app/Mess_menus/mess_menu.dart';
@@ -275,9 +277,9 @@ class _firstpageState extends State<firstpage> {
                                 return messanger(widget.app_user);
                               }));
                             },
-                            icon: Icon(
-                              Icons.message,
-                              size: 30,
+                            icon: FaIcon(
+                              FontAwesomeIcons.facebookMessenger,
+                              size: 26,
                               color: widget.curr_index == 0 ||
                                       widget.curr_index == 1
                                   ? Colors.white
@@ -606,7 +608,7 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
                   onTap: () {
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (BuildContext context) {
-                      return clubpagewidget(widget.app_user, "club", 'All');
+                      return Allclubpagewidget(widget.app_user, 'All');
                     }));
                   },
                   child: Column(
@@ -629,7 +631,7 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
                   onTap: () {
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (BuildContext context) {
-                      return sportpagewidget(widget.app_user, 'All');
+                      return Allsportpagewidget(widget.app_user, 'All');
                     }));
                   },
                   child: Column(
@@ -652,7 +654,7 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
                   onTap: () {
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (BuildContext context) {
-                      return clubpagewidget(widget.app_user, "fest", 'All');
+                      return Allfestspagewidget(widget.app_user, 'All');
                     }));
                   },
                   child: Column(

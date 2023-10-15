@@ -1,55 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:testing_app/SAC/Uploads.dart';
 import 'Servers.dart';
 import 'package:testing_app/User_profile/Models.dart';
 import '/servers/servers.dart';
-
-List<Tab> tabs = const [
-  Tab(
-      child: Icon(
-    Icons.person,
-    size: 31,
-  )),
-  Tab(child: Icon(Icons.call, size: 31)),
-  Tab(
-    child: Icon(Icons.abc_outlined, size: 31),
-  ),
-];
-
-List<Widget> tabscontent = [
-  Container(
-    child: const Center(
-      child: Text(
-        '''Academic Affairs secretory(AAS)''',
-        //post.description,
-        style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    ),
-  ),
-  Container(
-    child: const Center(
-      child: Text(
-        '''+91 000 000 000''',
-        //post.description,
-        style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    ),
-  ),
-  Container(
-    child: Container(
-      margin: EdgeInsets.all(8),
-      child: const Text(
-        "The Academic Secretary is responsible for the administration of the University's academic business and for the oversight of University academic policy. University academic business and policy (academic affairs) is controlled by Academic Council. Academic Council is the primary internal body responsible for academic affairs and derives",
-        style: TextStyle(fontSize: 12),
-      ),
-    ),
-  )
-];
+import 'Models.dart';
+import 'package:testing_app/Reports/Uploads.dart';
 
 class sacpagewidget extends StatefulWidget {
   Username app_user;
@@ -96,7 +51,7 @@ class _sacpagewidgetState extends State<sacpagewidget> {
           ],
           backgroundColor: Colors.white70,
         ),
-        body: FutureBuilder<List<Username>>(
+        body: FutureBuilder<List<SAC_MEMS>>(
           future: sac_servers().get_sac_list(domains1[widget.domain]!),
           builder: (ctx, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
@@ -108,7 +63,7 @@ class _sacpagewidgetState extends State<sacpagewidget> {
                   ),
                 );
               } else if (snapshot.hasData) {
-                List<Username> sac_list = snapshot.data;
+                List<SAC_MEMS> sac_list = snapshot.data;
                 return _buildListView(sac_list);
               }
             }
@@ -119,7 +74,7 @@ class _sacpagewidgetState extends State<sacpagewidget> {
         ));
   }
 
-  Widget _buildListView(List<Username> sac_list) {
+  Widget _buildListView(List<SAC_MEMS> sac_list) {
     return sac_list.isEmpty
         ? Container(
             margin: EdgeInsets.all(100),
@@ -142,13 +97,13 @@ class _sacpagewidgetState extends State<sacpagewidget> {
                   physics: NeverScrollableScrollPhysics(),
                   padding: EdgeInsets.only(bottom: 10),
                   itemBuilder: (BuildContext context, int index) {
-                    Username sac_mem = sac_list[index];
+                    SAC_MEMS sac_mem = sac_list[index];
                     return _buildLoadingScreen(sac_mem);
                   }),
             ));
   }
 
-  Widget _buildLoadingScreen(Username sac_mem) {
+  Widget _buildLoadingScreen(SAC_MEMS sac_mem) {
     var width = MediaQuery.of(context).size.width;
     return Container(
         margin: EdgeInsets.all(10),
@@ -165,10 +120,10 @@ class _sacpagewidgetState extends State<sacpagewidget> {
                   children: [
                     Container(
                       width: 48, //post.profile_pic
-                      child: sac_mem.fileType! == '1'
+                      child: sac_mem.imgRatio! == 1
                           ? CircleAvatar(backgroundImage: NetworkImage(
                               //'images/odessay B.jpeg'
-                              sac_mem.profilePic!))
+                              sac_mem.head!.profilePic!))
                           : const CircleAvatar(backgroundImage: AssetImage(
                               //'images/odessay B.jpeg'
                               "images/profile.jpg")),
@@ -185,7 +140,7 @@ class _sacpagewidgetState extends State<sacpagewidget> {
                                   constraints: BoxConstraints(
                                       maxWidth: (width - 36) / 2.4),
                                   child: Text(
-                                    sac_mem.username!,
+                                    sac_mem.head!.username!,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     //"Vidya Sagar",
@@ -212,7 +167,7 @@ class _sacpagewidgetState extends State<sacpagewidget> {
                               //"B190838EC",
                               domains[sac_mem.domain!]! +
                                   " (" +
-                                  sac_mem.userMark! +
+                                  sac_mem.head!.userMark! +
                                   ")",
                               overflow: TextOverflow.ellipsis,
                               //lst_list.username.rollNum,
@@ -223,7 +178,55 @@ class _sacpagewidgetState extends State<sacpagewidget> {
                     )
                   ],
                 ),
-                Icon(Icons.more_horiz)
+                IconButton(
+                    onPressed: () {
+                      if (widget.app_user.username == sac_mem.head!.username) {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          return edit_sac_mem(
+                              widget.app_user,
+                              sac_mem.id!,
+                              sac_mem.logo,
+                              sac_mem.imgRatio,
+                              sac_mem.role,
+                              sac_mem.description,
+                              sac_mem.phoneNum,
+                              sac_mem.email);
+                        }));
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  'Only for club admin',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) {
+                                        return report_upload(
+                                            widget.app_user,
+                                            'sac_mem' +
+                                                " :" +
+                                                sac_mem.head!.username!,
+                                            sac_mem.head!.username!);
+                                      }));
+                                    },
+                                    child: const Text(
+                                      "Report",
+                                      style: TextStyle(color: Colors.red),
+                                    ))
+                              ],
+                            ),
+                          ),
+                        );
+                      }
+                    },
+                    icon: Icon(Icons.more_horiz))
               ],
             ),
             const SizedBox(
@@ -244,9 +247,9 @@ class _sacpagewidgetState extends State<sacpagewidget> {
                       ),
                       Center(
                         child: Text(
-                          sac_mem.studentAdminRole!,
+                          sac_mem.role!,
                           //'''Academic Affairs secretory(AAS)''',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
                           ),
@@ -269,7 +272,7 @@ class _sacpagewidgetState extends State<sacpagewidget> {
                       ),
                       Center(
                         child: Text(
-                          sac_mem.phnNum!,
+                          sac_mem.phoneNum!,
                           //'+91 000 000 000',
                           style: TextStyle(
                             fontSize: 15,
@@ -292,7 +295,7 @@ class _sacpagewidgetState extends State<sacpagewidget> {
                   Container(
                     margin: EdgeInsets.all(8),
                     child: Text(
-                      sac_mem.bio!,
+                      sac_mem.description!,
                       //"The Academic Secretary is responsible for the administration of the University's academic business and for the oversight of University academic policy. University academic business and policy (academic affairs) is controlled by Academic Council. Academic Council is the primary internal body responsible for academic affairs and derives",
                       style: TextStyle(fontSize: 14),
                     ),

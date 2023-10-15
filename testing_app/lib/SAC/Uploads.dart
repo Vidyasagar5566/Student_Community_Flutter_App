@@ -6,23 +6,23 @@ import 'Servers.dart';
 import '/first_page.dart';
 import 'Search_bar(head_change).dart';
 
-class edit_club extends StatefulWidget {
+class edit_sac_mem extends StatefulWidget {
   Username app_user;
   int id;
-  var title;
+  var logo;
+  var imgRatio;
+  var role;
   var description;
-  var image;
-  var name;
-  var team_members;
-  var websites;
-  edit_club(this.app_user, this.id, this.title, this.description, this.image,
-      this.name, this.team_members, this.websites);
+  var phoneNum;
+  var email;
+  edit_sac_mem(this.app_user, this.id, this.logo, this.imgRatio, this.role,
+      this.description, this.phoneNum, this.email);
 
   @override
-  State<edit_club> createState() => _edit_clubState();
+  State<edit_sac_mem> createState() => _edit_sac_memState();
 }
 
-class _edit_clubState extends State<edit_club> {
+class _edit_sac_memState extends State<edit_sac_mem> {
   String image_type = "network";
   File image = File("image/profile.jpg");
   @override
@@ -43,7 +43,7 @@ class _edit_clubState extends State<edit_club> {
                 onPressed: () {
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (BuildContext context) {
-                    return club_search_bar(
+                    return sac_search_bar(
                         widget.app_user, widget.id, widget.app_user.domain!);
                   }));
                 },
@@ -71,7 +71,7 @@ class _edit_clubState extends State<edit_club> {
                     height: 50,
                   ),
                   const Text(
-                    "Upload Your club details",
+                    "Upload Your sac_mem details",
                     style: TextStyle(
                         color: Colors.indigo,
                         fontSize: 20,
@@ -84,11 +84,11 @@ class _edit_clubState extends State<edit_club> {
                         Container(
                           padding: EdgeInsets.only(left: 40, right: 40),
                           child: TextFormField(
-                            initialValue: widget.title,
-                            keyboardType: TextInputType.emailAddress,
+                            initialValue: widget.role,
+                            keyboardType: TextInputType.name,
                             decoration: const InputDecoration(
                               labelText: 'title',
-                              hintText: 'technical club/inter nitc sport',
+                              hintText: 'technical sac_mem/inter nitc sport',
                               prefixIcon: Icon(Icons.text_fields),
                               border: OutlineInputBorder(
                                   borderRadius:
@@ -96,16 +96,11 @@ class _edit_clubState extends State<edit_club> {
                             ),
                             onChanged: (String value) {
                               setState(() {
-                                widget.title = value;
-                                if (widget.title == "") {
-                                  widget.title = null;
+                                widget.role = value;
+                                if (widget.role == "") {
+                                  widget.role = null;
                                 }
                               });
-                            },
-                            validator: (value) {
-                              return value!.isEmpty
-                                  ? 'please enter email'
-                                  : null;
                             },
                           ),
                         ),
@@ -113,10 +108,10 @@ class _edit_clubState extends State<edit_club> {
                         Container(
                           padding: EdgeInsets.only(left: 40, right: 40),
                           child: TextFormField(
-                            initialValue: widget.name,
-                            keyboardType: TextInputType.name,
+                            initialValue: widget.email,
+                            keyboardType: TextInputType.emailAddress,
                             decoration: const InputDecoration(
-                              labelText: 'club_head_email',
+                              labelText: 'sac_mem_head_email',
                               hintText: 'arun_b190725@nitc.ac.in',
                               prefixIcon: Icon(Icons.text_fields),
                               border: OutlineInputBorder(
@@ -125,16 +120,11 @@ class _edit_clubState extends State<edit_club> {
                             ),
                             onChanged: (String value) {
                               setState(() {
-                                widget.name = value;
-                                if (widget.name == "") {
-                                  widget.name = null;
+                                widget.email = value;
+                                if (widget.email == "") {
+                                  widget.email = null;
                                 }
                               });
-                            },
-                            validator: (value) {
-                              return value!.isEmpty
-                                  ? 'please enter email'
-                                  : null;
                             },
                           ),
                         ),
@@ -142,10 +132,10 @@ class _edit_clubState extends State<edit_club> {
                         Container(
                           padding: EdgeInsets.only(left: 40, right: 40),
                           child: TextFormField(
-                            initialValue: widget.team_members,
-                            keyboardType: TextInputType.multiline,
+                            initialValue: widget.phoneNum,
+                            keyboardType: TextInputType.phone,
                             minLines:
-                                3, //Normal textInputField will be displayed
+                                1, //Normal textInputField will be displayed
                             maxLines: 5,
                             decoration: const InputDecoration(
                               labelText: 'Team members',
@@ -158,9 +148,9 @@ class _edit_clubState extends State<edit_club> {
                             ),
                             onChanged: (String value) {
                               setState(() {
-                                widget.team_members = value;
-                                if (widget.team_members == "") {
-                                  widget.team_members = null;
+                                widget.phoneNum = value;
+                                if (widget.phoneNum == "") {
+                                  widget.phoneNum = null;
                                 }
                               });
                             },
@@ -182,7 +172,8 @@ class _edit_clubState extends State<edit_club> {
                             maxLines: 10,
                             decoration: const InputDecoration(
                               labelText: 'Description',
-                              hintText: 'about the club and other details.....',
+                              hintText:
+                                  'about the sac_mem and other details.....',
                               prefixIcon: Icon(Icons.text_fields),
                               border: OutlineInputBorder(
                                   borderRadius:
@@ -204,41 +195,8 @@ class _edit_clubState extends State<edit_club> {
                           ),
                         ),
                         const SizedBox(height: 10),
-                        Container(
-                          padding: EdgeInsets.only(left: 40, right: 40),
-                          child: TextFormField(
-                            initialValue: widget.websites,
-                            keyboardType: TextInputType.multiline,
-                            minLines:
-                                2, //Normal textInputField will be displayed
-                            maxLines: 4,
-                            decoration: const InputDecoration(
-                              labelText: 'websites',
-                              hintText:
-                                  'https://cricket.nitc.ac.in    https://club_dnd.nitc.ac.in',
-                              prefixIcon: Icon(Icons.text_fields),
-                              border: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10))),
-                            ),
-                            onChanged: (String value) {
-                              setState(() {
-                                widget.websites = value;
-                                if (widget.websites == "") {
-                                  widget.websites = null;
-                                }
-                              });
-                            },
-                            validator: (value) {
-                              return value!.isEmpty
-                                  ? 'please enter password'
-                                  : null;
-                            },
-                          ),
-                        ),
-                        const SizedBox(height: 10),
                         const Text(
-                          "Add club/sport logo",
+                          "Add sac_mem/sport logo",
                           style: TextStyle(
                               color: Colors.indigo,
                               fontSize: 20,
@@ -264,12 +222,11 @@ class _edit_clubState extends State<edit_club> {
                           color: Colors.blue,
                         ),
                         const SizedBox(height: 10),
-                        (widget.title != null &&
+                        (widget.logo != null &&
                                 widget.description != null &&
-                                widget.image != null &&
-                                widget.name != null &&
-                                widget.team_members != null &&
-                                widget.websites != null)
+                                widget.phoneNum != null &&
+                                widget.email != null &&
+                                widget.role != null)
                             ? Container(
                                 padding: EdgeInsets.only(left: 40, right: 40),
                                 margin: EdgeInsets.only(top: 40),
@@ -301,15 +258,14 @@ class _edit_clubState extends State<edit_club> {
                                                     ]),
                                               ));
                                         });
-                                    bool error = await all_clubs_servers()
-                                        .edit_club_list(
+                                    bool error = await sac_servers()
+                                        .edit_sac_mem(
                                             widget.id,
                                             image,
-                                            widget.title,
-                                            widget.name,
-                                            widget.team_members,
+                                            widget.role,
+                                            widget.email,
+                                            widget.phoneNum,
                                             widget.description,
-                                            widget.websites,
                                             image_type);
 
                                     Navigator.pop(context);
@@ -369,7 +325,7 @@ class _edit_clubState extends State<edit_club> {
                                           fontWeight: FontWeight.w500)),
                                 )),
                         const SizedBox(height: 10),
-                        widget.image != null
+                        widget.logo != null
                             ? Container(
                                 height: width * 1.4, // image_ratio,
                                 width: width,
@@ -379,7 +335,7 @@ class _edit_clubState extends State<edit_club> {
                                     borderRadius: BorderRadius.circular(20)),
                                 child: image_type == "file"
                                     ? Image.file(image)
-                                    : Image.network(widget.image),
+                                    : Image.network(widget.logo),
                               )
                             : Container(),
                       ],
