@@ -16,6 +16,7 @@ Future<void> _firebaseMessagingBackgroundHandler(message) async {
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
+//Main Function which run by default
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -43,11 +44,7 @@ void main() async {
   runApp(const MyApp());
 }
 
-/*
-void main() {
-  runApp(const MyApp());
-} */
-
+//My app widget which called by main function theam and routings all will include
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
@@ -60,21 +57,9 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     LocalStorage storage = LocalStorage("usertoken");
     return MaterialApp(
-      // initialRoute: '/',
-      // routes: {
-      //   '/': (context) {
-      //     if (storage.getItem('token') == null) {
-      //       return liginpage("");
-      //     } else {
-      //       return get_ueser_widget(0);
-      //     }
-      //   },
-      //   '/details': (context) => get_ueser_widget(0)
-      // },
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: Colors.white70,
-        //accentColor: Colors.black45,
         dividerColor: Colors.white,
         brightness: Brightness.light,
       ),
@@ -82,15 +67,12 @@ class _MyAppState extends State<MyApp> {
         future: storage.ready,
         builder: (context, snapshop) {
           if (snapshop.data == null) {
-            return Scaffold(
+            return const Scaffold(
               body: Center(
                 child: CircularProgressIndicator(),
               ),
             );
           }
-          /*         if (storage.getItem('terms_conditions') == null) {
-            return terms_conditions();
-          }    */
           if (storage.getItem('token') == null) {
             return loginpage("");
           }

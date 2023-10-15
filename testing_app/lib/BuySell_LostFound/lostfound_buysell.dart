@@ -31,9 +31,8 @@ class all_lostwidget1 extends StatefulWidget {
 class _all_lostwidget1State extends State<all_lostwidget1> {
   bool total_loaded = false;
   void load_data_fun() async {
-    List<Lost_Found> latest_lst_list =
-        await bs_lf_servers().get_lst_list(10, 'domain'); //servers()
-    //     .get_lst_list(lst_buy_list.length, domains1[widget.domain]!);
+    List<Lost_Found> latest_lst_list = await bs_lf_servers()
+        .get_lst_list(lst_buy_list.length, domains1[widget.domain]!);
     if (latest_lst_list.length != 0) {
       lst_buy_list += latest_lst_list;
       setState(() {
@@ -183,76 +182,7 @@ class _all_lostwidget1State extends State<all_lostwidget1> {
               margin: EdgeInsets.all(8),
               padding: EdgeInsets.all(10),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20), color: Colors.white
-                  // gradient: index % 4 == 0
-                  //     ? LinearGradient(
-                  //         begin: Alignment.topLeft,
-                  //         end: Alignment.bottomRight,
-                  //         stops: const [
-                  //             0.1,
-                  //             0.5,
-                  //             0.7,
-                  //             0.9
-                  //           ],
-                  //         colors: [
-                  //             // Colors are easy thanks to Flutter's Colors class.
-                  //             Colors.cyan.shade800,
-                  //             Colors.cyan.shade700,
-                  //             Colors.cyan.shade600,
-                  //             Colors.cyan.shade400
-                  //           ])
-                  //     : index % 4 == 1
-                  //         ? LinearGradient(
-                  //             begin: Alignment.topLeft,
-                  //             end: Alignment.bottomRight,
-                  //             stops: const [
-                  //                 0.1,
-                  //                 0.5,
-                  //                 0.7,
-                  //                 0.9
-                  //               ],
-                  //             colors: [
-                  //                 // Colors are easy thanks to Flutter's Colors class.
-                  //                 Colors.amber.shade800,
-                  //                 Colors.amber.shade700,
-                  //                 Colors.amber.shade600,
-                  //                 Colors.amber.shade400
-                  //               ])
-                  //         : index % 4 == 2
-                  //             ? LinearGradient(
-                  //                 begin: Alignment.topLeft,
-                  //                 end: Alignment.bottomRight,
-                  //                 stops: const [
-                  //                     0.1,
-                  //                     0.5,
-                  //                     0.7,
-                  //                     0.9
-                  //                   ],
-                  //                 colors: [
-                  //                     // Colors are easy thanks to Flutter's Colors class.
-                  //                     Colors.blueGrey.shade800,
-                  //                     Colors.blueGrey.shade700,
-                  //                     Colors.blueGrey.shade600,
-                  //                     Colors.blueGrey.shade400
-                  //                   ])
-                  //             : LinearGradient(
-                  //                 begin: Alignment.topLeft,
-                  //                 end: Alignment.bottomRight,
-                  //                 stops: const [
-                  //                     0.1,
-                  //                     0.5,
-                  //                     0.7,
-                  //                     0.9
-                  //                   ],
-                  //                 colors: [
-                  //                     // Colors are easy thanks to Flutter's Colors class.
-                  //                     Colors.blue.shade800,
-                  //                     Colors.blue.shade700,
-                  //                     Colors.blue.shade600,
-                  //                     Colors.blue.shade400
-                  //                   ]),
-                  ),
-              // height: 300,
+                  borderRadius: BorderRadius.circular(20), color: Colors.white),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -414,6 +344,12 @@ class _all_lostwidget1State extends State<all_lostwidget1> {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    lst_buy_list = [];
   }
 }
 
@@ -1050,10 +986,11 @@ class _lst_cmnt_pageState extends State<lst_cmnt_page> {
                                                         .remove(lst_cmnt);
                                                     Navigator.pop(context);
                                                   });
-                                                  bool error = await bs_lf_servers()
-                                                      .delete_lst_cmnt(
-                                                          lst_cmnt.id!,
-                                                          widget.lst.id!);
+                                                  bool error =
+                                                      await bs_lf_servers()
+                                                          .delete_lst_cmnt(
+                                                              lst_cmnt.id!,
+                                                              widget.lst.id!);
                                                   if (error) {
                                                     setState(() {
                                                       widget.lst_cmnt_list
