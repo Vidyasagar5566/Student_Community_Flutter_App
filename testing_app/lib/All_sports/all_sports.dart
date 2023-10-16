@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'dart:convert' show utf8;
 import 'Uploads.dart';
 import 'package:testing_app/Reports/Uploads.dart';
+import 'Search_bar.dart';
 
 String utf8convert(String text) {
   List<int> bytes = text.toString().codeUnits;
@@ -28,69 +29,86 @@ class _AllsportpagewidgetState extends State<Allsportpagewidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          leading: const BackButton(
-            color: Colors.blue, // <-- SEE HERE
-          ),
-          centerTitle: false,
-          title: const Text(
-            "SPORTS PAGE",
-            style: TextStyle(color: Colors.black),
-          ),
-          actions: [
-            DropdownButton<String>(
-                value: widget.domain,
-                underline: Container(),
-                elevation: 0,
-                items:
-                    domains_list.map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(
-                      value,
-                      style: TextStyle(fontSize: 10),
-                    ),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    widget.domain = value!;
-                  });
-                })
-          ],
-          backgroundColor: Colors.white70,
+      appBar: AppBar(
+        leading: const BackButton(
+          color: Colors.blue, // <-- SEE HERE
         ),
-        body: FutureBuilder<List<ALL_SPORTS>>(
-          future: all_sports_servers().get_sport_list(domains1[widget.domain]!),
-          builder: (ctx, AsyncSnapshot snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              if (snapshot.hasError) {
-                return Center(
+        centerTitle: false,
+        title: const Text(
+          "SPORTS PAGE",
+          style: TextStyle(color: Colors.black),
+        ),
+        actions: [
+          DropdownButton<String>(
+              value: widget.domain,
+              underline: Container(),
+              elevation: 0,
+              items: domains_list.map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
                   child: Text(
-                    '${snapshot.error} occurred',
-                    style: TextStyle(fontSize: 18),
+                    value,
+                    style: TextStyle(fontSize: 10),
                   ),
                 );
-              } else if (snapshot.hasData) {
-                List<ALL_SPORTS> sport_list = snapshot.data;
-                if (sport_list.length == 0) {
-                  return Container(
-                      margin: EdgeInsets.all(30),
-                      padding: EdgeInsets.all(30),
-                      child: Container(
-                        margin: EdgeInsets.all(100),
-                        child: Center(child: Text("No Sports Was Joined")),
-                      ));
-                } else {
-                  return Allsportpagewidget1(sport_list, widget.app_user);
-                }
+              }).toList(),
+              onChanged: (value) {
+                setState(() {
+                  widget.domain = value!;
+                });
+              })
+        ],
+        backgroundColor: Colors.white70,
+      ),
+      body: FutureBuilder<List<ALL_SPORTS>>(
+        future: all_sports_servers().get_sport_list(domains1[widget.domain]!),
+        builder: (ctx, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasError) {
+              return Center(
+                child: Text(
+                  '${snapshot.error} occurred',
+                  style: TextStyle(fontSize: 18),
+                ),
+              );
+            } else if (snapshot.hasData) {
+              List<ALL_SPORTS> sport_list = snapshot.data;
+              if (sport_list.length == 0) {
+                return Container(
+                    margin: EdgeInsets.all(30),
+                    padding: EdgeInsets.all(30),
+                    child: Container(
+                      margin: EdgeInsets.all(100),
+                      child: Center(child: Text("No Sports Was Joined")),
+                    ));
+              } else {
+                return Allsportpagewidget1(sport_list, widget.app_user);
               }
             }
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          },
-        ));
+          }
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+      ),
+      floatingActionButton: !widget.app_user.clzSportsHead!
+          ? FloatingActionButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (BuildContext context) {
+                  return sport_search_bar(
+                      widget.app_user, 0, widget.app_user.domain!, true);
+                }));
+              },
+              tooltip: 'create club',
+              elevation: 4.0,
+              child: const Icon(
+                Icons.add,
+                color: Colors.blueAccent,
+              ),
+            )
+          : Container(),
+    );
   }
 }
 

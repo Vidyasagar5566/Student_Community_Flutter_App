@@ -36,6 +36,26 @@ class sac_servers {
     }
   }
 
+  Future<bool> create_sac(String email, String role) async {
+    try {
+      var token = storage.getItem('token');
+      String finalUrl = "$base_url/sac";
+      var url = Uri.parse(finalUrl);
+      http.Response response = await http.post(
+        url,
+        headers: {
+          'Authorization': 'token $token',
+          "Content-Type": "application/json",
+        },
+        body: jsonEncode({'email': email, 'role': role}),
+      );
+      var data = json.decode(response.body) as Map;
+      return data['error'];
+    } catch (e) {
+      return true;
+    }
+  }
+
   Future<bool> edit_sac_mem(
     int id,
     File image,

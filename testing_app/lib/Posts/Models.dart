@@ -1,4 +1,8 @@
 import 'package:testing_app/User_profile/Models.dart';
+import 'package:testing_app/SAC/Models.dart';
+import 'package:testing_app/All_clubs/Models.dart';
+import 'package:testing_app/All_sports/Models.dart';
+import 'package:testing_app/All_fests/Models.dart';
 
 class POST_LIST {
   int? id;
@@ -16,6 +20,12 @@ class POST_LIST {
   double? imgRatio;
   bool? allUniversities;
 
+  String? post_category;
+  ALL_CLUBS? club_post;
+  ALL_SPORTS? sport_post;
+  ALL_FESTS? fest_post;
+  SAC_MEMS? sac_post;
+
   POST_LIST(
       {this.id,
       this.title,
@@ -30,7 +40,12 @@ class POST_LIST {
       this.eventDate,
       this.username,
       this.imgRatio,
-      this.allUniversities});
+      this.allUniversities,
+      this.post_category,
+      this.club_post,
+      this.sport_post,
+      this.fest_post,
+      this.sac_post});
 
   POST_LIST.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -49,6 +64,20 @@ class POST_LIST {
         : null;
     imgRatio = json['img_ratio'];
     allUniversities = json['all_universities'];
+
+    post_category = json['post_category'];
+    club_post = json['club_post'] != null
+        ? new ALL_CLUBS.fromJson(json['club_post'])
+        : null;
+    sport_post = json['sport_post'] != null
+        ? new ALL_SPORTS.fromJson(json['sport_post'])
+        : null;
+    fest_post = json['fest_post'] != null
+        ? new ALL_FESTS.fromJson(json['fest_post'])
+        : null;
+    sac_post = json['sac_post'] != null
+        ? new SAC_MEMS.fromJson(json['sac_post'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -69,6 +98,20 @@ class POST_LIST {
     }
     data['img_ratio'] = this.imgRatio;
     data['all_universities'] = this.allUniversities;
+
+    data['post_category'] = this.post_category;
+    if (this.club_post != null) {
+      data['club_post'] = this.club_post!.toJson();
+    }
+    if (this.sport_post != null) {
+      data['sport_post'] = this.sport_post!.toJson();
+    }
+    if (this.fest_post != null) {
+      data['fest_post'] = this.fest_post!.toJson();
+    }
+    if (this.sac_post != null) {
+      data['sac_post'] = this.sac_post!.toJson();
+    }
     return data;
   }
 }

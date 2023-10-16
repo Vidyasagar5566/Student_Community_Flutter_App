@@ -1,4 +1,3 @@
-
 class Username {
   int? id;
   String? password;
@@ -42,7 +41,14 @@ class Username {
   String? platform;
   String? domain;
   bool? isDetails;
-
+  bool? clzClubsHead;
+  bool? clzSportsHead;
+  bool? clzFestsHead;
+  bool? clzSacsHead;
+  Map<String, dynamic>? clzClubs;
+  Map<String, dynamic>? clzSports;
+  Map<String, dynamic>? clzFests;
+  Map<String, dynamic>? clzSacs;
   Username(
       {this.id,
       this.password,
@@ -85,7 +91,15 @@ class Username {
       this.token,
       this.platform,
       this.domain,
-      this.isDetails});
+      this.isDetails,
+      this.clzClubsHead,
+      this.clzSportsHead,
+      this.clzFestsHead,
+      this.clzSacsHead,
+      this.clzClubs,
+      this.clzSports,
+      this.clzFests,
+      this.clzSacs});
 
   Username.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -130,6 +144,14 @@ class Username {
     platform = json['platform'];
     domain = json['domain'];
     isDetails = json['is_details'];
+    clzClubsHead = json['clz_clubs_head'];
+    clzSportsHead = json['clz_sports_head'];
+    clzFestsHead = json['clz_fests_head'];
+    clzSacsHead = json['clz_sacs_head'];
+    clzClubs = json['clz_clubs'];
+    clzSports = json['clz_sports'];
+    clzFests = json['clz_fests'];
+    clzSacs = json['clz_sacs'];
   }
 
   Map<String, dynamic> toJson() {
@@ -176,6 +198,14 @@ class Username {
     data['platform'] = this.platform;
     data['domain'] = this.domain;
     data['is_details'] = this.isDetails;
+    data['clz_clubs_head'] = this.clzClubsHead;
+    data['clz_sports_head'] = this.clzSportsHead;
+    data['clz_fests_head'] = this.clzFestsHead;
+    data['clz_sacs_head'] = this.clzSacsHead;
+    data['clz_clubs'] = this.clzClubs;
+    data['clz_sports'] = this.clzSports;
+    data['clz_fests'] = this.clzFests;
+    data['clz_sacs'] = this.clzSacs;
     return data;
   }
 }
@@ -270,3 +300,7 @@ class _snack_bar_displayState extends State<snack_bar_display> {
     return Container(); 
   }
 } */
+
+
+
+

@@ -35,6 +35,26 @@ class all_fests_servers {
     }
   }
 
+  Future<bool> create_fest(String email, String fest_name) async {
+    try {
+      var token = storage.getItem('token');
+      String finalUrl = "$base_url/allfests";
+      var url = Uri.parse(finalUrl);
+      http.Response response = await http.post(
+        url,
+        headers: {
+          'Authorization': 'token $token',
+          "Content-Type": "application/json",
+        },
+        body: jsonEncode({'email': email, 'fest_name': fest_name}),
+      );
+      var data = json.decode(response.body) as Map;
+      return data['error'];
+    } catch (e) {
+      return true;
+    }
+  }
+
   Future<bool> edit_fest_list(
     int id,
     File image,

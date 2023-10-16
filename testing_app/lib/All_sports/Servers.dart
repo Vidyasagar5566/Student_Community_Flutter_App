@@ -37,6 +37,29 @@ class all_sports_servers {
     }
   }
 
+
+  Future<bool> create_sport(String email, String sport_name) async {
+    try {
+      var token = storage.getItem('token');
+      String finalUrl = "$base_url/allsports";
+      var url = Uri.parse(finalUrl);
+      http.Response response = await http.post(
+        url,
+        headers: {
+          'Authorization': 'token $token',
+          "Content-Type": "application/json",
+        },
+        body: jsonEncode({'email': email, 'sport_name': sport_name}),
+      );
+      var data = json.decode(response.body) as Map;
+      return data['error'];
+    } catch (e) {
+      return true;
+    }
+  }
+
+
+
   Future<bool> edit_sport_list(
       int id,
       File image,

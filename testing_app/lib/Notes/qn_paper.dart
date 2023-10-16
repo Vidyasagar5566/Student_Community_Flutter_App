@@ -985,8 +985,8 @@ class _cal_sub_yearsState extends State<cal_sub_years> {
   List<CAL_SUB_YEARS> sub_years = [];
 
   void load_data_fun() async {
-    List<CAL_SUB_YEARS> sub_years1 =
-        await notes_servers().get_sub_years_list(widget.cal_sub_name.id.toString());
+    List<CAL_SUB_YEARS> sub_years1 = await notes_servers()
+        .get_sub_years_list(widget.cal_sub_name.id.toString());
     setState(() {
       sub_years = sub_years1;
       sub_years.sort((a, b) => a.yearName!.compareTo(b.yearName!));

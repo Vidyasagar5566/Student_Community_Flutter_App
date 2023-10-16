@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'Servers.dart';
 import '/first_page.dart';
-import 'Search_bar(head_change).dart';
+import 'Search_bar.dart';
 
 class edit_sport extends StatefulWidget {
   Username app_user;
@@ -56,8 +56,8 @@ class _edit_sportState extends State<edit_sport> {
                 onPressed: () {
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (BuildContext context) {
-                    return sport_search_bar(
-                        widget.app_user, widget.id, widget.app_user.domain!);
+                    return sport_search_bar(widget.app_user, widget.id,
+                        widget.app_user.domain!, false);
                   }));
                 },
                 icon: const Icon(Icons.person_add_alt_outlined,

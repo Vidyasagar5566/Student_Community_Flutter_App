@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
-import 'Servers.dart';
 import 'package:testing_app/User_profile/Models.dart';
 import '/servers/servers.dart';
 import 'package:testing_app/first_page.dart';
+import 'Servers.dart';
 
-class sac_search_bar extends StatefulWidget {
+class sport_search_bar extends StatefulWidget {
   Username app_user;
-  int sac_id;
+  int sport_id;
   String domain;
-  sac_search_bar(this.app_user, this.sac_id, this.domain);
+  bool sport_create;
+  sport_search_bar(
+      this.app_user, this.sport_id, this.domain, this.sport_create);
 
   @override
-  State<sac_search_bar> createState() => _sac_search_barState();
+  State<sport_search_bar> createState() => _sport_search_barState();
 }
 
-class _sac_search_barState extends State<sac_search_bar> {
+class _sport_search_barState extends State<sport_search_bar> {
   String username_match = "";
   @override
   Widget build(BuildContext context) {
@@ -48,7 +50,7 @@ class _sac_search_barState extends State<sac_search_bar> {
         backgroundColor: Colors.white70,
       ),
       body: FutureBuilder<List<SmallUsername>>(
-        future: sac_servers()
+        future: all_sports_servers()
             .get_searched_user_list(username_match, widget.domain, 0),
         builder: (ctx, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
@@ -70,8 +72,13 @@ class _sac_search_barState extends State<sac_search_bar> {
                             fontWeight: FontWeight.w500, fontSize: 24)));
               } else {
                 all_search_users = users_list;
-                return user_list_display(users_list, widget.app_user,
-                    username_match, widget.domain, widget.sac_id);
+                return user_list_display(
+                    users_list,
+                    widget.app_user,
+                    username_match,
+                    widget.domain,
+                    widget.sport_id,
+                    widget.sport_create);
               }
             }
           }
@@ -89,9 +96,10 @@ class user_list_display extends StatefulWidget {
   Username app_user;
   String username_match;
   String domain;
-  int sac_id;
+  int sport_id;
+  bool sport_create;
   user_list_display(this.all_search_users, this.app_user, this.username_match,
-      this.domain, this.sac_id);
+      this.domain, this.sport_id, this.sport_create);
 
   @override
   State<user_list_display> createState() => _user_list_displayState();
@@ -101,7 +109,7 @@ class _user_list_displayState extends State<user_list_display> {
   bool _circularind = false;
   bool total_loaded = true;
   void load_data_fun() async {
-    List<SmallUsername> latest_search_users = await sac_servers()
+    List<SmallUsername> latest_search_users = await all_sports_servers()
         .get_searched_user_list(widget.username_match, domains1[widget.domain]!,
             all_search_users.length);
     if (latest_search_users.length != 0) {
@@ -119,6 +127,7 @@ class _user_list_displayState extends State<user_list_display> {
     });
   }
 
+  var new_sport_name;
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -137,7 +146,13 @@ class _user_list_displayState extends State<user_list_display> {
                     itemBuilder: (BuildContext context, int index) {
                       SmallUsername search_user =
                           widget.all_search_users[index];
-                      return _buildLoadingScreen(search_user, index);
+                      if (widget.sport_create) {
+                        return _buildLoadingScreen_create_sport(
+                            search_user, index);
+                      } else {
+                        return _buildLoadingScreen_head_transfer(
+                            search_user, index);
+                      }
                     }),
                 const SizedBox(height: 10),
                 total_loaded
@@ -173,7 +188,8 @@ class _user_list_displayState extends State<user_list_display> {
     );
   }
 
-  Widget _buildLoadingScreen(SmallUsername search_user, int index) {
+  Widget _buildLoadingScreen_head_transfer(
+      SmallUsername search_user, int index) {
     var width = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () async {
@@ -210,8 +226,9 @@ class _user_list_displayState extends State<user_list_display> {
                       color: Colors.blue[900],
                       child: OutlinedButton(
                           onPressed: () async {
-                            bool error = await sac_servers().change_sac_head(
-                                widget.sac_id, search_user.email!);
+                            bool error = await all_sports_servers()
+                                .change_sport_head(
+                                    widget.sport_id, search_user.email!);
                             if (error) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
@@ -230,6 +247,181 @@ class _user_list_displayState extends State<user_list_display> {
                           child: const Center(
                               child: Text(
                             "Transfer",
+                            style: TextStyle(color: Colors.white),
+                          ))),
+                    )
+                  ],
+                ),
+              );
+            });
+      },
+      child: Container(
+          margin: EdgeInsets.all(2),
+          padding: EdgeInsets.all(20),
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(20)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                          width: 48,
+                          child: search_user.fileType! == '1'
+                              ? CircleAvatar(
+                                  backgroundImage:
+                                      NetworkImage(search_user.profilePic!))
+                              : const CircleAvatar(
+                                  backgroundImage:
+                                      AssetImage("images/profile.jpg"))),
+                      Container(
+                        padding: EdgeInsets.only(left: 20),
+                        width: (width - 36) / 1.8,
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    constraints: BoxConstraints(
+                                        maxWidth: (width - 36) / 2.4),
+                                    child: Text(
+                                      search_user.username!,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  index % 9 == 0
+                                      ? const Icon(
+                                          Icons.verified_rounded,
+                                          color: Colors.green,
+                                          size: 18,
+                                        )
+                                      : Container()
+                                ],
+                              ),
+                              Text(
+                                domains[search_user.domain!]! +
+                                    " (" +
+                                    search_user.userMark! +
+                                    ")",
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                              )
+                            ]),
+                      )
+                    ],
+                  ),
+                  Icon(Icons.more_horiz)
+                ],
+              ),
+              const SizedBox(height: 5),
+              Text(
+                "Contact no " + search_user.phnNum!,
+                //post.description,
+                style: TextStyle(fontSize: 15),
+              ),
+              const SizedBox(height: 5),
+              Text(
+                " Email : " + search_user.email!,
+                //post.description,
+                style: TextStyle(fontSize: 15),
+              ),
+            ],
+          )),
+    );
+  }
+
+  Widget _buildLoadingScreen_create_sport(
+      SmallUsername search_user, int index) {
+    var width = MediaQuery.of(context).size.width;
+    return GestureDetector(
+      onTap: () async {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                contentPadding: EdgeInsets.all(15),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(),
+                        IconButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            icon: const Icon(Icons.close))
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Container(
+                      padding: EdgeInsets.only(left: 40, right: 40),
+                      child: TextField(
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: const InputDecoration(
+                          labelText: 'new_club_name',
+                          hintText: 'dnd club/AI club',
+                          prefixIcon: Icon(Icons.text_fields),
+                          border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
+                        ),
+                        onChanged: (String value) {
+                          setState(() {
+                            new_sport_name = value;
+                          });
+                          if (value == "") {
+                            new_sport_name = null;
+                          }
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      margin: const EdgeInsets.all(30),
+                      color: Colors.blue[900],
+                      child: OutlinedButton(
+                          onPressed: () async {
+                            if (new_sport_name == null) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text("Club name cant be null",
+                                          style:
+                                              TextStyle(color: Colors.white))));
+                            } else {
+                              bool error = await all_sports_servers()
+                                  .create_sport(
+                                      search_user.email!, new_sport_name);
+                              if (error) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text(
+                                            "Failed to transfer the head, try again",
+                                            style: TextStyle(
+                                                color: Colors.white))));
+                              } else {
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) {
+                                  return firstpage(0, widget.app_user);
+                                }), (Route<dynamic> route) => false);
+                              }
+                            }
+                          },
+                          child: const Center(
+                              child: Text(
+                            "Create Club",
                             style: TextStyle(color: Colors.white),
                           ))),
                     )

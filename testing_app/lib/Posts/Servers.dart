@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'Models.dart';
 import 'dart:io';
 
-
 class post_servers {
   LocalStorage storage = LocalStorage("usertoken");
   String base_url = 'http://StudentCommunity.pythonanywhere.com';
@@ -33,19 +32,25 @@ class post_servers {
       });
       return temp;
     } catch (e) {
+      print(e);
       List<POST_LIST> temp = [];
       return Future.value(temp);
     }
   }
 
   Future<bool> post_post(String description, File file, String image_ratio,
-      String all_university) async {
+      String all_university, String post_category, int category_id) async {
     try {
       var token = storage.getItem('token');
       String finalUrl = "$base_url/post/list1?";
       var url = Uri.parse(finalUrl);
-      String base64file = base64Encode(file.readAsBytesSync());
-      String fileName = file.path.split("/").last;
+      String base64file = "";
+      String fileName = "";
+      if (image_ratio != '0') {
+        base64file = base64Encode(file.readAsBytesSync());
+        fileName = file.path.split("/").last;
+      }
+
       bool is_all_university = false;
       if (all_university == 'All') {
         is_all_university = true;
@@ -61,7 +66,9 @@ class post_servers {
           'file': base64file,
           'file_name': fileName,
           'image_ratio': image_ratio,
-          'is_all_university': is_all_university
+          'is_all_university': is_all_university,
+          'post_category': post_category,
+          'category_id': category_id
         }),
       );
       var data = json.decode(response.body) as Map;

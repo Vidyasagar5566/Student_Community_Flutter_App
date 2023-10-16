@@ -29,33 +29,6 @@ class login_servers {
     }
   }
 
-// CREATE USER BY SUPER USER
-/*
-  Future<bool> create_user(String key, String username, String password) async {
-    try {
-      var path = Uri.parse("$base_url/register/email_check2");
-      var response = await http.post(path,
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: jsonEncode({
-            'key': key,
-            'username': username,
-            'password': password,
-          }));
-      var data = jsonDecode(response.body) as Map;
-      if (data.containsKey('token')) {
-        storage.setItem('token', data['token']);
-        return true;
-      }
-      return false;
-    } catch (e) {
-      print(e);
-      return false;
-    }
-  }
-*/
-
 // LOGIN FUNCTION
   Future<bool> loginNow(String username, String password) async {
     try {

@@ -505,14 +505,16 @@ class _single_postState extends State<single_post> {
             endIndent: 5,
           ),
           const SizedBox(
-            height: 3,
+            height: 7,
           ),
-          Text(
-            //"Description about the post",
-            utf8convert(post.description!),
-            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
-            maxLines: 4,
-            overflow: TextOverflow.ellipsis,
+          Container(
+            margin: EdgeInsets.only(left: 5),
+            child: Text(
+              utf8convert(post.description!),
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+              maxLines: post.imgRatio == 0 ? 12 : 4,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
           const SizedBox(
             height: 5,
@@ -583,73 +585,77 @@ class _single_postState extends State<single_post> {
                   }));
                 }
               },
-              child: post.imgRatio == 1
-                  ? Center(
-                      child: Container(
-                        height: width,
-                        width: width,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            image: DecorationImage(
-                                image: NetworkImage(post.img!),
-                                fit: BoxFit.cover)),
-                      ),
-                    )
-                  : post.imgRatio == 2
-                      ? AspectRatio(
-                          aspectRatio:
-                              _videoPlayerController!.value.aspectRatio,
-                          child: Stack(
-                            alignment: Alignment.bottomCenter,
-                            children: <Widget>[
-                              VideoPlayer(_videoPlayerController!),
-                              ClosedCaption(text: null),
-                              _showController == true
-                                  ? Center(
-                                      child: InkWell(
-                                      child: Icon(
-                                        _videoPlayerController!.value.isPlaying
-                                            ? Icons.pause_circle_outline
-                                            : Icons.play_circle_outline,
-                                        color: Colors.blue,
-                                        size: 60,
-                                      ),
-                                      onTap: () {
-                                        _videoPlayerController!.play();
-                                        print("video ready to play");
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(builder:
-                                                (BuildContext context) {
-                                          return video_display3(post.img!,
-                                              _videoPlayerController!);
-                                        }));
-                                      },
-                                    ))
-                                  : Container(),
-                              // Here you can also add Overlay capacities
-                              VideoProgressIndicator(
-                                _videoPlayerController!,
-                                allowScrubbing: true,
-                                padding: EdgeInsets.all(3),
-                                colors: const VideoProgressColors(
-                                  backgroundColor: Colors.black,
-                                  playedColor: Colors.white,
-                                  bufferedColor: Colors.white70,
-                                ),
-                              ),
-                            ],
+              child: post.imgRatio == 0
+                  ? Container()
+                  : post.imgRatio == 1
+                      ? Center(
+                          child: Container(
+                            height: width,
+                            width: width,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                image: DecorationImage(
+                                    image: NetworkImage(post.img!),
+                                    fit: BoxFit.cover)),
                           ),
                         )
-                      : Center(
-                          child: Container(
-                              height: width * (0.7),
-                              width: width,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  image: const DecorationImage(
-                                      image: AssetImage("images/Explorer.png"),
-                                      fit: BoxFit.cover))),
-                        ),
+                      : post.imgRatio == 2
+                          ? AspectRatio(
+                              aspectRatio:
+                                  _videoPlayerController!.value.aspectRatio,
+                              child: Stack(
+                                alignment: Alignment.bottomCenter,
+                                children: <Widget>[
+                                  VideoPlayer(_videoPlayerController!),
+                                  ClosedCaption(text: null),
+                                  _showController == true
+                                      ? Center(
+                                          child: InkWell(
+                                          child: Icon(
+                                            _videoPlayerController!
+                                                    .value.isPlaying
+                                                ? Icons.pause_circle_outline
+                                                : Icons.play_circle_outline,
+                                            color: Colors.blue,
+                                            size: 60,
+                                          ),
+                                          onTap: () {
+                                            _videoPlayerController!.play();
+                                            print("video ready to play");
+                                            Navigator.of(context).push(
+                                                MaterialPageRoute(builder:
+                                                    (BuildContext context) {
+                                              return video_display3(post.img!,
+                                                  _videoPlayerController!);
+                                            }));
+                                          },
+                                        ))
+                                      : Container(),
+                                  // Here you can also add Overlay capacities
+                                  VideoProgressIndicator(
+                                    _videoPlayerController!,
+                                    allowScrubbing: true,
+                                    padding: EdgeInsets.all(3),
+                                    colors: const VideoProgressColors(
+                                      backgroundColor: Colors.black,
+                                      playedColor: Colors.white,
+                                      bufferedColor: Colors.white70,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : Center(
+                              child: Container(
+                                  height: width * (0.7),
+                                  width: width,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8),
+                                      image: const DecorationImage(
+                                          image:
+                                              AssetImage("images/Explorer.png"),
+                                          fit: BoxFit.cover))),
+                            ),
             ),
           ),
           const SizedBox(

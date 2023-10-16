@@ -1,4 +1,8 @@
 import 'package:testing_app/User_profile/Models.dart';
+import 'package:testing_app/SAC/Models.dart';
+import 'package:testing_app/All_clubs/Models.dart';
+import 'package:testing_app/All_sports/Models.dart';
+import 'package:testing_app/All_fests/Models.dart';
 
 class ALERT_LIST {
   int? id;
@@ -11,6 +15,12 @@ class ALERT_LIST {
   SmallUsername? username;
   bool? allUniversities;
 
+  String? thread_category;
+  ALL_CLUBS? club_thread;
+  ALL_SPORTS? sport_thread;
+  ALL_FESTS? fest_thread;
+  SAC_MEMS? sac_thread;
+
   ALERT_LIST(
       {this.id,
       this.title,
@@ -20,7 +30,12 @@ class ALERT_LIST {
       this.postedDate,
       this.username,
       this.imgRatio,
-      this.allUniversities});
+      this.allUniversities,
+      this.thread_category,
+      this.club_thread,
+      this.sport_thread,
+      this.fest_thread,
+      this.sac_thread});
 
   ALERT_LIST.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -35,6 +50,20 @@ class ALERT_LIST {
     imgRatio = json['img_ratio'];
     img = json['img'];
     allUniversities = json['all_universities'];
+
+    thread_category = json['thread_category'];
+    club_thread = json['club_thread'] != null
+        ? new ALL_CLUBS.fromJson(json['club_thread'])
+        : null;
+    sport_thread = json['sport_thread'] != null
+        ? new ALL_SPORTS.fromJson(json['sport_thread'])
+        : null;
+    fest_thread = json['fest_thread'] != null
+        ? new ALL_FESTS.fromJson(json['fest_thread'])
+        : null;
+    sac_thread = json['sac_thread'] != null
+        ? new SAC_MEMS.fromJson(json['sac_thread'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -51,6 +80,20 @@ class ALERT_LIST {
     data['img_ratio'] = this.imgRatio;
     data['img'] = this.img;
     data['all_universities'] = this.allUniversities;
+
+    data['thread_category'] = this.thread_category;
+    if (this.club_thread != null) {
+      data['club_thread'] = this.club_thread!.toJson();
+    }
+    if (this.sport_thread != null) {
+      data['sport_thread'] = this.sport_thread!.toJson();
+    }
+    if (this.fest_thread != null) {
+      data['fest_thread'] = this.fest_thread!.toJson();
+    }
+    if (this.sac_thread != null) {
+      data['sac_thread'] = this.sac_thread!.toJson();
+    }
     return data;
   }
 }

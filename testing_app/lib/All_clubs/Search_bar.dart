@@ -8,7 +8,8 @@ class club_search_bar extends StatefulWidget {
   Username app_user;
   int club_id;
   String domain;
-  club_search_bar(this.app_user, this.club_id, this.domain);
+  bool club_create;
+  club_search_bar(this.app_user, this.club_id, this.domain, this.club_create);
 
   @override
   State<club_search_bar> createState() => _club_search_barState();
@@ -16,6 +17,7 @@ class club_search_bar extends StatefulWidget {
 
 class _club_search_barState extends State<club_search_bar> {
   String username_match = "";
+  var new_club_name;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +38,7 @@ class _club_search_barState extends State<club_search_bar> {
           style: const TextStyle(color: Colors.white),
           cursorColor: Colors.white,
           decoration: const InputDecoration(
-              hintText: 'Search...',
+              hintText: 'Search and Select New Club Head',
               hintStyle: TextStyle(color: Colors.white54),
               border: InputBorder.none),
           onChanged: (value) {
@@ -70,8 +72,13 @@ class _club_search_barState extends State<club_search_bar> {
                             fontWeight: FontWeight.w500, fontSize: 24)));
               } else {
                 all_search_users = users_list;
-                return user_list_display(users_list, widget.app_user,
-                    username_match, widget.domain, widget.club_id);
+                return user_list_display(
+                    users_list,
+                    widget.app_user,
+                    username_match,
+                    widget.domain,
+                    widget.club_id,
+                    widget.club_create);
               }
             }
           }
@@ -90,8 +97,9 @@ class user_list_display extends StatefulWidget {
   String username_match;
   String domain;
   int club_id;
+  bool club_create;
   user_list_display(this.all_search_users, this.app_user, this.username_match,
-      this.domain, this.club_id);
+      this.domain, this.club_id, this.club_create);
 
   @override
   State<user_list_display> createState() => _user_list_displayState();
@@ -119,6 +127,8 @@ class _user_list_displayState extends State<user_list_display> {
     });
   }
 
+  var new_club_name;
+
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -137,7 +147,14 @@ class _user_list_displayState extends State<user_list_display> {
                     itemBuilder: (BuildContext context, int index) {
                       SmallUsername search_user =
                           widget.all_search_users[index];
-                      return _buildLoadingScreen(search_user, index);
+
+                      if (widget.club_create) {
+                        return _buildLoadingScreen_create_club(
+                            search_user, index);
+                      } else {
+                        return _buildLoadingScreen_head_transfer(
+                            search_user, index);
+                      }
                     }),
                 const SizedBox(height: 10),
                 total_loaded
@@ -173,7 +190,8 @@ class _user_list_displayState extends State<user_list_display> {
     );
   }
 
-  Widget _buildLoadingScreen(SmallUsername search_user, int index) {
+  Widget _buildLoadingScreen_head_transfer(
+      SmallUsername search_user, int index) {
     var width = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () async {
@@ -231,6 +249,180 @@ class _user_list_displayState extends State<user_list_display> {
                           child: const Center(
                               child: Text(
                             "Transfer",
+                            style: TextStyle(color: Colors.white),
+                          ))),
+                    )
+                  ],
+                ),
+              );
+            });
+      },
+      child: Container(
+          margin: EdgeInsets.all(2),
+          padding: EdgeInsets.all(20),
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(20)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                          width: 48,
+                          child: search_user.fileType! == '1'
+                              ? CircleAvatar(
+                                  backgroundImage:
+                                      NetworkImage(search_user.profilePic!))
+                              : const CircleAvatar(
+                                  backgroundImage:
+                                      AssetImage("images/profile.jpg"))),
+                      Container(
+                        padding: EdgeInsets.only(left: 20),
+                        width: (width - 36) / 1.8,
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    constraints: BoxConstraints(
+                                        maxWidth: (width - 36) / 2.4),
+                                    child: Text(
+                                      search_user.username!,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  index % 9 == 0
+                                      ? const Icon(
+                                          Icons.verified_rounded,
+                                          color: Colors.green,
+                                          size: 18,
+                                        )
+                                      : Container()
+                                ],
+                              ),
+                              Text(
+                                domains[search_user.domain!]! +
+                                    " (" +
+                                    search_user.userMark! +
+                                    ")",
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                              )
+                            ]),
+                      )
+                    ],
+                  ),
+                  Icon(Icons.more_horiz)
+                ],
+              ),
+              const SizedBox(height: 5),
+              Text(
+                "Contact no " + search_user.phnNum!,
+                //post.description,
+                style: TextStyle(fontSize: 15),
+              ),
+              const SizedBox(height: 5),
+              Text(
+                " Email : " + search_user.email!,
+                //post.description,
+                style: TextStyle(fontSize: 15),
+              ),
+            ],
+          )),
+    );
+  }
+
+  Widget _buildLoadingScreen_create_club(SmallUsername search_user, int index) {
+    var width = MediaQuery.of(context).size.width;
+    return GestureDetector(
+      onTap: () async {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                contentPadding: EdgeInsets.all(15),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(),
+                        IconButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            icon: const Icon(Icons.close))
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Container(
+                      padding: EdgeInsets.only(left: 40, right: 40),
+                      child: TextField(
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: const InputDecoration(
+                          labelText: 'new_club_name',
+                          hintText: 'dnd club/AI club',
+                          prefixIcon: Icon(Icons.text_fields),
+                          border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
+                        ),
+                        onChanged: (String value) {
+                          setState(() {
+                            new_club_name = value;
+                          });
+                          if (value == "") {
+                            new_club_name = null;
+                          }
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      margin: const EdgeInsets.all(30),
+                      color: Colors.blue[900],
+                      child: OutlinedButton(
+                          onPressed: () async {
+                            if (new_club_name == null) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text("Club name cant be null",
+                                          style:
+                                              TextStyle(color: Colors.white))));
+                            } else {
+                              bool error = await all_clubs_servers()
+                                  .create_club(
+                                      search_user.email!, new_club_name);
+                              if (error) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text(
+                                            "Failed to transfer the head, try again",
+                                            style: TextStyle(
+                                                color: Colors.white))));
+                              } else {
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) {
+                                  return firstpage(0, widget.app_user);
+                                }), (Route<dynamic> route) => false);
+                              }
+                            }
+                          },
+                          child: const Center(
+                              child: Text(
+                            "Create Club",
                             style: TextStyle(color: Colors.white),
                           ))),
                     )

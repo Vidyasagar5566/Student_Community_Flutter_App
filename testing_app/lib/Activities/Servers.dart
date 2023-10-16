@@ -37,8 +37,15 @@ class activity_servers {
     }
   }
 
-  Future<bool> post_event(String title, String description, File file,
-      String image_ratio, String date, String all_university) async {
+  Future<bool> post_event(
+      String title,
+      String description,
+      File file,
+      String image_ratio,
+      String date,
+      String all_university,
+      String event_category,
+      int category_id) async {
     try {
       var token = storage.getItem('token');
       String finalUrl = "$base_url/event/list1";
@@ -62,7 +69,9 @@ class activity_servers {
           'file_name': fileName,
           'image_ratio': image_ratio,
           'event_date': date,
-          'is_all_university': is_all_university
+          'is_all_university': is_all_university,
+          'event_category': event_category,
+          'category_id': category_id
         }),
       );
       var data = json.decode(response.body) as Map;

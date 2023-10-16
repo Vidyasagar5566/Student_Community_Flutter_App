@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
@@ -9,10 +11,13 @@ import 'package:video_player/video_player.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:file_picker/file_picker.dart';
 import '../Files_disply_download/pdf_videos_images.dart';
+import 'package:testing_app/Circular_designs/cure_clip.dart';
 
 class upload_postwidget extends StatefulWidget {
   Username app_user;
-  upload_postwidget(this.app_user);
+  String post_category;
+  int id;
+  upload_postwidget(this.app_user, this.post_category, this.id);
 
   @override
   State<upload_postwidget> createState() => _upload_postwidgetState();
@@ -21,8 +26,7 @@ class upload_postwidget extends StatefulWidget {
 class _upload_postwidgetState extends State<upload_postwidget> {
   var description;
   var image;
-  String image_ratio = "";
-  String image_vedio = "";
+  String image_ratio = "0";
   bool _showController = true;
   VideoPlayerController? _videoPlayerController;
   PDFViewController? pdfViewController;
@@ -58,7 +62,7 @@ class _upload_postwidgetState extends State<upload_postwidget> {
                 value: all_university,
                 underline: Container(),
                 elevation: 0,
-                items: post_uni_selection
+                items: ['All', domains[widget.app_user.domain]!]
                     .map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
@@ -138,7 +142,7 @@ class _upload_postwidgetState extends State<upload_postwidget> {
                         ),
                         const SizedBox(height: 10),
                         const Text(
-                          "Add an image",
+                          "Add an image (Optional)",
                           style: TextStyle(
                               color: Colors.indigo,
                               fontSize: 20,
@@ -186,7 +190,6 @@ class _upload_postwidgetState extends State<upload_postwidget> {
                                                     setState(() {
                                                       image =
                                                           File(image1!.path);
-                                                      image_vedio = "image";
                                                       image_ratio = "1";
                                                     });
                                                   } else {
@@ -200,7 +203,6 @@ class _upload_postwidgetState extends State<upload_postwidget> {
                                                     setState(() {
                                                       image =
                                                           File(image1!.path);
-                                                      image_vedio = "image";
                                                       image_ratio = "1";
                                                     });
                                                   }
@@ -221,7 +223,6 @@ class _upload_postwidgetState extends State<upload_postwidget> {
                                                   //final bytes = await File(image1!.path).readAsBytes();
                                                   setState(() {
                                                     image = File(image1!.path);
-                                                    image_vedio = "vedio";
                                                     image_ratio = "2";
                                                     //final img.Image image = img.decodeImage(bytes)!;
                                                   });
@@ -245,7 +246,6 @@ class _upload_postwidgetState extends State<upload_postwidget> {
                                                     image = File(
                                                         result!.paths.first ??
                                                             '');
-                                                    image_vedio = "pdf";
                                                     image_ratio = "3";
                                                     //final img.Image image = img.decodeImage(bytes)!;
                                                   });
@@ -308,9 +308,17 @@ class _upload_postwidgetState extends State<upload_postwidget> {
                                                       ]),
                                                 ));
                                           });
+                                      if (image_ratio == '0') {
+                                        image = File('images/fest.png');
+                                      }
                                       bool error = await post_servers()
-                                          .post_post(description, image,
-                                              image_ratio, all_university);
+                                          .post_post(
+                                              description,
+                                              image,
+                                              image_ratio,
+                                              all_university,
+                                              widget.post_category,
+                                              widget.id);
                                       Navigator.pop(context);
                                       if (!error) {
                                         Navigator.of(context)
@@ -401,9 +409,9 @@ class _upload_postwidgetState extends State<upload_postwidget> {
                                 decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(20)),
-                                child: image_vedio == "image"
+                                child: image_ratio == "1"
                                     ? Image.file(image)
-                                    : image_vedio == "vedio"
+                                    : image_ratio == "2"
                                         ? GestureDetector(
                                             onTap: () {
                                               setState(() {
@@ -468,7 +476,7 @@ class _upload_postwidgetState extends State<upload_postwidget> {
                                               ),
                                             ),
                                           )
-                                        : image_vedio == "pdf"
+                                        : image_ratio == "3"
                                             ? GestureDetector(
                                                 onTap: () {
                                                   Navigator.of(context).push(
@@ -508,5 +516,241 @@ class _upload_postwidgetState extends State<upload_postwidget> {
   void dispose() {
     super.dispose();
     _videoPlayerController!.dispose();
+  }
+}
+
+class postCategory extends StatefulWidget {
+  Username app_user;
+  postCategory(this.app_user);
+
+  @override
+  State<postCategory> createState() => _postCategoryState();
+}
+
+class _postCategoryState extends State<postCategory> {
+  List<bool> _bool_list = [false, false, false, false];
+  var clubs = {};
+  var sports = {};
+  var fests = {};
+  var sacs = {};
+  @override
+  Widget build(BuildContext context) {
+    clubs = widget.app_user.clzClubs!['head'];
+    sports = widget.app_user.clzSports!['head'];
+    fests = widget.app_user.clzFests!['head'];
+    sacs = widget.app_user.clzSacs!['head'];
+
+    if (clubs.isEmpty && sports.isEmpty && fests.isEmpty && sacs.isEmpty) {
+      return upload_postwidget(widget.app_user, 'student', 0);
+    }
+
+    var wid = MediaQuery.of(context).size.width;
+    return Scaffold(
+        body: SingleChildScrollView(
+            child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                //color: Colors.pink[100],
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage("images/background.jpg"),
+                      fit: BoxFit.cover),
+                ),
+                margin: const EdgeInsets.only(bottom: 20),
+                child: SingleChildScrollView(
+                    child: Column(
+                  children: [
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        ClipPath(
+                            clipper: profile_Clipper(),
+                            child: Container(
+                                height: 250,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                  colors: [
+                                    Colors.deepPurple,
+                                    Colors.purple.shade300
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                )))),
+                        Positioned(
+                            left: 25,
+                            top: 75,
+                            child: Row(
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  icon: const Icon(
+                                    Icons.arrow_back_ios_new_outlined,
+                                    color: Colors.white,
+                                    size: 30,
+                                  ),
+                                ),
+                                const SizedBox(width: 20),
+                                SizedBox(
+                                  width: wid / 0.5,
+                                  child: const Text(
+                                    'Post Category',
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                ),
+                              ],
+                            ))
+                      ],
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          return upload_postwidget(
+                              widget.app_user, 'student', 0);
+                        }));
+                      },
+                      child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(10)),
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.deepPurple,
+                                Colors.purple.shade300
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                          ),
+                          margin: const EdgeInsets.only(
+                              left: 20, right: 20, top: 10, bottom: 10),
+                          padding: const EdgeInsets.only(
+                              top: 7, left: 20, bottom: 7),
+                          child: Column(
+                            children: [
+                              Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      margin:
+                                          EdgeInsets.only(top: 10, bottom: 10),
+                                      constraints:
+                                          BoxConstraints(maxWidth: wid / 2),
+                                      child: const Text(
+                                        'Student Post',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
+                                      ),
+                                    ),
+                                  ])
+                            ],
+                          )),
+                    ),
+                    const SizedBox(height: 30),
+                    ListView.builder(
+                        itemCount: 4,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        padding: const EdgeInsets.only(bottom: 10),
+                        itemBuilder: (BuildContext context, int index) {
+                          return build_screen(index);
+                        })
+                  ],
+                )))));
+  }
+
+  Widget build_screen(int index) {
+    var wid = MediaQuery.of(context).size.width;
+    List<Map> _category_list = [clubs, sports, fests, sacs];
+    List<String> _category_list_names = ['club', 'sport', 'fest', 'sac'];
+
+    if (_category_list[index].isEmpty) {
+      return Container();
+    }
+    return Container(
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          gradient: LinearGradient(
+            colors: [Colors.deepPurple, Colors.purple.shade300],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        margin: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
+        padding: const EdgeInsets.only(top: 7, left: 20, bottom: 7),
+        child: Column(
+          children: [
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              Container(
+                constraints: BoxConstraints(maxWidth: wid / 2),
+                child: Text(
+                  _category_list_names[index],
+                  style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                ),
+              ),
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    _bool_list[index] = !_bool_list[index];
+                  });
+                },
+                icon: _bool_list[index]
+                    ? const Icon(
+                        Icons.keyboard_arrow_up_outlined,
+                        color: Colors.white,
+                      )
+                    : const Icon(
+                        Icons.keyboard_arrow_down_outlined,
+                        color: Colors.white,
+                      ),
+              )
+            ]),
+            const SizedBox(height: 4),
+            _bool_list[index]
+                ? ListView.builder(
+                    itemCount: _category_list[index].length,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: const EdgeInsets.only(bottom: 10),
+                    itemBuilder: (BuildContext context, int index1) {
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) {
+                            return upload_postwidget(
+                                widget.app_user,
+                                _category_list_names[index],
+                                _category_list[index].keys.elementAt(index1));
+                          }));
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(left: 15, bottom: 15),
+                          child: Text(
+                            _category_list[index].values.elementAt(index1),
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                      );
+                    })
+                : Container()
+          ],
+        ));
   }
 }

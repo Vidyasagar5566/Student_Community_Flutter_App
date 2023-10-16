@@ -34,6 +34,8 @@ import 'SAC/sac.dart';
 import 'package:testing_app/Placements/placements.dart';
 import 'Notes/qn_paper.dart';
 import 'Threads/threads.dart';
+import 'Register/Register.dart';
+import 'User_Star_Mark/user_star_mark.dart';
 
 List<Lost_Found> lst_buy_list = [];
 List<POST_LIST> all_posts = [];
@@ -65,16 +67,14 @@ class _get_ueser_widgetState extends State<get_ueser_widget> {
             Username app_user = snapshot.data;
             user_name = app_user.username!;
             post_uni_selection = ['All', domains[app_user.domain]!];
-            /* ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text(
-                  "Welcome",
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ); */
 
-            return firstpage(widget.curr_index, app_user);
+            star_user_mark(app_user);
+
+            if (app_user.isDetails!) {
+              return firstpage(widget.curr_index, app_user);
+            } else {
+              return LoginRegister(app_user);
+            }
           }
         }
         return crclr_ind_appbar();
@@ -368,12 +368,12 @@ class _firstpageState extends State<firstpage> {
                     if (widget.curr_index == 3) {
                       Navigator.of(context).push(
                           MaterialPageRoute(builder: (BuildContext context) {
-                        return upload_alertowidget(widget.app_user);
+                        return threadCategory(widget.app_user);
                       }));
                     } else if (widget.curr_index == 2) {
                       Navigator.of(context).push(
                           MaterialPageRoute(builder: (BuildContext context) {
-                        return upload_eventwidget(widget.app_user);
+                        return eventCategory(widget.app_user);
                       }));
                     } else {
                       showModalBottomSheet(
@@ -452,7 +452,7 @@ class _firstpageState extends State<firstpage> {
                                           Navigator.of(context).push(
                                               MaterialPageRoute(builder:
                                                   (BuildContext context) {
-                                            return upload_postwidget(
+                                            return postCategory(
                                                 widget.app_user);
                                           }));
                                         },
