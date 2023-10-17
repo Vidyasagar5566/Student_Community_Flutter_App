@@ -11,33 +11,26 @@ class messanger_servers {
 
 // MESSANGER
 
-  Future<List<List<Messanger>>> get_messages_list(
-      String exist_messages_list) async {
+  Future<List<Messanger>> get_messages_list() async {
     try {
       var token = storage.getItem('token');
-      Map<String, String> queryParameters = {
-        'exist_messages_list': exist_messages_list.toString()
-      };
-      String queryString = Uri(queryParameters: queryParameters).query;
-      String finalUrl = "$base_url/messanger1?$queryString";
+      String finalUrl = "$base_url/messanger1";
       var url = Uri.parse(finalUrl);
       http.Response response = await http.get(url, headers: {
         'Authorization': 'token $token',
         "Content-Type": "application/json",
       });
       var data = json.decode(response.body) as List;
-      List<List<Messanger>> temp = [];
-      data.forEach((element) {
-        List<Messanger> temp1 = [];
-        element.forEach((element1) {
-          Messanger notif = Messanger.fromJson(element1);
-          temp1.add(notif);
-        });
-        temp.add(temp1);
+      List<Messanger> temp = [];
+
+      data.forEach((element1) {
+        Messanger message = Messanger.fromJson(element1);
+        temp.add(message);
       });
+
       return temp;
     } catch (e) {
-      List<List<Messanger>> temp = [];
+      List<Messanger> temp = [];
       return temp;
     }
   }
@@ -127,14 +120,13 @@ class messanger_servers {
   }
 // USER TO USER MESSAGES
 
-  Future<List<Messanger>> user_user_messages(String chattinguser_email,
-      String ind_message_lenth, bool last_msg_seen) async {
+  Future<List<Messager>> user_user_messages(
+      String chattinguser_email, int num_list) async {
     try {
       var token = storage.getItem('token');
       Map<String, String> queryParameters = {
         'chattinguser_email': chattinguser_email,
-        'ind_message_lenth': ind_message_lenth,
-        'last_msg_seen': last_msg_seen.toString()
+        'num_list': num_list.toString()
       };
       String queryString = Uri(queryParameters: queryParameters).query;
       String finalUrl = "$base_url/user_messanger1?$queryString";
@@ -144,14 +136,16 @@ class messanger_servers {
         "Content-Type": "application/json",
       });
       var data = json.decode(response.body) as List;
-      List<Messanger> temp = [];
+      print(data);
+      List<Messager> temp = [];
       data.forEach((element) {
-        Messanger post = Messanger.fromJson(element);
+        Messager post = Messager.fromJson(element);
         temp.add(post);
       });
       return temp;
     } catch (e) {
-      List<Messanger> temp = [];
+      print(e);
+      List<Messager> temp = [];
       return temp;
     }
   }

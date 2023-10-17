@@ -309,16 +309,8 @@ class _loginpageState extends State<loginpage> {
                           await signOutGoogle();
                           String google_email = "";
 
-                          if (Platform.isAndroid) {
-                            google_email = await signInWithGoogle();
-                          } else {
-                            final GoogleSignIn googleuser = GoogleSignIn();
+                          google_email = await signInWithGoogle();
 
-                            final GoogleSignInAccount? googleSignInAccount =
-                                await googleuser.signIn();
-
-                            google_email = googleSignInAccount!.email;
-                          }
                           Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
                                   builder: (BuildContext context) =>

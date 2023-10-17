@@ -123,37 +123,57 @@ class _activitieswidget1State extends State<activitieswidget1> {
                         fit: BoxFit.cover)),
                 child: Column(
                   children: [
-                    ListView.builder(
-                        itemCount: widget.event_list.length,
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        padding: EdgeInsets.only(bottom: 10),
-                        itemBuilder: (BuildContext context, int index) {
-                          EVENT_LIST event = widget.event_list[index];
-                          return single_event(event, widget.app_user);
-                        }),
+                    NotificationListener<ScrollEndNotification>(
+                        onNotification: (scrollEnd) {
+                          final metrics = scrollEnd.metrics;
+                          if (metrics.atEdge) {
+                            bool isTop = metrics.pixels == 0;
+                            if (!isTop) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      backgroundColor: Colors.white,
+                                      content: Text("loading....",
+                                          style:
+                                              TextStyle(color: Colors.black))));
+                              load_data_fun();
+                            }
+                          }
+                          return true;
+                        },
+                        child: ListView.builder(
+                            itemCount: widget.event_list.length,
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            padding: EdgeInsets.only(bottom: 10),
+                            itemBuilder: (BuildContext context, int index) {
+                              EVENT_LIST event = widget.event_list[index];
+                              return single_event(event, widget.app_user);
+                            })),
                     total_loaded
-                        ? Container(
-                            width: width,
-                            height: 100,
-                            child: Center(
-                                child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        total_loaded = false;
-                                      });
-                                      load_data_fun();
-                                    },
-                                    child: const Column(
-                                      children: [
-                                        Icon(Icons.add_circle_outline,
-                                            size: 40, color: Colors.blue),
-                                        Text(
-                                          "Tap To Load more",
-                                          style: TextStyle(color: Colors.blue),
-                                        )
-                                      ],
-                                    ))))
+                        ? widget.event_list.length > 10
+                            ? Container(
+                                width: width,
+                                height: 100,
+                                child: Center(
+                                    child: GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            total_loaded = false;
+                                          });
+                                          load_data_fun();
+                                        },
+                                        child: const Column(
+                                          children: [
+                                            Icon(Icons.add_circle_outline,
+                                                size: 40, color: Colors.blue),
+                                            Text(
+                                              "Tap To Load more",
+                                              style:
+                                                  TextStyle(color: Colors.blue),
+                                            )
+                                          ],
+                                        ))))
+                            : Container()
                         : Container(
                             width: 100,
                             height: 100,

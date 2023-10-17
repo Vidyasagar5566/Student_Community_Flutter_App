@@ -11,6 +11,7 @@ import 'package:testing_app/Reports/Uploads.dart';
 import 'package:get_time_ago/get_time_ago.dart';
 import 'dart:io';
 import '../Files_disply_download/pdf_videos_images.dart';
+import 'package:testing_app/User_Star_Mark/user_star_mark.dart';
 
 String utf8convert(String text) {
   List<int> bytes = text.toString().codeUnits;
@@ -149,17 +150,33 @@ class _all_lostwidget1State extends State<all_lostwidget1> {
               fit: BoxFit.cover)),
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
-      child: ListView.builder(
-          itemCount: lst_list.length,
-          shrinkWrap: true,
-          padding: EdgeInsets.zero,
-          itemBuilder: (BuildContext context, int index) {
-            Lost_Found lst = lst_list[index];
-            var _convertedTimestamp = DateTime.parse(
-                lst.postedDate!); // Converting into [DateTime] object
-            String lst_posted_date = GetTimeAgo.parse(_convertedTimestamp);
-            return _buildLoadingScreen(lst, index, lst_posted_date, lst_list);
-          }),
+      child: NotificationListener<ScrollEndNotification>(
+          onNotification: (scrollEnd) {
+            final metrics = scrollEnd.metrics;
+            if (metrics.atEdge) {
+              bool isTop = metrics.pixels == 0;
+              if (!isTop) {
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    backgroundColor: Colors.white,
+                    content: Text("loading....",
+                        style: TextStyle(color: Colors.black))));
+                load_data_fun();
+              }
+            }
+            return true;
+          },
+          child: ListView.builder(
+              itemCount: lst_list.length,
+              shrinkWrap: true,
+              padding: EdgeInsets.zero,
+              itemBuilder: (BuildContext context, int index) {
+                Lost_Found lst = lst_list[index];
+                var _convertedTimestamp = DateTime.parse(
+                    lst.postedDate!); // Converting into [DateTime] object
+                String lst_posted_date = GetTimeAgo.parse(_convertedTimestamp);
+                return _buildLoadingScreen(
+                    lst, index, lst_posted_date, lst_list);
+              })),
     );
   }
 
@@ -225,14 +242,7 @@ class _all_lostwidget1State extends State<all_lostwidget1> {
                                       ),
                                     ),
                                     const SizedBox(width: 10),
-                                    index % 9 == 0
-                                        ? const Icon(
-                                            Icons
-                                                .verified_rounded, //verified_rounded,verified_outlined
-                                            color: Colors.green,
-                                            size: 18,
-                                          )
-                                        : Container()
+                                    userMarkNotation(widget.app_user.starMark!)
                                   ],
                                 ),
                                 Text(
@@ -312,35 +322,7 @@ class _all_lostwidget1State extends State<all_lostwidget1> {
                     ],
                   ),
                 ],
-              )),
-          lst_list.length - 1 == index
-              ? total_loaded
-                  ? Container(
-                      width: width,
-                      height: 100,
-                      child: Center(
-                          child: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  total_loaded = false;
-                                });
-                                load_data_fun();
-                              },
-                              child: const Column(
-                                children: [
-                                  Icon(Icons.add_circle_outline,
-                                      size: 40, color: Colors.red),
-                                  Text(
-                                    "Tap To Load more",
-                                    style: TextStyle(color: Colors.red),
-                                  )
-                                ],
-                              ))))
-                  : Container(
-                      width: 100,
-                      height: 100,
-                      child: Center(child: CircularProgressIndicator()))
-              : Container()
+              ))
         ],
       ),
     );

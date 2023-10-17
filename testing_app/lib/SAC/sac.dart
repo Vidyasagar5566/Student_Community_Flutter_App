@@ -6,6 +6,7 @@ import '/servers/servers.dart';
 import 'Models.dart';
 import 'package:testing_app/Reports/Uploads.dart';
 import 'Search_bar.dart';
+import 'package:testing_app/User_Star_Mark/user_star_mark.dart';
 
 class sacpagewidget extends StatefulWidget {
   Username app_user;
@@ -72,7 +73,7 @@ class _sacpagewidgetState extends State<sacpagewidget> {
           );
         },
       ),
-      floatingActionButton: !widget.app_user.clzSportsHead!
+      floatingActionButton: widget.app_user.clzSacsHead!
           ? FloatingActionButton(
               onPressed: () {
                 Navigator.of(context)
@@ -171,14 +172,7 @@ class _sacpagewidgetState extends State<sacpagewidget> {
                                   ),
                                 ),
                                 const SizedBox(width: 10),
-                                9 % 9 == 0
-                                    ? const Icon(
-                                        Icons
-                                            .verified_rounded, //verified_rounded,verified_outlined
-                                        color: Colors.green,
-                                        size: 18,
-                                      )
-                                    : Container()
+                                userMarkNotation(sac_mem.starMark!)
                               ],
                             ),
                             Text(

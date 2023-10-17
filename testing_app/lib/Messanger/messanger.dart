@@ -10,8 +10,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import '../Files_disply_download/pdf_videos_images.dart';
 import 'search_bar.dart';
-import 'dart:async';
-
+import 'Single_message.dart';
+import 'package:testing_app/User_Star_Mark/user_star_mark.dart';
 
 String utf8convert(String text) {
   List<int> bytes = text.toString().codeUnits;
@@ -56,8 +56,8 @@ class _messangerState extends State<messanger> {
           ],
           backgroundColor: Colors.white70,
         ),
-        body: FutureBuilder<List<List<Messanger>>>(
-          future: messanger_servers().get_messages_list("load"),
+        body: FutureBuilder<List<Messanger>>(
+          future: messanger_servers().get_messages_list(),
           builder: (ctx, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               if (snapshot.hasError) {
@@ -68,9 +68,8 @@ class _messangerState extends State<messanger> {
                   ),
                 );
               } else if (snapshot.hasData) {
-                List<List<Messanger>> users_induvidual_messages_lists =
-                    snapshot.data;
-                if (users_induvidual_messages_lists.isEmpty) {
+                List<Messanger> last_user_messages = snapshot.data;
+                if (last_user_messages.isEmpty) {
                   return Container(
                       margin: EdgeInsets.all(30),
                       padding: EdgeInsets.all(30),
@@ -78,8 +77,7 @@ class _messangerState extends State<messanger> {
                           style: TextStyle(
                               fontWeight: FontWeight.w500, fontSize: 24)));
                 } else {
-                  return messanger1(
-                      widget.app_user, users_induvidual_messages_lists);
+                  return messanger1(widget.app_user, last_user_messages);
                 }
               }
             }
@@ -93,38 +91,14 @@ class _messangerState extends State<messanger> {
 
 class messanger1 extends StatefulWidget {
   Username app_user;
-  List<List<Messanger>> users_induvidual_messages_lists;
-  messanger1(this.app_user, this.users_induvidual_messages_lists);
+  List<Messanger> last_user_messages;
+  messanger1(this.app_user, this.last_user_messages);
 
   @override
   State<messanger1> createState() => _messanger1State();
 }
 
 class _messanger1State extends State<messanger1> {
-  bool periodic = false;
-  void repeat() {
-    Timer.periodic(const Duration(seconds: 5), (Timer t) async {
-      String lens = widget.users_induvidual_messages_lists[0].length.toString();
-      for (int i = 1; i < widget.users_induvidual_messages_lists.length; i++) {
-        lens = lens +
-            ',' +
-            widget.users_induvidual_messages_lists[i].length.toString();
-      }
-      List<List<Messanger>> a = await messanger_servers().get_messages_list(lens);
-      if (a.length != 0) {
-        setState(() {
-          periodic = true;
-          widget.users_induvidual_messages_lists = a;
-        });
-      }
-    });
-  }
-
-  void initState() {
-    super.initState();
-    repeat();
-  }
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -147,38 +121,35 @@ class _messanger1State extends State<messanger1> {
               ]),
               const SizedBox(height: 10),
               ListView.builder(
-                  itemCount: widget.users_induvidual_messages_lists.length,
+                  itemCount: widget.last_user_messages.length,
                   shrinkWrap: true,
                   padding: EdgeInsets.zero,
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (BuildContext context, int index) {
                     var message_user;
-                    Messanger message =
-                        widget.users_induvidual_messages_lists[index].last;
+                    Messanger message = widget.last_user_messages[index];
                     if (widget.app_user.email ==
                         message.messageReceiver!.email) {
                       message_user = message.messageSender!;
                     } else {
                       message_user = message.messageReceiver!;
                     }
-                    return _buildLoadingScreen(message_user, message,
-                        widget.users_induvidual_messages_lists[index], index);
+                    return _buildLoadingScreen(message_user, message, index);
                   }),
             ],
           )),
     );
   }
 
-  Widget _buildLoadingScreen(SmallUsername message_user, Messanger message,
-      List<Messanger> user_conversation, int index) {
+  Widget _buildLoadingScreen(
+      SmallUsername message_user, Messanger message, int index) {
     var width = MediaQuery.of(context).size.width;
 
     return GestureDetector(
       onTap: () {
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (BuildContext context) {
-          return messages_viewer(
-              widget.app_user, message_user, user_conversation);
+          return messages_viewer(widget.app_user, message_user, []);
         }));
       },
       child: Column(
@@ -235,14 +206,7 @@ class _messanger1State extends State<messanger1> {
                                         ),
                                       ),
                                       const SizedBox(width: 10),
-                                      index % 9 == 0
-                                          ? const Icon(
-                                              Icons
-                                                  .verified_rounded, //verified_rounded,verified_outlined
-                                              color: Colors.green,
-                                              size: 18,
-                                            )
-                                          : Container()
+                                      userMarkNotation(message_user.starMark!)
                                     ],
                                   ),
                                   Text(
@@ -291,8 +255,8 @@ class _messanger1State extends State<messanger1> {
 class messages_viewer extends StatefulWidget {
   Username app_user;
   SmallUsername message_user;
-  List<Messanger> user_messages;
-  messages_viewer(this.app_user, this.message_user, this.user_messages);
+  List<Messager> user_conversation;
+  messages_viewer(this.app_user, this.message_user, this.user_conversation);
 
   @override
   State<messages_viewer> createState() => _messages_viewerState();
@@ -303,7 +267,6 @@ class _messages_viewerState extends State<messages_viewer> {
   var image;
   var circular_ind;
   String message_file_type = "0";
-  String image_vedio = "";
   bool _showController = true;
   VideoPlayerController? _videoPlayerController;
 
@@ -319,27 +282,31 @@ class _messages_viewerState extends State<messages_viewer> {
     });
   }
 
-  void repeat() {
-    Timer.periodic(const Duration(seconds: 5), (Timer t) async {
-      int msgs_len = widget.user_messages.length;
-      List<Messanger> a = await messanger_servers().user_user_messages(
-          widget.message_user.email!,
-          msgs_len.toString(),
-          widget.user_messages[msgs_len - 1].messageSeen!);
-      if (a.length != 0) {
-        setState(() async {
-          widget.user_messages = a;
-        });
-      }
+  bool total_loaded = false;
+  void load_data_fun() async {
+    List<Messager> latest_user_conversation = await messanger_servers()
+        .user_user_messages(
+            widget.message_user.email!, widget.user_conversation.length);
+    if (latest_user_conversation.length != 0) {
+      setState(() {
+        widget.user_conversation =
+            latest_user_conversation + widget.user_conversation;
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("all the feed was shown..",
+              style: TextStyle(color: Colors.white))));
+    }
+    setState(() {
+      total_loaded = true;
     });
   }
 
   void initState() {
     super.initState();
-    repeat();
+    load_data_fun();
   }
 
-  bool sending_msg = false;
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -362,16 +329,55 @@ class _messages_viewerState extends State<messages_viewer> {
                 width: MediaQuery.of(context).size.width,
                 child: SingleChildScrollView(
                     reverse: true,
-                    child: ListView.builder(
-                        itemCount: widget.user_messages.length,
-                        shrinkWrap: true,
-                        padding: EdgeInsets.zero,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemBuilder: (BuildContext context, int index) {
-                          Messanger message = widget.user_messages[index];
-                          return single_message(message, widget.app_user,
-                              widget.message_user, sending_msg);
-                        })),
+                    child: Column(
+                      children: [
+                        total_loaded
+                            ? widget.user_conversation.length > 20
+                                ? Container(
+                                    width: width,
+                                    height: 100,
+                                    child: Center(
+                                        child: GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                total_loaded = false;
+                                              });
+                                              load_data_fun();
+                                            },
+                                            child: const Column(
+                                              children: [
+                                                Icon(Icons.add_circle_outline,
+                                                    size: 40,
+                                                    color: Colors.blue),
+                                                Text(
+                                                  "Tap To Load more",
+                                                  style: TextStyle(
+                                                      color: Colors.blue),
+                                                )
+                                              ],
+                                            ))))
+                                : Container()
+                            : Container(
+                                width: 100,
+                                height: 100,
+                                child: const Center(
+                                    child: CircularProgressIndicator(
+                                        color: Colors.blue))),
+                        const SizedBox(height: 10),
+                        ListView.builder(
+                            itemCount: widget.user_conversation.length,
+                            shrinkWrap: true,
+                            padding: EdgeInsets.zero,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemBuilder: (BuildContext context, int index) {
+                              Messager message =
+                                  widget.user_conversation[index];
+                              return single_message(message, widget.app_user,
+                                  widget.message_user);
+                            }),
+                        const SizedBox(height: 10),
+                      ],
+                    )),
               ),
               Container(
                 color: Colors.white,
@@ -458,7 +464,6 @@ class _messages_viewerState extends State<messages_viewer> {
                                                     setState(() {
                                                       image =
                                                           File(image1!.path);
-                                                      image_vedio = "image";
                                                       message_file_type = "1";
                                                       //final img.Image image = img.decodeImage(bytes)!;
                                                     });
@@ -477,12 +482,10 @@ class _messages_viewerState extends State<messages_viewer> {
                                                       source:
                                                           ImageSource.gallery,
                                                     );
-
                                                     //final bytes = await File(image1!.path).readAsBytes();
                                                     setState(() {
                                                       image =
                                                           File(image1!.path);
-                                                      image_vedio = "vedio";
                                                       message_file_type = "2";
                                                       //final img.Image image = img.decodeImage(bytes)!;
                                                     });
@@ -510,7 +513,6 @@ class _messages_viewerState extends State<messages_viewer> {
                                                       image = File(
                                                           result!.paths.first ??
                                                               '');
-                                                      image_vedio = "pdf";
                                                       message_file_type = "3";
                                                       //final img.Image image = img.decodeImage(bytes)!;
                                                     });
@@ -565,9 +567,10 @@ class _messages_viewerState extends State<messages_viewer> {
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               20)),
-                                                  child: image_vedio == "image"
+                                                  child: message_file_type ==
+                                                          "1"
                                                       ? Image.file(image)
-                                                      : image_vedio == "vedio"
+                                                      : message_file_type == "2"
                                                           ? GestureDetector(
                                                               onTap: () {
                                                                 setState(() {
@@ -634,7 +637,8 @@ class _messages_viewerState extends State<messages_viewer> {
                                                                 ),
                                                               ),
                                                             )
-                                                          : image_vedio == "pdf"
+                                                          : message_file_type ==
+                                                                  "3"
                                                               ? GestureDetector(
                                                                   onTap: () {
                                                                     Navigator.of(
@@ -687,50 +691,43 @@ class _messages_viewerState extends State<messages_viewer> {
                                   SmallUsername app_user1 =
                                       user_min(widget.app_user);
                                   //message insertion
-                                  Messanger add_message = Messanger();
+                                  Messager add_message = Messager();
                                   String curr_message = "";
-                                  curr_message = new_message;
-                                  if (new_message == null) {
-                                    add_message.messageBody = " ";
-                                  } else {
-                                    add_message.messageBody = curr_message;
-                                  }
+                                  curr_message = new_message ?? "";
 
-                                  File curr_file = File('images/profile.jpg');
-                                  if (image == null) {
-                                    add_message.file = curr_file;
-                                  } else {
-                                    add_message.file = image;
-                                    curr_file = image;
-                                  }
+                                  add_message.messageBody = curr_message;
+
+                                  File curr_file =
+                                      image ?? File('images/profile.jpg');
+
+                                  add_message.file = curr_file;
+
                                   add_message.messagFileType =
                                       message_file_type;
-                                  add_message.messageSender = app_user1;
+                                  add_message.messageFile = "";
+                                  add_message.messageSender = app_user1.email;
                                   add_message.messageReceiver =
-                                      widget.message_user;
+                                      widget.message_user.email;
                                   add_message.messageSent = false;
                                   add_message.messageSeen = false;
                                   add_message.insertMessage = true;
-                                  widget.user_messages.add(add_message);
+                                  widget.user_conversation.add(add_message);
                                   setState(() {
                                     image = null;
                                     message_file_type = '0';
-                                    sending_msg = true;
                                     new_message = null;
                                   });
-                                  String message_replyto = "";
                                   List<dynamic> ans = await messanger_servers()
                                       .post_message(
                                           widget.message_user.email!,
                                           curr_message,
                                           curr_file,
-                                          message_file_type,
-                                          message_replyto);
+                                          add_message.messagFileType!,
+                                          "");
                                   setState(() {
                                     if (ans[0] == false) {
                                       add_message.messageSent = true;
                                       add_message.id = ans[1];
-                                      sending_msg = false;
                                     }
                                   });
                                 },
@@ -756,447 +753,3 @@ class _messages_viewerState extends State<messages_viewer> {
         ));
   }
 }
-
-class single_message extends StatefulWidget {
-  Username app_user;
-  Messanger message;
-  SmallUsername message_user;
-  bool sending_msg;
-  single_message(
-      this.message, this.app_user, this.message_user, this.sending_msg);
-
-  @override
-  State<single_message> createState() => _single_messageState();
-}
-
-class _single_messageState extends State<single_message> {
-  bool _showController = true;
-
-  @override
-  Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width;
-    Messanger message = widget.message;
-    return widget.app_user.username == message.messageSender!.username
-        ? Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                width: 20,
-              ),
-              _buildScreen(message),
-            ],
-          )
-        : Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _buildScreen(message),
-              Container(
-                width: 20,
-              )
-            ],
-          );
-  }
-
-  _buildScreen(Messanger message) {
-    var width = MediaQuery.of(context).size.width;
-    var height = MediaQuery.of(context).size.height;
-    return message.messagFileType == '0'
-        ? widget.app_user.username == message.messageSender!.username
-            ? Container(
-                constraints: BoxConstraints(
-                  maxWidth: width - 110,
-                  //minWidth: 30
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(11),
-                      bottomRight: Radius.circular(11),
-                      topLeft: Radius.circular(11)),
-                  color: Colors.indigo[900],
-                ),
-                margin: const EdgeInsets.all(6),
-                padding: const EdgeInsets.all(9),
-                child: Container(
-                  child: Column(
-                    children: [
-                      Text(
-                        message.insertMessage!
-                            ? message.messageBody!
-                            : utf8convert(message.messageBody!),
-                        textAlign: TextAlign.right,
-                        softWrap: true,
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontStyle: FontStyle.italic),
-                      ),
-                      (!widget.message.messageSent!)
-                          ? Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                  Container(),
-                                  const Icon(
-                                    Icons.more_horiz,
-                                    color: Colors.white,
-                                    size: 14,
-                                  )
-                                ])
-                          : Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                message.messageSeen == false
-                                    ? const Icon(
-                                        Icons.remove_red_eye,
-                                        color: Colors.blueGrey,
-                                        size: 14,
-                                      )
-                                    : const Icon(
-                                        Icons.remove_red_eye,
-                                        color: Colors.white,
-                                        size: 14,
-                                      )
-                              ],
-                            )
-                    ],
-                  ),
-                ))
-            : Container(
-                constraints: BoxConstraints(
-                  maxWidth: width - 80,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(11),
-                      bottomRight: Radius.circular(11),
-                      topRight: Radius.circular(11)),
-                  color: Colors.grey[400],
-                ),
-                margin: const EdgeInsets.all(6),
-                padding: const EdgeInsets.all(9),
-                child: Text(
-                  utf8convert(message.messageBody!),
-                  softWrap: true,
-                  style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                      fontStyle: FontStyle.italic),
-                ))
-        : GestureDetector(
-            onTap: () {
-              if (message.messagFileType == '2') {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return video_display4(message.insertMessage!, message.file!,
-                      message.messageFile!);
-                }));
-              }
-              if (message.messagFileType == '1') {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return image_display(message.insertMessage!, message.file!,
-                      message.messageFile!);
-                }));
-              }
-            },
-            child: message.messagFileType == '1'
-                ? Container(
-                    width: 200,
-                    margin: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: widget.message.messageSender!.email ==
-                                widget.app_user.email
-                            ? Colors.indigo[900]
-                            : Colors.grey[400]),
-                    child: Column(
-                      children: [
-                        Center(
-                          child: Container(
-                              padding: EdgeInsets.all(13),
-                              height: 200,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  color: Colors.blue[50],
-                                  image: message.insertMessage!
-                                      ? DecorationImage(
-                                          image: FileImage(message.file!),
-                                          fit: BoxFit.cover)
-                                      : DecorationImage(
-                                          image: NetworkImage(
-                                              message.messageFile!),
-                                          fit: BoxFit.cover))),
-                        ),
-                        message.insertMessage!
-                            ? Text(message.messageBody!,
-                                style: TextStyle(
-                                    color:
-                                        widget.message.messageSender!.email ==
-                                                widget.app_user.email
-                                            ? Colors.white
-                                            : Colors.black))
-                            : Text(utf8convert(message.messageBody!),
-                                style: TextStyle(
-                                    color:
-                                        widget.message.messageSender!.email ==
-                                                widget.app_user.email
-                                            ? Colors.white
-                                            : Colors.black)),
-                        widget.message.messageSender!.email ==
-                                widget.app_user.email
-                            ? Container(
-                                child: (!widget.message.messageSent!)
-                                    ? Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: const [
-                                            Icon(
-                                              Icons.more_horiz,
-                                              color: Colors.white,
-                                              size: 14,
-                                            )
-                                          ])
-                                    : Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          message.messageSeen == false
-                                              ? const Icon(
-                                                  Icons.remove_red_eye,
-                                                  color: Colors.blueGrey,
-                                                  size: 14,
-                                                )
-                                              : const Icon(
-                                                  Icons.remove_red_eye,
-                                                  color: Colors.white,
-                                                  size: 14,
-                                                ),
-                                          Container(width: 3)
-                                        ],
-                                      ))
-                            : Container()
-                      ],
-                    ),
-                  )
-                : message.messagFileType == '2'
-                    ? Container(
-                        width: 200,
-                        margin: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: widget.message.messageSender!.email ==
-                                    widget.app_user.email
-                                ? Colors.indigo[900]
-                                : Colors.grey[400]),
-                        child: Column(
-                          children: [
-                            Container(
-                              height: 300,
-                              padding: EdgeInsets.all(20),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.black,
-                              ),
-                              child: Stack(
-                                alignment: Alignment.bottomCenter,
-                                children: <Widget>[
-                                  ClosedCaption(text: null),
-                                  _showController == true
-                                      ? Center(
-                                          child: InkWell(
-                                          child: const Icon(
-                                            Icons.play_circle_outline,
-                                            color: Colors.blue,
-                                            size: 60,
-                                          ),
-                                          onTap: () {
-                                            Navigator.of(context).push(
-                                                MaterialPageRoute(builder:
-                                                    (BuildContext context) {
-                                              return video_display4(
-                                                  message.insertMessage!,
-                                                  message.file!,
-                                                  message.messageFile!);
-                                            }));
-                                          },
-                                        ))
-                                      : Container(),
-                                  // Here you can also add Overlay capacities
-                                ],
-                              ),
-                            ),
-                            message.insertMessage!
-                                ? Text(message.messageBody!,
-                                    style: TextStyle(
-                                        color: widget.message.messageSender!
-                                                    .email ==
-                                                widget.app_user.email
-                                            ? Colors.white
-                                            : Colors.black))
-                                : Text(utf8convert(message.messageBody!),
-                                    style: TextStyle(
-                                        color: widget.message.messageSender!
-                                                    .email ==
-                                                widget.app_user.email
-                                            ? Colors.white
-                                            : Colors.black)),
-                            widget.message.messageSender!.email ==
-                                    widget.app_user.email
-                                ? Container(
-                                    child: (!widget.message.messageSent!)
-                                        ? Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: const [
-                                                Icon(
-                                                  Icons.more_horiz,
-                                                  color: Colors.white,
-                                                  size: 14,
-                                                )
-                                              ])
-                                        : Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              message.messageSeen == false
-                                                  ? const Icon(
-                                                      Icons.remove_red_eye,
-                                                      color: Colors.blueGrey,
-                                                      size: 14,
-                                                    )
-                                                  : const Icon(
-                                                      Icons.remove_red_eye,
-                                                      color: Colors.white,
-                                                      size: 14,
-                                                    ),
-                                              Container(width: 3)
-                                            ],
-                                          ))
-                                : Container()
-                          ],
-                        ),
-                      )
-                    : GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) {
-                            if (!message.insertMessage!) {
-                              return pdfviewer(message.file!);
-                            } else {
-                              return pdfviewer1(message.messageFile!, true);
-                            }
-                          }));
-                        },
-                        child: Container(
-                          width: 200,
-                          margin: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: widget.message.messageSender!.email ==
-                                      widget.app_user.email
-                                  ? Colors.indigo[900]
-                                  : Colors.grey[400]),
-                          child: Column(
-                            children: [
-                              Center(
-                                child: Container(
-                                  padding: EdgeInsets.all(3),
-                                  height: 150,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      image: const DecorationImage(
-                                          image:
-                                              AssetImage("images/Explorer.png"),
-                                          fit: BoxFit.cover)),
-                                ),
-                              ),
-                              message.insertMessage!
-                                  ? Text(message.messageBody!,
-                                      style: TextStyle(
-                                          color: widget.message.messageSender!
-                                                      .email ==
-                                                  widget.app_user.email
-                                              ? Colors.white
-                                              : Colors.black))
-                                  : Text(utf8convert(message.messageBody!),
-                                      style: TextStyle(
-                                          color: widget.message.messageSender!
-                                                      .email ==
-                                                  widget.app_user.email
-                                              ? Colors.white
-                                              : Colors.black)),
-                              widget.message.messageSender!.email ==
-                                      widget.app_user.email
-                                  ? Container(
-                                      child: (!widget.message.messageSent!)
-                                          ? Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
-                                              children: const [
-                                                  Icon(
-                                                    Icons.more_horiz,
-                                                    color: Colors.white,
-                                                    size: 14,
-                                                  )
-                                                ])
-                                          : Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
-                                              children: [
-                                                message.messageSeen == false
-                                                    ? const Icon(
-                                                        Icons.remove_red_eye,
-                                                        color: Colors.blueGrey,
-                                                        size: 14,
-                                                      )
-                                                    : const Icon(
-                                                        Icons.remove_red_eye,
-                                                        color: Colors.white,
-                                                        size: 14,
-                                                      ),
-                                                Container(width: 3)
-                                              ],
-                                            ))
-                                  : Container()
-                            ],
-                          ),
-                        )),
-          );
-  }
-}
-
-
-
-
-
-
-
-
-/*
-child: widget.app_user.email == widget.message_user.email
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(width: 80),
-                      Container(
-                          margin: EdgeInsets.all(10),
-                          padding: EdgeInsets.all(6),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(8)),
-                          child: Text(message.messageBody!))
-                    ],
-                  )
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                          margin: EdgeInsets.all(10),
-                          padding: EdgeInsets.all(6),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(8)),
-                          child: Text(message.messageBody!)),
-                      Container(width: 80)
-                    ],
-                  )
-                  */

@@ -11,6 +11,7 @@ class SAC_MEMS {
   String? domain;
   String? dateOfJoin;
   SmallUsername? head;
+  int? starMark;
 
   SAC_MEMS(
       {this.id,
@@ -22,7 +23,8 @@ class SAC_MEMS {
       this.email,
       this.domain,
       this.dateOfJoin,
-      this.head});
+      this.head,
+      this.starMark});
 
   SAC_MEMS.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -36,6 +38,7 @@ class SAC_MEMS {
     dateOfJoin = json['date_of_join'];
     head =
         json['head'] != null ? new SmallUsername.fromJson(json['head']) : null;
+    starMark = json['star_mark'];
   }
 
   Map<String, dynamic> toJson() {
@@ -52,6 +55,7 @@ class SAC_MEMS {
     if (this.head != null) {
       data['head'] = this.head!.toJson();
     }
+    data['star_mark'] = this.starMark;
     return data;
   }
 }

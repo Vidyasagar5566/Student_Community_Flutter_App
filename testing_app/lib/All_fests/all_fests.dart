@@ -9,6 +9,7 @@ import 'dart:convert' show utf8;
 import 'Uploads.dart';
 import 'package:testing_app/Reports/Uploads.dart';
 import 'Search_bar.dart';
+import 'package:testing_app/User_Star_Mark/user_star_mark.dart';
 
 String utf8convert(String text) {
   List<int> bytes = text.toString().codeUnits;
@@ -90,7 +91,7 @@ class _AllfestspagewidgetState extends State<Allfestspagewidget> {
           );
         },
       ),
-      floatingActionButton: !widget.app_user.clzFestsHead!
+      floatingActionButton: widget.app_user.clzFestsHead!
           ? FloatingActionButton(
               onPressed: () {
                 Navigator.of(context)
@@ -237,13 +238,7 @@ class _Allfestspagewidget1State extends State<Allfestspagewidget1> {
                                               ),
                                             ),
                                             const SizedBox(width: 10),
-                                            9 % 9 == 0
-                                                ? const Icon(
-                                                    Icons.verified_rounded,
-                                                    color: Colors.green,
-                                                    size: 18,
-                                                  )
-                                                : Container()
+                                            userMarkNotation(fest.starMark!)
                                           ],
                                         ),
                                         Text(

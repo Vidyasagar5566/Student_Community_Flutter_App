@@ -9,6 +9,7 @@ import 'dart:convert' show utf8;
 import 'package:testing_app/Reports/Uploads.dart';
 import 'Uploads.dart';
 import 'Search_bar.dart';
+import 'package:testing_app/User_Star_Mark/user_star_mark.dart';
 
 String utf8convert(String text) {
   List<int> bytes = text.toString().codeUnits;
@@ -237,13 +238,7 @@ class _Allclubpagewidget1State extends State<Allclubpagewidget1> {
                                               ),
                                             ),
                                             const SizedBox(width: 10),
-                                            9 % 9 == 0
-                                                ? const Icon(
-                                                    Icons.verified_rounded,
-                                                    color: Colors.green,
-                                                    size: 18,
-                                                  )
-                                                : Container()
+                                            userMarkNotation(club.starMark!)
                                           ],
                                         ),
                                         Text(

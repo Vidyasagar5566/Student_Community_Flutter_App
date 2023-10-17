@@ -12,6 +12,7 @@ class ALL_CLUBS {
   bool? isLike;
   int? likeCount;
   String? domain;
+  int? starMark;
   SmallUsername? head;
 
   ALL_CLUBS(
@@ -26,6 +27,7 @@ class ALL_CLUBS {
       this.isLike,
       this.likeCount,
       this.domain,
+      this.starMark,
       this.head});
 
   ALL_CLUBS.fromJson(Map<String, dynamic> json) {
@@ -40,6 +42,7 @@ class ALL_CLUBS {
     isLike = json['is_like'];
     likeCount = json['like_count'];
     domain = json['domain'];
+    starMark = json['star_mark'];
     head =
         json['head'] != null ? new SmallUsername.fromJson(json['head']) : null;
   }
@@ -57,6 +60,7 @@ class ALL_CLUBS {
     data['is_like'] = this.isLike;
     data['like_count'] = this.likeCount;
     data['domain'] = this.domain;
+    data['star_mark'] = this.starMark;
     if (this.head != null) {
       data['head'] = this.head!.toJson();
     }

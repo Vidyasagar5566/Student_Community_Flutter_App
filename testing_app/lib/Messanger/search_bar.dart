@@ -5,6 +5,7 @@ import 'package:testing_app/User_profile/Models.dart';
 import '/servers/servers.dart';
 import 'messanger.dart';
 import 'package:testing_app/first_page.dart';
+import 'package:testing_app/User_Star_Mark/user_star_mark.dart';
 
 class search_bar extends StatefulWidget {
   Username app_user;
@@ -144,9 +145,14 @@ class _user_list_displayState extends State<user_list_display> {
     var width = MediaQuery.of(context).size.width;
     return SingleChildScrollView(
       child: _circularind == true
-          ? Center(
-              child: Container(
-                  height: 40, width: 40, child: CircularProgressIndicator()))
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(),
+                const Center(child: CircularProgressIndicator()),
+                Container()
+              ],
+            )
           : Column(
               children: [
                 ListView.builder(
@@ -182,12 +188,8 @@ class _user_list_displayState extends State<user_list_display> {
                                     )
                                   ],
                                 ))))
-                    : Container(
-                        width: 100,
-                        height: 100,
-                        child: const Center(
-                            child:
-                                CircularProgressIndicator(color: Colors.blue)))
+                    : const Center(
+                        child: CircularProgressIndicator(color: Colors.blue))
               ],
             ),
     );
@@ -197,18 +199,9 @@ class _user_list_displayState extends State<user_list_display> {
     var width = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () async {
-        setState(() {
-          _circularind = !_circularind;
-        });
-        List<Messanger> user_conversation = await messanger_servers()
-            .user_user_messages(search_user.email!, "load", false);
-        setState(() {
-          _circularind = !_circularind;
-        });
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (BuildContext context) {
-          return messages_viewer(
-              widget.app_user, search_user, user_conversation);
+          return messages_viewer(widget.app_user, search_user, []);
         }));
       },
       child: Container(
@@ -255,13 +248,7 @@ class _user_list_displayState extends State<user_list_display> {
                                     ),
                                   ),
                                   const SizedBox(width: 10),
-                                  index % 9 == 0
-                                      ? const Icon(
-                                          Icons.verified_rounded,
-                                          color: Colors.green,
-                                          size: 18,
-                                        )
-                                      : Container()
+                                  userMarkNotation(search_user.starMark!)
                                 ],
                               ),
                               Text(

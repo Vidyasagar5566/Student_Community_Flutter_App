@@ -45,6 +45,8 @@ class Username {
   bool? clzSportsHead;
   bool? clzFestsHead;
   bool? clzSacsHead;
+  bool? clzUsersHead;
+
   Map<String, dynamic>? clzClubs;
   Map<String, dynamic>? clzSports;
   Map<String, dynamic>? clzFests;
@@ -96,6 +98,7 @@ class Username {
       this.clzSportsHead,
       this.clzFestsHead,
       this.clzSacsHead,
+      this.clzUsersHead,
       this.clzClubs,
       this.clzSports,
       this.clzFests,
@@ -148,6 +151,7 @@ class Username {
     clzSportsHead = json['clz_sports_head'];
     clzFestsHead = json['clz_fests_head'];
     clzSacsHead = json['clz_sacs_head'];
+    clzUsersHead = json['clz_users_head'];
     clzClubs = json['clz_clubs'];
     clzSports = json['clz_sports'];
     clzFests = json['clz_fests'];
@@ -202,6 +206,7 @@ class Username {
     data['clz_sports_head'] = this.clzSportsHead;
     data['clz_fests_head'] = this.clzFestsHead;
     data['clz_sacs_head'] = this.clzSacsHead;
+    data['clz_users_head'] = this.clzUsersHead;
     data['clz_clubs'] = this.clzClubs;
     data['clz_sports'] = this.clzSports;
     data['clz_fests'] = this.clzFests;

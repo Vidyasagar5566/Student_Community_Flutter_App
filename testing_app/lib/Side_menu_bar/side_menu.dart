@@ -6,6 +6,7 @@ import 'About_app.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../side_menu_bar/settings.dart';
 import 'package:testing_app/Login/login.dart';
+import 'package:testing_app/User_Star_Mark/Edit_User_star_mark.dart';
 
 class NavDrawer extends StatefulWidget {
   Username app_user;
@@ -58,6 +59,19 @@ class _NavDrawerState extends State<NavDrawer> {
               }));
             },
           ),
+          widget.app_user.clzUsersHead!
+              ? ListTile(
+                  leading: Icon(Icons.person_4_outlined),
+                  title: Text('Edit User profile'),
+                  onTap: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (BuildContext context) {
+                      return editUserStarMark(
+                          widget.app_user, widget.app_user.domain!);
+                    }));
+                  },
+                )
+              : Container(),
           ListTile(
             leading: Icon(Icons.settings),
             title: Text('Settings'),

@@ -3,6 +3,7 @@ import 'Servers.dart';
 import 'package:testing_app/User_profile/Models.dart';
 import '/servers/servers.dart';
 import 'package:testing_app/first_page.dart';
+import 'package:testing_app/User_Star_Mark/user_star_mark.dart';
 
 class sac_search_bar extends StatefulWidget {
   Username app_user;
@@ -470,13 +471,7 @@ class _user_list_displayState extends State<user_list_display> {
                                     ),
                                   ),
                                   const SizedBox(width: 10),
-                                  index % 9 == 0
-                                      ? const Icon(
-                                          Icons.verified_rounded,
-                                          color: Colors.green,
-                                          size: 18,
-                                        )
-                                      : Container()
+                                  userMarkNotation(search_user.starMark!)
                                 ],
                               ),
                               Text(

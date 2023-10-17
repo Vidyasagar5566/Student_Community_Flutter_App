@@ -12,6 +12,7 @@ class ALL_FESTS {
   int? likeCount;
   String? dateOfJoin;
   String? domain;
+  int? starMark;
   SmallUsername? head;
 
   ALL_FESTS(
@@ -26,6 +27,7 @@ class ALL_FESTS {
       this.likeCount,
       this.dateOfJoin,
       this.domain,
+      this.starMark,
       this.head});
 
   ALL_FESTS.fromJson(Map<String, dynamic> json) {
@@ -40,6 +42,7 @@ class ALL_FESTS {
     likeCount = json['like_count'];
     dateOfJoin = json['date_of_join'];
     domain = json['domain'];
+    starMark = json['star_mark'];
     head =
         json['head'] != null ? new SmallUsername.fromJson(json['head']) : null;
   }
@@ -57,6 +60,7 @@ class ALL_FESTS {
     data['like_count'] = this.likeCount;
     data['date_of_join'] = this.dateOfJoin;
     data['domain'] = this.domain;
+    data['star_mark'] = this.starMark;
     if (this.head != null) {
       data['head'] = this.head!.toJson();
     }

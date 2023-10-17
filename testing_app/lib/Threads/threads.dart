@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:testing_app/Threads/threads.dart';
 import 'Servers.dart';
 import 'Models.dart';
 import 'package:testing_app/User_profile/Models.dart';
 import '/servers/servers.dart';
 import 'package:get_time_ago/get_time_ago.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:file_picker/file_picker.dart';
-import 'dart:io';
-import 'package:video_player/video_player.dart';
 import '/Files_disply_download/pdf_videos_images.dart';
 import '/first_page.dart';
-import 'package:testing_app/Year_Branch_Selection/Year_Branch_Selection.dart';
+import 'Upload_opinion.dart';
+import 'package:testing_app/User_Star_Mark/user_star_mark.dart';
 
 //import 'package:link_text/link_text.dart';
 import 'dart:convert' show utf8;
@@ -114,27 +112,29 @@ class _alertwidget1State extends State<alertwidget1> {
                 return _buildLoadingScreen(alert, widget.alert_list);
               }),
           total_loaded
-              ? Container(
-                  width: width,
-                  height: 100,
-                  child: Center(
-                      child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              total_loaded = false;
-                            });
-                            load_data_fun();
-                          },
-                          child: const Column(
-                            children: [
-                              Icon(Icons.add_circle_outline,
-                                  size: 40, color: Colors.blueGrey),
-                              Text(
-                                "Tap To Load more",
-                                style: TextStyle(color: Colors.blueGrey),
-                              )
-                            ],
-                          ))))
+              ? widget.alert_list.length > 10
+                  ? Container(
+                      width: width,
+                      height: 100,
+                      child: Center(
+                          child: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  total_loaded = false;
+                                });
+                                load_data_fun();
+                              },
+                              child: const Column(
+                                children: [
+                                  Icon(Icons.add_circle_outline,
+                                      size: 40, color: Colors.blueGrey),
+                                  Text(
+                                    "Tap To Load more",
+                                    style: TextStyle(color: Colors.blueGrey),
+                                  )
+                                ],
+                              ))))
+                  : Container()
               : Container(
                   width: 100,
                   height: 100,
@@ -203,14 +203,7 @@ class _alertwidget1State extends State<alertwidget1> {
                               ),
                             ),
                             const SizedBox(width: 10),
-                            9 % 9 == 0
-                                ? const Icon(
-                                    Icons
-                                        .verified_rounded, //verified_rounded,verified_outlined
-                                    color: Colors.green,
-                                    size: 18,
-                                  )
-                                : Container()
+                            userMarkNotation(user.starMark!)
                           ],
                         ),
                         Text(alert_posted_date.substring(0, 7),
@@ -418,14 +411,7 @@ class _alert_commentwidgetState extends State<alert_commentwidget> {
                               ),
                             ),
                             const SizedBox(width: 10),
-                            9 % 9 == 0
-                                ? const Icon(
-                                    Icons
-                                        .verified_rounded, //verified_rounded,verified_outlined
-                                    color: Colors.green,
-                                    size: 18,
-                                  )
-                                : Container()
+                            userMarkNotation(widget.alert.username!.starMark!)
                           ],
                         ),
                         Text(
@@ -475,7 +461,7 @@ class _alert_commentwidgetState extends State<alert_commentwidget> {
         onPressed: () {
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (BuildContext context) {
-            return upload_alert_cmntwidget(widget.app_user, widget.alert);
+            return upload_alert_cmnt(widget.app_user, widget.alert);
           })).then((value) async {
             setState(() {
               load_data = false;
@@ -574,14 +560,7 @@ class _lst_cmnt_pageState extends State<lst_cmnt_page> {
                               ),
                             ),
                             const SizedBox(width: 10),
-                            9 % 9 == 0
-                                ? const Icon(
-                                    Icons
-                                        .verified_rounded, //verified_rounded,verified_outlined
-                                    color: Colors.green,
-                                    size: 18,
-                                  )
-                                : Container()
+                            userMarkNotation(user.starMark!)
                           ],
                         ),
                         Text(
@@ -691,486 +670,5 @@ class _lst_cmnt_pageState extends State<lst_cmnt_page> {
             endIndent: 5,
           ),
         ]));
-  }
-}
-
-class upload_alert_cmntwidget extends StatefulWidget {
-  Username app_user;
-  ALERT_LIST alert;
-  upload_alert_cmntwidget(this.app_user, this.alert);
-
-  @override
-  State<upload_alert_cmntwidget> createState() =>
-      _upload_alert_cmntwidgetState();
-}
-
-class _upload_alert_cmntwidgetState extends State<upload_alert_cmntwidget> {
-  var description;
-  var file;
-  var file_type;
-  bool _showController = true;
-  VideoPlayerController? _videoPlayerController;
-
-  loadVideoPlayer(File file) {
-    if (_videoPlayerController != null) {
-      _videoPlayerController!.dispose();
-    }
-
-    _videoPlayerController = VideoPlayerController.file(file,
-        videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true));
-    _videoPlayerController!.initialize().then((value) {
-      setState(() {});
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width;
-    return Scaffold(
-        appBar: AppBar(
-          leading: const BackButton(
-            color: Colors.blue, // <-- SEE HERE
-          ),
-          centerTitle: true,
-          title: const Text(
-            "Alert Opinions",
-            style: TextStyle(color: Colors.black),
-          ),
-          backgroundColor: Colors.white70,
-        ),
-        body: SingleChildScrollView(
-          child: Container(
-            //color: Colors.pink[100],
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("images/background.jpg"),
-                  fit: BoxFit.cover),
-            ),
-            child: SingleChildScrollView(
-              child: Column(
-                //mainAxisAlignment: MainAxisAlignment.center,
-                //crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(
-                    height: 50,
-                  ),
-                  const Text(
-                    "Share Your Opinion",
-                    style: TextStyle(
-                        color: Colors.indigo,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 20),
-                  Form(
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 10),
-                        Container(
-                          padding: EdgeInsets.only(left: 40, right: 40),
-                          child: TextFormField(
-                            keyboardType: TextInputType.multiline,
-                            minLines:
-                                4, //Normal textInputField will be displayed
-                            maxLines: 10,
-                            decoration: const InputDecoration(
-                              labelText: 'Description',
-                              hintText: 'about the post.....',
-                              prefixIcon: Icon(Icons.text_fields),
-                              border: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10))),
-                            ),
-                            onChanged: (String value) {
-                              setState(() {
-                                description = value;
-                                if (description == "") {
-                                  description = null;
-                                }
-                              });
-                            },
-                            validator: (value) {
-                              return value!.isEmpty
-                                  ? 'please enter password'
-                                  : null;
-                            },
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        const Text(
-                          "Add an image (Optional)",
-                          style: TextStyle(
-                              color: Colors.indigo,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(height: 20),
-                        IconButton(
-                          onPressed: () async {
-                            showDialog(
-                                context: context,
-                                barrierDismissible: false,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    contentPadding: EdgeInsets.all(15),
-                                    content: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Container(),
-                                            IconButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                icon: const Icon(Icons.close))
-                                          ],
-                                        ),
-                                        const SizedBox(height: 20),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            IconButton(
-                                                onPressed: () async {
-                                                  if (Platform.isAndroid) {
-                                                    final ImagePicker _picker =
-                                                        ImagePicker();
-                                                    final XFile? image1 =
-                                                        await _picker.pickImage(
-                                                            source: ImageSource
-                                                                .gallery,
-                                                            imageQuality: 35);
-                                                    setState(() {
-                                                      file = File(image1!.path);
-
-                                                      file_type = 1;
-                                                    });
-                                                  } else {
-                                                    final ImagePicker _picker =
-                                                        ImagePicker();
-                                                    final XFile? image1 =
-                                                        await _picker.pickImage(
-                                                            source: ImageSource
-                                                                .gallery,
-                                                            imageQuality: 5);
-                                                    setState(() {
-                                                      file = File(image1!.path);
-
-                                                      file_type = 1;
-                                                    });
-                                                  }
-                                                },
-                                                icon: const Icon(
-                                                    Icons
-                                                        .photo_library_outlined,
-                                                    size: 20)),
-                                            IconButton(
-                                                onPressed: () async {
-                                                  final ImagePicker _picker =
-                                                      ImagePicker();
-                                                  final image1 =
-                                                      await _picker.pickVideo(
-                                                    source: ImageSource.gallery,
-                                                  );
-
-                                                  //final bytes = await File(image1!.path).readAsBytes();
-                                                  setState(() {
-                                                    file = File(image1!.path);
-
-                                                    file_type = 2;
-                                                    //final img.Image image = img.decodeImage(bytes)!;
-                                                  });
-                                                  loadVideoPlayer(file);
-                                                },
-                                                icon: const Icon(
-                                                  Icons
-                                                      .video_collection_outlined,
-                                                  size: 20,
-                                                )),
-                                            IconButton(
-                                                onPressed: () async {
-                                                  final result =
-                                                      await FilePicker.platform
-                                                          .pickFiles(
-                                                    type: FileType.custom,
-                                                    allowedExtensions: ['pdf'],
-                                                  );
-                                                  setState(() {
-                                                    file = File(
-                                                        result!.paths.first ??
-                                                            '');
-
-                                                    file_type = 3;
-                                                  });
-                                                },
-                                                icon: const Icon(
-                                                    Icons.file_copy_sharp,
-                                                    size: 20)),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  );
-                                });
-                          },
-                          icon: const Icon(
-                            Icons.camera_alt,
-                            size: 30,
-                          ),
-                          color: Colors.blue,
-                        ),
-                        const SizedBox(height: 10),
-                        (description != null)
-                            ? Container(
-                                padding: EdgeInsets.only(left: 40, right: 40),
-                                margin: EdgeInsets.only(top: 40),
-                                width: 270,
-                                height: 60,
-                                child: MaterialButton(
-                                  shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(15.0))),
-                                  minWidth: double.infinity,
-                                  onPressed: () async {
-                                    Navigator.of(context);
-                                    if (widget.app_user.email ==
-                                        "guest@nitc.ac.in") {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(const SnackBar(
-                                              content: Text(
-                                                  "guest cannot share opinions..",
-                                                  style: TextStyle(
-                                                      color: Colors.white))));
-                                    } else {
-                                      showDialog(
-                                          context: context,
-                                          barrierDismissible: false,
-                                          builder: (context) {
-                                            return AlertDialog(
-                                                contentPadding:
-                                                    EdgeInsets.all(15),
-                                                content: Container(
-                                                  margin: EdgeInsets.all(10),
-                                                  child: const Column(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      children: [
-                                                        Text(
-                                                            "Please wait while uploading....."),
-                                                        SizedBox(height: 10),
-                                                        CircularProgressIndicator()
-                                                      ]),
-                                                ));
-                                          });
-                                      if (file_type == null) {
-                                        file = File('images/club.jpg');
-                                        file_type = 0;
-                                      }
-                                      List<dynamic> error =
-                                          await threads_servers()
-                                              .post_alert_cmnt(
-                                                  description,
-                                                  widget.alert.id!,
-                                                  file,
-                                                  file_type,
-                                                  notif_years.join(''),
-                                                  notif_branchs.join("@"));
-
-                                      Navigator.pop(context);
-                                      if (!error[0]) {
-                                        Navigator.pop(context);
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(const SnackBar(
-                                                content: Text(
-                                                    "Uploaded successfully",
-                                                    style: TextStyle(
-                                                        color: Colors.white))));
-                                        await Future.delayed(
-                                            Duration(seconds: 2));
-
-                                        /*              bool error = await threads_servers()
-                                            .send_notifications(
-                                                widget.app_user.email!,
-                                                " shared a new opinion on " +
-                                                    " : " +
-                                                    widget.alert.title! +
-                                                    ' :' +
-                                                    description,
-                                                4);
-                                        if (error) {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(const SnackBar(
-                                                  content: Text(
-                                                      "Failed to send notifications",
-                                                      style: TextStyle(
-                                                          color:
-                                                              Colors.white))));   
-                                        } */
-                                      } else {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(const SnackBar(
-                                                content: Text("Failed",
-                                                    style: TextStyle(
-                                                        color: Colors.white))));
-                                      }
-                                    }
-                                  },
-                                  color: Colors.indigo[200],
-                                  textColor: Colors.black,
-                                  child: const Text(
-                                    "Upload",
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ))
-                            : Container(
-                                margin: EdgeInsets.only(top: 40),
-                                padding: EdgeInsets.only(left: 40, right: 40),
-                                width: 250,
-                                height: 55,
-                                child: MaterialButton(
-                                  shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(15.0))),
-                                  minWidth: double.infinity,
-                                  onPressed: () {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text(
-                                          "Fill all the details",
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  color: Colors.green[200],
-                                  textColor: Colors.white,
-                                  child: const Text("Upload",
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w500)),
-                                )),
-                        const SizedBox(height: 10),
-                        file != null
-                            ? Container(
-                                //height: width * 1.4, // image_ratio,
-                                //width: width,
-                                margin: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(20)),
-                                child: file_type == 1
-                                    ? Image.file(file)
-                                    : file_type == 2
-                                        ? GestureDetector(
-                                            onTap: () {
-                                              setState(() {
-                                                _showController =
-                                                    !_showController;
-                                              });
-                                            },
-                                            child: AspectRatio(
-                                              aspectRatio:
-                                                  _videoPlayerController!
-                                                      .value.aspectRatio,
-                                              child: Stack(
-                                                alignment:
-                                                    Alignment.bottomCenter,
-                                                children: <Widget>[
-                                                  VideoPlayer(
-                                                      _videoPlayerController!),
-                                                  ClosedCaption(text: null),
-                                                  _showController == true
-                                                      ? Center(
-                                                          child: InkWell(
-                                                          child: Icon(
-                                                            _videoPlayerController!
-                                                                    .value
-                                                                    .isPlaying
-                                                                ? Icons.pause
-                                                                : Icons
-                                                                    .play_arrow,
-                                                            color: Colors.white,
-                                                            size: 60,
-                                                          ),
-                                                          onTap: () {
-                                                            setState(() {
-                                                              _videoPlayerController!
-                                                                      .value
-                                                                      .isPlaying
-                                                                  ? _videoPlayerController!
-                                                                      .pause()
-                                                                  : _videoPlayerController!
-                                                                      .play();
-                                                              _showController =
-                                                                  !_showController;
-                                                            });
-                                                          },
-                                                        ))
-                                                      : Container(),
-                                                  // Here you can also add Overlay capacities
-                                                  VideoProgressIndicator(
-                                                    _videoPlayerController!,
-                                                    allowScrubbing: true,
-                                                    padding: EdgeInsets.all(3),
-                                                    colors:
-                                                        const VideoProgressColors(
-                                                      backgroundColor:
-                                                          Colors.redAccent,
-                                                      playedColor: Colors.green,
-                                                      bufferedColor:
-                                                          Colors.purple,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          )
-                                        : file_type == 3
-                                            ? GestureDetector(
-                                                onTap: () {
-                                                  Navigator.of(context).push(
-                                                      MaterialPageRoute(builder:
-                                                          (BuildContext
-                                                              context) {
-                                                    return pdfviewer(file);
-                                                  }));
-                                                },
-                                                child: Center(
-                                                  child: Container(
-                                                      height: width * (0.7),
-                                                      width: width,
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(8),
-                                                          image: const DecorationImage(
-                                                              image: AssetImage(
-                                                                  "images/Explorer.png"),
-                                                              fit: BoxFit
-                                                                  .cover))),
-                                                ))
-                                            : Container())
-                            : Container()
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ));
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _videoPlayerController!.dispose();
   }
 }

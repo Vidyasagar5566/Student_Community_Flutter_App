@@ -36,6 +36,8 @@ import 'Notes/qn_paper.dart';
 import 'Threads/threads.dart';
 import 'Register/Register.dart';
 import 'User_Star_Mark/user_star_mark.dart';
+import 'Messanger/Models.dart';
+import 'package:flutter/rendering.dart';
 
 List<Lost_Found> lst_buy_list = [];
 List<POST_LIST> all_posts = [];
@@ -45,6 +47,7 @@ List<POST_LIST> user_posts = [];
 List<SmallUsername> all_search_users = [];
 String user_name = "";
 List<String> post_uni_selection = [];
+List<Messager> user_conversation = [];
 
 class get_ueser_widget extends StatefulWidget {
   int curr_index;
@@ -96,19 +99,6 @@ class _firstpageState extends State<firstpage> {
   String domain = 'All';
   int notif_count = 0;
   bool drop_colors = true;
-  void repeat() {
-    Timer.periodic(const Duration(seconds: 10), (Timer t) async {
-      Username updated_app_user = await login_servers().get_user();
-      setState(() {
-        notif_count = updated_app_user.notifCount!;
-      });
-    });
-  }
-
-  void initState() {
-    super.initState();
-    //repeat();
-  }
 
   @override
   Widget build(BuildContext context) {

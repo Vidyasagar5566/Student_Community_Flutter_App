@@ -15,6 +15,7 @@ class ALL_SPORTS {
   bool? isLike;
   int? likeCount;
   String? domain;
+  int? starMark;
   SmallUsername? head;
 
   ALL_SPORTS(
@@ -32,6 +33,7 @@ class ALL_SPORTS {
       this.isLike,
       this.likeCount,
       this.domain,
+      this.starMark,
       this.head});
 
   ALL_SPORTS.fromJson(Map<String, dynamic> json) {
@@ -49,6 +51,7 @@ class ALL_SPORTS {
     isLike = json['is_like'];
     likeCount = json['like_count'];
     domain = json['domain'];
+    starMark = json['stra_mark'];
     head =
         json['head'] != null ? new SmallUsername.fromJson(json['head']) : null;
   }
@@ -69,6 +72,7 @@ class ALL_SPORTS {
     data['is_like'] = this.isLike;
     data['like_count'] = this.likeCount;
     data['domain'] = this.domain;
+    data['star_mark'] = this.starMark;
     if (this.head != null) {
       data['head'] = this.head!.toJson();
     }

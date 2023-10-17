@@ -13,6 +13,7 @@ import '../Files_disply_download/pdf_videos_images.dart';
 import '/First_page.dart';
 import 'package:get_time_ago/get_time_ago.dart';
 import 'package:testing_app/Reports/Uploads.dart';
+import 'package:testing_app/User_Star_Mark/user_star_mark.dart';
 
 String utf8convert(String text) {
   List<int> bytes = text.toString().codeUnits;
@@ -157,6 +158,11 @@ class _postwidget1State extends State<postwidget1> {
     });
   }
 
+  var _scrollController = ScrollController();
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -168,10 +174,9 @@ class _postwidget1State extends State<postwidget1> {
                 itemCount: widget.post_list.length,
                 shrinkWrap: true,
                 padding: EdgeInsets.only(bottom: 10),
-                physics: const NeverScrollableScrollPhysics(),
+                physics: ClampingScrollPhysics(),
                 itemBuilder: (BuildContext context, int index) {
                   POST_LIST post = widget.post_list[index];
-
                   var _convertedTimestamp = DateTime.parse(
                       post.postedDate!); // Converting into [DateTime] object
                   String post_posted_date =
@@ -271,54 +276,7 @@ class _single_postState extends State<single_post> {
                         : const CircleAvatar(
                             backgroundImage: AssetImage("images/profile.jpg")),
                   ),
-                  Container(
-                    padding: EdgeInsets.only(left: 20),
-                    width: (width - 36) / 1.8,
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Container(
-                                constraints: BoxConstraints(
-                                    maxWidth: (width - 36) / 2.4),
-                                child: Text(
-                                  user.username!,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  //"Vidya Sagar",
-                                  //lst_list[index].username,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 16,
-                                    //color: Colors.white
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 10),
-                              9 % 9 == 0
-                                  ? const Icon(
-                                      Icons
-                                          .verified_rounded, //verified_rounded,verified_outlined
-                                      color: Colors.green,
-                                      size: 18,
-                                    )
-                                  : Container()
-                            ],
-                          ),
-                          Text(
-                            //"B190838EC",
-                            domains[user.domain!]! +
-                                " (" +
-                                user.userMark! +
-                                ")",
-                            overflow: TextOverflow.ellipsis,
-                            //lst_list.username.rollNum,
-                            //style: const TextStyle(color: Colors.white),
-                            maxLines: 1,
-                          )
-                        ]),
-                  )
+                  UserProfileMark(post.username!)
                 ],
               ),
               IconButton(
