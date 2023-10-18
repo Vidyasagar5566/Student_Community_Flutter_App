@@ -3,12 +3,12 @@ import 'package:testing_app/Threads/threads.dart';
 import 'Servers.dart';
 import 'Models.dart';
 import 'package:testing_app/User_profile/Models.dart';
-import '/servers/servers.dart';
+import 'package:testing_app/Fcm_Notif_Domains/servers.dart';
 import 'package:get_time_ago/get_time_ago.dart';
 import '/Files_disply_download/pdf_videos_images.dart';
 import '/first_page.dart';
 import 'Upload_opinion.dart';
-import 'package:testing_app/User_Star_Mark/user_star_mark.dart';
+import 'package:testing_app/User_Star_Mark/User_Profile_Star_Mark.dart';
 
 //import 'package:link_text/link_text.dart';
 import 'dart:convert' show utf8;
@@ -161,87 +161,52 @@ class _alertwidget1State extends State<alertwidget1> {
       child: Container(
           margin: const EdgeInsets.only(top: 8, left: 10, right: 10),
           padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-              /*       gradient: LinearGradient(
-                  colors: [Colors.deepPurple, Colors.purple.shade300],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight),  */
-              borderRadius: BorderRadius.circular(19)),
-          child: Row(
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(19)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                  width: 48, //post.profile_pic
-                  child: user.fileType == '1'
-                      ? CircleAvatar(
-                          backgroundImage: NetworkImage(user.profilePic!))
-                      : const CircleAvatar(
-                          backgroundImage: AssetImage("images/profile.jpg"))),
-              const SizedBox(width: 10),
-              Column(
-                children: [
-                  SizedBox(
-                    width: wid - 100,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Container(
-                              constraints:
-                                  BoxConstraints(maxWidth: (wid - 36) / 2.4),
-                              child: Text(
-                                user.username!,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                //"Vidya Sagar",
-                                //lst_list[index].username,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 16,
-                                  //color: Colors.white
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            userMarkNotation(user.starMark!)
-                          ],
-                        ),
-                        Text(alert_posted_date.substring(0, 7),
-                            style: const TextStyle(
-                                //     color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 13))
-                      ],
-                    ),
+                width: wid - 50,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    alert.category == 'student'
+                        ? UserProfileMark(alert.username!)
+                        : UserProfileMarkAdmin(alert, alert.username),
+                    Text(alert_posted_date.substring(0, 7),
+                        style: const TextStyle(
+                            //     color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13))
+                  ],
+                ),
+              ),
+              const SizedBox(height: 18),
+              SizedBox(
+                width: wid - 50,
+                child: Text(
+                  alert.title!,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w700,
+                    // color: Colors.white,
+                    fontSize: 14,
                   ),
-                  const SizedBox(height: 5),
-                  SizedBox(
-                    width: wid - 100,
-                    child: Text(
-                      alert.title!,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w700,
-                        // color: Colors.white,
-                        fontSize: 14,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              const SizedBox(height: 5),
+              SizedBox(
+                width: wid - 50,
+                child: Text(
+                  alert.description!,
+                  style: const TextStyle(
+                    //    color: Colors.white,
+                    fontSize: 13,
                   ),
-                  const SizedBox(height: 5),
-                  SizedBox(
-                    width: wid - 100,
-                    child: Text(
-                      alert.description!,
-                      style: const TextStyle(
-                        //    color: Colors.white,
-                        fontSize: 13,
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  )
-                ],
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
               )
             ],
           )),
@@ -377,57 +342,9 @@ class _alert_commentwidgetState extends State<alert_commentwidget> {
                 ),
               ),
               const SizedBox(height: 30),
-              Row(children: [
-                Container(
-                  width: 48, //post.profile_pic
-                  child: widget.alert.username!.fileType == '1'
-                      ? CircleAvatar(
-                          backgroundImage:
-                              NetworkImage(widget.alert.username!.profilePic!))
-                      : const CircleAvatar(
-                          backgroundImage: AssetImage("images/profile.jpg")),
-                ),
-                Container(
-                  padding: EdgeInsets.only(left: 20),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Container(
-                              constraints:
-                                  BoxConstraints(maxWidth: (width - 36) / 2.4),
-                              child: Text(
-                                widget.alert.username!.username!,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                //"Vidya Sagar",
-                                //lst_list[index].username,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 16,
-                                  //color: Colors.white
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            userMarkNotation(widget.alert.username!.starMark!)
-                          ],
-                        ),
-                        Text(
-                          //"B190838EC",
-                          domains[widget.alert.username!.domain!]! +
-                              " (" +
-                              widget.alert.username!.userMark! +
-                              ")",
-                          overflow: TextOverflow.ellipsis,
-                          //lst_list.username.rollNum,
-                          //style: const TextStyle(color: Colors.white),
-                          maxLines: 1,
-                        )
-                      ]),
-                )
-              ]),
+              widget.alert.category == 'student'
+                  ? UserProfileMark(widget.alert.username!)
+                  : UserProfileMarkAdmin(widget.alert, widget.alert.username),
               const SizedBox(height: 20),
               Text(widget.alert.description!,
                   style: const TextStyle(fontSize: 15)),
@@ -525,55 +442,7 @@ class _lst_cmnt_pageState extends State<lst_cmnt_page> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(children: [
-                Container(
-                  width: 48, //post.profile_pic
-                  child: alert_cmnt.username!.fileType == '1'
-                      ? CircleAvatar(
-                          backgroundImage:
-                              NetworkImage(alert_cmnt.username!.profilePic!))
-                      : const CircleAvatar(
-                          backgroundImage: AssetImage("images/profile.jpg")),
-                ),
-                Container(
-                  padding: EdgeInsets.only(left: 20),
-                  width: (width - 36) / 1.8,
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Container(
-                              constraints:
-                                  BoxConstraints(maxWidth: (width - 36) / 2.4),
-                              child: Text(
-                                user.username!,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                //"Vidya Sagar",
-                                //lst_list[index].username,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 16,
-                                  //color: Colors.white
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            userMarkNotation(user.starMark!)
-                          ],
-                        ),
-                        Text(
-                          //"B190838EC",
-                          domains[user.domain!]! + " (" + user.userMark! + ")",
-                          overflow: TextOverflow.ellipsis,
-                          //lst_list.username.rollNum,
-                          //style: const TextStyle(color: Colors.white),
-                          maxLines: 1,
-                        )
-                      ]),
-                )
-              ]),
+              UserProfileMark(user),
               (user.email == app_user.email)
                   ? Center(
                       child: IconButton(

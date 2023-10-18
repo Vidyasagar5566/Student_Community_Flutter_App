@@ -4,14 +4,14 @@ import '../first_page.dart';
 import 'Servers.dart';
 import 'Models.dart';
 import 'package:testing_app/User_profile/Models.dart';
-import '../servers/servers.dart';
+import 'package:testing_app/Fcm_Notif_Domains/servers.dart';
 import 'dart:convert' show utf8;
 import 'Uploads.dart';
 import 'package:testing_app/Reports/Uploads.dart';
 import 'package:get_time_ago/get_time_ago.dart';
 import 'dart:io';
 import '../Files_disply_download/pdf_videos_images.dart';
-import 'package:testing_app/User_Star_Mark/user_star_mark.dart';
+import 'package:testing_app/User_Star_Mark/User_Profile_Star_Mark.dart';
 
 String utf8convert(String text) {
   List<int> bytes = text.toString().codeUnits;
@@ -206,59 +206,55 @@ class _all_lostwidget1State extends State<all_lostwidget1> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(children: [
-                        Container(
-                          width: (width - 36) / 8, //post.profile_pic
-                          child: user.fileType == '1'
-                              ? CircleAvatar(
-                                  backgroundImage:
-                                      NetworkImage(user.profilePic!))
-                              : const CircleAvatar(
-                                  backgroundImage:
-                                      AssetImage("images/profile.jpg")),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(left: 20),
-                          width: (width - 36) / 1.8,
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      constraints: BoxConstraints(
-                                          maxWidth: (width - 36) / 2.4),
-                                      child: Text(
-                                        user.username!,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        //"Vidya Sagar",
-                                        //lst_list[index].username,
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 16,
-                                          //color: Colors.white
+                      Row(
+                        children: [
+                          Container(
+                            width: 48, //post.profile_pic
+                            child: user.fileType == '1'
+                                ? CircleAvatar(
+                                    backgroundImage:
+                                        NetworkImage(user.profilePic!))
+                                : const CircleAvatar(
+                                    backgroundImage:
+                                        AssetImage("images/profile.jpg")),
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(left: 20),
+                            width: (width - 36) / 1.8,
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        constraints: BoxConstraints(
+                                            maxWidth: (width - 36) / 2.4),
+                                        child: Text(
+                                          user.username!,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 16,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    const SizedBox(width: 10),
-                                    userMarkNotation(widget.app_user.starMark!)
-                                  ],
-                                ),
-                                Text(
-                                  //"B190838EC",
-                                  domains[user.domain!]! +
-                                      " (" +
-                                      user.userMark! +
-                                      ")",
-                                  overflow: TextOverflow.ellipsis,
-                                  //lst_list.username.rollNum,
-                                  //style: const TextStyle(color: Colors.white),
-                                  maxLines: 1,
-                                )
-                              ]),
-                        )
-                      ]),
+                                      const SizedBox(width: 10),
+                                      userMarkNotation(user.starMark!)
+                                    ],
+                                  ),
+                                  Text(
+                                    domains[user.domain!]! +
+                                        " (" +
+                                        user.userMark! +
+                                        ")",
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                  ),
+                                ]),
+                          ),
+                        ],
+                      ),
                       SizedBox(
                           width: (width - 36) / 4,
                           height: 30,

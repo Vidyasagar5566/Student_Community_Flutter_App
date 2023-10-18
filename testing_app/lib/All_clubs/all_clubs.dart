@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'Club_page.dart';
 import 'Models.dart';
 import 'package:testing_app/User_profile/Models.dart';
-import '/servers/servers.dart';
+import 'package:testing_app/Fcm_Notif_Domains/servers.dart';
 import 'Servers.dart';
 import 'package:flutter/services.dart';
 import 'dart:convert' show utf8;
 import 'package:testing_app/Reports/Uploads.dart';
 import 'Uploads.dart';
 import 'Search_bar.dart';
-import 'package:testing_app/User_Star_Mark/user_star_mark.dart';
+import 'package:testing_app/User_Star_Mark/User_Profile_Star_Mark.dart';
 
 String utf8convert(String text) {
   List<int> bytes = text.toString().codeUnits;
@@ -196,10 +196,10 @@ class _Allclubpagewidget1State extends State<Allclubpagewidget1> {
             },
             child: Container(
                 margin: EdgeInsets.all(5),
-                padding: EdgeInsets.all(20),
+                padding: EdgeInsets.all(5),
                 decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(8)),
+                    borderRadius: BorderRadius.circular(12)),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -211,9 +211,8 @@ class _Allclubpagewidget1State extends State<Allclubpagewidget1> {
                                 Container(
                                   width: 48,
                                   child: CircleAvatar(
-                                      backgroundImage: NetworkImage(club.logo!
-                                          //'images/DND-clun-profile.png'
-                                          )),
+                                      backgroundImage:
+                                          NetworkImage(club.logo!)),
                                 ),
                                 Container(
                                   padding: EdgeInsets.only(left: 20),
@@ -248,6 +247,7 @@ class _Allclubpagewidget1State extends State<Allclubpagewidget1> {
                                               ") ",
                                           overflow: TextOverflow.ellipsis,
                                           maxLines: 1,
+                                          style: TextStyle(fontSize: 15),
                                         )
                                       ]),
                                 )
@@ -310,100 +310,103 @@ class _Allclubpagewidget1State extends State<Allclubpagewidget1> {
                                 icon: const Icon(Icons.more_horiz))
                           ]),
                       const SizedBox(height: 6),
-                      Column(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(3),
-                            child: Text(utf8convert(club.description!),
-                                //'''The Forum for Dance and Dramatics, affectionately known as DnD,is one of the foremost entities of NITC, aimed to promote the culture of dance and drama among the students.Formed in 2002''',
-                                style: const TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.w500),
-                                softWrap: false,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 4),
-                          ),
-                          const SizedBox(
-                            height: 4,
-                          ),
-                          Container(
-                            padding: const EdgeInsets.all(4),
-                            child: Text(
-                                "club head : " +
-                                    head.username! +
-                                    ", contact : " +
-                                    head.phnNum!,
-                                style: const TextStyle(
-                                    fontSize: 12, fontWeight: FontWeight.w400)),
-                          )
-                        ],
+                      Container(
+                        margin: EdgeInsets.only(left: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(3),
+                              child: Text(utf8convert(club.description!),
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500),
+                                  softWrap: false,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 4),
+                            ),
+                            const SizedBox(height: 7),
+                            const Text("Club Head : ",
+                                style: TextStyle(fontWeight: FontWeight.w600)),
+                            const SizedBox(height: 4),
+                          ],
+                        ),
                       ),
-                      const SizedBox(height: 7),
-                      Row(children: [
-                        IconButton(
-                          onPressed: () async {
-                            if (widget.app_user.email == "guest@nitc.ac.in") {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content: Text(
-                                          "guests are not allowed to like..",
-                                          style:
-                                              TextStyle(color: Colors.white))));
-                            } else {
-                              setState(() {
-                                club.isLike = !club.isLike!;
-                              });
-                              if (club.isLike!) {
-                                setState(() {
-                                  club.likeCount = club.likeCount! + 1;
-                                });
-                                bool error = await all_clubs_servers()
-                                    .post_club_like(club.id!);
-                                if (error) {
-                                  setState(() {
-                                    club.likeCount = club.likeCount! - 1;
-                                    club.isLike = !club.isLike!;
-                                  });
-                                }
-                              } else {
-                                setState(() {
-                                  club.likeCount = club.likeCount! - 1;
-                                });
-                                bool error = await all_clubs_servers()
-                                    .delete_club_like(club.id!);
-                                if (error) {
-                                  setState(() {
-                                    club.likeCount = club.likeCount! + 1;
-                                    club.isLike = !club.isLike!;
-                                  });
-                                }
-                              }
-                              SystemSound.play(SystemSoundType.click);
-                            }
-                          },
-                          icon: club.isLike!
-                              ? const Icon(
-                                  Icons.favorite,
-                                  size: 28,
-                                  color: Colors.red,
-                                )
-                              : const Icon(
-                                  Icons.favorite_border_outlined,
-                                  size: 28,
-                                  color: Colors.red,
-                                ),
-                        ),
-                        // Text(post.likes.toString() + "likes")
-                        Text(
-                          club.likeCount.toString(),
-                          style: const TextStyle(fontSize: 10),
-                        ),
-                        const SizedBox(width: 25),
-                        const Text(
-                          "Tap on image to see full details",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 12),
-                        )
-                      ]),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            smallUserProfileMark(club.head!),
+                            Container(
+                              margin: EdgeInsets.only(right: 10),
+                              child: Row(
+                                children: [
+                                  IconButton(
+                                    onPressed: () async {
+                                      if (widget.app_user.email ==
+                                          "guest@nitc.ac.in") {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
+                                                content: Text(
+                                                    "guests are not allowed to like..",
+                                                    style: TextStyle(
+                                                        color: Colors.white))));
+                                      } else {
+                                        setState(() {
+                                          club.isLike = !club.isLike!;
+                                        });
+                                        if (club.isLike!) {
+                                          setState(() {
+                                            club.likeCount =
+                                                club.likeCount! + 1;
+                                          });
+                                          bool error = await all_clubs_servers()
+                                              .post_club_like(club.id!);
+                                          if (error) {
+                                            setState(() {
+                                              club.likeCount =
+                                                  club.likeCount! - 1;
+                                              club.isLike = !club.isLike!;
+                                            });
+                                          }
+                                        } else {
+                                          setState(() {
+                                            club.likeCount =
+                                                club.likeCount! - 1;
+                                          });
+                                          bool error = await all_clubs_servers()
+                                              .delete_club_like(club.id!);
+                                          if (error) {
+                                            setState(() {
+                                              club.likeCount =
+                                                  club.likeCount! + 1;
+                                              club.isLike = !club.isLike!;
+                                            });
+                                          }
+                                        }
+                                        SystemSound.play(SystemSoundType.click);
+                                      }
+                                    },
+                                    icon: club.isLike!
+                                        ? const Icon(
+                                            Icons.favorite,
+                                            size: 28,
+                                            color: Colors.red,
+                                          )
+                                        : const Icon(
+                                            Icons.favorite_border_outlined,
+                                            size: 28,
+                                            color: Colors.red,
+                                          ),
+                                  ),
+                                  // Text(post.likes.toString() + "likes")
+                                  Text(
+                                    club.likeCount.toString(),
+                                    style: const TextStyle(fontSize: 10),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ]),
                       const SizedBox(height: 5)
                     ]))));
   }

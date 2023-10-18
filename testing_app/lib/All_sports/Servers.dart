@@ -25,10 +25,10 @@ class all_sports_servers {
       var data = json.decode(response.body) as List;
       List<ALL_SPORTS> temp = [];
       data.forEach((element) {
+        print(element['star_mark']);
         ALL_SPORTS post = ALL_SPORTS.fromJson(element);
         temp.add(post);
       });
-      print(temp);
       return temp;
     } catch (e) {
       print(e);
@@ -36,7 +36,6 @@ class all_sports_servers {
       return temp;
     }
   }
-
 
   Future<bool> create_sport(String email, String sport_name) async {
     try {
@@ -57,8 +56,6 @@ class all_sports_servers {
       return true;
     }
   }
-
-
 
   Future<bool> edit_sport_list(
       int id,
@@ -210,8 +207,6 @@ class all_sports_servers {
       return temp;
     }
   }
-
-
 
   // SEARCH USERS LIST ,
 

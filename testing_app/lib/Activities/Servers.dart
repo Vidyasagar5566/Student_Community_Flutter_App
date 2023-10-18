@@ -44,7 +44,7 @@ class activity_servers {
       String image_ratio,
       String date,
       String all_university,
-      String event_category,
+      String category,
       int category_id) async {
     try {
       var token = storage.getItem('token');
@@ -70,7 +70,7 @@ class activity_servers {
           'image_ratio': image_ratio,
           'event_date': date,
           'is_all_university': is_all_university,
-          'event_category': event_category,
+          'category': category,
           'category_id': category_id
         }),
       );

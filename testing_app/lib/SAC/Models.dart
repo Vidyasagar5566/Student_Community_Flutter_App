@@ -4,7 +4,7 @@ class SAC_MEMS {
   int? id;
   String? logo;
   double? imgRatio;
-  String? role;
+  String? name;
   String? description;
   String? phoneNum;
   String? email;
@@ -17,7 +17,7 @@ class SAC_MEMS {
       {this.id,
       this.logo,
       this.imgRatio,
-      this.role,
+      this.name,
       this.description,
       this.phoneNum,
       this.email,
@@ -30,7 +30,7 @@ class SAC_MEMS {
     id = json['id'];
     logo = json['logo'];
     imgRatio = json['img_ratio'];
-    role = json['role'];
+    name = json['role'];
     description = json['description'];
     phoneNum = json['phone_num'];
     email = json['email'];
@@ -46,7 +46,7 @@ class SAC_MEMS {
     data['id'] = this.id;
     data['logo'] = this.logo;
     data['img_ratio'] = this.imgRatio;
-    data['role'] = this.role;
+    data['role'] = this.name;
     data['description'] = this.description;
     data['phone_num'] = this.phoneNum;
     data['email'] = this.email;

@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'Servers.dart';
 import 'Models.dart';
 import 'package:testing_app/User_profile/Models.dart';
-import '../servers/servers.dart';
+import 'package:testing_app/Fcm_Notif_Domains/servers.dart';
 //import 'package:link_text/link_text.dart';
 import 'package:flutter/services.dart';
 import 'dart:convert' show utf8;
@@ -13,7 +13,7 @@ import '../Files_disply_download/pdf_videos_images.dart';
 import '/First_page.dart';
 import 'package:get_time_ago/get_time_ago.dart';
 import 'package:testing_app/Reports/Uploads.dart';
-import 'package:testing_app/User_Star_Mark/user_star_mark.dart';
+import 'package:testing_app/User_Star_Mark/User_Profile_Star_Mark.dart';
 
 String utf8convert(String text) {
   List<int> bytes = text.toString().codeUnits;
@@ -266,19 +266,9 @@ class _single_postState extends State<single_post> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  Container(
-                    width: 48, //post.profile_pic
-                    child: user.fileType == '1'
-                        ? CircleAvatar(
-                            backgroundImage: NetworkImage(user.profilePic!))
-                        : const CircleAvatar(
-                            backgroundImage: AssetImage("images/profile.jpg")),
-                  ),
-                  UserProfileMark(post.username!)
-                ],
-              ),
+              post.category == 'student'
+                  ? UserProfileMark(post.username!)
+                  : UserProfileMarkAdmin(post, post.username),
               IconButton(
                 onPressed: () {
                   showDialog(

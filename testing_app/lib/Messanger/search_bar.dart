@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'Servers.dart';
 import 'Models.dart';
 import 'package:testing_app/User_profile/Models.dart';
-import '/servers/servers.dart';
+import 'package:testing_app/Fcm_Notif_Domains/servers.dart';
 import 'messanger.dart';
 import 'package:testing_app/first_page.dart';
-import 'package:testing_app/User_Star_Mark/user_star_mark.dart';
+import 'package:testing_app/User_Star_Mark/User_Profile_Star_Mark.dart';
 
 class search_bar extends StatefulWidget {
   Username app_user;
@@ -51,6 +51,7 @@ class _search_barState extends State<search_bar> {
           DropdownButton<String>(
               value: widget.domain,
               underline: Container(),
+              iconEnabledColor: Colors.white,
               elevation: 0,
               items: domains_list.map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
@@ -218,14 +219,15 @@ class _user_list_displayState extends State<user_list_display> {
                   Row(
                     children: [
                       Container(
-                          width: 48,
-                          child: search_user.fileType! == '1'
-                              ? CircleAvatar(
-                                  backgroundImage:
-                                      NetworkImage(search_user.profilePic!))
-                              : const CircleAvatar(
-                                  backgroundImage:
-                                      AssetImage("images/profile.jpg"))),
+                        width: 48, //post.profile_pic
+                        child: search_user.fileType == '1'
+                            ? CircleAvatar(
+                                backgroundImage:
+                                    NetworkImage(search_user.profilePic!))
+                            : const CircleAvatar(
+                                backgroundImage:
+                                    AssetImage("images/profile.jpg")),
+                      ),
                       Container(
                         padding: EdgeInsets.only(left: 20),
                         width: (width - 36) / 1.8,
@@ -258,9 +260,9 @@ class _user_list_displayState extends State<user_list_display> {
                                     ")",
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
-                              )
+                              ),
                             ]),
-                      )
+                      ),
                     ],
                   ),
                   Icon(Icons.more_horiz)

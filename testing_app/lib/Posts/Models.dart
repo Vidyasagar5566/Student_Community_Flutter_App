@@ -20,11 +20,11 @@ class POST_LIST {
   double? imgRatio;
   bool? allUniversities;
 
-  String? post_category;
-  ALL_CLUBS? club_post;
-  ALL_SPORTS? sport_post;
-  ALL_FESTS? fest_post;
-  SAC_MEMS? sac_post;
+  String? category;
+  ALL_CLUBS? club;
+  ALL_SPORTS? sport;
+  ALL_FESTS? fest;
+  SAC_MEMS? sac;
 
   POST_LIST(
       {this.id,
@@ -41,11 +41,11 @@ class POST_LIST {
       this.username,
       this.imgRatio,
       this.allUniversities,
-      this.post_category,
-      this.club_post,
-      this.sport_post,
-      this.fest_post,
-      this.sac_post});
+      this.category,
+      this.club,
+      this.sport,
+      this.fest,
+      this.sac});
 
   POST_LIST.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -65,19 +65,12 @@ class POST_LIST {
     imgRatio = json['img_ratio'];
     allUniversities = json['all_universities'];
 
-    post_category = json['post_category'];
-    club_post = json['club_post'] != null
-        ? new ALL_CLUBS.fromJson(json['club_post'])
-        : null;
-    sport_post = json['sport_post'] != null
-        ? new ALL_SPORTS.fromJson(json['sport_post'])
-        : null;
-    fest_post = json['fest_post'] != null
-        ? new ALL_FESTS.fromJson(json['fest_post'])
-        : null;
-    sac_post = json['sac_post'] != null
-        ? new SAC_MEMS.fromJson(json['sac_post'])
-        : null;
+    category = json['category'];
+    club = json['club'] != null ? new ALL_CLUBS.fromJson(json['club']) : null;
+    sport =
+        json['sport'] != null ? new ALL_SPORTS.fromJson(json['sport']) : null;
+    fest = json['fest'] != null ? new ALL_FESTS.fromJson(json['fest']) : null;
+    sac = json['sac'] != null ? new SAC_MEMS.fromJson(json['sac']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -99,18 +92,18 @@ class POST_LIST {
     data['img_ratio'] = this.imgRatio;
     data['all_universities'] = this.allUniversities;
 
-    data['post_category'] = this.post_category;
-    if (this.club_post != null) {
-      data['club_post'] = this.club_post!.toJson();
+    data['category'] = this.category;
+    if (this.club != null) {
+      data['club'] = this.club!.toJson();
     }
-    if (this.sport_post != null) {
-      data['sport_post'] = this.sport_post!.toJson();
+    if (this.sport != null) {
+      data['sport'] = this.sport!.toJson();
     }
-    if (this.fest_post != null) {
-      data['fest_post'] = this.fest_post!.toJson();
+    if (this.fest != null) {
+      data['fest'] = this.fest!.toJson();
     }
-    if (this.sac_post != null) {
-      data['sac_post'] = this.sac_post!.toJson();
+    if (this.sac != null) {
+      data['sac'] = this.sac!.toJson();
     }
     return data;
   }

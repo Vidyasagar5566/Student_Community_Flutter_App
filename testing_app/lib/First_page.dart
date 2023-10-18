@@ -23,7 +23,6 @@ import 'Threads/Uploads.dart';
 import 'App_notifications/Uploads.dart';
 import 'calender/Uploads.dart';
 import '/User_profile/Models.dart';
-import 'servers/servers.dart';
 import 'Side_menu_bar/side_menu.dart';
 import 'BuySell_LostFound/lostfound_buysell.dart';
 import 'Circular_designs/circular indicator.dart';
@@ -35,9 +34,10 @@ import 'package:testing_app/Placements/placements.dart';
 import 'Notes/qn_paper.dart';
 import 'Threads/threads.dart';
 import 'Register/Register.dart';
-import 'User_Star_Mark/user_star_mark.dart';
+import 'User_Star_Mark/User_Profile_Star_Mark.dart';
 import 'Messanger/Models.dart';
 import 'package:flutter/rendering.dart';
+import 'Fcm_Notif_Domains/servers.dart';
 
 List<Lost_Found> lst_buy_list = [];
 List<POST_LIST> all_posts = [];
@@ -73,10 +73,12 @@ class _get_ueser_widgetState extends State<get_ueser_widget> {
 
             star_user_mark(app_user);
 
-            if (app_user.isDetails!) {
-              return firstpage(widget.curr_index, app_user);
-            } else {
+            if (!app_user.isDetails!) {
               return LoginRegister(app_user);
+            } else if (app_user.updateMark != "instabook") {
+              return appUpdate();
+            } else {
+              return firstpage(widget.curr_index, app_user);
             }
           }
         }
@@ -101,11 +103,14 @@ class _firstpageState extends State<firstpage> {
   bool drop_colors = true;
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Future<bool> showExitPopup() async {
       return await showDialog(
-            //show confirm dialogue
-            //the return value will be from "Yes" or "No" options   n
             context: context,
             builder: (context) => AlertDialog(
               title: Text('Exit App'),

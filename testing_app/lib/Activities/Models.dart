@@ -1,4 +1,4 @@
-import 'package:testing_app/User_profile/models.dart';
+import 'package:testing_app/User_profile/Models.dart';
 import 'package:testing_app/SAC/Models.dart';
 import 'package:testing_app/All_clubs/Models.dart';
 import 'package:testing_app/All_sports/Models.dart';
@@ -14,15 +14,15 @@ class EVENT_LIST {
   int? likeCount;
   String? postedDate;
   String? eventUpdate;
-  Username? username;
+  SmallUsername? username;
   double? imgRatio;
   bool? allUniversities;
 
-  String? event_category;
-  ALL_CLUBS? club_event;
-  ALL_SPORTS? sport_event;
-  ALL_FESTS? fest_event;
-  SAC_MEMS? sac_event;
+  String? category;
+  ALL_CLUBS? club;
+  ALL_SPORTS? sport;
+  ALL_FESTS? fest;
+  SAC_MEMS? sac;
 
   EVENT_LIST(
       {this.id,
@@ -37,11 +37,11 @@ class EVENT_LIST {
       this.username,
       this.imgRatio,
       this.allUniversities,
-      this.event_category,
-      this.club_event,
-      this.sport_event,
-      this.fest_event,
-      this.sac_event});
+      this.category,
+      this.club,
+      this.sport,
+      this.fest,
+      this.sac});
 
   EVENT_LIST.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -54,24 +54,17 @@ class EVENT_LIST {
     eventUpdate = json['event_updates'];
     postedDate = json['posted_date'];
     username = json['username'] != null
-        ? new Username.fromJson(json['username'])
+        ? new SmallUsername.fromJson(json['username'])
         : null;
     imgRatio = json['img_ratio'];
     allUniversities = json['all_universities'];
 
-    event_category = json['event_category'];
-    club_event = json['club_event'] != null
-        ? new ALL_CLUBS.fromJson(json['club_event'])
-        : null;
-    sport_event = json['sport_event'] != null
-        ? new ALL_SPORTS.fromJson(json['sport_event'])
-        : null;
-    fest_event = json['fest_event'] != null
-        ? new ALL_FESTS.fromJson(json['fest_event'])
-        : null;
-    sac_event = json['sac_event'] != null
-        ? new SAC_MEMS.fromJson(json['sac_event'])
-        : null;
+    category = json['category'];
+    club = json['club'] != null ? new ALL_CLUBS.fromJson(json['club']) : null;
+    sport =
+        json['sport'] != null ? new ALL_SPORTS.fromJson(json['sport']) : null;
+    fest = json['fest'] != null ? new ALL_FESTS.fromJson(json['fest']) : null;
+    sac = json['sac'] != null ? new SAC_MEMS.fromJson(json['sac']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -91,18 +84,18 @@ class EVENT_LIST {
     data['img_ratio'] = this.imgRatio;
     data['all_universities'] = this.allUniversities;
 
-    data['event_category'] = this.event_category;
-    if (this.club_event != null) {
-      data['club_event'] = this.club_event!.toJson();
+    data['category'] = this.category;
+    if (this.club != null) {
+      data['club'] = this.club!.toJson();
     }
-    if (this.sport_event != null) {
-      data['sport_event'] = this.sport_event!.toJson();
+    if (this.sport != null) {
+      data['sport'] = this.sport!.toJson();
     }
-    if (this.fest_event != null) {
-      data['fest_event'] = this.fest_event!.toJson();
+    if (this.fest != null) {
+      data['fest'] = this.fest!.toJson();
     }
-    if (this.sac_event != null) {
-      data['sac_event'] = this.sac_event!.toJson();
+    if (this.sac != null) {
+      data['sac'] = this.sac!.toJson();
     }
 
     return data;

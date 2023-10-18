@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '/servers/servers.dart';
+import 'package:testing_app/Fcm_Notif_Domains/servers.dart';
 import 'Servers.dart';
 import 'Models.dart';
 import 'package:testing_app/User_profile/Models.dart';
@@ -11,7 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import '../Files_disply_download/pdf_videos_images.dart';
 import 'search_bar.dart';
 import 'Single_message.dart';
-import 'package:testing_app/User_Star_Mark/user_star_mark.dart';
+import 'package:testing_app/User_Star_Mark/User_Profile_Star_Mark.dart';
 
 String utf8convert(String text) {
   List<int> bytes = text.toString().codeUnits;
@@ -168,19 +168,15 @@ class _messanger1State extends State<messanger1> {
                       Row(
                         children: [
                           Container(
-                              width: 65,
-                              child: message_user.fileType! == '1'
-                                  ? CircleAvatar(
-                                      radius: 30,
-                                      backgroundImage:
-                                          //post.profile_pic
-                                          NetworkImage(
-                                              message_user.profilePic!))
-                                  : const CircleAvatar(
-                                      radius: 30,
-                                      backgroundImage:
-                                          //post.profile_pic
-                                          AssetImage("images/profile.jpg"))),
+                            width: 48, //post.profile_pic
+                            child: message_user.fileType == '1'
+                                ? CircleAvatar(
+                                    backgroundImage:
+                                        NetworkImage(message_user.profilePic!))
+                                : const CircleAvatar(
+                                    backgroundImage:
+                                        AssetImage("images/profile.jpg")),
+                          ),
                           Container(
                             padding: EdgeInsets.only(left: 20),
                             width: (width - 36) / 1.8,
@@ -196,12 +192,9 @@ class _messanger1State extends State<messanger1> {
                                           message_user.username!,
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
-                                          //"Vidya Sagar",
-                                          //lst_list[index].username,
                                           style: const TextStyle(
                                             fontWeight: FontWeight.w600,
                                             fontSize: 16,
-                                            //color: Colors.white
                                           ),
                                         ),
                                       ),
@@ -210,18 +203,15 @@ class _messanger1State extends State<messanger1> {
                                     ],
                                   ),
                                   Text(
-                                    //"B190838EC",
                                     domains[message_user.domain!]! +
                                         " (" +
                                         message_user.userMark! +
                                         ")",
                                     overflow: TextOverflow.ellipsis,
-                                    //lst_list.username.rollNum,
-                                    //style: const TextStyle(color: Colors.white),
                                     maxLines: 1,
-                                  )
+                                  ),
                                 ]),
-                          )
+                          ),
                         ],
                       ),
                       Icon(Icons.more_horiz)
@@ -283,7 +273,7 @@ class _messages_viewerState extends State<messages_viewer> {
   }
 
   bool total_loaded = false;
-  void load_data_fun() async {
+  void load_data_fun(String intial) async {
     List<Messager> latest_user_conversation = await messanger_servers()
         .user_user_messages(
             widget.message_user.email!, widget.user_conversation.length);
@@ -293,9 +283,11 @@ class _messages_viewerState extends State<messages_viewer> {
             latest_user_conversation + widget.user_conversation;
       });
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text("all the feed was shown..",
-              style: TextStyle(color: Colors.white))));
+      if (intial != 'intial') {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("all the feed was shown..",
+                style: TextStyle(color: Colors.white))));
+      }
     }
     setState(() {
       total_loaded = true;
@@ -304,7 +296,7 @@ class _messages_viewerState extends State<messages_viewer> {
 
   void initState() {
     super.initState();
-    load_data_fun();
+    load_data_fun('intial');
   }
 
   @override
@@ -332,7 +324,7 @@ class _messages_viewerState extends State<messages_viewer> {
                     child: Column(
                       children: [
                         total_loaded
-                            ? widget.user_conversation.length > 20
+                            ? widget.user_conversation.length > 5
                                 ? Container(
                                     width: width,
                                     height: 100,
@@ -342,7 +334,7 @@ class _messages_viewerState extends State<messages_viewer> {
                                               setState(() {
                                                 total_loaded = false;
                                               });
-                                              load_data_fun();
+                                              load_data_fun('');
                                             },
                                             child: const Column(
                                               children: [
@@ -364,17 +356,21 @@ class _messages_viewerState extends State<messages_viewer> {
                                     child: CircularProgressIndicator(
                                         color: Colors.blue))),
                         const SizedBox(height: 10),
-                        ListView.builder(
-                            itemCount: widget.user_conversation.length,
-                            shrinkWrap: true,
-                            padding: EdgeInsets.zero,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemBuilder: (BuildContext context, int index) {
-                              Messager message =
-                                  widget.user_conversation[index];
-                              return single_message(message, widget.app_user,
-                                  widget.message_user);
-                            }),
+                        widget.user_conversation.isEmpty && total_loaded
+                            ? const Center(
+                                child: Text("No Conversation Started Yet."),
+                              )
+                            : ListView.builder(
+                                itemCount: widget.user_conversation.length,
+                                shrinkWrap: true,
+                                padding: EdgeInsets.zero,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemBuilder: (BuildContext context, int index) {
+                                  Messager message =
+                                      widget.user_conversation[index];
+                                  return single_message(message,
+                                      widget.app_user, widget.message_user);
+                                }),
                         const SizedBox(height: 10),
                       ],
                     )),

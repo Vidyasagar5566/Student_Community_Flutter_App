@@ -10,6 +10,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:testing_app/User_Star_Mark/User_Profile_Star_Mark.dart';
 
 String utf8convert(String text) {
   List<int> bytes = text.toString().codeUnits;
@@ -216,6 +217,7 @@ class _single_eventState extends State<single_event> {
   Widget build(BuildContext context) {
     EVENT_LIST event = widget.event;
     var width = MediaQuery.of(context).size.width;
+    SmallUsername user = widget.event.username!;
     List<String> eventUpdates;
     eventUpdates = event.eventUpdate.toString().split('`');
     return GestureDetector(
@@ -343,72 +345,75 @@ class _single_eventState extends State<single_event> {
                     ),
                   ),
             const SizedBox(height: 8),
-            Row(children: [
-              IconButton(
-                onPressed: () async {
-                  if (widget.app_user.email == "guest@nitc.ac.in") {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          "Guests are not allowed",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    );
-                  } else {
-                    setState(() {
-                      event.isLike = !event.isLike!;
-                    });
-                    if (event.isLike!) {
-                      setState(() {
-                        event.likeCount = event.likeCount! + 1;
-                      });
-                      bool error =
-                          await activity_servers().post_event_like(event.id!);
-                      if (error) {
-                        setState(() {
-                          event.likeCount = event.likeCount! - 1;
-                          event.isLike = !event.isLike!;
-                        });
-                      }
-                    } else {
-                      setState(() {
-                        event.likeCount = event.likeCount! - 1;
-                      });
-                      bool error =
-                          await activity_servers().delete_event_like(event.id!);
-                      if (error) {
-                        setState(() {
-                          event.likeCount = event.likeCount! + 1;
-                          event.isLike = !event.isLike!;
-                        });
-                      }
-                      SystemSound.play(SystemSoundType.click);
-                    }
-                  }
-                },
-                icon: event.isLike!
-                    ? const Icon(
-                        Icons.favorite,
-                        size: 30,
-                        color: Colors.red,
-                      )
-                    : const Icon(
-                        Icons.favorite_border_outlined,
-                        size: 30,
-                        color: Colors.red,
-                      ),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              smallUserProfileMark(user),
+              Container(
+                margin: EdgeInsets.only(right: 20),
+                child: Row(
+                  children: [
+                    IconButton(
+                      onPressed: () async {
+                        if (widget.app_user.email == "guest@nitc.ac.in") {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                "Guests are not allowed",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          );
+                        } else {
+                          setState(() {
+                            event.isLike = !event.isLike!;
+                          });
+                          if (event.isLike!) {
+                            setState(() {
+                              event.likeCount = event.likeCount! + 1;
+                            });
+                            bool error = await activity_servers()
+                                .post_event_like(event.id!);
+                            if (error) {
+                              setState(() {
+                                event.likeCount = event.likeCount! - 1;
+                                event.isLike = !event.isLike!;
+                              });
+                            }
+                          } else {
+                            setState(() {
+                              event.likeCount = event.likeCount! - 1;
+                            });
+                            bool error = await activity_servers()
+                                .delete_event_like(event.id!);
+                            if (error) {
+                              setState(() {
+                                event.likeCount = event.likeCount! + 1;
+                                event.isLike = !event.isLike!;
+                              });
+                            }
+                            SystemSound.play(SystemSoundType.click);
+                          }
+                        }
+                      },
+                      icon: event.isLike!
+                          ? const Icon(
+                              Icons.favorite,
+                              size: 30,
+                              color: Colors.red,
+                            )
+                          : const Icon(
+                              Icons.favorite_border_outlined,
+                              size: 30,
+                              color: Colors.red,
+                            ),
+                    ),
+                    // Text(post.likes.toString() + "likes")
+                    Text(
+                      event.likeCount.toString(),
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  ],
+                ),
               ),
-              // Text(post.likes.toString() + "likes")
-              Text(
-                event.likeCount.toString(),
-                style: const TextStyle(fontSize: 16),
-              ),
-              const SizedBox(width: 30),
-              const Text(
-                "Tap on image to see full details",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-              )
             ]),
             const SizedBox(height: 4)
           ],

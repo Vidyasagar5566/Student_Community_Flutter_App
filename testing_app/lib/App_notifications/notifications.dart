@@ -4,6 +4,8 @@ import 'Models.dart';
 import 'package:testing_app/User_profile/Models.dart';
 //import 'package:link_text/link_text.dart';
 import 'dart:convert' show utf8;
+import 'package:testing_app/Fcm_Notif_Domains/servers.dart';
+import 'package:testing_app/User_Star_Mark/User_Profile_Star_Mark.dart';
 
 String utf8convert(String text) {
   List<int> bytes = text.toString().codeUnits;
@@ -113,37 +115,53 @@ class _notifications1State extends State<notifications1> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(children: [
-                Container(
-                  width: 48, //post.profile_pic
-                  child: user.fileType == '1'
-                      ? CircleAvatar(
-                          backgroundImage: NetworkImage(user.profilePic!))
-                      : const CircleAvatar(
-                          backgroundImage: AssetImage("images/profile.jpg")),
-                ),
-                const SizedBox(width: 10),
-                Container(
-                  width: width - 160,
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 2),
+              Row(
+                children: [
+                  Container(
+                    width: 48, //post.profile_pic
+                    child: user.fileType == '1'
+                        ? CircleAvatar(
+                            backgroundImage: NetworkImage(user.profilePic!))
+                        : const CircleAvatar(
+                            backgroundImage: AssetImage("images/profile.jpg")),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(left: 20),
+                    width: (width - 36) / 1.8,
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            notif.username!.username! + " : " + notif.title!,
-                            //"vidya sagar",
-                            style: const TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 16),
+                          Row(
+                            children: [
+                              Container(
+                                constraints: BoxConstraints(
+                                    maxWidth: (width - 36) / 2.4),
+                                child: Text(
+                                  user.username!,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              userMarkNotation(user.starMark!)
+                            ],
                           ),
-                          Text(notif.description!
-                              //"B190838EC",
-                              //style: TextStyle(color: Colors.white60),
-                              )
+                          Text(
+                            domains[user.domain!]! +
+                                " (" +
+                                user.userMark! +
+                                ")",
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                          ),
                         ]),
                   ),
-                ),
-              ]),
+                ],
+              ),
               user.username == widget.app_user.username
                   ? IconButton(
                       onPressed: () {

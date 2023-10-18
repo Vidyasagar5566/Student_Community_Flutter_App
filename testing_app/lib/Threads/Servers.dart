@@ -46,7 +46,7 @@ class threads_servers {
       String allow_years,
       String allow_branchs,
       String all_university,
-      String alert_category,
+      String category,
       int category_id) async {
     try {
       var token = storage.getItem('token');
@@ -76,7 +76,7 @@ class threads_servers {
             'allow_years': allow_years,
             'allow_branchs': allow_branchs,
             'is_all_university': is_all_university,
-            'alert_category': alert_category,
+            'category': category,
             'category_id': category_id
           }));
       var data = json.decode(response.body) as Map;

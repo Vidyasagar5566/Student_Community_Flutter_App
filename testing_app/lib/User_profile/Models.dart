@@ -41,6 +41,7 @@ class Username {
   String? platform;
   String? domain;
   bool? isDetails;
+  String? updateMark;
   bool? clzClubsHead;
   bool? clzSportsHead;
   bool? clzFestsHead;
@@ -94,6 +95,7 @@ class Username {
       this.platform,
       this.domain,
       this.isDetails,
+      this.updateMark,
       this.clzClubsHead,
       this.clzSportsHead,
       this.clzFestsHead,
@@ -147,6 +149,7 @@ class Username {
     platform = json['platform'];
     domain = json['domain'];
     isDetails = json['is_details'];
+    updateMark = json['update_mark'];
     clzClubsHead = json['clz_clubs_head'];
     clzSportsHead = json['clz_sports_head'];
     clzFestsHead = json['clz_fests_head'];
@@ -202,6 +205,7 @@ class Username {
     data['platform'] = this.platform;
     data['domain'] = this.domain;
     data['is_details'] = this.isDetails;
+    data['update_mark'] = this.updateMark;
     data['clz_clubs_head'] = this.clzClubsHead;
     data['clz_sports_head'] = this.clzSportsHead;
     data['clz_fests_head'] = this.clzFestsHead;

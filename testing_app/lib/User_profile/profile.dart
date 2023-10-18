@@ -5,7 +5,7 @@ import 'Servers.dart';
 import 'Models.dart';
 import '/Posts/Models.dart';
 import '/Posts/Servers.dart';
-import '/servers/servers.dart';
+import 'package:testing_app/Fcm_Notif_Domains/servers.dart';
 import '/first_page.dart';
 import 'Edit_profile.dart';
 //import 'package:link_text/link_text.dart';
@@ -14,6 +14,7 @@ import 'dart:convert' show utf8;
 import 'package:video_player/video_player.dart';
 import '/Files_disply_download/pdf_videos_images.dart';
 import 'package:get_time_ago/get_time_ago.dart';
+import 'dart:io';
 
 String utf8convert(String text) {
   List<int> bytes = text.toString().codeUnits;
@@ -679,6 +680,19 @@ class _single_postState extends State<single_post> {
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (BuildContext context) {
                     return video_display3(post.img!, _videoPlayerController!);
+                  }));
+                }
+                if (post.imgRatio == 1) {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (BuildContext context) {
+                    return image_display(
+                        false, File('images/icon.png'), post.img!);
+                  }));
+                }
+                if (post.imgRatio == 3) {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (BuildContext context) {
+                    return pdfviewer1(post.img!, true);
                   }));
                 }
               },

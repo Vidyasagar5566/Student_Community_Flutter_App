@@ -12,7 +12,7 @@ class user_star_mark_servers {
       String email, String user_mark, int star_mark) async {
     try {
       var path = Uri.parse("$base_url/register/email_check2");
-      var response = await http.post(path,
+      var response = await http.put(path,
           headers: {
             "Content-Type": "application/json",
           },

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'Servers.dart';
 import 'package:testing_app/User_profile/Models.dart';
-import '/servers/servers.dart';
+import 'package:testing_app/Fcm_Notif_Domains/servers.dart';
 import 'package:testing_app/first_page.dart';
-import 'package:testing_app/User_Star_Mark/user_star_mark.dart';
+import 'package:testing_app/User_Star_Mark/User_Profile_Star_Mark.dart';
 
 class sac_search_bar extends StatefulWidget {
   Username app_user;

@@ -51,7 +51,7 @@ class ALL_SPORTS {
     isLike = json['is_like'];
     likeCount = json['like_count'];
     domain = json['domain'];
-    starMark = json['stra_mark'];
+    starMark = json['star_mark'];
     head =
         json['head'] != null ? new SmallUsername.fromJson(json['head']) : null;
   }

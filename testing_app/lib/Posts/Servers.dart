@@ -39,7 +39,7 @@ class post_servers {
   }
 
   Future<bool> post_post(String description, File file, String image_ratio,
-      String all_university, String post_category, int category_id) async {
+      String all_university, String category, int category_id) async {
     try {
       var token = storage.getItem('token');
       String finalUrl = "$base_url/post/list1?";
@@ -67,7 +67,7 @@ class post_servers {
           'file_name': fileName,
           'image_ratio': image_ratio,
           'is_all_university': is_all_university,
-          'post_category': post_category,
+          'category': category,
           'category_id': category_id
         }),
       );

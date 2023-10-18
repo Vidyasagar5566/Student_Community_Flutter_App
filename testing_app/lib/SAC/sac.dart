@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:testing_app/SAC/Uploads.dart';
 import 'Servers.dart';
 import 'package:testing_app/User_profile/Models.dart';
-import '/servers/servers.dart';
+import 'package:testing_app/Fcm_Notif_Domains/servers.dart';
 import 'Models.dart';
 import 'package:testing_app/Reports/Uploads.dart';
 import 'Search_bar.dart';
-import 'package:testing_app/User_Star_Mark/user_star_mark.dart';
+import 'package:testing_app/User_Star_Mark/User_Profile_Star_Mark.dart';
 
 class sacpagewidget extends StatefulWidget {
   Username app_user;
@@ -138,14 +138,13 @@ class _sacpagewidgetState extends State<sacpagewidget> {
                 Row(
                   children: [
                     Container(
-                      width: 48, //post.profile_pic
+                      width: 48,
                       child: sac_mem.imgRatio! == 1
-                          ? CircleAvatar(backgroundImage: NetworkImage(
-                              //'images/odessay B.jpeg'
-                              sac_mem.head!.profilePic!))
-                          : const CircleAvatar(backgroundImage: AssetImage(
-                              //'images/odessay B.jpeg'
-                              "images/profile.jpg")),
+                          ? CircleAvatar(
+                              backgroundImage: NetworkImage(sac_mem.logo!))
+                          : const CircleAvatar(
+                              backgroundImage:
+                                  AssetImage("images/profile.jpg")),
                     ),
                     Container(
                       padding: EdgeInsets.only(left: 20),
@@ -162,12 +161,9 @@ class _sacpagewidgetState extends State<sacpagewidget> {
                                     sac_mem.head!.username!,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
-                                    //"Vidya Sagar",
-                                    //lst_list[index].username,
                                     style: const TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 16,
-                                      //color: Colors.white
                                     ),
                                   ),
                                 ),
@@ -176,14 +172,11 @@ class _sacpagewidgetState extends State<sacpagewidget> {
                               ],
                             ),
                             Text(
-                              //"B190838EC",
                               domains[sac_mem.domain!]! +
                                   " (" +
                                   sac_mem.head!.userMark! +
                                   ")",
                               overflow: TextOverflow.ellipsis,
-                              //lst_list.username.rollNum,
-                              //style: const TextStyle(color: Colors.white),
                               maxLines: 1,
                             )
                           ]),
@@ -200,7 +193,7 @@ class _sacpagewidgetState extends State<sacpagewidget> {
                               sac_mem.id!,
                               sac_mem.logo,
                               sac_mem.imgRatio,
-                              sac_mem.role,
+                              sac_mem.name,
                               sac_mem.description,
                               sac_mem.phoneNum,
                               sac_mem.email);
@@ -259,7 +252,7 @@ class _sacpagewidgetState extends State<sacpagewidget> {
                       ),
                       Center(
                         child: Text(
-                          sac_mem.role!,
+                          sac_mem.name!,
                           //'''Academic Affairs secretory(AAS)''',
                           style: const TextStyle(
                             fontSize: 15,
