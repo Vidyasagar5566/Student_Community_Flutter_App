@@ -341,11 +341,12 @@ class _upload_cal_eventState extends State<upload_cal_event> {
                                   onPressed: () async {
                                     if (widget.app_user.email ==
                                             "guest@nitc.ac.in" ||
-                                        !widget.app_user.isAdmin!) {
+                                        !widget.app_user.isAdmin! ||
+                                        !widget.app_user.isStudentAdmin!) {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(
                                               content: Text(
-                                                  "guest/students cannot share any feedback/etc..",
+                                                  "students/Guest cannot share any feedback/etc..",
                                                   style: TextStyle(
                                                       color: Colors.white))));
                                     } else {
@@ -372,18 +373,19 @@ class _upload_cal_eventState extends State<upload_cal_event> {
                                                       ]),
                                                 ));
                                           });
-                                      List<dynamic> error = await calendar_servers()
-                                          .post_calender_event(
-                                              'all',
-                                              title,
-                                              description,
-                                              image,
-                                              file_type,
-                                              notif_branchs.join('@'),
-                                              notif_years.join(''),
-                                              formattedDate +
-                                                  'T' +
-                                                  formattedTime);
+                                      List<dynamic> error =
+                                          await calendar_servers()
+                                              .post_calender_event(
+                                                  'all',
+                                                  title,
+                                                  description,
+                                                  image,
+                                                  file_type,
+                                                  notif_branchs.join('@'),
+                                                  notif_years.join(''),
+                                                  formattedDate +
+                                                      'T' +
+                                                      formattedTime);
                                       Navigator.pop(context);
                                       if (!error[0]) {
                                         Navigator.of(context)

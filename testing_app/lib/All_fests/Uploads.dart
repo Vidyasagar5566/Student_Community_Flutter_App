@@ -6,6 +6,8 @@ import 'Servers.dart';
 import '/first_page.dart';
 import 'Search_bar.dart';
 
+Map<String, dynamic> team_mems = {};
+
 class edit_fest extends StatefulWidget {
   Username app_user;
   int id;
@@ -13,7 +15,6 @@ class edit_fest extends StatefulWidget {
   var description;
   var image;
   var name;
-  var team_members;
   var websites;
   edit_fest(
     this.app_user,
@@ -22,7 +23,6 @@ class edit_fest extends StatefulWidget {
     this.description,
     this.image,
     this.name,
-    this.team_members,
     this.websites,
   );
 
@@ -53,10 +53,10 @@ class _edit_festState extends State<edit_fest> {
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (BuildContext context) {
                     return fest_search_bar(widget.app_user, widget.id,
-                        widget.app_user.domain!, false);
+                        widget.app_user.domain!, false, false);
                   }));
                 },
-                icon: const Icon(Icons.person_add_alt_outlined,
+                icon: const Icon(Icons.transfer_within_a_station_outlined,
                     color: Colors.blue, size: 28))
           ],
           backgroundColor: Colors.white70,
@@ -147,40 +147,45 @@ class _edit_festState extends State<edit_fest> {
                             },
                           ),
                         ),
-                        const SizedBox(height: 10),
-                        Container(
-                          padding: EdgeInsets.only(left: 40, right: 40),
-                          child: TextFormField(
-                            initialValue: widget.team_members,
-                            keyboardType: TextInputType.multiline,
-                            minLines:
-                                3, //Normal textInputField will be displayed
-                            maxLines: 5,
-                            decoration: const InputDecoration(
-                              labelText: 'Team members',
-                              hintText:
-                                  'arun_b190725@nitc.ac.in#arun_b190725@nitc.ac.in#arun_b190725@nitc.ac.in',
-                              prefixIcon: Icon(Icons.text_fields),
-                              border: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10))),
-                            ),
-                            onChanged: (String value) {
+                        const SizedBox(height: 20),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (BuildContext context) {
+                              return fest_search_bar(widget.app_user, widget.id,
+                                  widget.app_user.domain!, false, true);
+                            })).then((value) {
                               setState(() {
-                                widget.team_members = value;
-                                if (widget.team_members == "") {
-                                  widget.team_members = null;
-                                }
+                                print(value);
                               });
-                            },
-                            validator: (value) {
-                              return value!.isEmpty
-                                  ? 'please enter password'
-                                  : null;
-                            },
+                            });
+                          },
+                          child: Container(
+                            decoration: const BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                                color: Colors.white),
+                            padding: EdgeInsets.all(8),
+                            margin: EdgeInsets.only(left: 40, right: 40),
+                            child: Column(
+                              children: [
+                                Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Text("Team Members : "),
+                                      Container()
+                                    ]),
+                                const SizedBox(height: 5),
+                                Container(
+                                    padding: EdgeInsets.all(10),
+                                    child: Text(team_mems.keys.join('#'),
+                                        maxLines: 10)),
+                              ],
+                            ),
                           ),
                         ),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 20),
                         Container(
                           padding: EdgeInsets.only(left: 40, right: 40),
                           child: TextFormField(
@@ -277,7 +282,6 @@ class _edit_festState extends State<edit_fest> {
                                 widget.description != null &&
                                 widget.image != null &&
                                 widget.name != null &&
-                                widget.team_members != null &&
                                 widget.websites != null)
                             ? Container(
                                 padding: EdgeInsets.only(left: 40, right: 40),
@@ -316,7 +320,7 @@ class _edit_festState extends State<edit_fest> {
                                             image,
                                             widget.title,
                                             widget.name,
-                                            widget.team_members,
+                                            team_mems.keys.join("#"),
                                             widget.description,
                                             widget.websites,
                                             image_type);

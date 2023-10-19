@@ -34,161 +34,169 @@ class _profilewidgetState extends State<profilewidget> {
   Widget build(BuildContext context) {
     Username app_user = widget.app_user;
     var width = MediaQuery.of(context).size.width;
-    return Container(
+    return SingleChildScrollView(
       child: Column(
         children: [
-          Container(
-              color: Colors.indigo,
-              //height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              child: Column(
-                children: [
-                  Stack(
-                    alignment: Alignment.center,
+          
+          Column(
+            children: [
+              Container(
+                  color: Colors.white,
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ClipPath(
-                          clipper: profile_Clipper(),
-                          child: Container(
-                            height: 160,
-                            width: double.infinity,
-                          )),
-                      Positioned(
-                          bottom: 10,
-                          child: GestureDetector(
-                            onTap: () {
-                              showDialog(
-                                  context: context,
-                                  barrierDismissible: false,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                        contentPadding: EdgeInsets.all(15),
-                                        content: SingleChildScrollView(
-                                            child: Container(
-                                                padding: EdgeInsets.all(10),
-                                                child: Column(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    children: [
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
+                      Stack(
+                        alignment: Alignment.centerLeft,
+                        children: [
+                          ClipPath(
+                              clipper: profile_Clipper(),
+                              child: Container(
+                                height: 160,
+                                width: double.infinity,
+                              )),
+                          Positioned(
+                              bottom: 10,
+                              child: GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                            contentPadding: EdgeInsets.all(15),
+                                            content: SingleChildScrollView(
+                                                child: Container(
+                                                    padding: EdgeInsets.all(10),
+                                                    child: Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
                                                         children: [
-                                                          Container(),
-                                                          IconButton(
-                                                              onPressed: () {
-                                                                Navigator.pop(
-                                                                    context);
-                                                              },
-                                                              icon: const Icon(
-                                                                  Icons.close))
-                                                        ],
-                                                      ),
-                                                      SizedBox(height: 6),
-                                                      Container(
-                                                        height: width,
-                                                        width: width,
-                                                        child: app_user
-                                                                    .fileType! ==
-                                                                "1"
-                                                            ? Image.network(
-                                                                app_user
-                                                                    .profilePic!)
-                                                            : Image.asset(
-                                                                "images/profile.jpg"),
-                                                      ),
-                                                      const SizedBox(
-                                                          height: 10),
-                                                      app_user.fileType == '1'
-                                                          ? Column(
-                                                              children: [
-                                                                const Center(
-                                                                    child: Text(
-                                                                        "Delete your profile pic?",
-                                                                        style: TextStyle(
-                                                                            fontSize:
-                                                                                14,
-                                                                            color:
-                                                                                Colors.black,
-                                                                            fontWeight: FontWeight.bold))),
-                                                                const SizedBox(
-                                                                    height: 10),
-                                                                Container(
-                                                                  margin:
-                                                                      const EdgeInsets
-                                                                          .all(
-                                                                          30),
-                                                                  color: Colors
-                                                                          .blue[
-                                                                      900],
-                                                                  child: OutlinedButton(
-                                                                      onPressed: () async {
-                                                                        bool
-                                                                            error =
-                                                                            await user_profile_servers().delete_profile_pic();
-                                                                        if (!error) {
-                                                                          Navigator.of(context).pushAndRemoveUntil(
-                                                                              MaterialPageRoute(builder: (BuildContext context) => get_ueser_widget(1)),
-                                                                              (Route<dynamic> route) => false);
-                                                                        } else {
-                                                                          ScaffoldMessenger.of(context)
-                                                                              .showSnackBar(
-                                                                            const SnackBar(
-                                                                              content: Text(
-                                                                                "error occured ,plz try again",
-                                                                                style: TextStyle(color: Colors.white),
-                                                                              ),
-                                                                            ),
-                                                                          );
-                                                                        }
-                                                                      },
-                                                                      child: const Center(
-                                                                          child: Text(
-                                                                        "Delete",
-                                                                        style: TextStyle(
-                                                                            color:
-                                                                                Colors.white),
-                                                                      ))),
-                                                                ),
-                                                              ],
-                                                            )
-                                                          : Container(),
-                                                      app_user.isSuperuser ==
-                                                              false
-                                                          ? Center(
-                                                              child: Container(
-                                                                child:
-                                                                    TextButton(
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Container(),
+                                                              IconButton(
+                                                                  onPressed: () {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  },
+                                                                  icon: const Icon(
+                                                                      Icons.close))
+                                                            ],
+                                                          ),
+                                                          SizedBox(height: 6),
+                                                          Container(
+                                                            height: width,
+                                                            width: width,
+                                                            child: app_user
+                                                                        .fileType! ==
+                                                                    "1"
+                                                                ? Image.network(
+                                                                    app_user
+                                                                        .profilePic!)
+                                                                : Image.asset(
+                                                                    "images/profile.jpg"),
+                                                          ),
+                                                          const SizedBox(height: 10),
+                                                          app_user.fileType == '1'
+                                                              ? Column(
+                                                                  children: [
+                                                                    const Center(
+                                                                        child: Text(
+                                                                            "Delete your profile pic?",
+                                                                            style: TextStyle(
+                                                                                fontSize:
+                                                                                    14,
+                                                                                color: Colors
+                                                                                    .black,
+                                                                                fontWeight:
+                                                                                    FontWeight.bold))),
+                                                                    const SizedBox(
+                                                                        height: 10),
+                                                                    Container(
+                                                                      margin:
+                                                                          const EdgeInsets
+                                                                              .all(
+                                                                              30),
+                                                                      color: Colors
+                                                                          .blue[900],
+                                                                      child: OutlinedButton(
+                                                                          onPressed: () async {
+                                                                            bool
+                                                                                error =
+                                                                                await user_profile_servers()
+                                                                                    .delete_profile_pic();
+                                                                            if (!error) {
+                                                                              Navigator.of(context).pushAndRemoveUntil(
+                                                                                  MaterialPageRoute(builder: (BuildContext context) => get_ueser_widget(1)),
+                                                                                  (Route<dynamic> route) => false);
+                                                                            } else {
+                                                                              ScaffoldMessenger.of(context)
+                                                                                  .showSnackBar(
+                                                                                const SnackBar(
+                                                                                  content:
+                                                                                      Text(
+                                                                                    "error occured ,plz try again",
+                                                                                    style: TextStyle(color: Colors.white),
+                                                                                  ),
+                                                                                ),
+                                                                              );
+                                                                            }
+                                                                          },
+                                                                          child: const Center(
+                                                                              child: Text(
+                                                                            "Delete",
+                                                                            style: TextStyle(
+                                                                                color:
+                                                                                    Colors.white),
+                                                                          ))),
+                                                                    ),
+                                                                  ],
+                                                                )
+                                                              : Container(),
+                                                          app_user.isSuperuser ==
+                                                                  false
+                                                              ? Center(
+                                                                  child: Container(
+                                                                    child: TextButton(
                                                                         onPressed:
                                                                             () {
-                                                                          Navigator.of(context)
-                                                                              .pushReplacement(MaterialPageRoute(builder: (BuildContext context) => editprofile(widget.app_user)));
+                                                                          Navigator.of(
+                                                                                  context)
+                                                                              .pushReplacement(MaterialPageRoute(
+                                                                                  builder: (BuildContext context) =>
+                                                                                      editprofile(widget.app_user)));
                                                                         },
                                                                         child:
                                                                             const Text(
                                                                           "edit your profile",
                                                                           style: TextStyle(
-                                                                              fontWeight: FontWeight.bold,
-                                                                              fontSize: 16),
+                                                                              fontWeight:
+                                                                                  FontWeight
+                                                                                      .bold,
+                                                                              fontSize:
+                                                                                  16),
                                                                         )),
-                                                              ),
-                                                            )
-                                                          : Container(),
-                                                      const SizedBox(
-                                                          height: 10),
-                                                      (app_user.adminRole! ==
-                                                                  "club" ||
-                                                              app_user.adminRole! ==
-                                                                  "sport" ||
-                                                              app_user.adminRole! ==
-                                                                  "fest")
-                                                          ? Center(
-                                                              child: Container(
-                                                                child:
-                                                                    TextButton(
+                                                                  ),
+                                                                )
+                                                              : Container(),
+                                                          const SizedBox(height: 10),
+                                                          (app_user.adminRole! ==
+                                                                      "club" ||
+                                                                  app_user.adminRole! ==
+                                                                      "sport" ||
+                                                                  app_user.adminRole! ==
+                                                                      "fest")
+                                                              ? Center(
+                                                                  child: Container(
+                                                                    child: TextButton(
                                                                         onPressed:
                                                                             () {
-                                                                          if (app_user.adminRole! ==
+                                                                          if (app_user
+                                                                                  .adminRole! ==
                                                                               "club") {
                                                                             //   Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => edit_club(widget.app_user, app_user.adminRole!)));
                                                                             // } else {
@@ -199,83 +207,88 @@ class _profilewidgetState extends State<profilewidget> {
                                                                             const Text(
                                                                           "edit your club/sport details",
                                                                           style: TextStyle(
-                                                                              fontWeight: FontWeight.bold,
-                                                                              fontSize: 16),
+                                                                              fontWeight:
+                                                                                  FontWeight
+                                                                                      .bold,
+                                                                              fontSize:
+                                                                                  16),
                                                                         )),
-                                                              ),
-                                                            )
-                                                          : Container(),
-                                                    ]))));
-                                  });
-                            },
-                            child: Container(
-                                child: CircleAvatar(
-                                    radius: 64,
-                                    backgroundColor: Colors.white,
-                                    child: app_user.fileType! == '1'
-                                        ? CircleAvatar(
-                                            radius: 60,
-                                            backgroundImage:
-                                                //post.profile_pic
-                                                NetworkImage(
-                                                    app_user.profilePic!))
-                                        : const CircleAvatar(
-                                            radius: 60,
-                                            backgroundImage:
-                                                //post.profile_pic
-                                                AssetImage(
-                                                    "images/profile.jpg")))),
-                          ))
+                                                                  ),
+                                                                )
+                                                              : Container(),
+                                                        ]))));
+                                      });
+                                },
+                                child: Container(
+                                    child: CircleAvatar(
+                                        radius: 64,
+                                        backgroundColor: Colors.white,
+                                        child: app_user.fileType! == '1'
+                                            ? CircleAvatar(
+                                                radius: 60,
+                                                backgroundImage:
+                                                    //post.profile_pic
+                                                    NetworkImage(
+                                                        app_user.profilePic!))
+                                            : const CircleAvatar(
+                                                radius: 60,
+                                                backgroundImage:
+                                                    //post.profile_pic
+                                                    AssetImage(
+                                                        "images/profile.jpg")))),
+                              ))
+                        ],
+                      ),
+                      Text(
+                        app_user.username!,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 20,
+                            color: Colors.white),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        app_user.email!,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 15,
+                            color: Colors.white),
+                      ),
+                      const SizedBox(
+                        height: 7,
+                      ),
+                      Text(
+                        app_user.rollNum!,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w300,
+                            fontSize: 12,
+                            color: Colors.white),
+                      ),
                     ],
-                  ),
-                  Text(
-                    app_user.username!,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 20,
-                        color: Colors.white),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    app_user.email!,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 15,
-                        color: Colors.white),
-                  ),
-                  const SizedBox(
-                    height: 7,
-                  ),
-                  Text(
-                    app_user.rollNum!,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w300,
-                        fontSize: 12,
-                        color: Colors.white),
-                  ),
-                ],
-              )),
-          Container(
-            width: MediaQuery.of(context).size.width,
-            color: Colors.indigo,
-            child: Column(
-              children: [
-                Container(
-                    margin: const EdgeInsets.all(8),
-                    child: const Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Your posts",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 15,
-                              color: Colors.white),
-                        ))),
-              ],
-            ),
-          )
+                  )),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                color: Colors.white,
+                child: Column(
+                  children: [
+                    Container(
+                        margin: const EdgeInsets.all(8),
+                        child: const Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Your posts",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 15,
+                                  color: Colors.white),
+                            ))),
+                  ],
+                ),
+              )
+            ],
+          ),
         ],
       ),
     );
@@ -394,9 +407,6 @@ class _single_postState extends State<single_post> {
   @override
   Widget build(BuildContext context) {
     POST_LIST post = widget.post;
-    List<POST_LIST> post_list = widget.post_list;
-    String delete_error = "";
-    bool full_text = false;
     SmallUsername user = post.username!;
     var width = MediaQuery.of(context).size.width;
     return Container(

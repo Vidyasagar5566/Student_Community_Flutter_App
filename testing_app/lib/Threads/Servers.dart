@@ -26,6 +26,7 @@ class threads_servers {
         "Content-Type": "application/json",
       });
       var data = json.decode(response.body) as List;
+      print(data);
       List<ALERT_LIST> temp = [];
       data.forEach((element) {
         ALERT_LIST post = ALERT_LIST.fromJson(element);

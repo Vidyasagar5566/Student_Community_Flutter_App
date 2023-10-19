@@ -136,11 +136,13 @@ class _upload_notificationState extends State<upload_notification> {
                                   minWidth: double.infinity,
                                   onPressed: () async {
                                     if (widget.app_user.email ==
-                                        "guest@nitc.ac.in") {
+                                            "guest@nitc.ac.in" ||
+                                        !widget.app_user.isAdmin! ||
+                                        !widget.app_user.isStudentAdmin!) {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(
                                               content: Text(
-                                                  "guest cannot share notifications..",
+                                                  "Students/Guest cannot share notifications..",
                                                   style: TextStyle(
                                                       color: Colors.white))));
                                     } else {

@@ -4,13 +4,16 @@ import 'package:testing_app/User_profile/Models.dart';
 import 'package:testing_app/Fcm_Notif_Domains/servers.dart';
 import 'package:testing_app/first_page.dart';
 import 'package:testing_app/User_Star_Mark/User_Profile_Star_Mark.dart';
+import 'Club_page.dart';
 
 class club_search_bar extends StatefulWidget {
   Username app_user;
   int club_id;
   String domain;
   bool club_create;
-  club_search_bar(this.app_user, this.club_id, this.domain, this.club_create);
+  bool team_selection;
+  club_search_bar(this.app_user, this.club_id, this.domain, this.club_create,
+      this.team_selection);
 
   @override
   State<club_search_bar> createState() => _club_search_barState();
@@ -79,7 +82,8 @@ class _club_search_barState extends State<club_search_bar> {
                     username_match,
                     widget.domain,
                     widget.club_id,
-                    widget.club_create);
+                    widget.club_create,
+                    widget.team_selection);
               }
             }
           }
@@ -99,8 +103,9 @@ class user_list_display extends StatefulWidget {
   String domain;
   int club_id;
   bool club_create;
+  bool team_selection;
   user_list_display(this.all_search_users, this.app_user, this.username_match,
-      this.domain, this.club_id, this.club_create);
+      this.domain, this.club_id, this.club_create, this.team_selection);
 
   @override
   State<user_list_display> createState() => _user_list_displayState();
@@ -151,6 +156,12 @@ class _user_list_displayState extends State<user_list_display> {
 
                       if (widget.club_create) {
                         return _buildLoadingScreen_create_club(
+                            search_user, index);
+                      } else if (widget.team_selection) {
+                        if (team_mems.containsKey(search_user.email)) {
+                          search_user.isTeamMem = true;
+                        }
+                        return _buildLoadingScreen_club_team_mems(
                             search_user, index);
                       } else {
                         return _buildLoadingScreen_head_transfer(
@@ -470,13 +481,7 @@ class _user_list_displayState extends State<user_list_display> {
                                     ),
                                   ),
                                   const SizedBox(width: 10),
-                                  index % 9 == 0
-                                      ? const Icon(
-                                          Icons.verified_rounded,
-                                          color: Colors.green,
-                                          size: 18,
-                                        )
-                                      : Container()
+                                  userMarkNotation(search_user.starMark!)
                                 ],
                               ),
                               Text(
@@ -492,6 +497,106 @@ class _user_list_displayState extends State<user_list_display> {
                     ],
                   ),
                   Icon(Icons.more_horiz)
+                ],
+              ),
+              const SizedBox(height: 5),
+              Text(
+                "Contact no " + search_user.phnNum!,
+                //post.description,
+                style: TextStyle(fontSize: 15),
+              ),
+              const SizedBox(height: 5),
+              Text(
+                " Email : " + search_user.email!,
+                //post.description,
+                style: TextStyle(fontSize: 15),
+              ),
+            ],
+          )),
+    );
+  }
+
+  Widget _buildLoadingScreen_club_team_mems(
+      SmallUsername search_user, int index) {
+    var width = MediaQuery.of(context).size.width;
+    return GestureDetector(
+      onTap: () async {},
+      child: Container(
+          margin: EdgeInsets.all(2),
+          padding: EdgeInsets.all(20),
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(20)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                          width: 48,
+                          child: search_user.fileType! == '1'
+                              ? CircleAvatar(
+                                  backgroundImage:
+                                      NetworkImage(search_user.profilePic!))
+                              : const CircleAvatar(
+                                  backgroundImage:
+                                      AssetImage("images/profile.jpg"))),
+                      Container(
+                        padding: EdgeInsets.only(left: 20),
+                        width: (width - 36) / 1.8,
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    constraints: BoxConstraints(
+                                        maxWidth: (width - 36) / 2.4),
+                                    child: Text(
+                                      search_user.username!,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  userMarkNotation(search_user.starMark!)
+                                ],
+                              ),
+                              Text(
+                                domains[search_user.domain!]! +
+                                    " (" +
+                                    search_user.userMark! +
+                                    ")",
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                              )
+                            ]),
+                      )
+                    ],
+                  ),
+                  Checkbox(
+                    value: search_user.isTeamMem,
+                    onChanged: (bool? value) {
+                      if (value == true) {
+                        setState(() {
+                          team_mems[search_user.email!] = "";
+                        });
+                      } else {
+                        setState(() {
+                          team_mems.remove(search_user.email);
+                        });
+                      }
+                      setState(() {
+                        search_user.isTeamMem = value!;
+                      });
+                    },
+                  )
                 ],
               ),
               const SizedBox(height: 5),

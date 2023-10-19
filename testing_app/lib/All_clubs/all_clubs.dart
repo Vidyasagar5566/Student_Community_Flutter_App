@@ -97,7 +97,7 @@ class _AllclubpagewidgetState extends State<Allclubpagewidget> {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
                   return club_search_bar(
-                      widget.app_user, 0, widget.app_user.domain!, true);
+                      widget.app_user, 0, widget.app_user.domain!, true, false);
                 }));
               },
               tooltip: 'create club',
@@ -255,6 +255,12 @@ class _Allclubpagewidget1State extends State<Allclubpagewidget1> {
                             ),
                             IconButton(
                                 onPressed: () {
+                                  List<String> team =
+                                      club.teamMembers!.split('#');
+                                  for (int i = 0; i < team.length; i++) {
+                                    team_mems[team[i]] = true;
+                                  }
+
                                   if (widget.app_user.username ==
                                       club.head!.username) {
                                     Navigator.of(context).push(
@@ -267,9 +273,12 @@ class _Allclubpagewidget1State extends State<Allclubpagewidget1> {
                                           club.description,
                                           club.logo,
                                           club.name,
-                                          club.teamMembers,
                                           club.websites);
-                                    }));
+                                    })).then((value) {
+                                      setState(() {
+                                        team_mems.clear();
+                                      });
+                                    });
                                   } else {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(

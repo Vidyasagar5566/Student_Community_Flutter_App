@@ -173,7 +173,11 @@ class _alertwidget1State extends State<alertwidget1> {
                     alert.category == 'student'
                         ? UserProfileMark(alert.username!)
                         : UserProfileMarkAdmin(alert, alert.username),
-                    Text(alert_posted_date.substring(0, 7),
+                    Text(
+                        alert_posted_date.substring(0, 7) +
+                            "(" +
+                            alert.commentCount.toString() +
+                            ")",
                         style: const TextStyle(
                             //     color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -181,7 +185,7 @@ class _alertwidget1State extends State<alertwidget1> {
                   ],
                 ),
               ),
-              const SizedBox(height: 18),
+              const SizedBox(height: 8),
               SizedBox(
                 width: wid - 50,
                 child: Text(

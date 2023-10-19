@@ -5,7 +5,10 @@ import 'package:testing_app/User_profile/profile.dart';
 import 'package:testing_app/Fcm_Notif_Domains/servers.dart';
 import 'Servers.dart';
 //import 'package:link_text/link_text.dart';
+import 'package:testing_app/User_Star_Mark/User_Profile_Star_Mark.dart';
 import 'dart:convert' show utf8;
+
+Map<String, dynamic> team_mems = {};
 
 String utf8convert(String text) {
   List<int> bytes = text.toString().codeUnits;
@@ -316,14 +319,7 @@ class _club_members1State extends State<club_members1> {
                                   ),
                                 ),
                                 const SizedBox(width: 10),
-                                9 % 9 == 0
-                                    ? const Icon(
-                                        Icons
-                                            .verified_rounded, //verified_rounded,verified_outlined
-                                        color: Colors.green,
-                                        size: 18,
-                                      )
-                                    : Container()
+                                userMarkNotation(club_mem.starMark!)
                               ],
                             ),
                             Text(

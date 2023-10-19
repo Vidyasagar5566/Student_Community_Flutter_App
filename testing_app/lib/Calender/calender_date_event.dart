@@ -42,130 +42,143 @@ class _calender_events_displayState extends State<calender_events_display> {
       _extand.add(false);
     }
     return Scaffold(
-        body: //index == 0 ?
-            SingleChildScrollView(
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height + 100,
-            decoration: const BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage("images/background.jpg"),
-                    fit: BoxFit.cover)),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      ClipPath(
-                          clipper: profile_Clipper(),
-                          child: Container(
-                            height: 250,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                              colors: [
-                                Colors.deepPurple,
-                                Colors.purple.shade300
-                              ],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            )),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                const SizedBox(height: 80),
-                                SizedBox(
-                                  width: wid / 2,
-                                  child: Text(
-                                    widget.date + " Tasks",
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 25,
-                                        fontWeight: FontWeight.w700),
+        body: index == 0
+            ? SingleChildScrollView(
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height + 100,
+                  decoration: const BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage("images/background.jpg"),
+                          fit: BoxFit.cover)),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            ClipPath(
+                                clipper: profile_Clipper(),
+                                child: Container(
+                                  height: 250,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                    colors: [
+                                      Colors.deepPurple,
+                                      Colors.purple.shade300
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  )),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      const SizedBox(height: 80),
+                                      SizedBox(
+                                        width: wid / 2,
+                                        child: Text(
+                                          widget.date + " Tasks",
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 25,
+                                              fontWeight: FontWeight.w700),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )),
+                            Positioned(
+                                left: 25,
+                                top: 75,
+                                child: IconButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  icon: const Icon(
+                                    Icons.arrow_back_ios_new_outlined,
+                                    color: Colors.white,
+                                    size: 30,
+                                  ),
+                                ))
+                          ],
+                        ),
+                        widget.cal_event_data.isEmpty
+                            ? Container(
+                                child: Center(
+                                  child: Container(
+                                    margin: const EdgeInsets.all(20),
+                                    padding: const EdgeInsets.all(20),
+                                    child: const Text("No Tasks Today",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 24)),
                                   ),
                                 ),
-                              ],
-                            ),
-                          )),
-                      Positioned(
-                          left: 25,
-                          top: 75,
-                          child: IconButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            icon: const Icon(
-                              Icons.arrow_back_ios_new_outlined,
-                              color: Colors.white,
-                              size: 30,
-                            ),
-                          ))
-                    ],
-                  ),
-                  widget.cal_event_data.isEmpty
-                      ? Container(
-                          child: Center(
-                            child: Container(
-                              margin: const EdgeInsets.all(20),
-                              padding: const EdgeInsets.all(20),
-                              child: const Text("No Tasks Today",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 24)),
-                            ),
-                          ),
-                        )
-                      : SingleChildScrollView(
-                          child: ListView.builder(
-                              itemCount: widget.cal_event_data.length,
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              padding: EdgeInsets.only(bottom: 10),
-                              itemBuilder: (BuildContext context, int index) {
-                                CALENDER_EVENT cal_event =
-                                    widget.cal_event_data[index];
-                                return _buildLoadingScreen(
-                                    cal_event, widget.cal_event_data, index);
-                              }),
-                        )
-                ],
-              ),
-            ),
-          ),
-        ),
-        /*
-                 Container(
-                    padding: EdgeInsets.only(top: 40, left: 20),
-                    decoration: const BoxDecoration(color: Colors.white),
-                    width: wid,
-                    height: 100,
-                    child: Row(
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          icon: const Icon(
-                            Icons.arrow_back_ios_new_outlined,
-                            color: Colors.blue,
-                            size: 30,
-                          ),
-                        ),
-                        const SizedBox(width: 20),
-                        const Text("Today Activities",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                            ))
+                              )
+                            : SingleChildScrollView(
+                                child: ListView.builder(
+                                    itemCount: widget.cal_event_data.length,
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    padding: EdgeInsets.only(bottom: 10),
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      CALENDER_EVENT cal_event =
+                                          widget.cal_event_data[index];
+                                      return _buildLoadingScreen(cal_event,
+                                          widget.cal_event_data, index);
+                                    }),
+                              )
                       ],
                     ),
                   ),
-              */
-        //  : activitieswidget1(widget.activity_data, widget.app_user),
-        /*    bottomNavigationBar: BottomNavigationBar(
+                ),
+              )
+            : Container(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(top: 30),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            IconButton(
+                                onPressed: () {
+                                  Navigator.of(context);
+                                  Navigator.pop(context);
+                                },
+                                icon: const Icon(Icons.keyboard_arrow_left,
+                                    color: Colors.blue, size: 40))
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Container(
+                        decoration: const BoxDecoration(
+                            image: DecorationImage(
+                                image:
+                                    AssetImage("images/event background.jpg"),
+                                fit: BoxFit.cover)),
+                        child: ListView.builder(
+                            itemCount: widget.activity_data.length,
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            padding: EdgeInsets.only(bottom: 10),
+                            itemBuilder: (BuildContext context, int index) {
+                              EVENT_LIST cal_event =
+                                  widget.activity_data[index];
+                              return single_event(cal_event, widget.app_user);
+                            }),
+                      ),
+                    ],
+                  ),
+                ),
+              ), //activitieswidget1(widget.activity_data, widget.app_user),
+        bottomNavigationBar: BottomNavigationBar(
           fixedColor: Colors.blue,
           backgroundColor: Colors.white70,
           type: BottomNavigationBarType.fixed,
@@ -187,7 +200,7 @@ class _calender_events_displayState extends State<calender_events_display> {
               index = index1;
             });
           },
-        ),  */
+        ),
         floatingActionButton: index == 1
             ? Container()
             : ElevatedButton.icon(

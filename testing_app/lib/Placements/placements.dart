@@ -237,8 +237,8 @@ class _placementsState extends State<placements> {
   List<CAL_SUB_NAMES> cal_sub_names = [];
 
   void load_data_fun() async {
-    List<CAL_SUB_NAMES> plac_names =
-        await placemeny_servers().get_sub_place_list("CPC", '@nitc.ac.in', 'B.Tech');
+    List<CAL_SUB_NAMES> plac_names = await placemeny_servers()
+        .get_sub_place_list("CPC", '@nitc.ac.in', 'B.Tech');
     setState(() {
       loaded_data = true;
       widget.cal_sub_names = plac_names;
@@ -327,111 +327,125 @@ class _placementsState extends State<placements> {
                     build_screen()
                   ]),
             )),
-        floatingActionButton: ElevatedButton.icon(
-          onPressed: () {
-            showDialog(
-                context: context,
-                barrierDismissible: false,
-                builder: (context) {
-                  return AlertDialog(
-                      contentPadding: EdgeInsets.all(15),
-                      content:
-                          Column(mainAxisSize: MainAxisSize.min, children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(),
-                            IconButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                icon: const Icon(Icons.close))
-                          ],
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(left: 40, right: 40),
-                          child: TextField(
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: const InputDecoration(
-                                labelText: "Company name",
-                                hintText: "TCS",
-                                prefixIcon: Icon(Icons.text_fields),
-                                border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10)))),
-                            onChanged: (String value) {
-                              setState(() {
-                                sub_name = value;
-                                if (value == "") {
-                                  sub_name = null;
-                                }
-                              });
-                            },
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        TextButton(
-                            onPressed: () async {
-                              if (!widget.app_user.isAdmin!) {
-                                Navigator.pop(context);
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                      "Guests/Students are not allowed",
-                                      style: TextStyle(color: Colors.white),
+        floatingActionButton: widget.app_user.isInstabook!
+            ? ElevatedButton.icon(
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (context) {
+                        return AlertDialog(
+                            contentPadding: EdgeInsets.all(15),
+                            content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(),
+                                      IconButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          icon: const Icon(Icons.close))
+                                    ],
+                                  ),
+                                  Container(
+                                    padding:
+                                        EdgeInsets.only(left: 40, right: 40),
+                                    child: TextField(
+                                      keyboardType: TextInputType.emailAddress,
+                                      decoration: const InputDecoration(
+                                          labelText: "Company name",
+                                          hintText: "TCS",
+                                          prefixIcon: Icon(Icons.text_fields),
+                                          border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(10)))),
+                                      onChanged: (String value) {
+                                        setState(() {
+                                          sub_name = value;
+                                          if (value == "") {
+                                            sub_name = null;
+                                          }
+                                        });
+                                      },
                                     ),
                                   ),
-                                );
-                              } else {
-                                if (sub_name == null) {
-                                  Navigator.pop(context);
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text(
-                                        "sub name cant be null",
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    ),
-                                  );
-                                } else {
-                                  Navigator.pop(context);
+                                  const SizedBox(height: 10),
+                                  TextButton(
+                                      onPressed: () async {
+                                        if (!widget.app_user.isAdmin!) {
+                                          Navigator.pop(context);
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                              content: Text(
+                                                "Guests/Students are not allowed",
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                            ),
+                                          );
+                                        } else {
+                                          if (sub_name == null) {
+                                            Navigator.pop(context);
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                content: Text(
+                                                  "sub name cant be null",
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              ),
+                                            );
+                                          } else {
+                                            Navigator.pop(context);
 
-                                  List<dynamic> error = await placemeny_servers()
-                                      .post_cal_sub(sub_name, 'CPC');
-                                  if (!error[0]) {
-                                    var new_sub_name = CAL_SUB_NAMES();
-                                    new_sub_name.id = error[1];
-                                    new_sub_name.subId = 'CPC';
-                                    new_sub_name.subName = sub_name;
-                                    new_sub_name.username =
-                                        user_min(widget.app_user);
-                                    new_sub_name.totRatingsVal = 0;
-                                    new_sub_name.numRatings = 0;
-                                    setState(() {
-                                      cal_sub_names.add(new_sub_name);
-                                      widget.cal_sub_names.add(new_sub_name);
-                                    });
-                                  } else {
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(const SnackBar(
-                                            content: Text(
-                                      "error occured please try again",
-                                      style: TextStyle(color: Colors.white),
-                                    )));
-                                  }
-                                }
-                              }
-                            },
-                            child: const Center(child: Text("Add")))
-                      ]));
-                });
-          },
-          label: const Text("Add new company",
-              style:
-                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-          icon: const Icon(Icons.edit, color: Colors.white),
-          style: ElevatedButton.styleFrom(primary: Colors.deepPurple),
-        ));
+                                            List<dynamic> error =
+                                                await placemeny_servers()
+                                                    .post_cal_sub(
+                                                        sub_name, 'CPC');
+                                            if (!error[0]) {
+                                              var new_sub_name =
+                                                  CAL_SUB_NAMES();
+                                              new_sub_name.id = error[1];
+                                              new_sub_name.subId = 'CPC';
+                                              new_sub_name.subName = sub_name;
+                                              new_sub_name.username =
+                                                  user_min(widget.app_user);
+                                              new_sub_name.totRatingsVal = 0;
+                                              new_sub_name.numRatings = 0;
+                                              setState(() {
+                                                cal_sub_names.add(new_sub_name);
+                                                widget.cal_sub_names
+                                                    .add(new_sub_name);
+                                              });
+                                            } else {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(const SnackBar(
+                                                      content: Text(
+                                                "error occured please try again",
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              )));
+                                            }
+                                          }
+                                        }
+                                      },
+                                      child: const Center(child: Text("Add")))
+                                ]));
+                      });
+                },
+                label: const Text("Add new company",
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold)),
+                icon: const Icon(Icons.edit, color: Colors.white),
+                style: ElevatedButton.styleFrom(primary: Colors.deepPurple),
+              )
+            : Container());
   }
 
   build_screen() {
@@ -865,8 +879,8 @@ class _place_yearsState extends State<place_years> {
   List<CAL_SUB_YEARS> sub_years = [];
 
   void load_data_fun() async {
-    List<CAL_SUB_YEARS> sub_years1 =
-        await placemeny_servers().get_sub_years_list(widget.cal_sub_name.id.toString());
+    List<CAL_SUB_YEARS> sub_years1 = await placemeny_servers()
+        .get_sub_years_list(widget.cal_sub_name.id.toString());
     setState(() {
       sub_years = sub_years1;
       sub_years.sort((a, b) => a.yearName!.compareTo(b.yearName!));
@@ -999,7 +1013,7 @@ class _place_yearsState extends State<place_years> {
                         TextButton(
                             onPressed: () async {
                               widget.cal_sub_name.allYears = "";
-                              if (!widget.app_user.isAdmin!) {
+                              if (!widget.app_user.isInstabook!) {
                                 Navigator.pop(context);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
@@ -1034,11 +1048,12 @@ class _place_yearsState extends State<place_years> {
                                 } else {
                                   Navigator.pop(context);
 
-                                  List<dynamic> error = await placemeny_servers()
-                                      .add_cal_sub_year(
-                                          widget.cal_sub_name.id.toString(),
-                                          year_name,
-                                          _lights);
+                                  List<dynamic> error =
+                                      await placemeny_servers()
+                                          .add_cal_sub_year(
+                                              widget.cal_sub_name.id.toString(),
+                                              year_name,
+                                              _lights);
 
                                   if (!error[0]) {
                                     CAL_SUB_YEARS new_sub_year =
@@ -1345,8 +1360,8 @@ class _yearFilesState extends State<yearFiles> {
   List<CAL_SUB_FILES> sub_files = [];
 
   void load_data_fun() async {
-    List<CAL_SUB_FILES> sub_files1 =
-        await placemeny_servers().get_sub_files_list(widget.sub_year.id.toString());
+    List<CAL_SUB_FILES> sub_files1 = await placemeny_servers()
+        .get_sub_files_list(widget.sub_year.id.toString());
     setState(() {
       sub_files = sub_files1;
       sub_files.sort((a, b) => a.fileName!.compareTo(b.fileName!));
@@ -1737,14 +1752,15 @@ class _yearFilesState extends State<yearFiles> {
                                     widget.cal_sub_files[index].qnAnsFile = "";
                                     widget.cal_sub_files[index].username =
                                         widget.cal_sub_files[index].username;
-                                    List<dynamic> error = await placemeny_servers()
-                                        .edit_cal_sub_files(
-                                            widget.cal_sub_files[index]
-                                                .username!.email!,
-                                            widget.cal_sub_files[index].id!,
-                                            file,
-                                            widget.sub_year.id.toString(),
-                                            file_type);
+                                    List<dynamic> error =
+                                        await placemeny_servers()
+                                            .edit_cal_sub_files(
+                                                widget.cal_sub_files[index]
+                                                    .username!.email!,
+                                                widget.cal_sub_files[index].id!,
+                                                file,
+                                                widget.sub_year.id.toString(),
+                                                file_type);
                                     if (!error[0]) {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(

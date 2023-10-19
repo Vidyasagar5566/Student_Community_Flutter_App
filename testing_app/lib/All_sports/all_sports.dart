@@ -98,7 +98,7 @@ class _AllsportpagewidgetState extends State<Allsportpagewidget> {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
                   return sport_search_bar(
-                      widget.app_user, 0, widget.app_user.domain!, true);
+                      widget.app_user, 0, widget.app_user.domain!, true, false);
                 }));
               },
               tooltip: 'create sport',
@@ -256,6 +256,11 @@ class _Allsportpagewidget1State extends State<Allsportpagewidget1> {
                             ),
                             IconButton(
                                 onPressed: () {
+                                  List<String> team =
+                                      sport.teamMembers!.split('#');
+                                  for (int i = 0; i < team.length; i++) {
+                                    team_mems[team[i]] = true;
+                                  }
                                   if (widget.app_user.username ==
                                       sport.head!.username) {
                                     Navigator.of(context).push(
@@ -268,11 +273,15 @@ class _Allsportpagewidget1State extends State<Allsportpagewidget1> {
                                           sport.description,
                                           sport.logo,
                                           sport.name,
-                                          sport.teamMembers,
                                           sport.websites,
                                           sport.sportGroundImg,
                                           sport.sportGround);
-                                    }));
+                                    })).then((value) {
+                                      setState(() {
+                                        team_mems.clear();
+                                      });
+                                    });
+                                    ;
                                   } else {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(

@@ -86,6 +86,8 @@ class _editUserStarMarkState extends State<editUserStarMark> {
 }
 
 List<int> star_marks = [0, 1, 2, 3, 4];
+List<bool> is_student_admins = [true, false];
+List<bool> is_admins = [true, false];
 
 class user_list_display extends StatefulWidget {
   List<SmallUsername> all_search_users;
@@ -204,8 +206,29 @@ class _user_list_displayState extends State<user_list_display> {
                           ],
                         ),
                         const SizedBox(height: 20),
+                        Container(
+                          padding: EdgeInsets.only(left: 40, right: 40),
+                          child: TextFormField(
+                            initialValue: search_user.userMark,
+                            keyboardType: TextInputType.emailAddress,
+                            decoration: const InputDecoration(
+                              labelText: 'New_User_Mark',
+                              hintText: 'ClubMember',
+                              prefixIcon: Icon(Icons.text_fields),
+                              border: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10))),
+                            ),
+                            onChanged: (String value) {
+                              setState(() {
+                                search_user.userMark = value;
+                              });
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 20),
                         Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text("Select Star Mark"),
                               const SizedBox(width: 15),
@@ -230,37 +253,70 @@ class _user_list_displayState extends State<user_list_display> {
                                   })
                             ]),
                         const SizedBox(height: 20),
-                        Container(
-                          padding: EdgeInsets.only(left: 40, right: 40),
-                          child: TextFormField(
-                            initialValue: search_user.userMark,
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: const InputDecoration(
-                              labelText: 'New_User_Mark',
-                              hintText: 'ClubMember',
-                              prefixIcon: Icon(Icons.text_fields),
-                              border: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10))),
-                            ),
-                            onChanged: (String value) {
-                              setState(() {
-                                search_user.userMark = value;
-                              });
-                            },
-                          ),
-                        ),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Is Admin"),
+                              const SizedBox(width: 15),
+                              DropdownButton<bool>(
+                                  value: search_user.isAdmin,
+                                  underline: Container(),
+                                  elevation: 0,
+                                  items: is_admins.map<DropdownMenuItem<bool>>(
+                                      (bool value) {
+                                    return DropdownMenuItem<bool>(
+                                      value: value,
+                                      child: Text(
+                                        value.toString(),
+                                        style: TextStyle(fontSize: 10),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      search_user.isAdmin = value!;
+                                    });
+                                  })
+                            ]),
+                        const SizedBox(height: 20),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Is Student Admin"),
+                              const SizedBox(width: 15),
+                              DropdownButton<bool>(
+                                  value: search_user.isStudentAdmin,
+                                  underline: Container(),
+                                  elevation: 0,
+                                  items: is_student_admins
+                                      .map<DropdownMenuItem<bool>>(
+                                          (bool value) {
+                                    return DropdownMenuItem<bool>(
+                                      value: value,
+                                      child: Text(
+                                        value.toString(),
+                                        style: TextStyle(fontSize: 10),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      search_user.isStudentAdmin = value!;
+                                    });
+                                  })
+                            ]),
                         const SizedBox(height: 10),
                         Container(
                           margin: const EdgeInsets.all(30),
                           color: Colors.blue[900],
                           child: OutlinedButton(
                               onPressed: () async {
-                                if (search_user.userMark == "") {
+                                if (search_user.userMark == "" ||
+                                    search_user.isAdmin! == null) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                           content: Text(
-                                              "user_mark cant be null",
+                                              "user_mark/Admin cant be null",
                                               style: TextStyle(
                                                   color: Colors.white))));
                                 } else {
@@ -268,7 +324,9 @@ class _user_list_displayState extends State<user_list_display> {
                                       .updating_user_star_mark(
                                           search_user.email!,
                                           search_user.userMark!,
-                                          search_user.starMark!);
+                                          search_user.starMark!,
+                                          search_user.isAdmin!,
+                                          search_user.isStudentAdmin!);
                                   if (error) {
                                     Navigator.pop(context);
                                     ScaffoldMessenger.of(context).showSnackBar(

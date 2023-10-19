@@ -97,7 +97,7 @@ class _AllfestspagewidgetState extends State<Allfestspagewidget> {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
                   return fest_search_bar(
-                      widget.app_user, 0, widget.app_user.domain!, true);
+                      widget.app_user, 0, widget.app_user.domain!, true, false);
                 }));
               },
               tooltip: 'create fest',
@@ -255,6 +255,11 @@ class _Allfestspagewidget1State extends State<Allfestspagewidget1> {
                             ),
                             IconButton(
                                 onPressed: () {
+                                  List<String> team =
+                                      fest.teamMembers!.split('#');
+                                  for (int i = 0; i < team.length; i++) {
+                                    team_mems[team[i]] = true;
+                                  }
                                   if (widget.app_user.username ==
                                       fest.head!.username) {
                                     Navigator.of(context).push(
@@ -267,9 +272,13 @@ class _Allfestspagewidget1State extends State<Allfestspagewidget1> {
                                           fest.description,
                                           fest.logo,
                                           fest.name,
-                                          fest.teamMembers,
                                           fest.websites);
-                                    }));
+                                    })).then((value) {
+                                      setState(() {
+                                        team_mems.clear();
+                                      });
+                                    });
+                                    ;
                                   } else {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(

@@ -298,13 +298,7 @@ class _user_list_displayState extends State<user_list_display> {
                                     ),
                                   ),
                                   const SizedBox(width: 10),
-                                  index % 9 == 0
-                                      ? const Icon(
-                                          Icons.verified_rounded,
-                                          color: Colors.green,
-                                          size: 18,
-                                        )
-                                      : Container()
+                                  userMarkNotation(search_user.starMark!)
                                 ],
                               ),
                               Text(

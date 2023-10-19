@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:testing_app/Activities/Models.dart';
@@ -9,12 +8,11 @@ import 'package:testing_app/Mess_menus/mess_menu.dart';
 import 'package:testing_app/Posts/Models.dart';
 import 'package:testing_app/Side_menu_bar/Servers.dart';
 import 'package:testing_app/Threads/Models.dart';
+import 'package:testing_app/Timings/Timings.dart';
 import 'Posts/post.dart';
 import 'All_clubs/all_clubs.dart';
 import 'User_profile/profile.dart';
 import 'All_sports/all_sports.dart';
-import 'package:testing_app/Calender/calender_test.dart';
-import 'Timings/timings.dart';
 import 'Activities/activities.dart';
 import 'BuySell_LostFound/Uploads.dart';
 import 'Posts/Uploads.dart';
@@ -38,6 +36,10 @@ import 'User_Star_Mark/User_Profile_Star_Mark.dart';
 import 'Messanger/Models.dart';
 import 'package:flutter/rendering.dart';
 import 'Fcm_Notif_Domains/servers.dart';
+import 'Calender/Models.dart';
+import 'Calender/Calender_date_event.dart';
+import 'Calender/Calender_test.dart';
+import 'Calender/Servers.dart';
 
 List<Lost_Found> lst_buy_list = [];
 List<POST_LIST> all_posts = [];
@@ -155,27 +157,23 @@ class _firstpageState extends State<firstpage> {
             centerTitle: false,
             title: ((widget.app_user.email == "shiva@gmail.com" ||
                     widget.app_user.email == "guest@gmail.com")
-                ? Platform.isAndroid
-                    ? Text(
-                        "NITC",
-                        style: TextStyle(
-                            color:
-                                widget.curr_index == 0 || widget.curr_index == 1
-                                    ? Colors.white
-                                    : Colors.black),
-                      )
-                    : Text(
-                        "InstaBook",
-                        style: TextStyle(
-                            color:
-                                widget.curr_index == 0 || widget.curr_index == 1
-                                    ? Colors.white
-                                    : Colors.black),
-                      )
-                : Text(
-                    "NITC",
+                ? Text(
+                    "InstaBook",
                     style: TextStyle(
-                        color: widget.curr_index == 0 || widget.curr_index == 1
+                        color: widget.curr_index == 0 ||
+                                widget.curr_index == 1 ||
+                                widget.curr_index == 3 ||
+                                widget.curr_index == 4
+                            ? Colors.white
+                            : Colors.black),
+                  )
+                : Text(
+                    domains[widget.app_user.domain!]!,
+                    style: TextStyle(
+                        color: widget.curr_index == 0 ||
+                                widget.curr_index == 1 ||
+                                widget.curr_index == 3 ||
+                                widget.curr_index == 4
                             ? Colors.white
                             : Colors.black),
                   )),
@@ -188,9 +186,13 @@ class _firstpageState extends State<firstpage> {
                       underline: Container(),
                       elevation: 0,
                       iconEnabledColor:
-                          widget.curr_index == 1 ? Colors.white : Colors.black,
+                          widget.curr_index == 1 || widget.curr_index == 3
+                              ? Colors.white
+                              : Colors.black,
                       iconDisabledColor:
-                          widget.curr_index == 1 ? Colors.white : Colors.black,
+                          widget.curr_index == 1 || widget.curr_index == 3
+                              ? Colors.white
+                              : Colors.black,
                       items: domains_list
                           .map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
@@ -235,7 +237,9 @@ class _firstpageState extends State<firstpage> {
                                 Icons.notifications_on_rounded,
                                 size: 30,
                                 color: widget.curr_index == 0 ||
-                                        widget.curr_index == 1
+                                        widget.curr_index == 1 ||
+                                        widget.curr_index == 3 ||
+                                        widget.curr_index == 4
                                     ? Colors.white
                                     : Colors.indigo,
                               ),
@@ -276,14 +280,19 @@ class _firstpageState extends State<firstpage> {
                               FontAwesomeIcons.facebookMessenger,
                               size: 26,
                               color: widget.curr_index == 0 ||
-                                      widget.curr_index == 1
+                                      widget.curr_index == 1 ||
+                                      widget.curr_index == 3 ||
+                                      widget.curr_index == 4
                                   ? Colors.white
                                   : Colors.indigo,
                             ))
                       ],
                     )
             ],
-            backgroundColor: widget.curr_index == 0 || widget.curr_index == 1
+            backgroundColor: widget.curr_index == 0 ||
+                    widget.curr_index == 1 ||
+                    widget.curr_index == 3 ||
+                    widget.curr_index == 4
                 ? Colors.indigoAccent[700]
                 : Colors.white,
           ),
@@ -333,7 +342,7 @@ class _firstpageState extends State<firstpage> {
                   ]),
                 )
               : widget.curr_index == 1
-                  ? calenderwidget(widget.app_user, domains1[domain]!)
+                  ? calender(widget.app_user, domains1[domain]!)
                   : widget.curr_index == 2
                       ? activitieswidget(widget.app_user, domains1[domain]!)
                       : widget.curr_index == 3
@@ -349,7 +358,7 @@ class _firstpageState extends State<firstpage> {
                                             MediaQuery.of(context).size.height /
                                                 2),
                                     width: MediaQuery.of(context).size.width,
-                                    color: Colors.indigo,
+                                    color: Colors.white,
                                     margin: const EdgeInsets.only(top: 0.3),
                                     child: user_postswidget(
                                         widget.app_user.username!,
@@ -357,7 +366,47 @@ class _firstpageState extends State<firstpage> {
                               ],
                             )),
           floatingActionButton: widget.curr_index == 1
-              ? Container()
+              ? ElevatedButton.icon(
+                  onPressed: () async {
+                    showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (context) {
+                          return AlertDialog(
+                              contentPadding: EdgeInsets.all(15),
+                              content: Container(
+                                margin: EdgeInsets.all(10),
+                                child: const Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text("Please wait"),
+                                      CircularProgressIndicator()
+                                    ]),
+                              ));
+                        });
+                    Map<List<CALENDER_EVENT>, List<EVENT_LIST>> total_data =
+                        await calendar_servers().get_calender_event_list(
+                            today.toString().split(" ")[0]);
+                    Navigator.pop(context);
+                    List<CALENDER_EVENT> cal_event_data =
+                        total_data.keys.toList()[0];
+                    List<EVENT_LIST> activity_data =
+                        total_data.values.toList()[0];
+
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            calender_events_display(
+                                widget.app_user,
+                                cal_event_data,
+                                activity_data,
+                                today.toString().split(" ")[0])));
+                  },
+                  icon: const Icon(Icons.edit, color: Colors.white),
+                  label: const Text("Today Events",
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold)),
+                  style: ElevatedButton.styleFrom(primary: Colors.deepPurple),
+                )
               : FloatingActionButton(
                   onPressed: () {
                     if (widget.curr_index == 3) {
@@ -563,9 +612,17 @@ class _firstpageState extends State<firstpage> {
             onTap: (int index) {
               setState(() {
                 domain = 'All';
-                widget.curr_index = index;
-                if (widget.curr_index == 1) {
-                  domain = domains[widget.app_user.domain]!;
+                if (index == 4) {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (BuildContext context) {
+                    return Allclubpagewidget(widget.app_user, 'All');
+                  }));
+                } else {
+                  if (index == 1) {
+                    today = DateTime.now();
+                    domain = domains[widget.app_user.domain]!;
+                  }
+                  widget.curr_index = index;
                 }
               });
             },
@@ -672,7 +729,8 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
                   onTap: () {
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (BuildContext context) {
-                      return Timings(domains[widget.app_user.domain]!);
+                      return AcademicTimings(
+                          domains[widget.app_user.domain]!, widget.app_user);
                     }));
                   },
                   child: Column(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:testing_app/All_fests/Uploads.dart';
 import 'Models.dart';
 import 'package:testing_app/User_profile/Models.dart';
 import 'package:testing_app/User_profile/profile.dart';
@@ -6,6 +7,7 @@ import 'package:testing_app/Fcm_Notif_Domains/servers.dart';
 import 'Servers.dart';
 //import 'package:link_text/link_text.dart';
 import 'dart:convert' show utf8;
+import 'package:testing_app/User_Star_Mark/User_Profile_Star_Mark.dart';
 
 String utf8convert(String text) {
   List<int> bytes = text.toString().codeUnits;
@@ -314,14 +316,7 @@ class _fest_members1State extends State<fest_members1> {
                                   ),
                                 ),
                                 const SizedBox(width: 10),
-                                9 % 9 == 0
-                                    ? const Icon(
-                                        Icons
-                                            .verified_rounded, //verified_rounded,verified_outlined
-                                        color: Colors.green,
-                                        size: 18,
-                                      )
-                                    : Container()
+                                userMarkNotation(fest_mem.starMark!)
                               ],
                             ),
                             Text(

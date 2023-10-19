@@ -227,9 +227,12 @@ class SmallUsername {
   String? profilePic;
   String? fileType;
   String? phnNum;
+  bool? isAdmin;
   bool? isStudentAdmin;
   String? userMark;
   int? starMark;
+
+  bool? isTeamMem = false;
 
   SmallUsername(
       {this.username,
@@ -239,9 +242,11 @@ class SmallUsername {
       this.profilePic,
       this.phnNum,
       this.fileType,
+      this.isAdmin,
       this.isStudentAdmin,
       this.userMark,
-      this.starMark});
+      this.starMark,
+      this.isTeamMem});
 
   SmallUsername.fromJson(Map<String, dynamic> json) {
     username = json['username'];
@@ -251,6 +256,7 @@ class SmallUsername {
     profilePic = json['profile_pic'];
     phnNum = json['phn_num'];
     fileType = json['file_type'];
+    isAdmin = json['is_admin'];
     isStudentAdmin = json['is_student_admin'];
     userMark = json['user_mark'];
     starMark = json['star_mark'];
@@ -265,6 +271,7 @@ class SmallUsername {
     data['profile_pic'] = this.profilePic;
     data['phn_num'] = this.phnNum;
     data['file_type'] = this.fileType;
+    data['is_admin'] = this.isAdmin;
     data['is_student_admin'] = this.isStudentAdmin;
     data['user_mark'] = this.userMark;
     data['star_mark'] = this.starMark;
@@ -281,6 +288,7 @@ SmallUsername user_min(Username app_user) {
   min_user.profilePic = app_user.profilePic;
   min_user.fileType = app_user.fileType;
   min_user.phnNum = app_user.phnNum;
+  min_user.isAdmin = app_user.isAdmin;
   min_user.isStudentAdmin = app_user.isStudentAdmin;
   return min_user;
 }

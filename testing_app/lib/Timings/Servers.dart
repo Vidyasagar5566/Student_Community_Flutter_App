@@ -35,6 +35,48 @@ class timings_servers {
       //return temp;
     }
   }
+
+  Future<bool> post_academic_list(
+    int id,
+    String domain,
+    String academic_name,
+    String sun,
+    String mon,
+    String tues,
+    String wed,
+    String thu,
+    String fri,
+    String sat,
+  ) async {
+    try {
+      var token = storage.getItem('token');
+      String finalUrl = "$base_url/academic";
+      var url = Uri.parse(finalUrl);
+      http.Response response = await http.post(url,
+          headers: {
+            'Authorization': 'token $token',
+            "Content-Type": "application/json",
+          },
+          body: jsonEncode({
+            'id': id,
+            'domain': domain,
+            'academic_name': academic_name,
+            'sun': sun,
+            'mon': mon,
+            'tues': tues,
+            'wed': wed,
+            'thu': thu,
+            'fri': fri,
+            'sat': sat,
+          }));
+      var data = json.decode(response.body) as Map;
+
+      return data['error'];
+    } catch (e) {
+      return true;
+      //return temp;
+    }
+  }
 }
 
     // path('sac', views.SAC_list.as_view(),name = 'SAC_list1'),

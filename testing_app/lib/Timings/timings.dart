@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:testing_app/User_profile/Models.dart';
 import 'Servers.dart';
 import 'Models.dart';
 import 'package:testing_app/Fcm_Notif_Domains/servers.dart';
+import 'Uploads.dart';
+
+DateTime today_day = DateTime.now();
 
 List<Tab> tabs = const [
   Tab(
@@ -49,8 +54,9 @@ List<Tab> tabs = const [
 
 class Acadamic_timings extends StatefulWidget {
   final String day;
+  Username app_user;
   List<ACADEMIC_LIST> academic_list;
-  Acadamic_timings(this.day, this.academic_list);
+  Acadamic_timings(this.day, this.app_user, this.academic_list);
 
   @override
   State<Acadamic_timings> createState() => _Acadamic_timingsState();
@@ -112,13 +118,37 @@ class _Acadamic_timingsState extends State<Acadamic_timings> {
             color: Colors.white, borderRadius: BorderRadius.circular(15)),
         child: Column(
           children: [
-            Align(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  academic_menu.academic_name!,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w700, fontSize: 20),
-                )),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              Text(
+                academic_menu.academic_name!,
+                style:
+                    const TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
+              ),
+              widget.app_user.clzSacsHead!
+                  ? IconButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          return academic_create(
+                            academic_menu.id!,
+                            widget.app_user,
+                            academic_menu.academic_name,
+                            academic_menu.sun,
+                            academic_menu.mon,
+                            academic_menu.tue,
+                            academic_menu.wed,
+                            academic_menu.thu,
+                            academic_menu.fri,
+                            academic_menu.sat,
+                          );
+                        }));
+                      },
+                      icon: const Icon(
+                        Icons.edit,
+                        color: Colors.blue,
+                      ))
+                  : Container()
+            ]),
             ListView.builder(
                 itemCount: academic_name_timings.length,
                 shrinkWrap: true,
@@ -140,33 +170,40 @@ class _Acadamic_timingsState extends State<Acadamic_timings> {
   }
 }
 
-List<Widget> tabscontent1(List<ACADEMIC_LIST> academic_list) {
+List<Widget> tabscontent1(
+    List<ACADEMIC_LIST> academic_list, Username app_user) {
   List<Widget> tabscontent1 = [
-    Acadamic_timings("SUN", academic_list),
-    Acadamic_timings("MON", academic_list),
-    Acadamic_timings("TUE", academic_list),
-    Acadamic_timings("WED", academic_list),
-    Acadamic_timings("THU", academic_list),
-    Acadamic_timings("FRI", academic_list),
-    Acadamic_timings("SAT", academic_list),
+    Acadamic_timings(
+      "SUN",
+      app_user,
+      academic_list,
+    ),
+    Acadamic_timings("MON", app_user, academic_list),
+    Acadamic_timings("TUE", app_user, academic_list),
+    Acadamic_timings("WED", app_user, academic_list),
+    Acadamic_timings("THU", app_user, academic_list),
+    Acadamic_timings("FRI", app_user, academic_list),
+    Acadamic_timings("SAT", app_user, academic_list),
   ];
   return tabscontent1;
 }
 
-class Timings extends StatefulWidget {
+class AcademicTimings extends StatefulWidget {
   String domain;
-  Timings(this.domain);
+  Username app_user;
+  AcademicTimings(this.domain, this.app_user);
 
   @override
-  State<Timings> createState() => _TimingsState();
+  State<AcademicTimings> createState() => _AcademicTimingsState();
 }
 
-class _TimingsState extends State<Timings> {
+class _AcademicTimingsState extends State<AcademicTimings> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 8,
-        child: Scaffold(
+      initialIndex: today_day.weekday,
+      length: 8,
+      child: Scaffold(
           appBar: AppBar(
               leading: const BackButton(
                 color: Colors.blue, // <-- SEE HERE
@@ -229,10 +266,29 @@ class _TimingsState extends State<Timings> {
               );
             },
           ),
-        ));
+          floatingActionButton: widget.app_user.clzSacsHead!
+              ? FloatingActionButton(
+                  onPressed: () async {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (BuildContext context) {
+                      return academic_create(
+                          0, widget.app_user, '', '', '', '', '', '', '', '');
+                    }));
+                  },
+                  tooltip: 'wann share',
+                  elevation: 4.0,
+                  child: const Icon(
+                    Icons.add,
+                    color: Colors.blueAccent,
+                  ),
+                )
+              : Container()),
+    );
   }
 
   Widget _buildListView(List<ACADEMIC_LIST> academic_list) {
-    return Container(child: TabBarView(children: tabscontent1(academic_list)));
+    return Container(
+        child:
+            TabBarView(children: tabscontent1(academic_list, widget.app_user)));
   }
 }

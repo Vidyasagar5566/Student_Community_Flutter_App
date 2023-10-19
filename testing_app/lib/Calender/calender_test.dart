@@ -48,18 +48,17 @@ Map<int, String> weeks = {
   7: 'SUN'
 };
 
-class calenderwidget extends StatefulWidget {
+class calender extends StatefulWidget {
   Username app_user;
   String domain;
-  calenderwidget(this.app_user, this.domain);
+  calender(this.app_user, this.domain);
 
   @override
-  State<calenderwidget> createState() => _calenderwidgetState();
+  State<calender> createState() => _calenderState();
 }
 
-class _calenderwidgetState extends State<calenderwidget> {
+class _calenderState extends State<calender> {
   Widget build(BuildContext context) {
-    print(widget.domain);
     return FutureBuilder<List<String>>(
       future: calendar_servers().get_cal_list(widget.domain),
       builder: (ctx, AsyncSnapshot snapshot) {
@@ -76,6 +75,7 @@ class _calenderwidgetState extends State<calenderwidget> {
             return calenderwidget1(widget.app_user);
           }
         }
+        print(widget.domain);
         return const Center(
           child: CircularProgressIndicator(),
         );
@@ -83,6 +83,8 @@ class _calenderwidgetState extends State<calenderwidget> {
     );
   }
 }
+
+DateTime today = DateTime.now();
 
 class calenderwidget1 extends StatefulWidget {
   Username app_user;
@@ -93,7 +95,6 @@ class calenderwidget1 extends StatefulWidget {
 }
 
 class _calenderwidget1State extends State<calenderwidget1> {
-  DateTime today = DateTime.now();
   String week_day = "SUN";
   CalendarFormat _calenderFormat = CalendarFormat.twoWeeks;
 
@@ -125,90 +126,32 @@ class _calenderwidget1State extends State<calenderwidget1> {
               padding: const EdgeInsets.all(15),
               child: Column(
                 children: [
-                  Container(
-                    width: wid,
-                    margin: const EdgeInsets.all(2),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                            "Selected Day = " + today.toString().split(" ")[0]),
-                        TextButton(
-                            onPressed: () async {
-                              showDialog(
-                                  context: context,
-                                  barrierDismissible: false,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                        contentPadding: EdgeInsets.all(15),
-                                        content: Container(
-                                          margin: EdgeInsets.all(10),
-                                          child: const Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                Text("Please wait"),
-                                                CircularProgressIndicator()
-                                              ]),
-                                        ));
-                                  });
-                              Map<List<CALENDER_EVENT>, List<EVENT_LIST>>
-                                  total_data = await calendar_servers()
-                                      .get_calender_event_list(
-                                          today.toString().split(" ")[0]);
-                              Navigator.pop(context);
-                              List<CALENDER_EVENT> cal_event_data =
-                                  total_data.keys.toList()[0];
-                              List<EVENT_LIST> activity_data =
-                                  total_data.values.toList()[0];
-
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      calender_events_display(
-                                          widget.app_user,
-                                          cal_event_data,
-                                          activity_data,
-                                          today.toString().split(" ")[0])));
-                            },
-                            child: Row(
-                              children: [
-                                Text("Open Events?"),
-                                Icon(
-                                  Icons.open_in_browser,
-                                  color: Colors.blue[600],
-                                ),
-                              ],
-                            ))
-                      ],
-                    ),
-                  ),
-                  Container(
-                    child: TableCalendar(
-                      rowHeight: 35,
-                      availableGestures: AvailableGestures.all,
-                      selectedDayPredicate: (day) => isSameDay(day, today),
-                      startingDayOfWeek: StartingDayOfWeek.monday, //{
-                      // return widget.all_dates.contains(day);
-                      //}, //
-                      calendarFormat: _calenderFormat,
-                      onFormatChanged: (format) {
-                        if (_calenderFormat != format) {
-                          setState(() {
-                            _calenderFormat = format;
-                          });
-                        }
-                      },
-                      focusedDay: today,
-                      firstDay: DateTime.utc(2010, 10, 6),
-                      lastDay: DateTime(2030, 10, 6),
-                      onDaySelected: on_selected,
-                      eventLoader: (day1) => day_events(day1),
-                      calendarStyle: const CalendarStyle(
-                        outsideDaysVisible: false,
-                        markerSize: 10,
-                        markerDecoration: BoxDecoration(
-                          color: Colors.redAccent,
-                          shape: BoxShape.circle,
-                        ),
+                  TableCalendar(
+                    rowHeight: 35,
+                    availableGestures: AvailableGestures.all,
+                    selectedDayPredicate: (day) => isSameDay(day, today),
+                    startingDayOfWeek: StartingDayOfWeek.monday, //{
+                    // return widget.all_dates.contains(day);
+                    //}, //
+                    calendarFormat: _calenderFormat,
+                    onFormatChanged: (format) {
+                      if (_calenderFormat != format) {
+                        setState(() {
+                          _calenderFormat = format;
+                        });
+                      }
+                    },
+                    focusedDay: today,
+                    firstDay: DateTime.utc(2010, 10, 6),
+                    lastDay: DateTime(2030, 10, 6),
+                    onDaySelected: on_selected,
+                    eventLoader: (day1) => day_events(day1),
+                    calendarStyle: const CalendarStyle(
+                      outsideDaysVisible: false,
+                      markerSize: 10,
+                      markerDecoration: BoxDecoration(
+                        color: Colors.redAccent,
+                        shape: BoxShape.circle,
                       ),
                     ),
                   )
