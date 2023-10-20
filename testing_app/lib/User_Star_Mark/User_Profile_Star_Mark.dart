@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:testing_app/User_profile/Models.dart';
 import 'package:testing_app/Fcm_Notif_Domains/servers.dart';
+import 'package:testing_app/User_profile/profile.dart';
+import 'package:testing_app/Login/Servers.dart';
 
 star_user_mark(Username app_user) {
   if (app_user.userMark != "St" || app_user.starMark != 0) {
@@ -181,8 +183,9 @@ class _smallUserMarkNotationState extends State<smallUserMarkNotation> {
 }
 
 class UserProfileMark extends StatefulWidget {
+  Username app_user;
   SmallUsername profile_user;
-  UserProfileMark(this.profile_user);
+  UserProfileMark(this.app_user, this.profile_user);
 
   @override
   State<UserProfileMark> createState() => _UserProfileMarkState();
@@ -193,69 +196,40 @@ class _UserProfileMarkState extends State<UserProfileMark> {
   Widget build(BuildContext context) {
     SmallUsername user = widget.profile_user;
     var width = MediaQuery.of(context).size.width;
-    return Row(
-      children: [
-        Container(
-          width: 48, //post.profile_pic
-          child: user.fileType == '1'
-              ? CircleAvatar(backgroundImage: NetworkImage(user.profilePic!))
-              : const CircleAvatar(
-                  backgroundImage: AssetImage("images/profile.jpg")),
-        ),
-        Container(
-          padding: EdgeInsets.only(left: 20),
-          width: (width - 36) / 1.8,
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Row(
-              children: [
-                Container(
-                  constraints: BoxConstraints(maxWidth: (width - 36) / 2.4),
-                  child: Text(
-                    user.username!,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                userMarkNotation(user.starMark!)
-              ],
-            ),
-            Text(
-              domains[user.domain!]! + " (" + user.userMark! + ")",
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-            ),
-          ]),
-        ),
-      ],
-    );
-  }
-}
-
-class smallUserProfileMark extends StatefulWidget {
-  SmallUsername profile_user;
-  smallUserProfileMark(this.profile_user);
-
-  @override
-  State<smallUserProfileMark> createState() => _smallUserProfileMarkState();
-}
-
-class _smallUserProfileMarkState extends State<smallUserProfileMark> {
-  @override
-  Widget build(BuildContext context) {
-    SmallUsername user = widget.profile_user;
-    var width = MediaQuery.of(context).size.width;
-    return Container(
-      margin: EdgeInsets.only(left: 10),
+    return GestureDetector(
+      onTap: () async {
+        if (widget.app_user.email != widget.profile_user.email) {
+          showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) {
+                return AlertDialog(
+                    contentPadding: EdgeInsets.all(15),
+                    content: Container(
+                      margin: EdgeInsets.all(10),
+                      child: const Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text("Please wait while loading....."),
+                            SizedBox(height: 10),
+                            CircularProgressIndicator()
+                          ]),
+                    ));
+              });
+          Username all_profile_user =
+              await login_servers().get_user(widget.profile_user.email!);
+          Navigator.pop(context);
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (BuildContext context) {
+            return Scaffold(
+                body: userProfilePage(widget.app_user, all_profile_user));
+          }));
+        }
+      },
       child: Row(
         children: [
           Container(
-            width: 25, //post.profile_pic
+            width: 48, //post.profile_pic
             child: user.fileType == '1'
                 ? CircleAvatar(backgroundImage: NetworkImage(user.profilePic!))
                 : const CircleAvatar(
@@ -276,22 +250,18 @@ class _smallUserProfileMarkState extends State<smallUserProfileMark> {
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
                         fontWeight: FontWeight.w600,
-                        fontSize: 10,
+                        fontSize: 16,
                       ),
                     ),
                   ),
                   const SizedBox(width: 10),
-                  smallUserMarkNotation(user.starMark!)
+                  userMarkNotation(user.starMark!)
                 ],
               ),
               Text(
                 domains[user.domain!]! + " (" + user.userMark! + ")",
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 10,
-                ),
               ),
             ]),
           ),
@@ -301,10 +271,110 @@ class _smallUserProfileMarkState extends State<smallUserProfileMark> {
   }
 }
 
+class smallUserProfileMark extends StatefulWidget {
+  Username app_user;
+  SmallUsername profile_user;
+  smallUserProfileMark(this.app_user, this.profile_user);
+
+  @override
+  State<smallUserProfileMark> createState() => _smallUserProfileMarkState();
+}
+
+class _smallUserProfileMarkState extends State<smallUserProfileMark> {
+  @override
+  Widget build(BuildContext context) {
+    SmallUsername user = widget.profile_user;
+    var width = MediaQuery.of(context).size.width;
+    return GestureDetector(
+      onTap: () async {
+        if (widget.app_user.email != widget.profile_user.email) {
+          showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) {
+                return AlertDialog(
+                    contentPadding: EdgeInsets.all(15),
+                    content: Container(
+                      margin: EdgeInsets.all(10),
+                      child: const Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text("Please wait while loading....."),
+                            SizedBox(height: 10),
+                            CircularProgressIndicator()
+                          ]),
+                    ));
+              });
+          Username all_profile_user =
+              await login_servers().get_user(widget.profile_user.email!);
+          Navigator.pop(context);
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (BuildContext context) {
+            return Scaffold(
+                body: userProfilePage(widget.app_user, all_profile_user));
+          }));
+        }
+      },
+      child: Container(
+        margin: EdgeInsets.only(left: 10),
+        child: Row(
+          children: [
+            Container(
+              width: 25, //post.profile_pic
+              child: user.fileType == '1'
+                  ? CircleAvatar(
+                      backgroundImage: NetworkImage(user.profilePic!))
+                  : const CircleAvatar(
+                      backgroundImage: AssetImage("images/profile.jpg")),
+            ),
+            Container(
+              padding: EdgeInsets.only(left: 20),
+              width: (width - 36) / 1.8,
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          constraints:
+                              BoxConstraints(maxWidth: (width - 36) / 2.4),
+                          child: Text(
+                            user.username!,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 10,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        smallUserMarkNotation(user.starMark!)
+                      ],
+                    ),
+                    Text(
+                      domains[user.domain!]! + " (" + user.userMark! + ")",
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 10,
+                      ),
+                    ),
+                  ]),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class UserProfileMarkAdmin extends StatefulWidget {
   var post;
   var user;
-  UserProfileMarkAdmin(this.post, this.user);
+  Username app_user;
+  UserProfileMarkAdmin(this.post, this.user, this.app_user);
 
   @override
   State<UserProfileMarkAdmin> createState() => _UserProfileMarkAdminState();
@@ -324,63 +394,95 @@ class _UserProfileMarkAdminState extends State<UserProfileMarkAdmin> {
     } else if (widget.post.category == 'sac') {
       category = widget.post.sac!;
     }
-    return Row(
-      children: [
-        Container(
-            width: 48, //post.profile_pic
-            child: CircleAvatar(backgroundImage: NetworkImage(category.logo!))),
-        Container(
-          padding: EdgeInsets.only(left: 20),
-          width: (width - 36) / 1.8,
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Row(
-              children: [
-                Container(
-                  constraints: BoxConstraints(maxWidth: (width - 36) / 2.4),
-                  child: Text(
-                    category.name!,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
+    return GestureDetector(
+      onTap: () async {
+        if (widget.app_user.email != widget.user.email) {
+          showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) {
+                return AlertDialog(
+                    contentPadding: EdgeInsets.all(15),
+                    content: Container(
+                      margin: EdgeInsets.all(10),
+                      child: const Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text("Please wait while loading....."),
+                            SizedBox(height: 10),
+                            CircularProgressIndicator()
+                          ]),
+                    ));
+              });
+          Username all_profile_user =
+              await login_servers().get_user(widget.user.email!);
+          Navigator.pop(context);
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (BuildContext context) {
+            return Scaffold(
+                body: userProfilePage(widget.app_user, all_profile_user));
+          }));
+        }
+      },
+      child: Row(
+        children: [
+          Container(
+              width: 48, //post.profile_pic
+              child:
+                  CircleAvatar(backgroundImage: NetworkImage(category.logo!))),
+          Container(
+            padding: EdgeInsets.only(left: 20),
+            width: (width - 36) / 1.8,
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Row(
+                children: [
+                  Container(
+                    constraints: BoxConstraints(maxWidth: (width - 36) / 2.4),
+                    child: Text(
+                      category.name!,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(width: 10),
-                userMarkNotation(category.starMark!)
-              ],
-            ),
-            Text(
-              domains[widget.user.domain!]! +
-                  " (" +
-                  widget.post.category! +
-                  ")",
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-            ),
-            Row(
-              children: [
-                Container(
-                  constraints: BoxConstraints(maxWidth: (width - 36) / 2.4),
-                  child: Text(
-                    'From ' + widget.user.username!,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontSize: 15,
-                      //color: Colors.white
+                  const SizedBox(width: 10),
+                  userMarkNotation(category.starMark!)
+                ],
+              ),
+              Text(
+                domains[widget.user.domain!]! +
+                    " (" +
+                    widget.post.category! +
+                    ")",
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
+              Row(
+                children: [
+                  Container(
+                    constraints: BoxConstraints(maxWidth: (width - 36) / 2.4),
+                    child: Text(
+                      'From ' + widget.user.username!,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        //color: Colors.white
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(width: 10),
-                userMarkNotation(widget.user.starMark!)
-              ],
-            ),
-          ]),
-        ),
-      ],
+                  const SizedBox(width: 10),
+                  userMarkNotation(widget.user.starMark!)
+                ],
+              ),
+            ]),
+          ),
+        ],
+      ),
     );
   }
 }

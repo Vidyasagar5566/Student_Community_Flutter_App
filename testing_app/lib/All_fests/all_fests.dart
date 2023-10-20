@@ -344,7 +344,7 @@ class _Allfestspagewidget1State extends State<Allfestspagewidget1> {
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            smallUserProfileMark(fest.head!),
+                            smallUserProfileMark(widget.app_user, fest.head!),
                             Container(
                               margin: EdgeInsets.only(right: 10),
                               child: Row(

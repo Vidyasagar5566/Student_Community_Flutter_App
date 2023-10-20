@@ -267,8 +267,8 @@ class _single_postState extends State<single_post> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               post.category == 'student'
-                  ? UserProfileMark(post.username!)
-                  : UserProfileMarkAdmin(post, post.username),
+                  ? UserProfileMark(widget.app_user, post.username!)
+                  : UserProfileMarkAdmin(post, post.username, widget.app_user),
               IconButton(
                 onPressed: () {
                   showDialog(

@@ -57,7 +57,7 @@ class login_servers {
   }
 
 // GETTING USER CREDIDENTIALS // DELETE USER
-  Future<Username> get_user() async {
+  Future<Username> get_user(String email) async {
     try {
       await Firebase.initializeApp();
       String? FCM_token = await FirebaseMessaging.instance.getToken();
@@ -71,7 +71,8 @@ class login_servers {
 
       Map<String, String> queryParameters = {
         'token': FCM_token!,
-        'platform': platform
+        'platform': platform,
+        'email': email
       };
       String queryString = Uri(queryParameters: queryParameters).query;
 

@@ -340,7 +340,7 @@ class _single_eventState extends State<single_event> {
                   ),
             const SizedBox(height: 8),
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              smallUserProfileMark(user),
+              smallUserProfileMark(widget.app_user, user),
               Container(
                 margin: EdgeInsets.only(right: 20),
                 child: Row(

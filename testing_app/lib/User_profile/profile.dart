@@ -59,28 +59,30 @@ class _userProfilePageState extends State<userProfilePage> {
                             fontSize: 22)),
                   ]),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            editprofile(widget.profile_user)));
-                  },
-                  child: const Row(
-                    children: [
-                      Text("Edit",
-                          style: TextStyle(
+                widget.app_user.email == widget.profile_user.email
+                    ? GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  editprofile(widget.profile_user)));
+                        },
+                        child: const Row(
+                          children: [
+                            Text("Edit",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold)),
+                            SizedBox(width: 4),
+                            Icon(
+                              Icons.edit,
                               color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold)),
-                      SizedBox(width: 4),
-                      Icon(
-                        Icons.edit,
-                        color: Colors.white,
-                      ),
-                      SizedBox(width: 5)
-                    ],
-                  ),
-                )
+                            ),
+                            SizedBox(width: 5)
+                          ],
+                        ),
+                      )
+                    : Container()
               ],
             ),
             Container(
@@ -378,8 +380,11 @@ class _userProfilePageState extends State<userProfilePage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text("Posts",
-                                style: TextStyle(
+                            Text(
+                                "Posts (" +
+                                    widget.profile_user.postCount.toString() +
+                                    ')',
+                                style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black,
                                     fontSize: 20)),
@@ -412,8 +417,11 @@ class _userProfilePageState extends State<userProfilePage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text("LostFound",
-                                style: TextStyle(
+                            Text(
+                                "LostFound (" +
+                                    widget.profile_user.lstCount.toString() +
+                                    ')',
+                                style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black,
                                     fontSize: 20)),
@@ -453,8 +461,11 @@ class _userProfilePageState extends State<userProfilePage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text("BuySell",
-                                style: TextStyle(
+                            Text(
+                                "BuySell (" +
+                                    widget.profile_user.buyCount.toString() +
+                                    ')',
+                                style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black,
                                     fontSize: 20)),
@@ -518,8 +529,11 @@ class _userProfilePageState extends State<userProfilePage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text("Threads",
-                                style: TextStyle(
+                            Text(
+                                "Threads (" +
+                                    widget.profile_user.threadCount.toString() +
+                                    ')',
+                                style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black,
                                     fontSize: 20)),

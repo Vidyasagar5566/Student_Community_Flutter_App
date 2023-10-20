@@ -183,8 +183,9 @@ class _alertwidget1State extends State<alertwidget1> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     alert.category == 'student'
-                        ? UserProfileMark(alert.username!)
-                        : UserProfileMarkAdmin(alert, alert.username),
+                        ? UserProfileMark(widget.app_user, alert.username!)
+                        : UserProfileMarkAdmin(
+                            alert, alert.username, widget.app_user),
                     Text(
                         alert_posted_date.substring(0, 7) +
                             "(" +
@@ -359,8 +360,9 @@ class _alert_commentwidgetState extends State<alert_commentwidget> {
               ),
               const SizedBox(height: 30),
               widget.alert.category == 'student'
-                  ? UserProfileMark(widget.alert.username!)
-                  : UserProfileMarkAdmin(widget.alert, widget.alert.username),
+                  ? UserProfileMark(widget.app_user, widget.alert.username!)
+                  : UserProfileMarkAdmin(
+                      widget.alert, widget.alert.username, widget.app_user),
               const SizedBox(height: 20),
               Text(widget.alert.description!,
                   style: const TextStyle(fontSize: 15)),
@@ -458,7 +460,7 @@ class _lst_cmnt_pageState extends State<lst_cmnt_page> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              UserProfileMark(user),
+              UserProfileMark(widget.app_user, user),
               (user.email == app_user.email)
                   ? Center(
                       child: IconButton(

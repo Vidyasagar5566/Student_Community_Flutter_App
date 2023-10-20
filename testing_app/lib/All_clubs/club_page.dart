@@ -190,10 +190,10 @@ class _clubpagewidgetState extends State<clubpagewidget> {
                                     return Scaffold(
                                         appBar: AppBar(
                                           centerTitle: true,
-                                          iconTheme: IconThemeData(
+                                          iconTheme: const IconThemeData(
                                               color: Colors.white),
                                           title: Text(widget.club.name!,
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   color: Colors.white)),
                                           backgroundColor:
                                               Colors.indigoAccent[700],
@@ -210,8 +210,11 @@ class _clubpagewidgetState extends State<clubpagewidget> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Text("Posts",
-                                        style: TextStyle(
+                                    Text(
+                                        "Posts (" +
+                                            widget.club.post_count.toString() +
+                                            ')',
+                                        style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black,
                                             fontSize: 18)),
@@ -260,10 +263,10 @@ class _clubpagewidgetState extends State<clubpagewidget> {
                                     return Scaffold(
                                         appBar: AppBar(
                                           centerTitle: true,
-                                          iconTheme: IconThemeData(
+                                          iconTheme: const IconThemeData(
                                               color: Colors.white),
                                           title: Text(widget.club.name!,
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   color: Colors.white)),
                                           backgroundColor:
                                               Colors.indigoAccent[700],
@@ -279,8 +282,12 @@ class _clubpagewidgetState extends State<clubpagewidget> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Text("Activities",
-                                        style: TextStyle(
+                                    Text(
+                                        "Activities (" +
+                                            widget.club.activity_count
+                                                .toString() +
+                                            ')',
+                                        style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black,
                                             fontSize: 18)),
@@ -367,10 +374,10 @@ class _clubpagewidgetState extends State<clubpagewidget> {
                                     return Scaffold(
                                         appBar: AppBar(
                                           centerTitle: true,
-                                          iconTheme: IconThemeData(
+                                          iconTheme: const IconThemeData(
                                               color: Colors.white),
                                           title: Text(widget.club.name!,
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   color: Colors.white)),
                                           backgroundColor:
                                               Colors.indigoAccent[700],
@@ -387,8 +394,12 @@ class _clubpagewidgetState extends State<clubpagewidget> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Text("Threads",
-                                        style: TextStyle(
+                                    Text(
+                                        "Threads (" +
+                                            widget.club.thread_count
+                                                .toString() +
+                                            ')',
+                                        style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black,
                                             fontSize: 18)),

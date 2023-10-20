@@ -347,7 +347,7 @@ class _Allsportpagewidget1State extends State<Allsportpagewidget1> {
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            smallUserProfileMark(sport.head!),
+                            smallUserProfileMark(widget.app_user, sport.head!),
                             Container(
                               margin: EdgeInsets.only(right: 10),
                               child: Row(

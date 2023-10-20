@@ -206,8 +206,11 @@ class _festpagewidgetState extends State<festpagewidget> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Text("Posts",
-                                        style: TextStyle(
+                                    Text(
+                                        "Posts (" +
+                                            widget.fest.post_count.toString() +
+                                            ')',
+                                        style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black,
                                             fontSize: 18)),
@@ -275,8 +278,11 @@ class _festpagewidgetState extends State<festpagewidget> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Text("Activities",
-                                        style: TextStyle(
+                                    Text(
+                                        "Activities (" +
+                                            widget.fest.post_count.toString() +
+                                            ')',
+                                        style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black,
                                             fontSize: 18)),
@@ -382,8 +388,11 @@ class _festpagewidgetState extends State<festpagewidget> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Text("Threads",
-                                        style: TextStyle(
+                                    Text(
+                                        "Threads (" +
+                                            widget.fest.post_count.toString() +
+                                            ')',
+                                        style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black,
                                             fontSize: 18)),

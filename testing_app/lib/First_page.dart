@@ -63,7 +63,7 @@ class _get_ueser_widgetState extends State<get_ueser_widget> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Username>(
-      future: login_servers().get_user(),
+      future: login_servers().get_user(''),
       builder: (ctx, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
