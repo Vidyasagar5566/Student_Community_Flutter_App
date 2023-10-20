@@ -54,7 +54,7 @@ class _activitieswidgetState extends State<activitieswidget> {
             } else {
               all_events = eventList;
               return activitieswidget1(
-                  eventList, widget.app_user, widget.domain);
+                  eventList, widget.app_user, widget.domain, false);
             }
           }
         }
@@ -71,7 +71,8 @@ class activitieswidget1 extends StatefulWidget {
   List<EVENT_LIST> event_list;
   Username app_user;
   String domain;
-  activitieswidget1(this.event_list, this.app_user, this.domain);
+  bool profile;
+  activitieswidget1(this.event_list, this.app_user, this.domain, this.profile);
 
   @override
   State<activitieswidget1> createState() => _activitieswidget1State();
@@ -100,22 +101,15 @@ class _activitieswidget1State extends State<activitieswidget1> {
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
-    return widget.event_list.length == 0
+    return widget.event_list.isEmpty
         ? Container(
-            decoration: const BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage("images/background.jpg"),
-                    fit: BoxFit.cover)),
-            child: Center(
-              child: Container(
-                margin: const EdgeInsets.all(20),
-                padding: const EdgeInsets.all(20),
-                child: const Text("No Data Was Found",
-                    style:
-                        TextStyle(fontWeight: FontWeight.w500, fontSize: 24)),
+            margin: EdgeInsets.all(30),
+            padding: EdgeInsets.all(30),
+            child: const Center(
+              child: Text(
+                "No Activities Was Found",
               ),
-            ),
-          )
+            ))
         : SingleChildScrollView(
             child: Container(
                 decoration: const BoxDecoration(
@@ -151,7 +145,7 @@ class _activitieswidget1State extends State<activitieswidget1> {
                               return single_event(event, widget.app_user);
                             })),
                     total_loaded
-                        ? widget.event_list.length > 10
+                        ? widget.event_list.length > 10 && !widget.profile
                             ? Container(
                                 width: width,
                                 height: 100,

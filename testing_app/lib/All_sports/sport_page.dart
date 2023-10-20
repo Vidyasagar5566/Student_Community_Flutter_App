@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'Models.dart';
 import 'package:testing_app/User_profile/Models.dart';
 import 'package:testing_app/Fcm_Notif_Domains/servers.dart';
 import 'Servers.dart';
-import 'package:testing_app/User_profile/profile.dart';
+import 'package:testing_app/User_profile/Servers.dart';
 //import 'package:link_text/link_text.dart';
 import 'dart:convert' show utf8;
 import 'package:testing_app/User_Star_Mark/User_Profile_Star_Mark.dart';
+import 'package:testing_app/User_profile/User_posts_category.dart';
+import 'package:testing_app/Threads/Threads.dart';
+import 'package:testing_app/Activities/Activities.dart';
 
 String utf8convert(String text) {
   List<int> bytes = text.toString().codeUnits;
@@ -37,105 +41,93 @@ List<Tab> tabs = const [
       style: TextStyle(color: Colors.black),
     ),
   ),
-  Tab(
-    child: Text(
-      "Other pages",
-      style: TextStyle(color: Colors.black),
-    ),
-  )
 ];
 
-List<Widget> tabscontent_funct(
-    double width, ALL_SPORTS sport, Username app_user) {
-  SmallUsername user = sport.head!;
-  return [
-    SingleChildScrollView(
-        child: Container(
-      margin: EdgeInsets.all(20),
-      padding: EdgeInsets.all(20),
-      decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(20)),
-      child: Column(
-        children: [
-          const SizedBox(
-            height: 30,
-          ),
-          //Link
-          Text(
-            utf8convert(sport.description!),
-            //'''Cricket is the most played game by all the students in nit-calicut, the main ground is located at the 12th mile, it participates in inter nitc every year. Runners up in inter nitc 2018 with nit surat''',
-            /*style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500 //color: Colors.white70
-                  ),*/
-            //overflow: TextOverflow.ellipsis,
-            //maxLines: 10
-          ),
-        ],
-      ),
-    )),
-    SingleChildScrollView(
-        child: Container(
-      margin: EdgeInsets.only(top: 20),
-      child: club_members(sport.teamMembers!),
-    )),
-    SingleChildScrollView(
-        child: Container(
-            margin: EdgeInsets.only(top: 20),
-            child: user_postswidget(user.username!, app_user))),
-    SingleChildScrollView(
-        child: Container(
-            margin: EdgeInsets.all(20),
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(20)),
-            child: Column(
-              children: [
-                Container(
-                  margin: const EdgeInsets.all(10),
-                  child: //Link
-                      Text(sport.sportGround!
-                          //"One is at 12th mile and the other is at backside of main building"
-                          ),
-                ),
-                Container(
-                    margin: const EdgeInsets.all(10),
-                    child: const Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Images",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600, fontSize: 15),
-                        ))),
-                Center(
-                  child: Container(
-                      height: width,
-                      width: width,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.white),
-                      child: Image.network(sport.sportGroundImg!)),
-                ),
-              ],
-            ))),
-    SingleChildScrollView(
-        child: Container(
-            margin: EdgeInsets.all(20),
-            padding: EdgeInsets.all(20),
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(20)),
-            child: Column(children: [
-              const SizedBox(
-                height: 30,
-              ),
-              //Link
-              Text(
-                sport.websites!,
-                //"https://www.crichq.com",
-                //style: TextStyle(color: Colors.blueAccent),
-              )
-            ])))
-  ];
-}
+// List<Widget> tabscontent_funct(
+//     double width, ALL_SPORTS sport, Username app_user) {
+//   SmallUsername user = sport.head!;
+//   return [
+//     SingleChildScrollView(
+//         child: Container(
+//       margin: EdgeInsets.all(20),
+//       padding: EdgeInsets.all(20),
+//       decoration: BoxDecoration(
+//           color: Colors.white, borderRadius: BorderRadius.circular(20)),
+//       child: Column(
+//         children: [
+//           const SizedBox(
+//             height: 30,
+//           ),
+//           //Link
+//           Text(
+//             utf8convert(sport.description!),
+//           ),
+//         ],
+//       ),
+//     )),
+//     SingleChildScrollView(
+//         child: Container(
+//       margin: EdgeInsets.only(top: 20),
+//       child: sport_members(sport.teamMembers!),
+//     )),
+//     SingleChildScrollView(
+//         child: Container(
+//             margin: EdgeInsets.only(top: 20),
+//             child: user_postswidget(
+//                 user.username!, app_user, 'sport', sport.id!))),
+//     SingleChildScrollView(
+//         child: Container(
+//             margin: EdgeInsets.all(20),
+//             decoration: BoxDecoration(
+//                 color: Colors.white, borderRadius: BorderRadius.circular(20)),
+//             child: Column(
+//               children: [
+//                 Container(
+//                   margin: const EdgeInsets.all(10),
+//                   child: //Link
+//                       Text(sport.sportGround!
+//                           //"One is at 12th mile and the other is at backside of main building"
+//                           ),
+//                 ),
+//                 Container(
+//                     margin: const EdgeInsets.all(10),
+//                     child: const Align(
+//                         alignment: Alignment.centerLeft,
+//                         child: Text(
+//                           "Images",
+//                           style: TextStyle(
+//                               fontWeight: FontWeight.w600, fontSize: 15),
+//                         ))),
+//                 Center(
+//                   child: Container(
+//                       height: width,
+//                       width: width,
+//                       decoration: BoxDecoration(
+//                           borderRadius: BorderRadius.circular(20),
+//                           color: Colors.white),
+//                       child: Image.network(sport.sportGroundImg!)),
+//                 ),
+//               ],
+//             ))),
+//     SingleChildScrollView(
+//         child: Container(
+//             margin: EdgeInsets.all(20),
+//             padding: EdgeInsets.all(20),
+//             decoration: BoxDecoration(
+//                 color: Colors.white, borderRadius: BorderRadius.circular(20)),
+//             child: Column(children: [
+//               const SizedBox(
+//                 height: 30,
+//               ),
+//               //Link
+//               Text(
+//                 sport.websites!,
+//                 //"https://www.crichq.com",
+//                 //style: TextStyle(color: Colors.blueAccent),
+//               )
+//             ])))
+//   ];
+// }
 
 class sportpagewidget extends StatefulWidget {
   ALL_SPORTS sport;
@@ -155,7 +147,7 @@ class _sportpagewidgetState extends State<sportpagewidget> {
     SmallUsername head = widget.sport.head!;
     var width = MediaQuery.of(context).size.width;
     return DefaultTabController(
-        length: 10,
+        length: 4,
         child: Scaffold(
           appBar: AppBar(
             leading: const BackButton(
@@ -240,25 +232,329 @@ class _sportpagewidgetState extends State<sportpagewidget> {
                             tabs: tabs,
                           ))),
                   Expanded(
-                      child: TabBarView(
-                          children: tabscontent_funct(
-                              width, widget.sport, widget.app_user)))
+                      child: TabBarView(children: [
+//  Tab Bar View  Tan contents
+
+                    SingleChildScrollView(
+                        child: Container(
+                      margin: EdgeInsets.all(20),
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Column(
+                        children: [
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          //Link
+                          Text(
+                            utf8convert(widget.sport.description!),
+                          ),
+                        ],
+                      ),
+                    )),
+                    SingleChildScrollView(
+                        child: Container(
+                      margin: EdgeInsets.only(top: 20),
+                      child: sport_members(widget.sport.teamMembers!),
+                    )),
+                    Container(
+                      width: width,
+                      padding: EdgeInsets.all(40),
+                      margin: EdgeInsets.only(top: 40, bottom: 40),
+                      decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(30),
+                          )),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (BuildContext context) {
+                                    return Scaffold(
+                                        appBar: AppBar(
+                                          centerTitle: true,
+                                          iconTheme: IconThemeData(
+                                              color: Colors.white),
+                                          title: Text(widget.sport.name!,
+                                              style: TextStyle(
+                                                  color: Colors.white)),
+                                          backgroundColor:
+                                              Colors.indigoAccent[700],
+                                        ),
+                                        body: SingleChildScrollView(
+                                          child: user_postswidget(
+                                              '',
+                                              widget.app_user,
+                                              'sport',
+                                              widget.sport.id!),
+                                        ));
+                                  }));
+                                },
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text("Posts",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                            fontSize: 18)),
+                                    const SizedBox(height: 12),
+                                    Container(
+                                      height: width / 3,
+                                      width: width / 3,
+                                      decoration: const BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20)),
+                                          image: DecorationImage(
+                                              image: AssetImage(
+                                                  "images/posts.jpeg"),
+                                              fit: BoxFit.cover)),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () async {
+                                  showDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                            contentPadding: EdgeInsets.all(15),
+                                            content: Container(
+                                              margin: EdgeInsets.all(10),
+                                              child: const Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    Text(
+                                                        "Please wait a min....."),
+                                                    SizedBox(height: 10),
+                                                    CircularProgressIndicator()
+                                                  ]),
+                                            ));
+                                      });
+                                  var event_list = await user_profile_servers()
+                                      .get_user_activity_list(
+                                          '', 'sport', widget.sport.id!);
+                                  Navigator.pop(context);
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (BuildContext context) {
+                                    return Scaffold(
+                                        appBar: AppBar(
+                                          centerTitle: true,
+                                          iconTheme: IconThemeData(
+                                              color: Colors.white),
+                                          title: Text(widget.sport.name!,
+                                              style: TextStyle(
+                                                  color: Colors.white)),
+                                          backgroundColor:
+                                              Colors.indigoAccent[700],
+                                        ),
+                                        body: SingleChildScrollView(
+                                            child: activitieswidget1(
+                                                event_list,
+                                                widget.app_user,
+                                                widget.app_user.domain!,
+                                                true)));
+                                  }));
+                                },
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text("Activities",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                            fontSize: 18)),
+                                    const SizedBox(height: 12),
+                                    Container(
+                                      height: width / 3,
+                                      width: width / 3,
+                                      decoration: const BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20)),
+                                          image: DecorationImage(
+                                              image: AssetImage(
+                                                  "images/profile_activities.jpeg"),
+                                              fit: BoxFit.cover)),
+                                    )
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                          const SizedBox(height: 40),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              GestureDetector(
+                                onTap: () async {
+                                  String web_url = widget.sport.websites!;
+
+                                  final Uri url = Uri.parse(web_url);
+                                  if (!await launchUrl(url)) {
+                                    throw Exception('Could not launch $url');
+                                  }
+                                },
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(widget.sport.name!,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                            fontSize: 18)),
+                                    const SizedBox(height: 12),
+                                    Container(
+                                      height: width / 3,
+                                      width: width / 3,
+                                      decoration: BoxDecoration(
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(20)),
+                                          image: DecorationImage(
+                                              image: NetworkImage(
+                                                  widget.sport.logo!),
+                                              fit: BoxFit.cover)),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () async {
+                                  showDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                            contentPadding: EdgeInsets.all(15),
+                                            content: Container(
+                                              margin: EdgeInsets.all(10),
+                                              child: const Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    Text(
+                                                        "Please wait a min....."),
+                                                    SizedBox(height: 10),
+                                                    CircularProgressIndicator()
+                                                  ]),
+                                            ));
+                                      });
+                                  var thread_list = await user_profile_servers()
+                                      .get_user_thread_list(
+                                          '', 'sport', widget.sport.id!);
+                                  Navigator.pop(context);
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (BuildContext context) {
+                                    return Scaffold(
+                                        appBar: AppBar(
+                                          centerTitle: true,
+                                          iconTheme: IconThemeData(
+                                              color: Colors.white),
+                                          title: Text(widget.sport.name!,
+                                              style: TextStyle(
+                                                  color: Colors.white)),
+                                          backgroundColor:
+                                              Colors.indigoAccent[700],
+                                        ),
+                                        body: SingleChildScrollView(
+                                          child: alertwidget1(
+                                              thread_list,
+                                              widget.app_user,
+                                              widget.app_user.domain!,
+                                              true),
+                                        ));
+                                  }));
+                                },
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text("Threads",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                            fontSize: 18)),
+                                    const SizedBox(height: 12),
+                                    Container(
+                                      height: width / 3,
+                                      width: width / 3,
+                                      decoration: const BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20)),
+                                          image: DecorationImage(
+                                              image: AssetImage(
+                                                  "images/threads profile.jpeg"),
+                                              fit: BoxFit.cover)),
+                                    )
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    SingleChildScrollView(
+                        child: Container(
+                            margin: EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20)),
+                            child: Column(
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.all(10),
+                                  child: //Link
+                                      Text(widget.sport.sportGround!),
+                                ),
+                                Container(
+                                    margin: const EdgeInsets.all(10),
+                                    child: const Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          "Images",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 15),
+                                        ))),
+                                Center(
+                                  child: Container(
+                                      height: width,
+                                      width: width,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          color: Colors.white),
+                                      child: Image.network(
+                                          widget.sport.sportGroundImg!)),
+                                ),
+                              ],
+                            ))),
+                  ])),
                 ],
               )),
         ));
   }
 }
 
-class club_members extends StatefulWidget {
+class sport_members extends StatefulWidget {
   final String team_mem;
-  club_members(this.team_mem);
-  //const club_members({super.key});
+  sport_members(this.team_mem);
+  //const sport_members({super.key});
 
   @override
-  State<club_members> createState() => _club_membersState();
+  State<sport_members> createState() => _sport_membersState();
 }
 
-class _club_membersState extends State<club_members> {
+class _sport_membersState extends State<sport_members> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Username>>(
@@ -274,7 +570,7 @@ class _club_membersState extends State<club_members> {
             );
           } else if (snapshot.hasData) {
             List<Username> sport_mem_list = snapshot.data;
-            return club_members1(sport_mem_list);
+            return sport_members1(sport_mem_list);
           }
         }
         return const Center(
@@ -285,15 +581,15 @@ class _club_membersState extends State<club_members> {
   }
 }
 
-class club_members1 extends StatefulWidget {
+class sport_members1 extends StatefulWidget {
   List<Username> sport_mem_list;
-  club_members1(this.sport_mem_list);
+  sport_members1(this.sport_mem_list);
 
   @override
-  State<club_members1> createState() => _club_members1State();
+  State<sport_members1> createState() => _sport_members1State();
 }
 
-class _club_members1State extends State<club_members1> {
+class _sport_members1State extends State<sport_members1> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(

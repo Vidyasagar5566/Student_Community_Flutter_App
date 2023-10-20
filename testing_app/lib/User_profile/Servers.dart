@@ -3,6 +3,8 @@ import 'package:localstorage/localstorage.dart';
 import '/Posts/Models.dart';
 import 'dart:convert';
 import 'dart:io';
+import 'package:testing_app/Threads/Models.dart';
+import 'package:testing_app/Activities/Models.dart';
 
 class user_profile_servers {
   LocalStorage storage = LocalStorage("usertoken");
@@ -10,10 +12,13 @@ class user_profile_servers {
 
 // USER PROFILE LIST POSTS / PROFILE _PIC UPDATE / PROFILE_PIC DELTE
 
-  Future<List<POST_LIST>> get_user_post_list(String username) async {
+  Future<List<POST_LIST>> get_user_post_list(
+      String email, String category, int category_id) async {
     try {
       Map<String, String> queryParameters = {
-        'username': username,
+        'email': email,
+        'category': category,
+        'category_id': category_id.toString()
       };
       String queryString = Uri(queryParameters: queryParameters).query;
       var token = storage.getItem('token');
@@ -28,11 +33,68 @@ class user_profile_servers {
       data.forEach((element) {
         POST_LIST post = POST_LIST.fromJson(element);
         temp.add(post);
-        
       });
       return temp;
     } catch (e) {
       List<POST_LIST> temp = [];
+      return temp;
+    }
+  }
+
+  Future<List<ALERT_LIST>> get_user_thread_list(
+      String email, String category, int category_id) async {
+    try {
+      var token = storage.getItem('token');
+      String finalUrl = "$base_url/profile/list1";
+      var url = Uri.parse(finalUrl);
+      http.Response response = await http.put(url,
+          headers: {
+            'Authorization': 'token $token',
+            "Content-Type": "application/json",
+          },
+          body: jsonEncode({
+            'email': email,
+            'category': category,
+            'category_id': category_id.toString()
+          }));
+      var data = json.decode(response.body) as List;
+      List<ALERT_LIST> temp = [];
+      data.forEach((element) {
+        ALERT_LIST post = ALERT_LIST.fromJson(element);
+        temp.add(post);
+      });
+      return temp;
+    } catch (e) {
+      List<ALERT_LIST> temp = [];
+      return temp;
+    }
+  }
+
+  Future<List<EVENT_LIST>> get_user_activity_list(
+      String email, String category, int category_id) async {
+    try {
+      var token = storage.getItem('token');
+      String finalUrl = "$base_url/profile/list1";
+      var url = Uri.parse(finalUrl);
+      http.Response response = await http.patch(url,
+          headers: {
+            'Authorization': 'token $token',
+            "Content-Type": "application/json",
+          },
+          body: jsonEncode({
+            'email': email,
+            'category': category,
+            'category_id': category_id.toString()
+          }));
+      var data = json.decode(response.body) as List;
+      List<EVENT_LIST> temp = [];
+      data.forEach((element) {
+        EVENT_LIST post = EVENT_LIST.fromJson(element);
+        temp.add(post);
+      });
+      return temp;
+    } catch (e) {
+      List<EVENT_LIST> temp = [];
       return temp;
     }
   }

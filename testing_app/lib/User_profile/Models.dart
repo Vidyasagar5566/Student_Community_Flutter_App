@@ -31,8 +31,10 @@ class Username {
   String? studentAdminRole;
   String? userMark;
   int? starMark;
-  int? highPostCount;
-  int? highLstCount;
+  int? postCount;
+  int? lstCount;
+  int? buyCount;
+  int? threadCount;
   bool? notifSeen;
   int? notifCount;
   String? notifIds;
@@ -85,8 +87,10 @@ class Username {
       this.studentAdminRole,
       this.userMark,
       this.starMark,
-      this.highPostCount,
-      this.highLstCount,
+      this.postCount,
+      this.lstCount,
+      this.buyCount,
+      this.threadCount,
       this.notifSeen,
       this.notifCount,
       this.notifIds,
@@ -139,8 +143,10 @@ class Username {
     studentAdminRole = json['student_admin_role'];
     userMark = json['user_mark'];
     starMark = json['star_mark'];
-    highPostCount = json['high_post_count'];
-    highLstCount = json['high_lst_count'];
+    postCount = json['post_count'];
+    lstCount = json['lst_count'];
+    buyCount = json['buy_count'];
+    threadCount = json['thread_count'];
     notifSeen = json['notif_seen'];
     notifCount = json['notif_count'];
     notifIds = json['notif_ids'];
@@ -195,8 +201,10 @@ class Username {
     data['student_admin_role'] = this.studentAdminRole;
     data['user_mark'] = this.userMark;
     data['star_mark'] = this.starMark;
-    data['high_post_count'] = this.highPostCount;
-    data['high_lst_count'] = this.highLstCount;
+    data['post_count'] = this.postCount;
+    data['lst_count'] = this.lstCount;
+    data['buy_count'] = this.buyCount;
+    data['thread_count'] = this.threadCount;
     data['notif_seen'] = this.notifSeen;
     data['notif_count'] = this.notifCount;
     data['notif_ids'] = this.notifIds;

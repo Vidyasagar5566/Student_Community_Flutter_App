@@ -3,7 +3,7 @@ import 'calender_test.dart';
 import 'Servers.dart';
 import 'Models.dart';
 import 'package:testing_app/User_profile/Models.dart';
-import 'package:testing_app/Activities/activities.dart';
+import 'package:testing_app/Activities/Activities.dart';
 import 'dart:io';
 import '../Files_disply_download/pdf_videos_images.dart';
 import 'package:dio/dio.dart';
@@ -152,32 +152,18 @@ class _calender_events_displayState extends State<calender_events_display> {
                                   Navigator.pop(context);
                                 },
                                 icon: const Icon(Icons.keyboard_arrow_left,
-                                    color: Colors.blue, size: 40))
+                                    color: Colors.blue, size: 40)),
+                            Container()
                           ],
                         ),
                       ),
                       const SizedBox(height: 10),
-                      Container(
-                        decoration: const BoxDecoration(
-                            image: DecorationImage(
-                                image:
-                                    AssetImage("images/event background.jpg"),
-                                fit: BoxFit.cover)),
-                        child: ListView.builder(
-                            itemCount: widget.activity_data.length,
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            padding: EdgeInsets.only(bottom: 10),
-                            itemBuilder: (BuildContext context, int index) {
-                              EVENT_LIST cal_event =
-                                  widget.activity_data[index];
-                              return single_event(cal_event, widget.app_user);
-                            }),
-                      ),
+                      activitieswidget1(widget.activity_data, widget.app_user,
+                          widget.app_user.domain!, true)
                     ],
                   ),
                 ),
-              ), //activitieswidget1(widget.activity_data, widget.app_user),
+              ),
         bottomNavigationBar: BottomNavigationBar(
           fixedColor: Colors.blue,
           backgroundColor: Colors.white70,

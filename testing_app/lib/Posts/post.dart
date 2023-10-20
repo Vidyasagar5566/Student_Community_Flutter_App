@@ -71,15 +71,15 @@ class _postwidgetState extends State<postwidget> {
   }
 }
 
-class appBar extends StatefulWidget {
+class PostWithappBar extends StatefulWidget {
   Username app_user;
   String domain;
-  appBar(this.app_user, this.domain);
+  PostWithappBar(this.app_user, this.domain);
   @override
-  State<appBar> createState() => _appBarState();
+  State<PostWithappBar> createState() => _PostWithappBarState();
 }
 
-class _appBarState extends State<appBar> {
+class _PostWithappBarState extends State<PostWithappBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

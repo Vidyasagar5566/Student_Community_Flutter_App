@@ -15,6 +15,10 @@ class ALL_CLUBS {
   int? starMark;
   SmallUsername? head;
 
+  int? post_count;
+  int? thread_count;
+  int? activity_count;
+
   ALL_CLUBS(
       {this.id,
       this.name,
@@ -28,7 +32,10 @@ class ALL_CLUBS {
       this.likeCount,
       this.domain,
       this.starMark,
-      this.head});
+      this.head,
+      this.post_count,
+      this.thread_count,
+      this.activity_count});
 
   ALL_CLUBS.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -45,6 +52,10 @@ class ALL_CLUBS {
     starMark = json['star_mark'];
     head =
         json['head'] != null ? new SmallUsername.fromJson(json['head']) : null;
+
+    post_count = json['post_count'];
+    thread_count = json['thread_count'];
+    activity_count = json['activity_count'];
   }
 
   Map<String, dynamic> toJson() {
@@ -64,6 +75,10 @@ class ALL_CLUBS {
     if (this.head != null) {
       data['head'] = this.head!.toJson();
     }
+
+    data['post_count'] = this.post_count;
+    data['thread_count'] = this.thread_count;
+    data['activity_count'] = this.activity_count;
     return data;
   }
 }

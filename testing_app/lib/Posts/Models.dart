@@ -95,14 +95,11 @@ class POST_LIST {
     data['category'] = this.category;
     if (this.club != null) {
       data['club'] = this.club!.toJson();
-    }
-    if (this.sport != null) {
+    } else if (this.sport != null) {
       data['sport'] = this.sport!.toJson();
-    }
-    if (this.fest != null) {
+    } else if (this.fest != null) {
       data['fest'] = this.fest!.toJson();
-    }
-    if (this.sac != null) {
+    } else if (this.sac != null) {
       data['sac'] = this.sac!.toJson();
     }
     return data;

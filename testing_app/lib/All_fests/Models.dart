@@ -15,6 +15,10 @@ class ALL_FESTS {
   int? starMark;
   SmallUsername? head;
 
+  int? post_count;
+  int? thread_count;
+  int? activity_count;
+
   ALL_FESTS(
       {this.id,
       this.name,
@@ -28,7 +32,10 @@ class ALL_FESTS {
       this.dateOfJoin,
       this.domain,
       this.starMark,
-      this.head});
+      this.head,
+      this.post_count,
+      this.thread_count,
+      this.activity_count});
 
   ALL_FESTS.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -45,6 +52,10 @@ class ALL_FESTS {
     starMark = json['star_mark'];
     head =
         json['head'] != null ? new SmallUsername.fromJson(json['head']) : null;
+
+    post_count = json['post_count'];
+    thread_count = json['thread_count'];
+    activity_count = json['activity_count'];
   }
 
   Map<String, dynamic> toJson() {
@@ -64,6 +75,10 @@ class ALL_FESTS {
     if (this.head != null) {
       data['head'] = this.head!.toJson();
     }
+
+    data['post_count'] = this.post_count;
+    data['thread_count'] = this.thread_count;
+    data['activity_count'] = this.activity_count;
     return data;
   }
 }

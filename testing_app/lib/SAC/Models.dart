@@ -13,6 +13,10 @@ class SAC_MEMS {
   SmallUsername? head;
   int? starMark;
 
+  int? post_count;
+  int? thread_count;
+  int? activity_count;
+
   SAC_MEMS(
       {this.id,
       this.logo,
@@ -24,7 +28,10 @@ class SAC_MEMS {
       this.domain,
       this.dateOfJoin,
       this.head,
-      this.starMark});
+      this.starMark,
+      this.post_count,
+      this.thread_count,
+      this.activity_count});
 
   SAC_MEMS.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -39,6 +46,10 @@ class SAC_MEMS {
     head =
         json['head'] != null ? new SmallUsername.fromJson(json['head']) : null;
     starMark = json['star_mark'];
+
+    post_count = json['post_count'];
+    thread_count = json['thread_count'];
+    activity_count = json['activity_count'];
   }
 
   Map<String, dynamic> toJson() {
@@ -56,6 +67,10 @@ class SAC_MEMS {
       data['head'] = this.head!.toJson();
     }
     data['star_mark'] = this.starMark;
+
+    data['post_count'] = this.post_count;
+    data['thread_count'] = this.thread_count;
+    data['activity_count'] = this.activity_count;
     return data;
   }
 }

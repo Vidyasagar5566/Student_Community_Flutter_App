@@ -245,15 +245,7 @@ class _loginpageState extends State<loginpage> {
                                       fontSize: 20,
                                       fontWeight: FontWeight.w500)),
                             )),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(),
-                        TextButton(onPressed: () {}, child: Text("Register?"))
-                      ],
-                    ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 15),
                     widget.error != ""
                         ? Container(
                             child: Center(

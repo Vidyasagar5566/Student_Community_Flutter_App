@@ -18,6 +18,10 @@ class ALL_SPORTS {
   int? starMark;
   SmallUsername? head;
 
+  int? post_count;
+  int? thread_count;
+  int? activity_count;
+
   ALL_SPORTS(
       {this.id,
       this.name,
@@ -34,7 +38,10 @@ class ALL_SPORTS {
       this.likeCount,
       this.domain,
       this.starMark,
-      this.head});
+      this.head,
+      this.post_count,
+      this.thread_count,
+      this.activity_count});
 
   ALL_SPORTS.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -54,6 +61,10 @@ class ALL_SPORTS {
     starMark = json['star_mark'];
     head =
         json['head'] != null ? new SmallUsername.fromJson(json['head']) : null;
+
+    post_count = json['post_count'];
+    thread_count = json['thread_count'];
+    activity_count = json['activity_count'];
   }
 
   Map<String, dynamic> toJson() {
@@ -76,6 +87,10 @@ class ALL_SPORTS {
     if (this.head != null) {
       data['head'] = this.head!.toJson();
     }
+
+    data['post_count'] = this.post_count;
+    data['thread_count'] = this.thread_count;
+    data['activity_count'] = this.activity_count;
     return data;
   }
 }

@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:testing_app/All_fests/Uploads.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'Models.dart';
 import 'package:testing_app/User_profile/Models.dart';
-import 'package:testing_app/User_profile/profile.dart';
+import 'package:testing_app/User_profile/Servers.dart';
 import 'package:testing_app/Fcm_Notif_Domains/servers.dart';
 import 'Servers.dart';
 //import 'package:link_text/link_text.dart';
 import 'dart:convert' show utf8;
 import 'package:testing_app/User_Star_Mark/User_Profile_Star_Mark.dart';
+import 'package:testing_app/User_profile/User_posts_category.dart';
+import 'package:testing_app/Activities/Activities.dart';
+import 'package:testing_app/Threads/Threads.dart';
 
 String utf8convert(String text) {
   List<int> bytes = text.toString().codeUnits;
@@ -32,63 +35,7 @@ List<Tab> tabs = const [
       style: TextStyle(color: Colors.black),
     ),
   ),
-  Tab(
-    child: Text(
-      "fest urls",
-      style: TextStyle(color: Colors.black),
-    ),
-  )
 ];
-
-List<Widget> tabscontent_funct(ALL_FESTS fest, Username app_user) {
-  SmallUsername user = fest.head!;
-  return [
-    SingleChildScrollView(
-        child: Container(
-      margin: EdgeInsets.all(20),
-      padding: EdgeInsets.all(20),
-      decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(20)),
-      child: Column(
-        children: [
-          const SizedBox(
-            height: 30,
-          ),
-          //Link
-          Text(
-            utf8convert(fest.description!),
-          ),
-        ],
-      ),
-    )),
-    SingleChildScrollView(
-        child: Container(
-      margin: EdgeInsets.only(top: 20),
-      child: fest_members(fest.teamMembers!),
-    )),
-    SingleChildScrollView(
-        child: Container(
-      margin: EdgeInsets.only(top: 20),
-      child: user_postswidget(user.username!, app_user),
-    )),
-    SingleChildScrollView(
-        child: Container(
-            margin: EdgeInsets.all(20),
-            padding: EdgeInsets.all(20),
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(20)),
-            child: Column(children: [
-              const SizedBox(
-                height: 30,
-              ),
-              //Link
-              Text(
-                fest.websites!,
-                //style: TextStyle(color: Colors.blueAccent),
-              )
-            ])))
-  ];
-}
 
 class festpagewidget extends StatefulWidget {
   ALL_FESTS fest;
@@ -104,8 +51,10 @@ class _festpagewidgetState extends State<festpagewidget> {
   Widget build(BuildContext context) {
     final double coverheight = 100;
     final double profileheight = 50;
+    var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
     return DefaultTabController(
-        length: 10,
+        length: 4,
         child: Scaffold(
           appBar: AppBar(
             leading: const BackButton(
@@ -189,9 +138,276 @@ class _festpagewidgetState extends State<festpagewidget> {
                             tabs: tabs,
                           ))),
                   Expanded(
-                      child: TabBarView(
-                          children:
-                              tabscontent_funct(widget.fest, widget.app_user))),
+                      child: TabBarView(children: [
+//  Tab Bar View  Tan contents
+
+                    SingleChildScrollView(
+                        child: Container(
+                      margin: EdgeInsets.all(20),
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Column(
+                        children: [
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          //Link
+                          Text(
+                            utf8convert(widget.fest.description!),
+                          ),
+                        ],
+                      ),
+                    )),
+                    SingleChildScrollView(
+                        child: Container(
+                      margin: EdgeInsets.only(top: 20),
+                      child: fest_members(widget.fest.teamMembers!),
+                    )),
+                    Container(
+                      width: width,
+                      padding: EdgeInsets.all(40),
+                      margin: EdgeInsets.only(top: 40, bottom: 40),
+                      decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(30),
+                          )),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (BuildContext context) {
+                                    return Scaffold(
+                                        appBar: AppBar(
+                                          centerTitle: true,
+                                          iconTheme: IconThemeData(
+                                              color: Colors.white),
+                                          title: Text(widget.fest.name!,
+                                              style: TextStyle(
+                                                  color: Colors.white)),
+                                          backgroundColor:
+                                              Colors.indigoAccent[700],
+                                        ),
+                                        body: SingleChildScrollView(
+                                          child: user_postswidget(
+                                              '',
+                                              widget.app_user,
+                                              'fest',
+                                              widget.fest.id!),
+                                        ));
+                                  }));
+                                },
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text("Posts",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                            fontSize: 18)),
+                                    const SizedBox(height: 12),
+                                    Container(
+                                      height: width / 3,
+                                      width: width / 3,
+                                      decoration: const BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20)),
+                                          image: DecorationImage(
+                                              image: AssetImage(
+                                                  "images/posts.jpeg"),
+                                              fit: BoxFit.cover)),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () async {
+                                  showDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                            contentPadding: EdgeInsets.all(15),
+                                            content: Container(
+                                              margin: EdgeInsets.all(10),
+                                              child: const Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    Text(
+                                                        "Please wait a min....."),
+                                                    SizedBox(height: 10),
+                                                    CircularProgressIndicator()
+                                                  ]),
+                                            ));
+                                      });
+                                  var event_list = await user_profile_servers()
+                                      .get_user_activity_list(
+                                          '', 'fest', widget.fest.id!);
+                                  Navigator.pop(context);
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (BuildContext context) {
+                                    return Scaffold(
+                                        appBar: AppBar(
+                                          centerTitle: true,
+                                          iconTheme: IconThemeData(
+                                              color: Colors.white),
+                                          title: Text(widget.fest.name!,
+                                              style: TextStyle(
+                                                  color: Colors.white)),
+                                          backgroundColor:
+                                              Colors.indigoAccent[700],
+                                        ),
+                                        body: SingleChildScrollView(
+                                            child: activitieswidget1(
+                                                event_list,
+                                                widget.app_user,
+                                                widget.app_user.domain!,
+                                                true)));
+                                  }));
+                                },
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text("Activities",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                            fontSize: 18)),
+                                    const SizedBox(height: 12),
+                                    Container(
+                                      height: width / 3,
+                                      width: width / 3,
+                                      decoration: const BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20)),
+                                          image: DecorationImage(
+                                              image: AssetImage(
+                                                  "images/profile_activities.jpeg"),
+                                              fit: BoxFit.cover)),
+                                    )
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                          const SizedBox(height: 40),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              GestureDetector(
+                                onTap: () async {
+                                  String web_url = widget.fest.websites!;
+                                  final Uri url = Uri.parse(web_url);
+                                  if (!await launchUrl(url)) {
+                                    throw Exception('Could not launch $url');
+                                  }
+                                },
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(widget.fest.name!,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                            fontSize: 18)),
+                                    const SizedBox(height: 12),
+                                    Container(
+                                      height: width / 3,
+                                      width: width / 3,
+                                      decoration: BoxDecoration(
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(20)),
+                                          image: DecorationImage(
+                                              image: NetworkImage(
+                                                  widget.fest.logo!),
+                                              fit: BoxFit.cover)),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () async {
+                                  showDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                            contentPadding: EdgeInsets.all(15),
+                                            content: Container(
+                                              margin: EdgeInsets.all(10),
+                                              child: const Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    Text(
+                                                        "Please wait a min....."),
+                                                    SizedBox(height: 10),
+                                                    CircularProgressIndicator()
+                                                  ]),
+                                            ));
+                                      });
+                                  var thread_list = await user_profile_servers()
+                                      .get_user_thread_list(
+                                          '', 'fest', widget.fest.id!);
+                                  Navigator.pop(context);
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (BuildContext context) {
+                                    return Scaffold(
+                                        appBar: AppBar(
+                                          centerTitle: true,
+                                          iconTheme: IconThemeData(
+                                              color: Colors.white),
+                                          title: Text(widget.fest.name!,
+                                              style: TextStyle(
+                                                  color: Colors.white)),
+                                          backgroundColor:
+                                              Colors.indigoAccent[700],
+                                        ),
+                                        body: SingleChildScrollView(
+                                          child: alertwidget1(
+                                              thread_list,
+                                              widget.app_user,
+                                              widget.app_user.domain!,
+                                              true),
+                                        ));
+                                  }));
+                                },
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text("Threads",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                            fontSize: 18)),
+                                    const SizedBox(height: 12),
+                                    Container(
+                                      height: width / 3,
+                                      width: width / 3,
+                                      decoration: const BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20)),
+                                          image: DecorationImage(
+                                              image: AssetImage(
+                                                  "images/threads profile.jpeg"),
+                                              fit: BoxFit.cover)),
+                                    )
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    )
+                  ])),
                 ],
               )),
         ));

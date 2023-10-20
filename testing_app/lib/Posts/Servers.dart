@@ -32,7 +32,6 @@ class post_servers {
       });
       return temp;
     } catch (e) {
-      print(e);
       List<POST_LIST> temp = [];
       return Future.value(temp);
     }

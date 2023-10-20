@@ -10,12 +10,14 @@ class bs_lf_servers {
 
 //  LOST AND FOUNDS POST FUNCTIONS
 
-  Future<List<Lost_Found>> get_lst_list(int num_list, String domain) async {
+  Future<List<Lost_Found>> get_lst_list(
+      int num_list, String domain, String email) async {
     try {
       var token = storage.getItem('token');
       Map<String, String> queryParameters = {
         'num_list': num_list.toString(),
-        'domain': domain
+        'domain': domain,
+        'email': email
       };
       String queryString = Uri(queryParameters: queryParameters).query;
       String finalUrl = "$base_url/lost_found/list1?$queryString";

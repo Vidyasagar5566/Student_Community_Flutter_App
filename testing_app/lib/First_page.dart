@@ -6,10 +6,10 @@ import 'package:testing_app/BuySell_LostFound/Models.dart';
 import 'package:testing_app/Login/Servers.dart';
 import 'package:testing_app/Mess_menus/mess_menu.dart';
 import 'package:testing_app/Posts/Models.dart';
+import 'package:testing_app/Posts/Post.dart';
 import 'package:testing_app/Side_menu_bar/Servers.dart';
 import 'package:testing_app/Threads/Models.dart';
 import 'package:testing_app/Timings/Timings.dart';
-import 'Posts/post.dart';
 import 'All_clubs/all_clubs.dart';
 import 'User_profile/profile.dart';
 import 'All_sports/all_sports.dart';
@@ -22,7 +22,7 @@ import 'App_notifications/Uploads.dart';
 import 'calender/Uploads.dart';
 import '/User_profile/Models.dart';
 import 'Side_menu_bar/side_menu.dart';
-import 'BuySell_LostFound/lostfound_buysell.dart';
+import 'BuySell_LostFound/Lostfound_buysell.dart';
 import 'Circular_designs/circular indicator.dart';
 import 'App_notifications/notifications.dart';
 import 'Messanger/messanger.dart';
@@ -152,150 +152,154 @@ class _firstpageState extends State<firstpage> {
         },
 
         child: Scaffold(
-          appBar: AppBar(
-            iconTheme: IconThemeData(color: Colors.black),
-            centerTitle: false,
-            title: ((widget.app_user.email == "shiva@gmail.com" ||
-                    widget.app_user.email == "guest@gmail.com")
-                ? Text(
-                    "InstaBook",
-                    style: TextStyle(
-                        color: widget.curr_index == 0 ||
-                                widget.curr_index == 1 ||
-                                widget.curr_index == 3 ||
-                                widget.curr_index == 4
-                            ? Colors.white
-                            : Colors.black),
-                  )
-                : Text(
-                    domains[widget.app_user.domain!]!,
-                    style: TextStyle(
-                        color: widget.curr_index == 0 ||
-                                widget.curr_index == 1 ||
-                                widget.curr_index == 3 ||
-                                widget.curr_index == 4
-                            ? Colors.white
-                            : Colors.black),
-                  )),
-            actions: [
-              widget.curr_index == 3 ||
-                      widget.curr_index == 2 ||
-                      widget.curr_index == 1
-                  ? DropdownButton<String>(
-                      value: domain,
-                      underline: Container(),
-                      elevation: 0,
-                      iconEnabledColor:
-                          widget.curr_index == 1 || widget.curr_index == 3
-                              ? Colors.white
-                              : Colors.black,
-                      iconDisabledColor:
-                          widget.curr_index == 1 || widget.curr_index == 3
-                              ? Colors.white
-                              : Colors.black,
-                      items: domains_list
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(
-                            value,
-                            style: TextStyle(fontSize: 10),
-                          ),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          domain = value!;
-                        });
-                      })
-                  : Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              widget.app_user.notifCount = 0;
-                            });
-                            menu_bar_servers().notif_seen();
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (BuildContext context) {
-                              return notifications(widget.app_user);
-                            }));
-                          },
-                          child: Stack(children: [
-                            IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  widget.app_user.notifCount = 0;
-                                });
-                                menu_bar_servers().notif_seen();
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (BuildContext context) {
-                                  return notifications(widget.app_user);
-                                }));
-                              },
-                              icon: Icon(
-                                Icons.notifications_on_rounded,
-                                size: 30,
-                                color: widget.curr_index == 0 ||
-                                        widget.curr_index == 1 ||
-                                        widget.curr_index == 3 ||
-                                        widget.curr_index == 4
-                                    ? Colors.white
-                                    : Colors.indigo,
-                              ),
-                            ),
-                            Positioned(
-                              right: 7,
-                              top: 7,
-                              child: Container(
-                                padding: EdgeInsets.all(2),
-                                decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                constraints: const BoxConstraints(
-                                  minWidth: 14,
-                                  minHeight: 14,
-                                ),
-                                child: Text(
-                                  notif_count.toString(),
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 8,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            )
-                          ]),
-                        ),
-                        IconButton(
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (BuildContext context) {
-                                return messanger(widget.app_user);
-                              }));
-                            },
-                            icon: FaIcon(
-                              FontAwesomeIcons.facebookMessenger,
-                              size: 26,
+          appBar: widget.curr_index == 4
+              ? null
+              : AppBar(
+                  iconTheme: IconThemeData(color: Colors.black),
+                  centerTitle: false,
+                  title: ((widget.app_user.email == "shiva@gmail.com" ||
+                          widget.app_user.email == "guest@gmail.com")
+                      ? Text(
+                          "InstaBook",
+                          style: TextStyle(
                               color: widget.curr_index == 0 ||
                                       widget.curr_index == 1 ||
                                       widget.curr_index == 3 ||
                                       widget.curr_index == 4
                                   ? Colors.white
-                                  : Colors.indigo,
-                            ))
-                      ],
-                    )
-            ],
-            backgroundColor: widget.curr_index == 0 ||
-                    widget.curr_index == 1 ||
+                                  : Colors.black),
+                        )
+                      : Text(
+                          domains[widget.app_user.domain!]!,
+                          style: TextStyle(
+                              color: widget.curr_index == 0 ||
+                                      widget.curr_index == 1 ||
+                                      widget.curr_index == 3 ||
+                                      widget.curr_index == 4
+                                  ? Colors.white
+                                  : Colors.black),
+                        )),
+                  actions: [
                     widget.curr_index == 3 ||
-                    widget.curr_index == 4
-                ? Colors.indigoAccent[700]
-                : Colors.white,
-          ),
+                            widget.curr_index == 2 ||
+                            widget.curr_index == 1
+                        ? DropdownButton<String>(
+                            value: domain,
+                            underline: Container(),
+                            elevation: 0,
+                            iconEnabledColor:
+                                widget.curr_index == 1 || widget.curr_index == 3
+                                    ? Colors.white
+                                    : Colors.black,
+                            iconDisabledColor:
+                                widget.curr_index == 1 || widget.curr_index == 3
+                                    ? Colors.white
+                                    : Colors.black,
+                            items: domains_list
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style: TextStyle(fontSize: 10),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                domain = value!;
+                              });
+                            })
+                        : Row(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    widget.app_user.notifCount = 0;
+                                  });
+                                  menu_bar_servers().notif_seen();
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (BuildContext context) {
+                                    return notifications(widget.app_user);
+                                  }));
+                                },
+                                child: Stack(children: [
+                                  IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        widget.app_user.notifCount = 0;
+                                      });
+                                      menu_bar_servers().notif_seen();
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) {
+                                        return notifications(widget.app_user);
+                                      }));
+                                    },
+                                    icon: Icon(
+                                      Icons.notifications_on_rounded,
+                                      size: 30,
+                                      color: widget.curr_index == 0 ||
+                                              widget.curr_index == 1 ||
+                                              widget.curr_index == 3 ||
+                                              widget.curr_index == 4
+                                          ? Colors.white
+                                          : Colors.indigo,
+                                    ),
+                                  ),
+                                  Positioned(
+                                    right: 7,
+                                    top: 7,
+                                    child: Container(
+                                      padding: EdgeInsets.all(2),
+                                      decoration: BoxDecoration(
+                                        color: Colors.red,
+                                        borderRadius: BorderRadius.circular(6),
+                                      ),
+                                      constraints: const BoxConstraints(
+                                        minWidth: 14,
+                                        minHeight: 14,
+                                      ),
+                                      child: Text(
+                                        notif_count.toString(),
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 8,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  )
+                                ]),
+                              ),
+                              IconButton(
+                                  onPressed: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) {
+                                      return messanger(widget.app_user);
+                                    }));
+                                  },
+                                  icon: FaIcon(
+                                    FontAwesomeIcons.facebookMessenger,
+                                    size: 26,
+                                    color: widget.curr_index == 0 ||
+                                            widget.curr_index == 1 ||
+                                            widget.curr_index == 3 ||
+                                            widget.curr_index == 4
+                                        ? Colors.white
+                                        : Colors.indigo,
+                                  ))
+                            ],
+                          )
+                  ],
+                  backgroundColor: widget.curr_index == 0 ||
+                          widget.curr_index == 1 ||
+                          widget.curr_index == 3 ||
+                          widget.curr_index == 4
+                      ? Colors.indigoAccent[700]
+                      : Colors.white,
+                ),
           drawer: NavDrawer(widget.app_user),
           body: widget.curr_index == 0
               ? SingleChildScrollView(
@@ -347,24 +351,7 @@ class _firstpageState extends State<firstpage> {
                       ? activitieswidget(widget.app_user, domains1[domain]!)
                       : widget.curr_index == 3
                           ? alertwidget(widget.app_user, domains1[domain]!)
-                          : SingleChildScrollView(
-                              child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                profilewidget(widget.app_user),
-                                Container(
-                                    constraints: BoxConstraints(
-                                        minHeight:
-                                            MediaQuery.of(context).size.height /
-                                                2),
-                                    width: MediaQuery.of(context).size.width,
-                                    color: Colors.white,
-                                    margin: const EdgeInsets.only(top: 0.3),
-                                    child: user_postswidget(
-                                        widget.app_user.username!,
-                                        widget.app_user))
-                              ],
-                            )),
+                          : userProfilePage(widget.app_user, widget.app_user),
           floatingActionButton: widget.curr_index == 1
               ? ElevatedButton.icon(
                   onPressed: () async {
@@ -612,18 +599,12 @@ class _firstpageState extends State<firstpage> {
             onTap: (int index) {
               setState(() {
                 domain = 'All';
-                if (index == 4) {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (BuildContext context) {
-                    return Allclubpagewidget(widget.app_user, 'All');
-                  }));
-                } else {
-                  if (index == 1) {
-                    today = DateTime.now();
-                    domain = domains[widget.app_user.domain]!;
-                  }
-                  widget.curr_index = index;
+                if (index == 1) {
+                  today = DateTime.now();
+                  domain = domains[widget.app_user.domain]!;
                 }
+                widget.curr_index = index;
+                // }
               });
             },
           ),
@@ -785,8 +766,8 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
                   onTap: () {
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (BuildContext context) {
-                      return all_lostwidget1(
-                          widget.app_user, "lost/found", lst_buy_list, 'All');
+                      return all_lostwidget1(widget.app_user, "lost/found",
+                          lst_buy_list, 'All', 'All');
                     }));
                   },
                   child: Column(
@@ -812,7 +793,7 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
                   onTap: () {
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (BuildContext context) {
-                      return appBar(
+                      return PostWithappBar(
                           widget.app_user, domains[widget.app_user.domain]!);
                     }));
                   },
@@ -838,7 +819,7 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (BuildContext context) {
                             return all_lostwidget1(widget.app_user, "buy/shell",
-                                lst_buy_list, 'All');
+                                lst_buy_list, 'All', 'All');
                           }));
                         },
                         child: Column(

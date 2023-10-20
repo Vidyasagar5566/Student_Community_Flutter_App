@@ -23,7 +23,9 @@ class all_lostwidget1 extends StatefulWidget {
   String tag;
   List<Lost_Found> lst_buy_list;
   String domain;
-  all_lostwidget1(this.app_user, this.tag, this.lst_buy_list, this.domain);
+  String email;
+  all_lostwidget1(
+      this.app_user, this.tag, this.lst_buy_list, this.domain, this.email);
 
   @override
   State<all_lostwidget1> createState() => _all_lostwidget1State();
@@ -32,8 +34,8 @@ class all_lostwidget1 extends StatefulWidget {
 class _all_lostwidget1State extends State<all_lostwidget1> {
   bool total_loaded = false;
   void load_data_fun() async {
-    List<Lost_Found> latest_lst_list = await bs_lf_servers()
-        .get_lst_list(lst_buy_list.length, domains1[widget.domain]!);
+    List<Lost_Found> latest_lst_list = await bs_lf_servers().get_lst_list(
+        lst_buy_list.length, domains1[widget.domain]!, widget.email);
     if (latest_lst_list.length != 0) {
       lst_buy_list += latest_lst_list;
       setState(() {
@@ -76,28 +78,30 @@ class _all_lostwidget1State extends State<all_lostwidget1> {
                   style: TextStyle(color: Colors.black),
                 ),
           actions: [
-            DropdownButton<String>(
-                value: widget.domain,
-                underline: Container(),
-                elevation: 0,
-                items:
-                    domains_list.map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(
-                      value,
-                      style: TextStyle(fontSize: 10),
-                    ),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    widget.domain = value!;
-                    lst_buy_list = [];
-                    total_loaded = false;
-                    load_data_fun();
-                  });
-                })
+            widget.email == 'All'
+                ? DropdownButton<String>(
+                    value: widget.domain,
+                    underline: Container(),
+                    elevation: 0,
+                    items: domains_list
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(
+                          value,
+                          style: TextStyle(fontSize: 10),
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        widget.domain = value!;
+                        lst_buy_list = [];
+                        total_loaded = false;
+                        load_data_fun();
+                      });
+                    })
+                : Container()
           ],
           backgroundColor: Colors.white70,
         ),
@@ -142,42 +146,51 @@ class _all_lostwidget1State extends State<all_lostwidget1> {
 
   Widget _listViewItems(
       Username app_user, List<Lost_Found> lst_list, String tag) {
-    return Container(
-      decoration: const BoxDecoration(
-          image: DecorationImage(
-              //image: post.post_pic,
-              image: AssetImage("images/event background.jpg"),
-              fit: BoxFit.cover)),
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      child: NotificationListener<ScrollEndNotification>(
-          onNotification: (scrollEnd) {
-            final metrics = scrollEnd.metrics;
-            if (metrics.atEdge) {
-              bool isTop = metrics.pixels == 0;
-              if (!isTop) {
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    backgroundColor: Colors.white,
-                    content: Text("loading....",
-                        style: TextStyle(color: Colors.black))));
-                load_data_fun();
-              }
-            }
-            return true;
-          },
-          child: ListView.builder(
-              itemCount: lst_list.length,
-              shrinkWrap: true,
-              padding: EdgeInsets.zero,
-              itemBuilder: (BuildContext context, int index) {
-                Lost_Found lst = lst_list[index];
-                var _convertedTimestamp = DateTime.parse(
-                    lst.postedDate!); // Converting into [DateTime] object
-                String lst_posted_date = GetTimeAgo.parse(_convertedTimestamp);
-                return _buildLoadingScreen(
-                    lst, index, lst_posted_date, lst_list);
-              })),
-    );
+    return lst_list.isEmpty
+        ? Container(
+            margin: const EdgeInsets.all(30),
+            padding: const EdgeInsets.all(30),
+            child: const Center(
+                child: Text(
+              "No Data Was Found",
+            )))
+        : Container(
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+                    //image: post.post_pic,
+                    image: AssetImage("images/event background.jpg"),
+                    fit: BoxFit.cover)),
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: NotificationListener<ScrollEndNotification>(
+                onNotification: (scrollEnd) {
+                  final metrics = scrollEnd.metrics;
+                  if (metrics.atEdge) {
+                    bool isTop = metrics.pixels == 0;
+                    if (!isTop) {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          backgroundColor: Colors.white,
+                          content: Text("loading....",
+                              style: TextStyle(color: Colors.black))));
+                      load_data_fun();
+                    }
+                  }
+                  return true;
+                },
+                child: ListView.builder(
+                    itemCount: lst_list.length,
+                    shrinkWrap: true,
+                    padding: EdgeInsets.zero,
+                    itemBuilder: (BuildContext context, int index) {
+                      Lost_Found lst = lst_list[index];
+                      var _convertedTimestamp = DateTime.parse(
+                          lst.postedDate!); // Converting into [DateTime] object
+                      String lst_posted_date =
+                          GetTimeAgo.parse(_convertedTimestamp);
+                      return _buildLoadingScreen(
+                          lst, index, lst_posted_date, lst_list);
+                    })),
+          );
   }
 
   Widget _buildLoadingScreen(Lost_Found lst, int index, String lst_posted_date,

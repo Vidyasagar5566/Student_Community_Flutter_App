@@ -54,7 +54,8 @@ class _alertwidgetState extends State<alertwidget> {
                   ));
             } else {
               all_alerts = alert_list;
-              return alertwidget1(alert_list, widget.app_user, widget.domain);
+              return alertwidget1(
+                  alert_list, widget.app_user, widget.domain, false);
             }
           }
         }
@@ -70,7 +71,8 @@ class alertwidget1 extends StatefulWidget {
   List<ALERT_LIST> alert_list;
   Username app_user;
   String domain;
-  alertwidget1(this.alert_list, this.app_user, this.domain);
+  bool profile;
+  alertwidget1(this.alert_list, this.app_user, this.domain, this.profile);
 
   @override
   State<alertwidget1> createState() => _alertwidget1State();
@@ -99,49 +101,59 @@ class _alertwidget1State extends State<alertwidget1> {
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          ListView.builder(
-              itemCount: widget.alert_list.length,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              padding: const EdgeInsets.only(bottom: 10),
-              itemBuilder: (BuildContext context, int index) {
-                ALERT_LIST alert = widget.alert_list[index];
-                return _buildLoadingScreen(alert, widget.alert_list);
-              }),
-          total_loaded
-              ? widget.alert_list.length > 10
-                  ? Container(
-                      width: width,
-                      height: 100,
-                      child: Center(
-                          child: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  total_loaded = false;
-                                });
-                                load_data_fun();
-                              },
-                              child: const Column(
-                                children: [
-                                  Icon(Icons.add_circle_outline,
-                                      size: 40, color: Colors.blueGrey),
-                                  Text(
-                                    "Tap To Load more",
-                                    style: TextStyle(color: Colors.blueGrey),
-                                  )
-                                ],
-                              ))))
-                  : Container()
-              : Container(
-                  width: 100,
-                  height: 100,
-                  child: Center(child: CircularProgressIndicator()))
-        ],
-      ),
-    );
+    return widget.alert_list.isEmpty
+        ? Container(
+            margin: EdgeInsets.all(30),
+            padding: EdgeInsets.all(30),
+            child: const Center(
+              child: Text(
+                "No Data Was Found",
+              ),
+            ))
+        : SingleChildScrollView(
+            child: Column(
+              children: [
+                ListView.builder(
+                    itemCount: widget.alert_list.length,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: const EdgeInsets.only(bottom: 10),
+                    itemBuilder: (BuildContext context, int index) {
+                      ALERT_LIST alert = widget.alert_list[index];
+                      return _buildLoadingScreen(alert, widget.alert_list);
+                    }),
+                total_loaded && !widget.profile
+                    ? widget.alert_list.length > 10
+                        ? Container(
+                            width: width,
+                            height: 100,
+                            child: Center(
+                                child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        total_loaded = false;
+                                      });
+                                      load_data_fun();
+                                    },
+                                    child: const Column(
+                                      children: [
+                                        Icon(Icons.add_circle_outline,
+                                            size: 40, color: Colors.blueGrey),
+                                        Text(
+                                          "Tap To Load more",
+                                          style:
+                                              TextStyle(color: Colors.blueGrey),
+                                        )
+                                      ],
+                                    ))))
+                        : Container()
+                    : Container(
+                        width: 100,
+                        height: 100,
+                        child: Center(child: CircularProgressIndicator()))
+              ],
+            ),
+          );
   }
 
   Widget _buildLoadingScreen(ALERT_LIST alert, List<ALERT_LIST> alert_list) {
