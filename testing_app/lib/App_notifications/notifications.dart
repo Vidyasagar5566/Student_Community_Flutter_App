@@ -112,122 +112,133 @@ class _notifications1State extends State<notifications1> {
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
               color: Colors.white, borderRadius: BorderRadius.circular(5)),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    width: 48, //post.profile_pic
-                    child: user.fileType == '1'
-                        ? CircleAvatar(
-                            backgroundImage: NetworkImage(user.profilePic!))
-                        : const CircleAvatar(
-                            backgroundImage: AssetImage("images/profile.jpg")),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(left: 20),
-                    width: (width - 36) / 1.8,
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
+                  Row(
+                    children: [
+                      Container(
+                        width: 48, //post.profile_pic
+                        child: user.fileType == '1'
+                            ? CircleAvatar(
+                                backgroundImage: NetworkImage(user.profilePic!))
+                            : const CircleAvatar(
+                                backgroundImage:
+                                    AssetImage("images/profile.jpg")),
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(left: 20),
+                        width: (width - 36) / 1.8,
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Container(
-                                constraints: BoxConstraints(
-                                    maxWidth: (width - 36) / 2.4),
-                                child: Text(
-                                  user.username!,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 16,
+                              Row(
+                                children: [
+                                  Container(
+                                    constraints: BoxConstraints(
+                                        maxWidth: (width - 36) / 2.4),
+                                    child: Text(
+                                      user.username!,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 16,
+                                      ),
+                                    ),
                                   ),
-                                ),
+                                  const SizedBox(width: 10),
+                                  userMarkNotation(user.starMark!)
+                                ],
                               ),
-                              const SizedBox(width: 10),
-                              userMarkNotation(user.starMark!)
-                            ],
-                          ),
-                          Text(
-                            domains[user.domain!]! +
-                                " (" +
-                                user.userMark! +
-                                ")",
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                          ),
-                        ]),
+                              Text(
+                                domains[user.domain!]! +
+                                    " (" +
+                                    user.userMark! +
+                                    ")",
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                              ),
+                            ]),
+                      ),
+                    ],
                   ),
+                  user.username == widget.app_user.username
+                      ? IconButton(
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    contentPadding: EdgeInsets.all(15),
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        const SizedBox(height: 20),
+                                        const Center(
+                                            child: Text(
+                                                "Are you sure do you want to delete this?",
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.bold))),
+                                        const SizedBox(height: 10),
+                                        Container(
+                                          margin: const EdgeInsets.all(30),
+                                          color: Colors.blue[900],
+                                          child: OutlinedButton(
+                                              onPressed: () async {
+                                                bool error =
+                                                    await app_notif_servers()
+                                                        .delete_notification(
+                                                            notif.id!);
+                                                if (!error) {
+                                                  Navigator.pop(context);
+                                                  setState(() {
+                                                    notif_list.remove(notif);
+                                                  });
+                                                } else {
+                                                  setState(() {
+                                                    delete_error =
+                                                        "check your connection";
+                                                  });
+                                                }
+                                              },
+                                              child: const Center(
+                                                  child: Text(
+                                                "Delete",
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ))),
+                                        ),
+                                        const SizedBox(height: 10),
+                                        delete_error != ""
+                                            ? Center(
+                                                child: Text(delete_error),
+                                              )
+                                            : Container()
+                                      ],
+                                    ),
+                                  );
+                                });
+                          },
+                          icon: const Icon(
+                            Icons.more_vert,
+                            size: 25,
+                            color: Colors.blue,
+                          ),
+                        )
+                      : Container()
                 ],
               ),
-              user.username == widget.app_user.username
-                  ? IconButton(
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                contentPadding: EdgeInsets.all(15),
-                                content: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    const SizedBox(height: 20),
-                                    const Center(
-                                        child: Text(
-                                            "Are you sure do you want to delete this?",
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold))),
-                                    const SizedBox(height: 10),
-                                    Container(
-                                      margin: const EdgeInsets.all(30),
-                                      color: Colors.blue[900],
-                                      child: OutlinedButton(
-                                          onPressed: () async {
-                                            bool error =
-                                                await app_notif_servers()
-                                                    .delete_notification(
-                                                        notif.id!);
-                                            if (!error) {
-                                              Navigator.pop(context);
-                                              setState(() {
-                                                notif_list.remove(notif);
-                                              });
-                                            } else {
-                                              setState(() {
-                                                delete_error =
-                                                    "check your connection";
-                                              });
-                                            }
-                                          },
-                                          child: const Center(
-                                              child: Text(
-                                            "Delete",
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ))),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    delete_error != ""
-                                        ? Center(
-                                            child: Text(delete_error),
-                                          )
-                                        : Container()
-                                  ],
-                                ),
-                              );
-                            });
-                      },
-                      icon: const Icon(
-                        Icons.more_vert,
-                        size: 25,
-                        color: Colors.blue,
-                      ),
-                    )
-                  : Container()
+              const SizedBox(height: 10),
+              Text(
+                utf8convert(notif.description!),
+              )
             ],
           )),
     );

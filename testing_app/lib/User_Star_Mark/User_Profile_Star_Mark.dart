@@ -3,6 +3,10 @@ import 'package:testing_app/User_profile/Models.dart';
 import 'package:testing_app/Fcm_Notif_Domains/servers.dart';
 import 'package:testing_app/User_profile/profile.dart';
 import 'package:testing_app/Login/Servers.dart';
+import 'package:testing_app/All_clubs/Club_page.dart';
+import 'package:testing_app/All_fests/Fest_page.dart';
+import 'package:testing_app/All_sports/Sport_page.dart';
+import 'package:testing_app/SAC/Sac.dart';
 
 star_user_mark(Username app_user) {
   if (app_user.userMark != "St" || app_user.starMark != 0) {
@@ -481,6 +485,115 @@ class _UserProfileMarkAdminState extends State<UserProfileMarkAdmin> {
               ),
             ]),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class UserMarkAdmin extends StatefulWidget {
+  var category_post;
+  var category;
+  Username app_user;
+  UserMarkAdmin(this.category_post, this.category, this.app_user);
+
+  @override
+  State<UserMarkAdmin> createState() => _UserMarkAdminState();
+}
+
+class _UserMarkAdminState extends State<UserMarkAdmin> {
+  @override
+  Widget build(BuildContext context) {
+    var category;
+    var width = MediaQuery.of(context).size.width;
+
+    return GestureDetector(
+      onTap: () {
+        if (widget.category == 'club') {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (BuildContext context) {
+            return Scaffold(
+                body: clubpagewidget(widget.category_post, widget.app_user));
+          }));
+        } else if (widget.category == 'fest') {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (BuildContext context) {
+            return Scaffold(
+                body: festpagewidget(widget.category_post, widget.app_user));
+          }));
+        } else if (widget.category == 'sport') {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (BuildContext context) {
+            return Scaffold(
+                body: sportpagewidget(widget.category_post, widget.app_user));
+          }));
+        } else if (widget.category == 'sac') {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (BuildContext context) {
+            return Scaffold(
+                body: sacProfilePage(widget.app_user, widget.category_post, 0));
+          }));
+        }
+      },
+      child: Row(
+        children: [
+          Container(
+            width: 48,
+            child: CircleAvatar(
+                backgroundImage: NetworkImage(widget.category_post.logo!)),
+          ),
+          Container(
+            padding: EdgeInsets.only(left: 20),
+            width: (width - 36) / 1.8,
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Row(
+                children: [
+                  Container(
+                    constraints: BoxConstraints(maxWidth: (width - 36) / 2.4),
+                    child: Text(
+                      widget.category_post.name!,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  userMarkNotation(widget.category_post.starMark!)
+                ],
+              ),
+              Text(
+                domains[widget.category_post.domain!]! +
+                    " (" +
+                    widget.category_post.title! +
+                    ") ",
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                style: TextStyle(fontSize: 15),
+              ),
+              Row(
+                children: [
+                  Container(
+                    constraints: BoxConstraints(maxWidth: (width - 36) / 2.4),
+                    child: Text(
+                      'From ' + widget.category_post.head.username,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        //color: Colors.white
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  userMarkNotation(widget.category_post.head.starMark!)
+                ],
+              ),
+            ]),
+          )
         ],
       ),
     );

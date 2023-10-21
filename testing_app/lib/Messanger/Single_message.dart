@@ -24,21 +24,17 @@ class _single_messageState extends State<single_message> {
     Messager message = widget.message;
     return widget.app_user.email == message.messageSender
         ? Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Container(
-                width: 20,
-              ),
               _buildScreen(message),
             ],
           )
         : Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               _buildScreen(message),
-              Container(
-                width: 20,
-              )
             ],
           );
   }
@@ -77,10 +73,6 @@ class _single_messageState extends State<single_message> {
     var width = MediaQuery.of(context).size.width;
     return widget.app_user.email == message.messageSender!
         ? Container(
-            constraints: BoxConstraints(
-              maxWidth: width - 110,
-              //minWidth: 30
-            ),
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(11),
@@ -92,31 +84,35 @@ class _single_messageState extends State<single_message> {
             padding: const EdgeInsets.all(9),
             child: Container(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text(
-                    message.insertMessage!
-                        ? message.messageBody!
-                        : utf8convert(message.messageBody!),
-                    textAlign: TextAlign.right,
-                    softWrap: true,
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontStyle: FontStyle.italic),
+                  Row(
+                    // mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        message.insertMessage!
+                            ? message.messageBody!
+                            : utf8convert(message.messageBody!),
+                        softWrap: true,
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontStyle: FontStyle.italic),
+                      ),
+                    ],
                   ),
                   (!widget.message.messageSent!)
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
+                      ? const Row(
+                          // mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                              Container(),
-                              const Icon(
+                              Icon(
                                 Icons.more_horiz,
                                 color: Colors.white,
                                 size: 14,
                               )
                             ])
                       : Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
+                          // mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             message.messageSeen == false
                                 ? const Icon(

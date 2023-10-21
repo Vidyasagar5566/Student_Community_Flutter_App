@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:testing_app/Register/Servers.dart';
+import 'package:testing_app/Register_Update/Servers.dart';
 import '/User_profile/Models.dart';
 import '/first_page.dart';
 
@@ -34,6 +34,29 @@ class _LoginRegisterState extends State<LoginRegister> {
   var year = 1;
   @override
   Widget build(BuildContext context) {
+    Future<bool> showExitPopup() async {
+      return await showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Exit App'),
+              content: Text('Do you want to exit an App?'),
+              actions: [
+                ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  //return false when click on "NO"
+                  child: Text('No'),
+                ),
+                ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  //return true when click on "Yes"
+                  child: Text('Yes'),
+                ),
+              ],
+            ),
+          ) ??
+          false; //if showDialouge had returned null, then return false
+    }
+
     if (!widget.app_user.isDetails!) {
       Future.delayed(
           Duration.zero,
@@ -367,12 +390,14 @@ class _LoginRegisterState extends State<LoginRegister> {
                 },
               ));
     }
-    return Container(
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-            image: AssetImage("images/background.jpg"), fit: BoxFit.cover),
-      ),
-    );
+    return WillPopScope(
+        onWillPop: showExitPopup,
+        child: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("images/background.jpg"), fit: BoxFit.cover),
+          ),
+        ));
   }
 }
 
@@ -386,6 +411,29 @@ class appUpdate extends StatefulWidget {
 class _appUpdateState extends State<appUpdate> {
   @override
   Widget build(BuildContext context) {
+    Future<bool> showExitPopup() async {
+      return await showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Exit App'),
+              content: Text('Do you want to exit an App?'),
+              actions: [
+                ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  //return false when click on "NO"
+                  child: Text('No'),
+                ),
+                ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  //return true when click on "Yes"
+                  child: Text('Yes'),
+                ),
+              ],
+            ),
+          ) ??
+          false; //if showDialouge had returned null, then return false
+    }
+
     Future.delayed(
         Duration.zero,
         () => showDialog(
@@ -401,22 +449,25 @@ class _appUpdateState extends State<appUpdate> {
                 ),
               )));
             }));
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("App UpdatebRequired!!"),
-      ),
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage("images/background.jpg"), fit: BoxFit.cover),
-        ),
-        child: const Center(
-          child: Text(
-            "Please Visit The Play Store and Update The App",
-            style: TextStyle(fontWeight: FontWeight.w700),
+    return WillPopScope(
+        onWillPop: showExitPopup,
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text("App UpdatebRequired!!"),
           ),
-        ),
-      ),
-    );
+          body: Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage("images/background.jpg"),
+                  fit: BoxFit.cover),
+            ),
+            child: const Center(
+              child: Text(
+                "Please Visit The Play Store and Update The App",
+                style: TextStyle(fontWeight: FontWeight.w700),
+              ),
+            ),
+          ),
+        ));
   }
 }

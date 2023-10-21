@@ -36,7 +36,7 @@ class _about_appState extends State<about_app> {
                   style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15)),
               const SizedBox(height: 8),
               const Text(
-                  "You can always send an email at sac@nitc.ac.in if you have any problem. Our support team will get back to you as quickly as possible, usually within 24 hours."),
+                  "You can always send an email at studentcommunity.iit.nit@gmail.com if you have any problem. Our support team will get back to you as quickly as possible, usually within 24 hours."),
               SizedBox(height: 18),
               const Text("Report/suggestions:",
                   style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15)),

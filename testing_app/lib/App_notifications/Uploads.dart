@@ -138,7 +138,8 @@ class _upload_notificationState extends State<upload_notification> {
                                     if (widget.app_user.email ==
                                             "guest@nitc.ac.in" ||
                                         !widget.app_user.isAdmin! ||
-                                        !widget.app_user.isStudentAdmin!) {
+                                        !widget.app_user.isStudentAdmin! ||
+                                        widget.app_user.isFaculty!) {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(
                                               content: Text(

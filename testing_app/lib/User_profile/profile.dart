@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:testing_app/User_profile/Servers.dart';
 import 'Models.dart';
 import 'package:testing_app/Fcm_Notif_Domains/servers.dart';
@@ -42,23 +43,26 @@ class _userProfilePageState extends State<userProfilePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                GestureDetector(
-                  onTap: () {
-                    if (widget.app_user.email != widget.profile_user.email) {
-                      Navigator.pop(context);
-                    }
-                  },
-                  child: const Row(children: [
-                    Icon(Icons.keyboard_arrow_left,
-                        color: Colors.white, size: 40),
-                    SizedBox(width: 10),
-                    Text("Back",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontSize: 22)),
-                  ]),
-                ),
+                widget.app_user.email != widget.profile_user.email
+                    ? GestureDetector(
+                        onTap: () {
+                          if (widget.app_user.email !=
+                              widget.profile_user.email) {
+                            Navigator.pop(context);
+                          }
+                        },
+                        child: const Row(children: [
+                          Icon(Icons.keyboard_arrow_left,
+                              color: Colors.white, size: 40),
+                          SizedBox(width: 10),
+                          Text("Back",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: 22)),
+                        ]),
+                      )
+                    : Container(),
                 widget.app_user.email == widget.profile_user.email
                     ? GestureDetector(
                         onTap: () {
@@ -93,7 +97,195 @@ class _userProfilePageState extends State<userProfilePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (context) {
+                            return AlertDialog(
+                                content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(),
+                                      TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text('Close'))
+                                    ]),
+                                const SizedBox(height: 20),
+                                CircleAvatar(
+                                    radius: 52,
+                                    backgroundColor: Colors.white,
+                                    child: widget.profile_user.fileType! == '1'
+                                        ? CircleAvatar(
+                                            radius: 50,
+                                            backgroundImage:
+                                                //post.profile_pic
+                                                NetworkImage(widget
+                                                    .profile_user.profilePic!))
+                                        : const CircleAvatar(
+                                            radius: 50,
+                                            backgroundImage:
+                                                //post.profile_pic
+                                                AssetImage(
+                                                    "images/profile.jpg"))),
+                                const SizedBox(height: 10),
+                                const Text('Bio',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18)),
+                                Text(utf8convert(widget.app_user.bio!),
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.w900,
+                                        fontSize: 20)),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text('email  ',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18)),
+                                    Container(
+                                      constraints: BoxConstraints(
+                                        maxWidth: width / 2,
+                                      ),
+                                      child: Text(widget.app_user.email!,
+                                          maxLines: 2,
+                                          softWrap: false,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                              color: Colors.blue,
+                                              fontWeight: FontWeight.w500)),
+                                    )
+                                  ],
+                                ),
+                                const SizedBox(height: 10),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text('phone_num  ',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18)),
+                                    Container(
+                                      constraints: BoxConstraints(
+                                        maxWidth: width / 2,
+                                      ),
+                                      child: Text(widget.app_user.phnNum!,
+                                          maxLines: 2,
+                                          softWrap: false,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                              color: Colors.blue,
+                                              fontWeight: FontWeight.w500)),
+                                    )
+                                  ],
+                                ),
+                                const SizedBox(height: 10),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text('course  ',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18)),
+                                    Container(
+                                      constraints: BoxConstraints(
+                                        maxWidth: width / 2,
+                                      ),
+                                      child: Text(widget.app_user.course!,
+                                          maxLines: 2,
+                                          softWrap: false,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                              color: Colors.blue,
+                                              fontWeight: FontWeight.w500)),
+                                    )
+                                  ],
+                                ),
+                                const SizedBox(height: 10),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text('year  ',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18)),
+                                    Container(
+                                      constraints: BoxConstraints(
+                                        maxWidth: width / 2,
+                                      ),
+                                      child: Text(
+                                          widget.app_user.year.toString(),
+                                          maxLines: 2,
+                                          softWrap: false,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                              color: Colors.blue,
+                                              fontWeight: FontWeight.w500)),
+                                    )
+                                  ],
+                                ),
+                                const SizedBox(height: 10),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text('branch  ',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18)),
+                                    Container(
+                                      constraints: BoxConstraints(
+                                        maxWidth: width / 2,
+                                      ),
+                                      child: Text(widget.app_user.branch!,
+                                          maxLines: 2,
+                                          softWrap: false,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                              color: Colors.blue,
+                                              fontWeight: FontWeight.w500)),
+                                    )
+                                  ],
+                                ),
+                                const SizedBox(height: 10),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text('batch  ',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18)),
+                                    const SizedBox(width: 10),
+                                    Container(
+                                      constraints: BoxConstraints(
+                                        maxWidth: width / 2,
+                                      ),
+                                      child: Text(widget.app_user.batch!,
+                                          maxLines: 2,
+                                          softWrap: false,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                              color: Colors.blue,
+                                              fontWeight: FontWeight.w500)),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ));
+                          });
+                    },
                     child: CircleAvatar(
                         radius: 52,
                         backgroundColor: Colors.white,
@@ -177,6 +369,7 @@ class _userProfilePageState extends State<userProfilePage> {
                             });
                           }
                           setState(() {
+                            widget.app_user = widget.app_user;
                             club_sport_fest_sac[0] = !club_sport_fest_sac[0];
                           });
                         },
@@ -219,6 +412,7 @@ class _userProfilePageState extends State<userProfilePage> {
                             });
                           }
                           setState(() {
+                            widget.app_user = widget.app_user;
                             club_sport_fest_sac[1] = !club_sport_fest_sac[1];
                           });
                         },
@@ -261,6 +455,7 @@ class _userProfilePageState extends State<userProfilePage> {
                             });
                           }
                           setState(() {
+                            widget.app_user = widget.app_user;
                             club_sport_fest_sac[2] = !club_sport_fest_sac[2];
                           });
                         },
@@ -303,6 +498,7 @@ class _userProfilePageState extends State<userProfilePage> {
                             });
                           }
                           setState(() {
+                            widget.app_user = widget.app_user;
                             club_sport_fest_sac[3] = !club_sport_fest_sac[3];
                           });
                         },
@@ -334,13 +530,16 @@ class _userProfilePageState extends State<userProfilePage> {
               ),
             ),
             club_sport_fest_sac[0]
-                ? clzCSFS(widget.profile_user, 'club')
+                ? clzCSFS(widget.app_user, widget.profile_user, 'club', [], [])
                 : club_sport_fest_sac[1]
-                    ? clzCSFS(widget.profile_user, 'sport')
+                    ? clzCSFS(
+                        widget.app_user, widget.profile_user, 'sport', [], [])
                     : club_sport_fest_sac[2]
-                        ? clzCSFS(widget.profile_user, 'fest')
+                        ? clzCSFS(widget.app_user, widget.profile_user, 'fest',
+                            [], [])
                         : club_sport_fest_sac[3]
-                            ? clzCSFS(widget.profile_user, 'sac')
+                            ? clzCSFS(widget.app_user, widget.profile_user,
+                                'sac', [], [])
                             : Container(),
             Container(
               width: width,
@@ -565,184 +764,143 @@ class _userProfilePageState extends State<userProfilePage> {
 }
 
 class clzCSFS extends StatefulWidget {
+  Username app_user;
   Username profile_user;
   String category;
-  clzCSFS(this.profile_user, this.category);
+  List<dynamic> heads_list;
+  List<dynamic> memss_list;
+  clzCSFS(this.app_user, this.profile_user, this.category, this.heads_list,
+      this.memss_list);
 
   @override
   State<clzCSFS> createState() => _clzCSFSState();
 }
 
 class _clzCSFSState extends State<clzCSFS> {
+  bool total_loaded = false;
+  void load_data_fun(String head_ids, String member_ids) async {
+    if (widget.heads_list.isEmpty && widget.memss_list.isEmpty) {
+      Map<List<dynamic>, List<dynamic>> category_list =
+          await user_profile_servers().get_all_type_category_data(
+              widget.category, head_ids, member_ids);
+      setState(() {
+        total_loaded = true;
+        widget.heads_list = category_list.keys.elementAt(0);
+        widget.memss_list = category_list.values.elementAt(0);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 10),
-      padding: EdgeInsets.all(10),
-      decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(30))),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 25),
-          const Text("Head : ",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                  color: Colors.black)),
-          Container(
-              margin: EdgeInsets.only(left: 10),
-              child: ListView.builder(
-                  itemCount: widget.category == 'club'
-                      ? widget.profile_user.clzClubs!['head'].length
-                      : widget.category == 'sport'
-                          ? widget.profile_user.clzSports!['head'].length
-                          : widget.category == 'fest'
-                              ? widget.profile_user.clzFests!['head'].length
-                              : widget.category == 'sac'
-                                  ? widget.profile_user.clzSacs!['head'].length
-                                  : 0,
-                  shrinkWrap: true,
-                  padding: EdgeInsets.only(bottom: 10),
-                  physics: ClampingScrollPhysics(),
-                  itemBuilder: (BuildContext context, int index) {
-                    String name = '';
-                    if (widget.category == 'club') {
-                      name = widget.profile_user.clzClubs!['head'].values
-                          .elementAt(index);
-                    } else if (widget.category == 'sport') {
-                      name = widget.profile_user.clzSports!['head'].values
-                          .elementAt(index);
-                    } else if (widget.category == 'fest') {
-                      name = widget.profile_user.clzFests!['head'].values
-                          .elementAt(index);
-                    } else if (widget.category == 'sac') {
-                      name = widget.profile_user.clzSacs!['head'].values
-                          .elementAt(index);
-                    }
-                    return Text(name,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16,
-                            color: Colors.black));
-                  })),
-          const SizedBox(height: 10),
-          const Text("Team Member : ",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                  color: Colors.black)),
-          Container(
-              margin: EdgeInsets.only(left: 10),
-              child: ListView.builder(
-                  itemCount: widget.category == 'club'
-                      ? widget.profile_user.clzClubs!['team_member'].length
-                      : widget.category == 'sport'
-                          ? widget.profile_user.clzSports!['team_member'].length
-                          : widget.category == 'fest'
-                              ? widget
-                                  .profile_user.clzFests!['team_member'].length
-                              : widget.category == 'sac'
-                                  ? widget.profile_user.clzSacs!['team_member']
-                                      .length
-                                  : 0,
-                  shrinkWrap: true,
-                  padding: EdgeInsets.only(bottom: 10),
-                  physics: ClampingScrollPhysics(),
-                  itemBuilder: (BuildContext context, int index) {
-                    String name = '';
-                    if (widget.category == 'club') {
-                      name = widget.profile_user.clzClubs!['team_member'].values
-                          .elementAt(index);
-                    } else if (widget.category == 'sport') {
-                      name = widget
-                          .profile_user.clzSports!['team_member'].values
-                          .elementAt(index);
-                    } else if (widget.category == 'fest') {
-                      name = widget.profile_user.clzFests!['team_member'].values
-                          .elementAt(index);
-                    } else if (widget.category == 'sac') {
-                      name = widget.profile_user.clzSacs!['team_member'].values
-                          .elementAt(index);
-                    }
-                    return Text(name,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16,
-                            color: Colors.black));
-                  }))
-        ],
-      ),
-    );
+    if (widget.category == 'club') {
+      List<String> head_ids = [];
+      Map head = widget.profile_user.clzClubs!['head'];
+      head.forEach((key, value) {
+        head_ids.add(key.toString());
+      });
+      List<String> team_ids = [];
+      Map team = widget.profile_user.clzClubs!['team_member'];
+      team.forEach((key, value) {
+        team_ids.add(key.toString());
+      });
+      load_data_fun(head_ids.join('#'), team_ids.join('#'));
+    } else if (widget.category == 'sport') {
+      List<String> head_ids = [];
+      Map head = widget.profile_user.clzSports!['head'];
+      head.forEach((key, value) {
+        head_ids.add(key.toString());
+      });
+      List<String> team_ids = [];
+      Map team = widget.profile_user.clzSports!['team_member'];
+      team.forEach((key, value) {
+        team_ids.add(key.toString());
+      });
+      load_data_fun(head_ids.join('#'), team_ids.join('#'));
+    } else if (widget.category == 'fest') {
+      List<String> head_ids = [];
+      Map head = widget.profile_user.clzFests!['head'];
+      head.forEach((key, value) {
+        head_ids.add(key.toString());
+      });
+      List<String> team_ids = [];
+      Map team = widget.profile_user.clzFests!['team_member'];
+      team.forEach((key, value) {
+        team_ids.add(key.toString());
+      });
+      load_data_fun(head_ids.join('#'), team_ids.join('#'));
+    } else if (widget.category == 'sac') {
+      List<String> head_ids = [];
+      Map head = widget.profile_user.clzSacs!['head'];
+      head.forEach((key, value) {
+        head_ids.add(key.toString());
+      });
+      List<String> team_ids = [];
+      Map team = widget.profile_user.clzSacs!['team_member'];
+      team.forEach((key, value) {
+        team_ids.add(key.toString());
+      });
+      load_data_fun(head_ids.join('#'), team_ids.join('#'));
+    }
+    return !total_loaded
+        ? Container(
+            margin: EdgeInsets.only(bottom: 10),
+            padding: EdgeInsets.all(10),
+            decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(30))),
+            child: Center(child: CircularProgressIndicator()))
+        : Container(
+            margin: EdgeInsets.only(bottom: 10),
+            padding: EdgeInsets.all(10),
+            decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(30))),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 25),
+                const Text("Head : ",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: Colors.black)),
+                Container(
+                    margin: EdgeInsets.only(left: 10),
+                    child: ListView.builder(
+                        itemCount: widget.heads_list.length,
+                        shrinkWrap: true,
+                        padding: EdgeInsets.only(bottom: 10),
+                        physics: ClampingScrollPhysics(),
+                        itemBuilder: (BuildContext context, int index) {
+                          return Container(
+                            margin: EdgeInsets.all(10),
+                            child: UserMarkAdmin(widget.heads_list[index],
+                                widget.category, widget.app_user),
+                          );
+                        })),
+                const SizedBox(height: 10),
+                const Text("Team Member : ",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: Colors.black)),
+                Container(
+                    margin: EdgeInsets.only(left: 10),
+                    child: ListView.builder(
+                        itemCount: widget.memss_list.length,
+                        shrinkWrap: true,
+                        padding: EdgeInsets.only(bottom: 10),
+                        physics: ClampingScrollPhysics(),
+                        itemBuilder: (BuildContext context, int index) {
+                          return Container(
+                            margin: EdgeInsets.all(10),
+                            child: UserMarkAdmin(widget.heads_list[index],
+                                widget.category, widget.app_user),
+                          );
+                        }))
+              ],
+            ),
+          );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// app_user.fileType ==
-//                                                                   '1'
-//                                                               ? Column(
-//                                                                   children: [
-//                                                                     const Center(
-//                                                                         child: Text(
-//                                                                             "Delete your profile pic?",
-//                                                                             style: TextStyle(
-//                                                                                 fontSize: 14,
-//                                                                                 color: Colors.black,
-//                                                                                 fontWeight: FontWeight.bold))),
-//                                                                     const SizedBox(
-//                                                                         height:
-//                                                                             10),
-//                                                                     Container(
-//                                                                       margin: const EdgeInsets
-//                                                                           .all(
-//                                                                           30),
-//                                                                       color: Colors
-//                                                                               .blue[
-//                                                                           900],
-//                                                                       child: OutlinedButton(
-//                                                                           onPressed: () async {
-//                                                                             bool
-//                                                                                 error =
-//                                                                                 await user_profile_servers().delete_profile_pic();
-//                                                                             if (!error) {
-//                                                                               Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => get_ueser_widget(1)), (Route<dynamic> route) => false);
-//                                                                             } else {
-//                                                                               ScaffoldMessenger.of(context).showSnackBar(
-//                                                                                 const SnackBar(
-//                                                                                   content: Text(
-//                                                                                     "error occured ,plz try again",
-//                                                                                     style: TextStyle(color: Colors.white),
-//                                                                                   ),
-//                                                                                 ),
-//                                                                               );
-//                                                                             }
-//                                                                           },
-//                                                                           child: const Center(
-//                                                                               child: Text(
-//                                                                             "Delete",
-//                                                                             style:
-//                                                                                 TextStyle(color: Colors.white),
-//                                                                           ))),
-//                                                                     ),
-//                                                                   ],
-//                                                                 )
-//                                                               : Container(),

@@ -31,7 +31,7 @@ import 'SAC/sac.dart';
 import 'package:testing_app/Placements/placements.dart';
 import 'Notes/qn_paper.dart';
 import 'Threads/threads.dart';
-import 'Register/Register.dart';
+import 'Register_Update/Register.dart';
 import 'User_Star_Mark/User_Profile_Star_Mark.dart';
 import 'Messanger/Models.dart';
 import 'package:flutter/rendering.dart';

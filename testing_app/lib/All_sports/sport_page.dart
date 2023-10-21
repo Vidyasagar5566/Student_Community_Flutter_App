@@ -43,92 +43,6 @@ List<Tab> tabs = const [
   ),
 ];
 
-// List<Widget> tabscontent_funct(
-//     double width, ALL_SPORTS sport, Username app_user) {
-//   SmallUsername user = sport.head!;
-//   return [
-//     SingleChildScrollView(
-//         child: Container(
-//       margin: EdgeInsets.all(20),
-//       padding: EdgeInsets.all(20),
-//       decoration: BoxDecoration(
-//           color: Colors.white, borderRadius: BorderRadius.circular(20)),
-//       child: Column(
-//         children: [
-//           const SizedBox(
-//             height: 30,
-//           ),
-//           //Link
-//           Text(
-//             utf8convert(sport.description!),
-//           ),
-//         ],
-//       ),
-//     )),
-//     SingleChildScrollView(
-//         child: Container(
-//       margin: EdgeInsets.only(top: 20),
-//       child: sport_members(sport.teamMembers!),
-//     )),
-//     SingleChildScrollView(
-//         child: Container(
-//             margin: EdgeInsets.only(top: 20),
-//             child: user_postswidget(
-//                 user.username!, app_user, 'sport', sport.id!))),
-//     SingleChildScrollView(
-//         child: Container(
-//             margin: EdgeInsets.all(20),
-//             decoration: BoxDecoration(
-//                 color: Colors.white, borderRadius: BorderRadius.circular(20)),
-//             child: Column(
-//               children: [
-//                 Container(
-//                   margin: const EdgeInsets.all(10),
-//                   child: //Link
-//                       Text(sport.sportGround!
-//                           //"One is at 12th mile and the other is at backside of main building"
-//                           ),
-//                 ),
-//                 Container(
-//                     margin: const EdgeInsets.all(10),
-//                     child: const Align(
-//                         alignment: Alignment.centerLeft,
-//                         child: Text(
-//                           "Images",
-//                           style: TextStyle(
-//                               fontWeight: FontWeight.w600, fontSize: 15),
-//                         ))),
-//                 Center(
-//                   child: Container(
-//                       height: width,
-//                       width: width,
-//                       decoration: BoxDecoration(
-//                           borderRadius: BorderRadius.circular(20),
-//                           color: Colors.white),
-//                       child: Image.network(sport.sportGroundImg!)),
-//                 ),
-//               ],
-//             ))),
-//     SingleChildScrollView(
-//         child: Container(
-//             margin: EdgeInsets.all(20),
-//             padding: EdgeInsets.all(20),
-//             decoration: BoxDecoration(
-//                 color: Colors.white, borderRadius: BorderRadius.circular(20)),
-//             child: Column(children: [
-//               const SizedBox(
-//                 height: 30,
-//               ),
-//               //Link
-//               Text(
-//                 sport.websites!,
-//                 //"https://www.crichq.com",
-//                 //style: TextStyle(color: Colors.blueAccent),
-//               )
-//             ])))
-//   ];
-// }
-
 class sportpagewidget extends StatefulWidget {
   ALL_SPORTS sport;
   Username app_user;
@@ -513,39 +427,49 @@ class _sportpagewidgetState extends State<sportpagewidget> {
                     ),
                     SingleChildScrollView(
                         child: Container(
-                            margin: EdgeInsets.all(20),
+                            // height: 300,
+                            width: width,
+                            margin: EdgeInsets.only(top: 100),
+                            padding: EdgeInsets.only(top: 20),
                             decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(20)),
-                            child: Column(
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.all(10),
-                                  child: //Link
-                                      Text(widget.sport.sportGround!),
-                                ),
-                                Container(
-                                    margin: const EdgeInsets.all(10),
-                                    child: const Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          "Images",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 15),
-                                        ))),
-                                Center(
-                                  child: Container(
-                                      height: width,
+                            child: GestureDetector(
+                              onTap: () async {
+                                String web_url = widget.sport.sportGround!;
+
+                                final Uri url = Uri.parse(web_url);
+                                if (!await launchUrl(url)) {
+                                  throw Exception('Could not launch $url');
+                                }
+                              },
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Row(
+                                    children: [
+                                      Text("Maps to Ground : "),
+                                      SizedBox(width: 5),
+                                      Icon(Icons.location_pin, size: 23),
+                                    ],
+                                  ),
+                                  const SizedBox(width: 5),
+                                  Center(
+                                    child: Container(
+                                      height: width / 2,
                                       width: width,
                                       decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(20),
-                                          color: Colors.white),
-                                      child: Image.network(
-                                          widget.sport.sportGroundImg!)),
-                                ),
-                              ],
+                                          color: Colors.white,
+                                          image: DecorationImage(
+                                              image: NetworkImage(
+                                                  widget.sport.sportGroundImg!),
+                                              fit: BoxFit.cover)),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ))),
                   ])),
                 ],

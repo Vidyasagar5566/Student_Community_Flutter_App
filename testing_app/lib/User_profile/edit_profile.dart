@@ -4,6 +4,7 @@ import 'Models.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import '/first_page.dart';
+import 'package:testing_app/Register_Update/Register.dart';
 
 class editprofile extends StatefulWidget {
   Username app_user;
@@ -15,10 +16,10 @@ class editprofile extends StatefulWidget {
 
 class _editprofileState extends State<editprofile> {
   var profile_image;
+
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
-    //File(widget.app_user.profilePic!);
     return Scaffold(
         appBar: AppBar(
           leading: const BackButton(
@@ -42,8 +43,6 @@ class _editprofileState extends State<editprofile> {
             ),
             child: SingleChildScrollView(
               child: Column(
-                //mainAxisAlignment: MainAxisAlignment.center,
-                //crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const SizedBox(
                     height: 50,
@@ -88,6 +87,34 @@ class _editprofileState extends State<editprofile> {
                         Container(
                           padding: EdgeInsets.only(left: 40, right: 40),
                           child: TextFormField(
+                            maxLines: 4,
+                            minLines: 2,
+                            initialValue: widget.app_user.bio,
+                            keyboardType: TextInputType.text,
+                            decoration: const InputDecoration(
+                              labelText: 'bio',
+                              hintText: 'I am working as a br and ...',
+                              prefixIcon: Icon(Icons.text_fields),
+                              border: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10))),
+                            ),
+                            onChanged: (String value) {
+                              setState(() {
+                                widget.app_user.bio = value;
+                              });
+                            },
+                            validator: (value) {
+                              return value!.isEmpty
+                                  ? 'please enter email'
+                                  : null;
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Container(
+                          padding: EdgeInsets.only(left: 40, right: 40),
+                          child: TextFormField(
                             initialValue: widget.app_user.phnNum,
                             keyboardType: TextInputType.phone,
                             decoration: InputDecoration(
@@ -100,7 +127,7 @@ class _editprofileState extends State<editprofile> {
                             ),
                             onChanged: (String value) {
                               setState(() {
-                                widget.app_user..phnNum = value;
+                                widget.app_user.phnNum = value;
                               });
                             },
                             validator: (value) {
@@ -109,6 +136,127 @@ class _editprofileState extends State<editprofile> {
                                   : null;
                             },
                           ),
+                        ),
+                        const SizedBox(height: 10),
+                        Container(
+                          padding: EdgeInsets.only(left: 40, right: 40),
+                          child: TextFormField(
+                            initialValue: widget.app_user.batch,
+                            keyboardType: TextInputType.text,
+                            decoration: const InputDecoration(
+                              labelText: 'batch',
+                              hintText:
+                                  'MEC2 or A or L etc..(plz write just exact batch name)',
+                              prefixIcon: Icon(Icons.text_fields),
+                              border: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10))),
+                            ),
+                            onChanged: (String value) {
+                              setState(() {
+                                widget.app_user.batch = value;
+                              });
+                            },
+                            validator: (value) {
+                              return value!.isEmpty
+                                  ? 'please enter email'
+                                  : null;
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Container(
+                          padding: EdgeInsets.only(left: 40, right: 40),
+                          child: Column(children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text("Course",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w500)),
+                                const SizedBox(width: 20),
+                                DropdownButton<String>(
+                                    value: widget.app_user.course,
+                                    underline: Container(),
+                                    elevation: 0,
+                                    items: courses
+                                        .map<DropdownMenuItem<String>>(
+                                            (String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(
+                                          value,
+                                          style: TextStyle(fontSize: 10),
+                                        ),
+                                      );
+                                    }).toList(),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        widget.app_user.course = value!;
+                                      });
+                                    }),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text("Year",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w500)),
+                                const SizedBox(width: 20),
+                                DropdownButton<int>(
+                                    value: widget.app_user.year,
+                                    underline: Container(),
+                                    elevation: 0,
+                                    items: years.map<DropdownMenuItem<int>>(
+                                        (int value) {
+                                      return DropdownMenuItem<int>(
+                                        value: value,
+                                        child: Text(
+                                          value.toString(),
+                                          style: TextStyle(fontSize: 10),
+                                        ),
+                                      );
+                                    }).toList(),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        widget.app_user.year = value!;
+                                      });
+                                    }),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text("Branch",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w500)),
+                                const SizedBox(width: 20),
+                                DropdownButton<String>(
+                                    value: widget.app_user.branch,
+                                    underline: Container(),
+                                    elevation: 0,
+                                    items: branches
+                                        .map<DropdownMenuItem<String>>(
+                                            (String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(
+                                          value,
+                                          style: TextStyle(fontSize: 10),
+                                        ),
+                                      );
+                                    }).toList(),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        widget.app_user.branch = value!;
+                                      });
+                                    }),
+                              ],
+                            ),
+                          ]),
                         ),
                         const SizedBox(height: 10),
                         const Text(
@@ -153,7 +301,9 @@ class _editprofileState extends State<editprofile> {
                                     : Image(image: FileImage(profile_image))),
                         const SizedBox(height: 10),
                         (widget.app_user.username != "" &&
-                                widget.app_user.phnNum != "")
+                                widget.app_user.phnNum != "" &&
+                                widget.app_user.bio != '' &&
+                                widget.app_user.batch != '')
                             ? Container(
                                 padding: EdgeInsets.only(left: 40, right: 40),
                                 margin: EdgeInsets.only(top: 40),
@@ -188,10 +338,10 @@ class _editprofileState extends State<editprofile> {
                                                     EdgeInsets.all(15),
                                                 content: Container(
                                                   margin: EdgeInsets.all(10),
-                                                  child: Column(
+                                                  child: const Column(
                                                       mainAxisSize:
                                                           MainAxisSize.min,
-                                                      children: const [
+                                                      children: [
                                                         Text(
                                                             "Please wait while uploading....."),
                                                         SizedBox(height: 10),
@@ -205,14 +355,19 @@ class _editprofileState extends State<editprofile> {
                                               widget.app_user.username!,
                                               widget.app_user.phnNum!,
                                               profile_image,
-                                              widget.app_user.fileType!);
+                                              widget.app_user.fileType!,
+                                              widget.app_user.course!,
+                                              widget.app_user.branch!,
+                                              widget.app_user.year!,
+                                              widget.app_user.bio!,
+                                              widget.app_user.batch!);
                                       Navigator.pop(context);
                                       if (!error) {
                                         Navigator.of(context)
                                             .pushAndRemoveUntil(
                                                 MaterialPageRoute(builder:
                                                     (BuildContext context) {
-                                          return get_ueser_widget(2);
+                                          return get_ueser_widget(4);
                                         }), (Route<dynamic> route) => false);
                                       } else {
                                         ScaffoldMessenger.of(context)
