@@ -126,7 +126,11 @@ class _Allclubpagewidget1State extends State<Allclubpagewidget1> {
   Widget build(BuildContext context) {
     List<ALL_CLUBS> AllClubs = widget.AllClubs;
     return Container(
-        decoration: const BoxDecoration(),
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+                //image: post.post_pic,
+                image: AssetImage("images/event background.jpg"),
+                fit: BoxFit.cover)),
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: SingleChildScrollView(
@@ -194,16 +198,16 @@ class _Allclubpagewidget1State extends State<Allclubpagewidget1> {
                 margin: EdgeInsets.all(5),
                 padding: EdgeInsets.all(5),
                 decoration: BoxDecoration(
+                    // boxShadow:const  [
+                    //     BoxShadow(
+                    //       color: Colors.grey, // Shadow color
+                    //       offset: Offset(0,
+                    //           2), // Offset of the shadow (horizontal, vertical)
+                    //       blurRadius: 6, // Spread of the shadow
+                    //       spreadRadius: 0, // Expansion of the shadow
+                    //     ),
+                    //   ],
                     color: Colors.white,
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.grey, // Shadow color
-                        offset: Offset(0,
-                            2), // Offset of the shadow (horizontal, vertical)
-                        blurRadius: 6, // Spread of the shadow
-                        spreadRadius: 0, // Expansion of the shadow
-                      ),
-                    ],
                     borderRadius: BorderRadius.circular(12)),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
