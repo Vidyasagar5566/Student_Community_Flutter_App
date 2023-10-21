@@ -19,22 +19,31 @@ String utf8convert(String text) {
   return utf8.decode(bytes);
 }
 
-List<Tab> tabs = const [
-  Tab(
-    child: Text(
-      "About",
-      style: TextStyle(color: Colors.black),
+List<Container> tabs = [
+  Container(
+    padding: EdgeInsets.all(8),
+    child: Tab(
+      child: Text(
+        "About",
+        style: TextStyle(color: Colors.black),
+      ),
     ),
   ),
-  Tab(
-      child: Text(
-    "Club members",
-    style: TextStyle(color: Colors.black),
-  )),
-  Tab(
-    child: Text(
-      "Media files",
+  Container(
+    padding: EdgeInsets.all(3),
+    child: Tab(
+        child: Text(
+      "Club members",
       style: TextStyle(color: Colors.black),
+    )),
+  ),
+  Container(
+    padding: EdgeInsets.all(5),
+    child: Tab(
+      child: Text(
+        "Media files",
+        style: TextStyle(color: Colors.black),
+      ),
     ),
   ),
 ];
@@ -128,7 +137,7 @@ class _clubpagewidgetState extends State<clubpagewidget> {
                     height: 4,
                   ),
                   SizedBox(
-                      height: 50,
+                      height: 70,
                       child: AppBar(
                           backgroundColor: Colors.white,
                           bottom: TabBar(

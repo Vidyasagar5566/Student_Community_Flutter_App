@@ -45,7 +45,7 @@ class activity_servers {
       String date,
       String all_university,
       String category,
-      int category_id) async {
+      String category_id) async {
     try {
       var token = storage.getItem('token');
       String finalUrl = "$base_url/event/list1";

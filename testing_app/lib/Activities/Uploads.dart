@@ -12,7 +12,7 @@ import 'package:testing_app/Circular_designs/cure_clip.dart';
 class upload_eventwidget extends StatefulWidget {
   Username app_user;
   String event_category;
-  int id;
+  String id;
   upload_eventwidget(this.app_user, this.event_category, this.id);
 
   @override
@@ -557,7 +557,7 @@ class _eventCategoryState extends State<eventCategory> {
     sacs = widget.app_user.clzSacs!['head'];
 
     if (clubs.isEmpty && sports.isEmpty && fests.isEmpty && sacs.isEmpty) {
-      return upload_eventwidget(widget.app_user, 'student', 0);
+      return upload_eventwidget(widget.app_user, 'student', '0');
     }
 
     var wid = MediaQuery.of(context).size.width;
@@ -630,7 +630,7 @@ class _eventCategoryState extends State<eventCategory> {
                         Navigator.of(context).push(
                             MaterialPageRoute(builder: (BuildContext context) {
                           return upload_eventwidget(
-                              widget.app_user, 'student', 0);
+                              widget.app_user, 'student', '0');
                         }));
                       },
                       child: Container(

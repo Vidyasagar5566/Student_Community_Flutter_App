@@ -375,7 +375,7 @@ class _edit_clubState extends State<edit_club> {
                         const SizedBox(height: 10),
                         widget.image != null
                             ? Container(
-                                height: width * 1.4, // image_ratio,
+                                height: width, // image_ratio,
                                 width: width,
                                 margin: EdgeInsets.all(10),
                                 decoration: BoxDecoration(
@@ -386,6 +386,7 @@ class _edit_clubState extends State<edit_club> {
                                     : Image.network(widget.image),
                               )
                             : Container(),
+                        const SizedBox(height: 10),
                       ],
                     ),
                   ),

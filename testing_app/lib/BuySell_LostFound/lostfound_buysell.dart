@@ -219,55 +219,7 @@ class _all_lostwidget1State extends State<all_lostwidget1> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        children: [
-                          Container(
-                            width: 48, //post.profile_pic
-                            child: user.fileType == '1'
-                                ? CircleAvatar(
-                                    backgroundImage:
-                                        NetworkImage(user.profilePic!))
-                                : const CircleAvatar(
-                                    backgroundImage:
-                                        AssetImage("images/profile.jpg")),
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(left: 20),
-                            width: (width - 36) / 1.8,
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        constraints: BoxConstraints(
-                                            maxWidth: (width - 36) / 2.4),
-                                        child: Text(
-                                          user.username!,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 16,
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      userMarkNotation(user.starMark!)
-                                    ],
-                                  ),
-                                  Text(
-                                    domains[user.domain!]! +
-                                        " (" +
-                                        user.userMark! +
-                                        ")",
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                  ),
-                                ]),
-                          ),
-                        ],
-                      ),
+                      UserProfileMark(widget.app_user, user),
                       SizedBox(
                           width: (width - 36) / 4,
                           height: 30,

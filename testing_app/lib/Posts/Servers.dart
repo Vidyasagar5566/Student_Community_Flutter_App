@@ -38,7 +38,7 @@ class post_servers {
   }
 
   Future<bool> post_post(String description, File file, String image_ratio,
-      String all_university, String category, int category_id) async {
+      String all_university, String category, String category_id) async {
     try {
       var token = storage.getItem('token');
       String finalUrl = "$base_url/post/list1?";

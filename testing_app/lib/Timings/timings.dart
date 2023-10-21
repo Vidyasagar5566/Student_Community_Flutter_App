@@ -10,12 +10,6 @@ DateTime today_day = DateTime.now();
 
 List<Tab> tabs = const [
   Tab(
-    child: Text(
-      "SUN",
-      style: TextStyle(color: Colors.black),
-    ),
-  ),
-  Tab(
       child: Text(
     "MON",
     style: TextStyle(color: Colors.black),
@@ -49,7 +43,13 @@ List<Tab> tabs = const [
       "SAT",
       style: TextStyle(color: Colors.black),
     ),
-  )
+  ),
+  Tab(
+    child: Text(
+      "SUN",
+      style: TextStyle(color: Colors.black),
+    ),
+  ),
 ];
 
 class Acadamic_timings extends StatefulWidget {
@@ -173,17 +173,13 @@ class _Acadamic_timingsState extends State<Acadamic_timings> {
 List<Widget> tabscontent1(
     List<ACADEMIC_LIST> academic_list, Username app_user) {
   List<Widget> tabscontent1 = [
-    Acadamic_timings(
-      "SUN",
-      app_user,
-      academic_list,
-    ),
     Acadamic_timings("MON", app_user, academic_list),
     Acadamic_timings("TUE", app_user, academic_list),
     Acadamic_timings("WED", app_user, academic_list),
     Acadamic_timings("THU", app_user, academic_list),
     Acadamic_timings("FRI", app_user, academic_list),
     Acadamic_timings("SAT", app_user, academic_list),
+    Acadamic_timings("SUN", app_user, academic_list),
   ];
   return tabscontent1;
 }
@@ -201,8 +197,8 @@ class _AcademicTimingsState extends State<AcademicTimings> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      initialIndex: today_day.weekday,
-      length: 8,
+      initialIndex: today_day.weekday - 1,
+      length: 7,
       child: Scaffold(
           appBar: AppBar(
               leading: const BackButton(

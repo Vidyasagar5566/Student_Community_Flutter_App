@@ -10,7 +10,10 @@ class threads_servers {
 
 // ALERT LIST FUNCTIONS
 
-  Future<List<ALERT_LIST>> get_alert_list(String domain, int num_list,) async {
+  Future<List<ALERT_LIST>> get_alert_list(
+    String domain,
+    int num_list,
+  ) async {
     try {
       var token = storage.getItem('token');
       Map<String, String> queryParameters = {
@@ -48,7 +51,7 @@ class threads_servers {
       String allow_branchs,
       String all_university,
       String category,
-      int category_id) async {
+      String category_id) async {
     try {
       var token = storage.getItem('token');
       String finalUrl = "$base_url/alert/list1";

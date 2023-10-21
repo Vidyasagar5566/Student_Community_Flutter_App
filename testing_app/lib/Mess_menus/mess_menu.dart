@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:testing_app/Calender/Calender_test.dart';
 //import 'package:testing_app/dataset.dart';
 import 'Servers.dart';
 import 'Models.dart';
 import 'package:testing_app/Fcm_Notif_Domains/servers.dart';
 
 List<Tab> tabs = const [
-  Tab(
-    child: Text(
-      "SUN",
-      style: TextStyle(color: Colors.black),
-    ),
-  ),
   Tab(
       child: Text(
     "MON",
@@ -45,7 +40,13 @@ List<Tab> tabs = const [
       "SAT",
       style: TextStyle(color: Colors.black),
     ),
-  )
+  ),
+  Tab(
+    child: Text(
+      "SUN",
+      style: TextStyle(color: Colors.black),
+    ),
+  ),
 ];
 
 class all_mess_menu extends StatefulWidget {
@@ -249,13 +250,13 @@ class _all_mess_menuState extends State<all_mess_menu> {
 
 List<Widget> tabscontent(List<MESS_LIST> mess_list) {
   List<Widget> tabscontent = [
-    all_mess_menu("SUN", mess_list),
     all_mess_menu("MON", mess_list),
     all_mess_menu("TUE", mess_list),
     all_mess_menu("WED", mess_list),
     all_mess_menu("THU", mess_list),
     all_mess_menu("FRI", mess_list),
     all_mess_menu("SAT", mess_list),
+    all_mess_menu("SUN", mess_list),
   ];
   return tabscontent;
 }
@@ -272,6 +273,7 @@ class _messMenuState extends State<messMenu> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
+        initialIndex: today.weekday - 1,
         length: 8,
         child: Scaffold(
             appBar: AppBar(
@@ -313,7 +315,8 @@ class _messMenuState extends State<messMenu> {
                   tabs: tabs,
                 )),
             body: FutureBuilder<List<MESS_LIST>>(
-              future: mess_menu_servers().get_mess_list(domains1[widget.domain]!),
+              future:
+                  mess_menu_servers().get_mess_list(domains1[widget.domain]!),
               builder: (ctx, AsyncSnapshot snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   if (snapshot.hasError) {
