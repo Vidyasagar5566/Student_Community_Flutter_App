@@ -146,10 +146,10 @@ class _all_lostwidget1State extends State<all_lostwidget1> {
 
   Widget _listViewItems(
       Username app_user, List<Lost_Found> lst_list, String tag) {
+    var height = MediaQuery.of(context).size.height;
     return lst_list.isEmpty
         ? Container(
-            margin: const EdgeInsets.all(30),
-            padding: const EdgeInsets.all(30),
+            margin: EdgeInsets.only(top: height / 3),
             child: const Center(
                 child: Text(
               "No Data Was Found",

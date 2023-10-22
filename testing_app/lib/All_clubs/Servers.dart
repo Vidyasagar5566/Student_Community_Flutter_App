@@ -116,11 +116,13 @@ class all_clubs_servers {
           'Authorization': 'token $token',
           "Content-Type": "application/json",
         },
-        body: jsonEncode({'id': id, 'new_head_email': new_head_email}),
+        body:
+            jsonEncode({'id': id, 'new_head_email': new_head_email}),
       );
       var data = json.decode(response.body) as Map;
       return data['error'];
     } catch (e) {
+      print(e);
       return true;
     }
   }

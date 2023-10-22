@@ -14,6 +14,7 @@ import '/Files_disply_download/pdf_videos_images.dart';
 import 'package:get_time_ago/get_time_ago.dart';
 import 'dart:io';
 import 'package:testing_app/User_Star_Mark/User_Profile_Star_Mark.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 String utf8convert(String text) {
   List<int> bytes = text.toString().codeUnits;
@@ -34,6 +35,7 @@ class user_postswidget extends StatefulWidget {
 class _user_postswidgetState extends State<user_postswidget> {
   @override
   Widget build(BuildContext context) {
+    var height = MediaQuery.of(context).size.height;
     return FutureBuilder<List<POST_LIST>>(
       future: user_profile_servers().get_user_post_list(
           widget.email, widget.category, widget.category_id),
@@ -63,8 +65,11 @@ class _user_postswidgetState extends State<user_postswidget> {
             }
           }
         }
-        return const Center(
-          child: CircularProgressIndicator(color: Colors.grey),
+        return Container(
+          margin: EdgeInsets.only(top: height / 3),
+          child: const Center(
+            child: CircularProgressIndicator(color: Colors.blue),
+          ),
         );
       },
     );
@@ -83,11 +88,11 @@ class user_postwidget1 extends StatefulWidget {
 class _user_postwidget1State extends State<user_postwidget1> {
   @override
   Widget build(BuildContext context) {
+    var height = MediaQuery.of(context).size.height;
     List<POST_LIST> post_list = widget.post_list;
     return widget.post_list.isEmpty
         ? Container(
-            margin: EdgeInsets.all(30),
-            padding: EdgeInsets.all(30),
+            margin: EdgeInsets.only(top: height / 3),
             child: const Center(
               child: Text(
                 "No Posts Was Found",
@@ -563,45 +568,42 @@ class _single_postState extends State<single_post> {
                       }
                     },
                     icon: post.isLike!
-                        ? const Icon(
-                            Icons.favorite,
-                            size: 30,
-                            color: Colors.red,
+                        ? const FaIcon(
+                            FontAwesomeIcons.solidThumbsUp,
+                            size: 25,
+                            color: Colors.blue,
                           )
-                        : const Icon(
-                            Icons.favorite_border_outlined,
-                            size: 30,
-                            color: Colors.red,
+                        : const FaIcon(
+                            FontAwesomeIcons.thumbsUp,
+                            size: 25,
+                            color: Colors.blue,
                           ),
                   ),
-                  // Text(post.likes.toString() + "likes")
                   Text(
                     post.likeCount.toString(),
                     style: const TextStyle(fontSize: 16),
                   ),
                   const SizedBox(
-                    width: 10,
+                    width: 7,
                   ),
                   IconButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (BuildContext context) {
-                        return commentwidget(post, widget.app_user);
-                      }));
-                    },
-                    icon: const Icon(
-                      Icons.comment_rounded,
-                      //color: Colors.white70,
-                      size: 30,
-                    ),
-                  ),
+                      onPressed: () {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          return commentwidget(post, widget.app_user);
+                        }));
+                      },
+                      icon: const FaIcon(FontAwesomeIcons.comment, size: 25)),
                   Text(
                     post.commentCount.toString(),
                     style: const TextStyle(
                       fontSize: 16,
                       //color: Colors.white70
                     ),
-                  )
+                  ),
+                  IconButton(
+                      onPressed: () {},
+                      icon: const FaIcon(FontAwesomeIcons.share, size: 23)),
                 ],
               ),
             ],

@@ -369,7 +369,8 @@ class _sacProfilePageState extends State<sacProfilePage> {
                               widget.app_user.domain!, true)
                           : Container(
                               margin: EdgeInsets.only(top: 100),
-                              child: CircularProgressIndicator()),
+                              child:
+                                  Center(child: CircularProgressIndicator())),
                     )),
       bottomNavigationBar: BottomNavigationBar(
         fixedColor: Colors.blue,

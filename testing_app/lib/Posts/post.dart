@@ -166,24 +166,32 @@ class _postwidget1State extends State<postwidget1> {
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
     return Container(
       child: SingleChildScrollView(
         child: Column(
           children: [
-            ListView.builder(
-                itemCount: widget.post_list.length,
-                shrinkWrap: true,
-                padding: EdgeInsets.only(bottom: 10),
-                physics: ClampingScrollPhysics(),
-                itemBuilder: (BuildContext context, int index) {
-                  POST_LIST post = widget.post_list[index];
-                  var _convertedTimestamp = DateTime.parse(
-                      post.postedDate!); // Converting into [DateTime] object
-                  String post_posted_date =
-                      GetTimeAgo.parse(_convertedTimestamp);
-                  return single_post(post, widget.app_user, widget.domain,
-                      widget.post_list, post_posted_date, index);
-                }),
+            widget.post_list.isEmpty
+                ? Container(
+                    margin: EdgeInsets.only(top: height / 3),
+                    child: const Center(
+                      child: Text("No Data Was Found"),
+                    ),
+                  )
+                : ListView.builder(
+                    itemCount: widget.post_list.length,
+                    shrinkWrap: true,
+                    padding: EdgeInsets.only(bottom: 10),
+                    physics: ClampingScrollPhysics(),
+                    itemBuilder: (BuildContext context, int index) {
+                      POST_LIST post = widget.post_list[index];
+                      var _convertedTimestamp = DateTime.parse(post
+                          .postedDate!); // Converting into [DateTime] object
+                      String post_posted_date =
+                          GetTimeAgo.parse(_convertedTimestamp);
+                      return single_post(post, widget.app_user, widget.domain,
+                          widget.post_list, post_posted_date, index);
+                    }),
             const SizedBox(height: 10),
             total_loaded
                 ? Container(
@@ -659,12 +667,12 @@ class _single_postState extends State<single_post> {
                         ? const FaIcon(
                             FontAwesomeIcons.solidThumbsUp,
                             size: 25,
-                            color: Colors.green,
+                            color: Colors.blue,
                           )
                         : const FaIcon(
                             FontAwesomeIcons.thumbsUp,
                             size: 25,
-                            color: Colors.green,
+                            color: Colors.blue,
                           ),
                   ),
                   Text(

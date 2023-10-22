@@ -97,7 +97,7 @@ class _edit_festState extends State<edit_fest> {
                             keyboardType: TextInputType.emailAddress,
                             decoration: const InputDecoration(
                               labelText: 'title',
-                              hintText: 'technical fest/inter nitc sport',
+                              hintText: 'technical fest/cultural fest',
                               prefixIcon: Icon(Icons.text_fields),
                               border: OutlineInputBorder(
                                   borderRadius:
@@ -125,8 +125,8 @@ class _edit_festState extends State<edit_fest> {
                             initialValue: widget.name,
                             keyboardType: TextInputType.emailAddress,
                             decoration: const InputDecoration(
-                              labelText: 'fest_head_email',
-                              hintText: 'arun_b190725@nitc.ac.in',
+                              labelText: 'Sport Name',
+                              hintText: 'Cricket',
                               prefixIcon: Icon(Icons.text_fields),
                               border: OutlineInputBorder(
                                   borderRadius:

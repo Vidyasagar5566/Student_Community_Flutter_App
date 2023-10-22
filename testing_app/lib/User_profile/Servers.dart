@@ -150,6 +150,7 @@ class user_profile_servers {
     }
   }
 
+  // GET ALL CLUB AND ETC.. BASED ON HIS PROFILE
   Future<Map<List<dynamic>, List<dynamic>>> get_all_type_category_data(
       String category, String head_ids, String member_ids) async {
     try {

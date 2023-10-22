@@ -101,10 +101,10 @@ class _activitieswidget1State extends State<activitieswidget1> {
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
     return widget.event_list.isEmpty
         ? Container(
-            margin: EdgeInsets.all(30),
-            padding: EdgeInsets.all(30),
+            margin: EdgeInsets.only(top: height / 3),
             child: const Center(
               child: Text(
                 "No Activities Was Found",

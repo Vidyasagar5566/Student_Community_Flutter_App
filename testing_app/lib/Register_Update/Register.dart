@@ -18,7 +18,9 @@ List<String> branches = [
   "PE",
   "Other"
 ];
-List<int> years = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+List<int> years = [1, 2, 3, 4];
+List<int> years1 = [1, 2];
+List<int> years2 = [1, 2, 3, 4, 5, 6, 7, 8];
 
 class LoginRegister extends StatefulWidget {
   Username app_user;
@@ -167,9 +169,23 @@ class _LoginRegisterState extends State<LoginRegister> {
                                                   value: year,
                                                   underline: Container(),
                                                   elevation: 0,
-                                                  items: years.map<
-                                                      DropdownMenuItem<
-                                                          int>>((int value) {
+                                                  items: (course == "B.Tech"
+                                                          ? years
+                                                          : course == "M.Tech"
+                                                              ? years1
+                                                              : course == "PG"
+                                                                  ? years1
+                                                                  : course ==
+                                                                          "Phd"
+                                                                      ? years2
+                                                                      : course ==
+                                                                              "MBA"
+                                                                          ? years1
+                                                                          : years2)
+                                                      .map<
+                                                              DropdownMenuItem<
+                                                                  int>>(
+                                                          (int value) {
                                                     return DropdownMenuItem<
                                                         int>(
                                                       value: value,

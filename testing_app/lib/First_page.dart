@@ -147,7 +147,7 @@ class _firstpageState extends State<firstpage> {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                   builder: (BuildContext context) =>
-                      firstpage(widget.curr_index, widget.app_user)),
+                      get_ueser_widget(widget.curr_index)),
               (Route<dynamic> route) => false);
         },
 

@@ -144,7 +144,7 @@ class _editprofileState extends State<editprofile> {
                             initialValue: widget.app_user.batch,
                             keyboardType: TextInputType.text,
                             decoration: const InputDecoration(
-                              labelText: 'batch',
+                              labelText: 'Section',
                               hintText:
                                   'MEC2 or A or L etc..(plz write just exact batch name)',
                               prefixIcon: Icon(Icons.text_fields),
@@ -193,6 +193,7 @@ class _editprofileState extends State<editprofile> {
                                     onChanged: (value) {
                                       setState(() {
                                         widget.app_user.course = value!;
+                                        widget.app_user.year = 1;
                                       });
                                     }),
                               ],
@@ -209,8 +210,22 @@ class _editprofileState extends State<editprofile> {
                                     value: widget.app_user.year,
                                     underline: Container(),
                                     elevation: 0,
-                                    items: years.map<DropdownMenuItem<int>>(
-                                        (int value) {
+                                    items: (widget.app_user.course == "B.Tech"
+                                            ? years
+                                            : widget.app_user.course == "M.Tech"
+                                                ? years1
+                                                : widget.app_user.course == "PG"
+                                                    ? years1
+                                                    : widget.app_user.course ==
+                                                            "Phd"
+                                                        ? years2
+                                                        : widget.app_user
+                                                                    .course ==
+                                                                "MBA"
+                                                            ? years1
+                                                            : years2)
+                                        .map<DropdownMenuItem<int>>(
+                                            (int value) {
                                       return DropdownMenuItem<int>(
                                         value: value,
                                         child: Text(

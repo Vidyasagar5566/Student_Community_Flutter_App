@@ -139,10 +139,11 @@ class _userProfilePageState extends State<userProfilePage> {
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18)),
-                                Text(utf8convert(widget.app_user.bio!),
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.w900,
-                                        fontSize: 20)),
+                                Center(
+                                  child: Text(utf8convert(widget.app_user.bio!),
+                                      style: const TextStyle(fontSize: 15)),
+                                ),
+                                const SizedBox(height: 10),
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -263,7 +264,7 @@ class _userProfilePageState extends State<userProfilePage> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    const Text('batch  ',
+                                    const Text('section  ',
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 18)),
@@ -676,8 +677,8 @@ class _userProfilePageState extends State<userProfilePage> {
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(20)),
                                   image: DecorationImage(
-                                      image: AssetImage(
-                                          "images/buy sell avatar.png"),
+                                      image:
+                                          AssetImage("images/buy_sell_std.png"),
                                       fit: BoxFit.cover)),
                             )
                           ],
@@ -895,7 +896,7 @@ class _clzCSFSState extends State<clzCSFS> {
                         itemBuilder: (BuildContext context, int index) {
                           return Container(
                             margin: EdgeInsets.all(10),
-                            child: UserMarkAdmin(widget.heads_list[index],
+                            child: UserMarkAdmin(widget.memss_list[index],
                                 widget.category, widget.app_user),
                           );
                         }))

@@ -87,8 +87,8 @@ class _edit_sac_memState extends State<edit_sac_mem> {
                             initialValue: widget.role,
                             keyboardType: TextInputType.name,
                             decoration: const InputDecoration(
-                              labelText: 'title',
-                              hintText: 'technical sac_mem/inter nitc sport',
+                              labelText: 'role',
+                              hintText: 'technical affairs secretory',
                               prefixIcon: Icon(Icons.text_fields),
                               border: OutlineInputBorder(
                                   borderRadius:
@@ -111,8 +111,8 @@ class _edit_sac_memState extends State<edit_sac_mem> {
                             initialValue: widget.email,
                             keyboardType: TextInputType.emailAddress,
                             decoration: const InputDecoration(
-                              labelText: 'sac_mem_head_email',
-                              hintText: 'arun_b190725@nitc.ac.in',
+                              labelText: 'sac_mem contact/personal email',
+                              hintText: 'arun@gmail.com',
                               prefixIcon: Icon(Icons.text_fields),
                               border: OutlineInputBorder(
                                   borderRadius:
@@ -138,9 +138,8 @@ class _edit_sac_memState extends State<edit_sac_mem> {
                                 1, //Normal textInputField will be displayed
                             maxLines: 5,
                             decoration: const InputDecoration(
-                              labelText: 'Team members',
-                              hintText:
-                                  'arun_b190725@nitc.ac.in#arun_b190725@nitc.ac.in#arun_b190725@nitc.ac.in',
+                              labelText: 'Phone Number',
+                              hintText: '+91 8688938576',
                               prefixIcon: Icon(Icons.text_fields),
                               border: OutlineInputBorder(
                                   borderRadius:

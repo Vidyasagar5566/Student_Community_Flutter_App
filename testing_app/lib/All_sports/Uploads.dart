@@ -91,7 +91,7 @@ class _edit_sportState extends State<edit_sport> {
                           keyboardType: TextInputType.emailAddress,
                           decoration: const InputDecoration(
                             labelText: 'title',
-                            hintText: 'technical club/inter nitc sport',
+                            hintText: 'inter nitc sport',
                             prefixIcon: Icon(Icons.text_fields),
                             border: OutlineInputBorder(
                                 borderRadius:
@@ -117,8 +117,8 @@ class _edit_sportState extends State<edit_sport> {
                           initialValue: widget.name,
                           keyboardType: TextInputType.emailAddress,
                           decoration: const InputDecoration(
-                            labelText: 'sport_head_email',
-                            hintText: 'arun_b190725@nitc.ac.in',
+                            labelText: 'name',
+                            hintText: 'Tathva',
                             prefixIcon: Icon(Icons.text_fields),
                             border: OutlineInputBorder(
                                 borderRadius:
@@ -217,7 +217,7 @@ class _edit_sportState extends State<edit_sport> {
                           decoration: const InputDecoration(
                             labelText: 'websites',
                             hintText:
-                                'https://cricket.nitc.ac.in    https://club_dnd.nitc.ac.in',
+                                'https://cricket.nitc.ac.in   ,https://club_dnd.nitc.ac.in',
                             prefixIcon: Icon(Icons.text_fields),
                             border: OutlineInputBorder(
                                 borderRadius:
@@ -247,9 +247,9 @@ class _edit_sportState extends State<edit_sport> {
                           minLines: 4, //Normal textInputField will be displayed
                           maxLines: 10,
                           decoration: const InputDecoration(
-                            labelText: 'sport ground details',
+                            labelText: 'sport ground map url',
                             hintText:
-                                'located at ....... Maps link -- https://google.maps.nitc-cricketground',
+                                'https://google.maps.nitc-cricketground',
                             prefixIcon: Icon(Icons.text_fields),
                             border: OutlineInputBorder(
                                 borderRadius:

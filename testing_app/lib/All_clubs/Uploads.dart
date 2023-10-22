@@ -88,7 +88,7 @@ class _edit_clubState extends State<edit_club> {
                             keyboardType: TextInputType.emailAddress,
                             decoration: const InputDecoration(
                               labelText: 'title',
-                              hintText: 'technical club/inter nitc sport',
+                              hintText: 'technical club',
                               prefixIcon: Icon(Icons.text_fields),
                               border: OutlineInputBorder(
                                   borderRadius:
@@ -116,8 +116,8 @@ class _edit_clubState extends State<edit_club> {
                             initialValue: widget.name,
                             keyboardType: TextInputType.name,
                             decoration: const InputDecoration(
-                              labelText: 'club_head_email',
-                              hintText: 'arun_b190725@nitc.ac.in',
+                              labelText: 'Club Name',
+                              hintText: 'AI CLUB',
                               prefixIcon: Icon(Icons.text_fields),
                               border: OutlineInputBorder(
                                   borderRadius:
