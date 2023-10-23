@@ -201,14 +201,13 @@ class _lst_found_uploadState extends State<lst_found_upload> {
                                       if (image_ratio == "0") {
                                         image = File("images/background.jpg");
                                       }
-                                      bool error = await bs_lf_servers().post_lst(
-                                          title,
-                                          description,
-                                          image,
-                                          image_ratio,
-                                          "lost/found");
+                                      bool error = await bs_lf_servers()
+                                          .post_lst(title, description, image,
+                                              image_ratio, "lost/found");
                                       Navigator.pop(context);
                                       if (!error) {
+                                        widget.app_user.lstCount =
+                                            widget.app_user.lstCount! + 1;
                                         Navigator.of(context)
                                             .pushAndRemoveUntil(
                                                 MaterialPageRoute(builder:
@@ -498,14 +497,13 @@ class _buy_sell_uploadState extends State<buy_sell_upload> {
                                       if (image_ratio == "0") {
                                         image = File("images/background.jpg");
                                       }
-                                      bool error = await bs_lf_servers().post_lst(
-                                          title,
-                                          description,
-                                          image,
-                                          image_ratio,
-                                          "buy/shell");
+                                      bool error = await bs_lf_servers()
+                                          .post_lst(title, description, image,
+                                              image_ratio, "buy/shell");
                                       Navigator.pop(context);
                                       if (!error) {
+                                        widget.app_user.buyCount =
+                                            widget.app_user.buyCount! + 1;
                                         Navigator.of(context)
                                             .pushAndRemoveUntil(
                                                 MaterialPageRoute(builder:

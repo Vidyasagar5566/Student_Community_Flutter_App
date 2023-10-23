@@ -373,7 +373,7 @@ class _firstpageState extends State<firstpage> {
                         });
                     Map<List<CALENDER_EVENT>, List<EVENT_LIST>> total_data =
                         await calendar_servers().get_calender_event_list(
-                            today.toString().split(" ")[0]);
+                            today.toString().split(" ")[0], domains1[domain]!);
                     Navigator.pop(context);
                     List<CALENDER_EVENT> cal_event_data =
                         total_data.keys.toList()[0];

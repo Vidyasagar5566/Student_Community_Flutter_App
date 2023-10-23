@@ -351,6 +351,11 @@ class _upload_alertowidgetState extends State<upload_alertowidget> {
                                               widget.id);
                                       Navigator.pop(context);
                                       if (!error) {
+                                        if (widget.alert_category ==
+                                            "student") {
+                                          widget.app_user.threadCount =
+                                              widget.app_user.threadCount! + 1;
+                                        }
                                         Navigator.of(context)
                                             .pushAndRemoveUntil(
                                                 MaterialPageRoute(builder:

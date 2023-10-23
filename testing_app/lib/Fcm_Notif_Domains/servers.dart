@@ -15,7 +15,6 @@ class servers {
       var token = storage.getItem('token');
       String finalUrl = "$base_url/send_notifications1";
       var url = Uri.parse(finalUrl);
-      print("start");
       http.Response response = await http.post(
         url,
         headers: {

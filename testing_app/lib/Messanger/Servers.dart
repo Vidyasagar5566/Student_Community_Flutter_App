@@ -107,7 +107,6 @@ class messanger_servers {
         "Content-Type": "application/json",
       });
       var data = json.decode(response.body) as List;
-      print(data[0]);
       List<SmallUsername> temp = [];
       data.forEach((element) {
         SmallUsername post = SmallUsername.fromJson(element);
@@ -137,7 +136,6 @@ class messanger_servers {
         "Content-Type": "application/json",
       });
       var data = json.decode(response.body) as List;
-      print(data);
       List<Messager> temp = [];
       data.forEach((element) {
         Messager post = Messager.fromJson(element);

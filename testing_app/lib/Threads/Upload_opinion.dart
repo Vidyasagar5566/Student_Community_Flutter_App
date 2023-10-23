@@ -298,6 +298,8 @@ class _upload_alert_cmntState extends State<upload_alert_cmnt> {
 
                                       Navigator.pop(context);
                                       if (!error[0]) {
+                                        widget.alert.commentCount =
+                                            widget.alert.commentCount! + 1;
                                         Navigator.pop(context);
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(const SnackBar(

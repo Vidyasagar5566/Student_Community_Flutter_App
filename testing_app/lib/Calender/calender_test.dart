@@ -72,7 +72,7 @@ class _calenderState extends State<calender> {
             );
           } else if (snapshot.hasData) {
             all_dates = snapshot.data;
-            return calenderwidget1(widget.app_user);
+            return calenderwidget1(widget.app_user, widget.domain);
           }
         }
         print(widget.domain);
@@ -88,7 +88,8 @@ DateTime today = DateTime.now();
 
 class calenderwidget1 extends StatefulWidget {
   Username app_user;
-  calenderwidget1(this.app_user);
+  String domain;
+  calenderwidget1(this.app_user, this.domain);
 
   @override
   State<calenderwidget1> createState() => _calenderwidget1State();
@@ -176,7 +177,8 @@ class _calenderwidget1State extends State<calenderwidget1> {
                 child: TabBarView(
                     children: //get_tabcontents(widget.timetable_list, today)
                         [
-                  allEvents(today.toString().split(" ")[0], widget.app_user),
+                  allEvents(today.toString().split(" ")[0], widget.app_user,
+                      widget.domain),
                   dailyTimeTable(
                       today.toString().split(" ")[0], widget.app_user),
                   /*           branch_display(
@@ -239,7 +241,8 @@ Map<String, String> months = {
 class allEvents extends StatefulWidget {
   String selected_today;
   Username app_user;
-  allEvents(this.selected_today, this.app_user);
+  String domain;
+  allEvents(this.selected_today, this.app_user, this.domain);
 
   @override
   State<allEvents> createState() => _allEventsState();
@@ -302,7 +305,7 @@ class _allEventsState extends State<allEvents> {
                               });
                           Map<List<CALENDER_EVENT>, List<EVENT_LIST>>
                               total_data = await calendar_servers()
-                                  .get_calender_event_list(temp);
+                                  .get_calender_event_list(temp, widget.domain);
                           Navigator.pop(context);
                           List<CALENDER_EVENT> cal_event_data =
                               total_data.keys.toList()[0];

@@ -790,6 +790,7 @@ class commentwidget1 extends StatefulWidget {
 class _commentwidget1State extends State<commentwidget1> {
   var comment;
   bool sending_cmnt = false;
+  TextEditingController _controller1 = TextEditingController();
   @override
   Widget build(BuildContext context) {
     List<PST_CMNT> pst_cmnt_list = widget.pst_cmnt_list;
@@ -840,6 +841,7 @@ class _commentwidget1State extends State<commentwidget1> {
                   SizedBox(
                     width: width * 0.70,
                     child: TextFormField(
+                      controller: _controller1,
                       style: const TextStyle(color: Colors.black),
                       keyboardType: TextInputType.multiline,
                       minLines: 1, //Normal textInputField will be displayed
@@ -900,6 +902,7 @@ class _commentwidget1State extends State<commentwidget1> {
                                     setState(() {
                                       comment = null;
                                       sending_cmnt = true;
+                                      _controller1.clear();
                                     });
                                     List<dynamic> error = await post_servers()
                                         .post_post_cmnt(
@@ -910,6 +913,8 @@ class _commentwidget1State extends State<commentwidget1> {
 
                                     if (!error[0]) {
                                       setState(() {
+                                        widget.post.commentCount =
+                                            widget.post.commentCount! + 1;
                                         a.id = error[1];
                                         a.messageSent = true;
                                       });

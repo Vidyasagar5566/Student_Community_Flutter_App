@@ -321,6 +321,10 @@ class _upload_postwidgetState extends State<upload_postwidget> {
                                               widget.id);
                                       Navigator.pop(context);
                                       if (!error) {
+                                        if (widget.post_category == "student") {
+                                          widget.app_user.postCount =
+                                              widget.app_user.postCount! + 1;
+                                        }
                                         Navigator.of(context)
                                             .pushAndRemoveUntil(
                                                 MaterialPageRoute(builder:

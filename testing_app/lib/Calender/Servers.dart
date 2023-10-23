@@ -12,11 +12,12 @@ class calendar_servers {
   //  CALENDER EVENTS;
 
   Future<Map<List<CALENDER_EVENT>, List<EVENT_LIST>>> get_calender_event_list(
-      String calender_date) async {
+      String calender_date, String domain) async {
     try {
       var token = storage.getItem('token');
       Map<String, String> queryParameters = {
-        'calender_date': calender_date.toString()
+        'calender_date': calender_date.toString(),
+        'domain': domain
       };
       String queryString = Uri(queryParameters: queryParameters).query;
       String finalUrl = "$base_url/cal_events/list1?$queryString";

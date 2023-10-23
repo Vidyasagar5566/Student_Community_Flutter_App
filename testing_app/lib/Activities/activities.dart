@@ -433,6 +433,7 @@ class event_photowidget extends StatefulWidget {
 class _event_photowidgetState extends State<event_photowidget> {
   var update_text;
   bool _showController = true;
+  TextEditingController _controller1 = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -572,8 +573,8 @@ class _event_photowidgetState extends State<event_photowidget> {
                               ),
                         const SizedBox(height: 10),
                         (appUser.isSuperuser! ||
-                                widget.app_user.username ==
-                                    widget.event.username!.username)
+                                widget.app_user.email ==
+                                    widget.event.username!.email)
                             ? Center(
                                 child: Column(
                                   children: [
@@ -702,6 +703,7 @@ class _event_photowidgetState extends State<event_photowidget> {
                                                 padding: EdgeInsets.only(
                                                     left: 40, right: 40),
                                                 child: TextFormField(
+                                                  controller: _controller1,
                                                   keyboardType:
                                                       TextInputType.multiline,
                                                   minLines:
@@ -742,6 +744,7 @@ class _event_photowidgetState extends State<event_photowidget> {
                                                             update_text;
                                                         update_text = null;
                                                         setState(() {
+                                                          _controller1.clear();
                                                           widget.event_updates
                                                               .insert(0,
                                                                   '&&&' + temp);

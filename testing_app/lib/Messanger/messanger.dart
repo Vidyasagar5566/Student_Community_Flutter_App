@@ -258,6 +258,7 @@ class _messages_viewerState extends State<messages_viewer> {
   var circular_ind;
   String message_file_type = "0";
   bool _showController = true;
+  TextEditingController _controller1 = TextEditingController();
   VideoPlayerController? _videoPlayerController;
 
   loadVideoPlayer(File file) {
@@ -390,9 +391,10 @@ class _messages_viewerState extends State<messages_viewer> {
                       Container(
                         width: width * 0.60,
                         child: TextFormField(
+                          controller: _controller1,
                           style: const TextStyle(color: Colors.black),
                           keyboardType: TextInputType.multiline,
-                          minLines: 1, //Normal textInputField will be displayed
+                          minLines: 1,
                           maxLines: 2,
                           decoration: const InputDecoration(
                               fillColor: Colors.white,
@@ -712,6 +714,7 @@ class _messages_viewerState extends State<messages_viewer> {
                                     image = null;
                                     message_file_type = '0';
                                     new_message = null;
+                                    _controller1.clear();
                                   });
                                   List<dynamic> ans = await messanger_servers()
                                       .post_message(
