@@ -48,7 +48,6 @@ List<EVENT_LIST> all_events = [];
 List<POST_LIST> user_posts = [];
 List<SmallUsername> all_search_users = [];
 String user_name = "";
-List<String> post_uni_selection = [];
 List<Messager> user_conversation = [];
 
 class get_ueser_widget extends StatefulWidget {
@@ -71,7 +70,6 @@ class _get_ueser_widgetState extends State<get_ueser_widget> {
           } else if (snapshot.hasData) {
             Username app_user = snapshot.data;
             user_name = app_user.username!;
-            post_uni_selection = ['All', domains[app_user.domain]!];
 
             star_user_mark(app_user);
 

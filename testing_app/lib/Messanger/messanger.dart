@@ -686,49 +686,59 @@ class _messages_viewerState extends State<messages_viewer> {
                           ? Container(
                               child: IconButton(
                                 onPressed: () async {
-                                  SmallUsername app_user1 =
-                                      user_min(widget.app_user);
-                                  //message insertion
-                                  Messager add_message = Messager();
-                                  String curr_message = "";
-                                  curr_message = new_message ?? "";
+                                  if (widget.app_user.email ==
+                                      "guest@nitc.ac.in") {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                            content: Text(
+                                                "guest cannot chat with others..",
+                                                style: TextStyle(
+                                                    color: Colors.white))));
+                                  } else {
+                                    SmallUsername app_user1 =
+                                        user_min(widget.app_user);
+                                    //message insertion
+                                    Messager add_message = Messager();
+                                    String curr_message = "";
+                                    curr_message = new_message ?? "";
 
-                                  add_message.messageBody = curr_message;
+                                    add_message.messageBody = curr_message;
 
-                                  File curr_file =
-                                      image ?? File('images/profile.jpg');
+                                    File curr_file =
+                                        image ?? File('images/profile.jpg');
 
-                                  add_message.file = curr_file;
+                                    add_message.file = curr_file;
 
-                                  add_message.messagFileType =
-                                      message_file_type;
-                                  add_message.messageFile = "";
-                                  add_message.messageSender = app_user1.email;
-                                  add_message.messageReceiver =
-                                      widget.message_user.email;
-                                  add_message.messageSent = false;
-                                  add_message.messageSeen = false;
-                                  add_message.insertMessage = true;
-                                  widget.user_conversation.add(add_message);
-                                  setState(() {
-                                    image = null;
-                                    message_file_type = '0';
-                                    new_message = null;
-                                    _controller1.clear();
-                                  });
-                                  List<dynamic> ans = await messanger_servers()
-                                      .post_message(
-                                          widget.message_user.email!,
-                                          curr_message,
-                                          curr_file,
-                                          add_message.messagFileType!,
-                                          "");
-                                  setState(() {
-                                    if (ans[0] == false) {
-                                      add_message.messageSent = true;
-                                      add_message.id = ans[1];
-                                    }
-                                  });
+                                    add_message.messagFileType =
+                                        message_file_type;
+                                    add_message.messageFile = "";
+                                    add_message.messageSender = app_user1.email;
+                                    add_message.messageReceiver =
+                                        widget.message_user.email;
+                                    add_message.messageSent = false;
+                                    add_message.messageSeen = false;
+                                    add_message.insertMessage = true;
+                                    widget.user_conversation.add(add_message);
+                                    setState(() {
+                                      image = null;
+                                      message_file_type = '0';
+                                      new_message = null;
+                                      _controller1.clear();
+                                    });
+                                    List<dynamic> ans =
+                                        await messanger_servers().post_message(
+                                            widget.message_user.email!,
+                                            curr_message,
+                                            curr_file,
+                                            add_message.messagFileType!,
+                                            "");
+                                    setState(() {
+                                      if (ans[0] == false) {
+                                        add_message.messageSent = true;
+                                        add_message.id = ans[1];
+                                      }
+                                    });
+                                  }
                                 },
                                 icon: const Icon(Icons.double_arrow,
                                     size: 40, color: Colors.blue),

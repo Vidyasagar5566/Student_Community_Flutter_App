@@ -20,7 +20,6 @@ class report_servers {
           body: jsonEncode(
               {'description': description, 'report_belongs': report_belongs}));
       var data = json.decode(response.body) as Map;
-      print(data);
       return [data['error'], data['id']];
     } catch (e) {
       return [true, 0];

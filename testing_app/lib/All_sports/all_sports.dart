@@ -76,12 +76,7 @@ class _AllsportpagewidgetState extends State<Allsportpagewidget> {
               List<ALL_SPORTS> sport_list = snapshot.data;
               if (sport_list.length == 0) {
                 return Container(
-                    margin: EdgeInsets.all(30),
-                    padding: EdgeInsets.all(30),
-                    child: Container(
-                      margin: EdgeInsets.all(100),
-                      child: Center(child: Text("No Sports Was Joined")),
-                    ));
+                    child: Center(child: Text("No Sports Was Joined")));
               } else {
                 return Allsportpagewidget1(sport_list, widget.app_user);
               }

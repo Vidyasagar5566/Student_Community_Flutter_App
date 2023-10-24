@@ -75,12 +75,8 @@ class _AllclubpagewidgetState extends State<Allclubpagewidget> {
               List<ALL_CLUBS> AllClubs = snapshot.data;
               if (AllClubs.isEmpty) {
                 return Container(
-                    margin: EdgeInsets.all(30),
-                    padding: EdgeInsets.all(30),
-                    child: Container(
-                      margin: EdgeInsets.all(100),
-                      child: Center(child: Text("No Clubs Was Joined")),
-                    ));
+                  child: Center(child: Text("No Clubs Was Joined")),
+                );
               } else {
                 return Allclubpagewidget1(AllClubs, widget.app_user);
               }

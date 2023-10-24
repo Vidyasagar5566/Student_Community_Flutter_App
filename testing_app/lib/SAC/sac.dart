@@ -100,7 +100,6 @@ class _sacpagewidgetState extends State<sacpagewidget> {
   Widget _buildListView(List<SAC_MEMS> sac_list) {
     return sac_list.isEmpty
         ? Container(
-            margin: EdgeInsets.all(100),
             child: const Center(
               child: Text("No Data Was Found"),
             ),

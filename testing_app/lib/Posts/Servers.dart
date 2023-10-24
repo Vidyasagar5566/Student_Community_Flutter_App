@@ -10,12 +10,14 @@ class post_servers {
 
 // POST FUNCTIONS
 
-  Future<List<POST_LIST>> get_post_list(String domain, int num_list) async {
+  Future<List<POST_LIST>> get_post_list(
+      String domain, int num_list, bool Admin_posts) async {
     try {
       var token = storage.getItem('token');
       Map<String, String> queryParameters = {
         'domain': domain,
-        'num_list': num_list.toString()
+        'num_list': num_list.toString(),
+        'admin_posts': Admin_posts.toString()
       };
       String queryString = Uri(queryParameters: queryParameters).query;
       String finalUrl = "$base_url/post/list1?$queryString";

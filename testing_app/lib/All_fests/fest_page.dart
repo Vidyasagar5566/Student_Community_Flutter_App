@@ -165,255 +165,273 @@ class _festpagewidgetState extends State<festpagewidget> {
                       margin: EdgeInsets.only(top: 20),
                       child: fest_members(widget.fest.teamMembers!),
                     )),
-                    Container(
-                      width: width,
-                      padding: EdgeInsets.all(40),
-                      margin: EdgeInsets.only(top: 40, bottom: 40),
-                      decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(30),
-                          )),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (BuildContext context) {
-                                    return Scaffold(
-                                        appBar: AppBar(
-                                          centerTitle: true,
-                                          iconTheme: IconThemeData(
-                                              color: Colors.white),
-                                          title: Text(widget.fest.name!,
-                                              style: TextStyle(
-                                                  color: Colors.white)),
-                                          backgroundColor:
-                                              Colors.indigoAccent[700],
-                                        ),
-                                        body: SingleChildScrollView(
-                                          child: user_postswidget(
-                                              '',
-                                              widget.app_user,
-                                              'fest',
-                                              widget.fest.id!),
-                                        ));
-                                  }));
-                                },
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                        "Posts (" +
-                                            widget.fest.post_count.toString() +
-                                            ')',
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black,
-                                            fontSize: 18)),
-                                    const SizedBox(height: 12),
-                                    Container(
-                                      height: width / 3,
-                                      width: width / 3,
-                                      decoration: const BoxDecoration(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(20)),
-                                          image: DecorationImage(
-                                              image: AssetImage(
-                                                  "images/posts.jpeg"),
-                                              fit: BoxFit.cover)),
-                                    )
-                                  ],
+                    SingleChildScrollView(
+                      child: Container(
+                        width: width,
+                        height: width * 1.2,
+                        padding: EdgeInsets.all(40),
+                        margin: EdgeInsets.only(top: 40, bottom: 40),
+                        decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(30),
+                            )),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) {
+                                      return Scaffold(
+                                          appBar: AppBar(
+                                            centerTitle: true,
+                                            iconTheme: IconThemeData(
+                                                color: Colors.white),
+                                            title: Text(widget.fest.name!,
+                                                style: TextStyle(
+                                                    color: Colors.white)),
+                                            backgroundColor:
+                                                Colors.indigoAccent[700],
+                                          ),
+                                          body: SingleChildScrollView(
+                                            child: user_postswidget(
+                                                '',
+                                                widget.app_user,
+                                                'fest',
+                                                widget.fest.id!),
+                                          ));
+                                    }));
+                                  },
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                          "Posts (" +
+                                              widget.fest.post_count
+                                                  .toString() +
+                                              ')',
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black,
+                                              fontSize: 18)),
+                                      const SizedBox(height: 12),
+                                      Container(
+                                        height: width / 3,
+                                        width: width / 3,
+                                        decoration: const BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20)),
+                                            image: DecorationImage(
+                                                image: AssetImage(
+                                                    "images/posts.jpeg"),
+                                                fit: BoxFit.cover)),
+                                      )
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              GestureDetector(
-                                onTap: () async {
-                                  showDialog(
-                                      context: context,
-                                      barrierDismissible: false,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                            contentPadding: EdgeInsets.all(15),
-                                            content: Container(
-                                              margin: EdgeInsets.all(10),
-                                              child: const Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    Text(
-                                                        "Please wait a min....."),
-                                                    SizedBox(height: 10),
-                                                    CircularProgressIndicator()
-                                                  ]),
-                                            ));
-                                      });
-                                  var event_list = await user_profile_servers()
-                                      .get_user_activity_list(
-                                          '', 'fest', widget.fest.id!);
-                                  Navigator.pop(context);
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (BuildContext context) {
-                                    return Scaffold(
-                                        appBar: AppBar(
-                                          centerTitle: true,
-                                          iconTheme: IconThemeData(
-                                              color: Colors.white),
-                                          title: Text(widget.fest.name!,
-                                              style: TextStyle(
-                                                  color: Colors.white)),
-                                          backgroundColor:
-                                              Colors.indigoAccent[700],
-                                        ),
-                                        body: SingleChildScrollView(
-                                            child: activitieswidget1(
-                                                event_list,
+                                GestureDetector(
+                                  onTap: () async {
+                                    showDialog(
+                                        context: context,
+                                        barrierDismissible: false,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                              contentPadding:
+                                                  EdgeInsets.all(15),
+                                              content: Container(
+                                                margin: EdgeInsets.all(10),
+                                                child: const Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      Text(
+                                                          "Please wait a min....."),
+                                                      SizedBox(height: 10),
+                                                      CircularProgressIndicator()
+                                                    ]),
+                                              ));
+                                        });
+                                    var event_list =
+                                        await user_profile_servers()
+                                            .get_user_activity_list(
+                                                '', 'fest', widget.fest.id!);
+                                    Navigator.pop(context);
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) {
+                                      return Scaffold(
+                                          appBar: AppBar(
+                                            centerTitle: true,
+                                            iconTheme: IconThemeData(
+                                                color: Colors.white),
+                                            title: Text(widget.fest.name!,
+                                                style: TextStyle(
+                                                    color: Colors.white)),
+                                            backgroundColor:
+                                                Colors.indigoAccent[700],
+                                          ),
+                                          body: SingleChildScrollView(
+                                              child: activitieswidget1(
+                                                  event_list,
+                                                  widget.app_user,
+                                                  widget.app_user.domain!,
+                                                  true)));
+                                    }));
+                                  },
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                          "Activities (" +
+                                              widget.fest.post_count
+                                                  .toString() +
+                                              ')',
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black,
+                                              fontSize: 18)),
+                                      const SizedBox(height: 12),
+                                      Container(
+                                        height: width / 3,
+                                        width: width / 3,
+                                        decoration: const BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20)),
+                                            image: DecorationImage(
+                                                image: AssetImage(
+                                                    "images/profile_activities.jpeg"),
+                                                fit: BoxFit.cover)),
+                                      )
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                            const SizedBox(height: 40),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                GestureDetector(
+                                  onTap: () async {
+                                    String web_url = widget.fest.websites!;
+                                    final Uri url = Uri.parse(web_url);
+                                    if (!await launchUrl(url)) {
+                                      throw Exception('Could not launch $url');
+                                    }
+                                  },
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(widget.fest.name!,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black,
+                                              fontSize: 18)),
+                                      const SizedBox(height: 12),
+                                      Container(
+                                        height: width / 3,
+                                        width: width / 3,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(20)),
+                                            image: DecorationImage(
+                                                image: NetworkImage(
+                                                    widget.fest.logo!),
+                                                fit: BoxFit.cover)),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () async {
+                                    showDialog(
+                                        context: context,
+                                        barrierDismissible: false,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                              contentPadding:
+                                                  EdgeInsets.all(15),
+                                              content: Container(
+                                                margin: EdgeInsets.all(10),
+                                                child: const Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      Text(
+                                                          "Please wait a min....."),
+                                                      SizedBox(height: 10),
+                                                      CircularProgressIndicator()
+                                                    ]),
+                                              ));
+                                        });
+                                    var thread_list =
+                                        await user_profile_servers()
+                                            .get_user_thread_list(
+                                                '', 'fest', widget.fest.id!);
+                                    Navigator.pop(context);
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) {
+                                      return Scaffold(
+                                          appBar: AppBar(
+                                            centerTitle: true,
+                                            iconTheme: IconThemeData(
+                                                color: Colors.white),
+                                            title: Text(widget.fest.name!,
+                                                style: TextStyle(
+                                                    color: Colors.white)),
+                                            backgroundColor:
+                                                Colors.indigoAccent[700],
+                                          ),
+                                          body: SingleChildScrollView(
+                                            child: alertwidget1(
+                                                thread_list,
                                                 widget.app_user,
                                                 widget.app_user.domain!,
-                                                true)));
-                                  }));
-                                },
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                        "Activities (" +
-                                            widget.fest.post_count.toString() +
-                                            ')',
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black,
-                                            fontSize: 18)),
-                                    const SizedBox(height: 12),
-                                    Container(
-                                      height: width / 3,
-                                      width: width / 3,
-                                      decoration: const BoxDecoration(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(20)),
-                                          image: DecorationImage(
-                                              image: AssetImage(
-                                                  "images/profile_activities.jpeg"),
-                                              fit: BoxFit.cover)),
-                                    )
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                          const SizedBox(height: 40),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              GestureDetector(
-                                onTap: () async {
-                                  String web_url = widget.fest.websites!;
-                                  final Uri url = Uri.parse(web_url);
-                                  if (!await launchUrl(url)) {
-                                    throw Exception('Could not launch $url');
-                                  }
-                                },
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(widget.fest.name!,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black,
-                                            fontSize: 18)),
-                                    const SizedBox(height: 12),
-                                    Container(
-                                      height: width / 3,
-                                      width: width / 3,
-                                      decoration: BoxDecoration(
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(20)),
-                                          image: DecorationImage(
-                                              image: NetworkImage(
-                                                  widget.fest.logo!),
-                                              fit: BoxFit.cover)),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () async {
-                                  showDialog(
-                                      context: context,
-                                      barrierDismissible: false,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                            contentPadding: EdgeInsets.all(15),
-                                            content: Container(
-                                              margin: EdgeInsets.all(10),
-                                              child: const Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    Text(
-                                                        "Please wait a min....."),
-                                                    SizedBox(height: 10),
-                                                    CircularProgressIndicator()
-                                                  ]),
-                                            ));
-                                      });
-                                  var thread_list = await user_profile_servers()
-                                      .get_user_thread_list(
-                                          '', 'fest', widget.fest.id!);
-                                  Navigator.pop(context);
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (BuildContext context) {
-                                    return Scaffold(
-                                        appBar: AppBar(
-                                          centerTitle: true,
-                                          iconTheme: IconThemeData(
-                                              color: Colors.white),
-                                          title: Text(widget.fest.name!,
-                                              style: TextStyle(
-                                                  color: Colors.white)),
-                                          backgroundColor:
-                                              Colors.indigoAccent[700],
-                                        ),
-                                        body: SingleChildScrollView(
-                                          child: alertwidget1(
-                                              thread_list,
-                                              widget.app_user,
-                                              widget.app_user.domain!,
-                                              true),
-                                        ));
-                                  }));
-                                },
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                        "Threads (" +
-                                            widget.fest.post_count.toString() +
-                                            ')',
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black,
-                                            fontSize: 18)),
-                                    const SizedBox(height: 12),
-                                    Container(
-                                      height: width / 3,
-                                      width: width / 3,
-                                      decoration: const BoxDecoration(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(20)),
-                                          image: DecorationImage(
-                                              image: AssetImage(
-                                                  "images/threads profile.jpeg"),
-                                              fit: BoxFit.cover)),
-                                    )
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        ],
+                                                true),
+                                          ));
+                                    }));
+                                  },
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                          "Threads (" +
+                                              widget.fest.post_count
+                                                  .toString() +
+                                              ')',
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black,
+                                              fontSize: 18)),
+                                      const SizedBox(height: 12),
+                                      Container(
+                                        height: width / 3,
+                                        width: width / 3,
+                                        decoration: const BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20)),
+                                            image: DecorationImage(
+                                                image: AssetImage(
+                                                    "images/threads profile.jpeg"),
+                                                fit: BoxFit.cover)),
+                                      )
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     )
                   ])),

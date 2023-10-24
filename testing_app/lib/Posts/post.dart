@@ -33,7 +33,7 @@ class _postwidgetState extends State<postwidget> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<POST_LIST>>(
-      future: post_servers().get_post_list(domains1[widget.domain]!, 0),
+      future: post_servers().get_post_list(domains1[widget.domain]!, 0, false),
       builder: (ctx, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
@@ -56,7 +56,8 @@ class _postwidgetState extends State<postwidget> {
                   ));
             } else {
               all_posts = post_list;
-              return postwidget1(post_list, widget.app_user, widget.domain);
+              return postwidget1(
+                  post_list, widget.app_user, widget.domain, false);
             }
           }
         }
@@ -90,7 +91,8 @@ class _PostWithappBarState extends State<PostWithappBar> {
           backgroundColor: Colors.indigoAccent[700],
         ),
         body: FutureBuilder<List<POST_LIST>>(
-          future: post_servers().get_post_list(domains1[widget.domain]!, 0),
+          future:
+              post_servers().get_post_list(domains1[widget.domain]!, 0, true),
           builder: (ctx, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               if (snapshot.hasError) {
@@ -112,8 +114,8 @@ class _PostWithappBarState extends State<PostWithappBar> {
                                 fontWeight: FontWeight.w500, fontSize: 24)),
                       ));
                 } else {
-                  all_posts = post_list;
-                  return postwidget1(post_list, widget.app_user, widget.domain);
+                  return appBarPostList(
+                      post_list, widget.app_user, widget.domain, true);
                 }
               }
             }
@@ -132,7 +134,8 @@ class postwidget1 extends StatefulWidget {
   List<POST_LIST> post_list;
   Username app_user;
   String domain;
-  postwidget1(this.post_list, this.app_user, this.domain);
+  bool admin_posts;
+  postwidget1(this.post_list, this.app_user, this.domain, this.admin_posts);
 
   @override
   State<postwidget1> createState() => _postwidget1State();
@@ -141,12 +144,112 @@ class postwidget1 extends StatefulWidget {
 class _postwidget1State extends State<postwidget1> {
   bool total_loaded = true;
   void load_data_fun() async {
-    List<POST_LIST> latest_post_list = await post_servers()
-        .get_post_list(domains1[widget.domain]!, all_posts.length);
+    List<POST_LIST> latest_post_list = await post_servers().get_post_list(
+        domains1[widget.domain]!, all_posts.length, widget.admin_posts);
     if (latest_post_list.length != 0) {
       all_posts += latest_post_list;
       setState(() {
         widget.post_list = all_posts;
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          duration: const Duration(milliseconds: 500),
+          content: Text("all the feed was shown..",
+              style: TextStyle(color: Colors.white))));
+    }
+    setState(() {
+      total_loaded = true;
+    });
+  }
+
+  var _scrollController = ScrollController();
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
+    return Container(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            widget.post_list.isEmpty
+                ? Container(
+                    margin: EdgeInsets.only(top: height / 3),
+                    child: const Center(
+                      child: Text("No Data Was Found"),
+                    ),
+                  )
+                : ListView.builder(
+                    itemCount: widget.post_list.length,
+                    shrinkWrap: true,
+                    padding: EdgeInsets.only(bottom: 10),
+                    physics: ClampingScrollPhysics(),
+                    itemBuilder: (BuildContext context, int index) {
+                      POST_LIST post = widget.post_list[index];
+                      var _convertedTimestamp = DateTime.parse(post
+                          .postedDate!); // Converting into [DateTime] object
+                      String post_posted_date =
+                          GetTimeAgo.parse(_convertedTimestamp);
+                      return single_post(post, widget.app_user, widget.domain,
+                          widget.post_list, post_posted_date, index);
+                    }),
+            const SizedBox(height: 10),
+            total_loaded
+                ? Container(
+                    width: width,
+                    height: 100,
+                    child: Center(
+                        child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                total_loaded = false;
+                              });
+                              load_data_fun();
+                            },
+                            child: const Column(
+                              children: [
+                                Icon(Icons.add_circle_outline,
+                                    size: 40, color: Colors.blue),
+                                Text(
+                                  "Tap To Load more",
+                                  style: TextStyle(color: Colors.blue),
+                                )
+                              ],
+                            ))))
+                : Container(
+                    width: 100,
+                    height: 100,
+                    child: const Center(
+                        child: CircularProgressIndicator(color: Colors.blue)))
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class appBarPostList extends StatefulWidget {
+  List<POST_LIST> post_list;
+  Username app_user;
+  String domain;
+  bool admin_posts;
+  appBarPostList(this.post_list, this.app_user, this.domain, this.admin_posts);
+
+  @override
+  State<appBarPostList> createState() => _appBarPostListState();
+}
+
+class _appBarPostListState extends State<appBarPostList> {
+  bool total_loaded = true;
+  void load_data_fun() async {
+    List<POST_LIST> latest_post_list = await post_servers().get_post_list(
+        domains1[widget.domain]!, all_posts.length, widget.admin_posts);
+    if (latest_post_list.length != 0) {
+      setState(() {
+        widget.post_list += latest_post_list;
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

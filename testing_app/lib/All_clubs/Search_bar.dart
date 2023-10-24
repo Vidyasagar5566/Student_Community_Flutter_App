@@ -125,6 +125,7 @@ class _user_list_displayState extends State<user_list_display> {
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          duration: Duration(milliseconds: 500),
           content: Text("all the feed was shown..",
               style: TextStyle(color: Colors.white))));
     }
@@ -246,6 +247,7 @@ class _user_list_displayState extends State<user_list_display> {
                             if (error) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
+                                    duration:  Duration(milliseconds: 500),
                                       content: Text(
                                           "Failed to transfer the head, try again",
                                           style:
@@ -403,6 +405,8 @@ class _user_list_displayState extends State<user_list_display> {
                             if (new_club_name == null) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
+                                    
+                                    duration:  Duration(milliseconds: 500),
                                       content: Text("Club name cant be null",
                                           style:
                                               TextStyle(color: Colors.white))));
@@ -413,6 +417,8 @@ class _user_list_displayState extends State<user_list_display> {
                               if (error) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
+                                      
+                                        duration: Duration(milliseconds: 500),
                                         content: Text(
                                             "Failed to transfer the head, try again",
                                             style: TextStyle(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'Servers.dart';
 import 'package:testing_app/User_profile/Models.dart';
-
+import 'Models.dart';
 
 class notif_settings extends StatefulWidget {
   Username app_user;
@@ -12,132 +12,150 @@ class notif_settings extends StatefulWidget {
 }
 
 class _notif_settingsState extends State<notif_settings> {
-  bool int_bool(String num) {
-    if (num == '0') {
-      return false;
-    } else {
-      return true;
-    }
-  }
-
-  String bool_int(bool val) {
-    if (val == true) {
-      return '1';
-    } else {
-      return '0';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    String notiffications = widget.app_user.notifSettings!;
-    bool one = int_bool(notiffications[0]);
-    bool two = int_bool(notiffications[1]);
-    bool three = int_bool(notiffications[2]);
-    bool four = int_bool(notiffications[3]);
-    bool five = int_bool(notiffications[4]);
-    bool six = int_bool(notiffications[5]);
-    bool seven = int_bool(notiffications[6]);
-    bool eight = int_bool(notiffications[7]);
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        iconTheme: IconThemeData(color: Colors.black),
-        title: const Text(
-          "Notification Settings",
-          style: TextStyle(color: Colors.black),
+        appBar: AppBar(
+          centerTitle: true,
+          iconTheme: IconThemeData(color: Colors.black),
+          title: const Text(
+            "Notification Settings",
+            style: TextStyle(color: Colors.black),
+          ),
+          backgroundColor: Colors.white70,
         ),
-        backgroundColor: Colors.white70,
-      ),
-      body: Container(
-          color: Colors.white70,
-          margin: EdgeInsets.all(3),
-          child: SingleChildScrollView(
-              child: Column(children: [
-            SizedBox(height: 16),
-            Center(
-              child: SwitchListTileExample(
-                  one, '0', widget.app_user, 'Lost & Found'),
-            ),
-            Center(
-              child: SwitchListTileExample(
-                  two, '1', widget.app_user, 'Posts (Admins)'),
-            ),
-            /*           Center(
-              child: SwitchListTileExample(
-                  three, '2', widget.app_user, 'TimeTables'),
-            ),
-            Center(
-              child: SwitchListTileExample(
-                  four, '3', widget.app_user, 'Activities'),
-            ),
-            Center(
-              child:
-                  SwitchListTileExample(five, '4', widget.app_user, 'Issues'),
-            ),       */
-            Center(
-              child:
-                  SwitchListTileExample(six, '5', widget.app_user, 'Comments'),
-            ),
-            Center(
-              child: SwitchListTileExample(
-                  six, '6', widget.app_user, 'Posts (Students)'),
-            ),
-            Center(
-              child: SwitchListTileExample(
-                  six, '7', widget.app_user, 'Announcements'),
-            ),
-            /*        Center(
-              child:
-                  SwitchListTileExample(six, '8', widget.app_user, 'Messanger'),
-            ),      */
-          ]))),
-    );
+        body: FutureBuilder<List<NotificationsFilter>>(
+          future: menu_bar_servers().notif_settings_get(),
+          builder: (ctx, AsyncSnapshot snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text(
+                    '${snapshot.error} occurred',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                );
+              } else if (snapshot.hasData) {
+                List<NotificationsFilter> notif_settings = snapshot.data;
+                return notif_settings1(notif_settings[0], widget.app_user);
+              }
+            }
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          },
+        ));
+  }
+}
+
+class notif_settings1 extends StatefulWidget {
+  NotificationsFilter notif_settings;
+  Username app_user;
+  notif_settings1(this.notif_settings, this.app_user);
+
+  @override
+  State<notif_settings1> createState() => _notif_settings1State();
+}
+
+class _notif_settings1State extends State<notif_settings1> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        color: Colors.white70,
+        margin: EdgeInsets.all(3),
+        child: SingleChildScrollView(
+            child: Column(children: [
+          SizedBox(height: 16),
+          Center(
+            child: SwitchListTileExample(widget.notif_settings.lstBuy!,
+                widget.notif_settings, widget.app_user, 'L&F_B&S'),
+          ),
+          Center(
+            child: SwitchListTileExample(widget.notif_settings.postsAdmin!,
+                widget.notif_settings, widget.app_user, 'Posts (Admins)'),
+          ),
+          Center(
+            child: SwitchListTileExample(widget.notif_settings.posts!,
+                widget.notif_settings, widget.app_user, 'Posts (Students)'),
+          ),
+          Center(
+            child: SwitchListTileExample(widget.notif_settings.events!,
+                widget.notif_settings, widget.app_user, 'Activities'),
+          ),
+          Center(
+            child: SwitchListTileExample(widget.notif_settings.threads!,
+                widget.notif_settings, widget.app_user, 'Issues'),
+          ),
+          Center(
+            child: SwitchListTileExample(widget.notif_settings.comments!,
+                widget.notif_settings, widget.app_user, 'Comments'),
+          ),
+          Center(
+            child: SwitchListTileExample(widget.notif_settings.announcements!,
+                widget.notif_settings, widget.app_user, 'Announcements'),
+          ),
+          Center(
+            child: SwitchListTileExample(widget.notif_settings.messanger!,
+                widget.notif_settings, widget.app_user, 'Messanger'),
+          ),
+        ])));
   }
 }
 
 class SwitchListTileExample extends StatefulWidget {
   bool notif;
-  String index;
+  NotificationsFilter notif_settings;
   Username app_user;
   String title;
-  SwitchListTileExample(this.notif, this.index, this.app_user, this.title);
+  SwitchListTileExample(
+      this.notif, this.notif_settings, this.app_user, this.title);
 
   @override
   State<SwitchListTileExample> createState() => _SwitchListTileExampleState();
 }
 
 class _SwitchListTileExampleState extends State<SwitchListTileExample> {
-  String bool_int(bool val) {
-    if (val == true) {
-      return '1';
-    } else {
-      return '0';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    bool _lights = widget.notif;
     return SwitchListTile(
       title: Text(
         widget.title,
         style: TextStyle(fontWeight: FontWeight.w600),
       ),
       activeColor: Colors.blue,
-      value: _lights,
+      value: widget.notif,
       onChanged: (bool value) async {
         setState(() {
-          _lights = !_lights;
           widget.notif = !widget.notif;
-          String settings = widget.app_user.notifSettings!;
-          widget.app_user.notifSettings = settings.substring(
-                  0, int.parse(widget.index)) +
-              bool_int(widget.notif) +
-              settings.substring(int.parse(widget.index) + 1, settings.length);
+          if (widget.title == 'L&F_B&S') {
+            widget.notif_settings.lstBuy = widget.notif;
+          } else if (widget.title == 'L&F_B&S') {
+            widget.notif_settings.lstBuy = widget.notif;
+          } else if (widget.title == 'Posts (Admins)') {
+            widget.notif_settings.postsAdmin = widget.notif;
+          } else if (widget.title == 'Posts (Students)') {
+            widget.notif_settings.posts = widget.notif;
+          } else if (widget.title == 'Activities') {
+            widget.notif_settings.events = widget.notif;
+          } else if (widget.title == 'Issues') {
+            widget.notif_settings.threads = widget.notif;
+          } else if (widget.title == 'Comments') {
+            widget.notif_settings.comments = widget.notif;
+          } else if (widget.title == 'Announcements') {
+            widget.notif_settings.announcements = widget.notif;
+          } else if (widget.title == 'Messanger') {
+            widget.notif_settings.messanger = widget.notif;
+          }
         });
-        await menu_bar_servers()
-            .edit_notif_settings(widget.index, bool_int(widget.notif));
+        await menu_bar_servers().notif_settings_edit(
+            widget.notif_settings.lstBuy!,
+            widget.notif_settings.posts!,
+            widget.notif_settings.postsAdmin!,
+            widget.notif_settings.events!,
+            widget.notif_settings.threads!,
+            widget.notif_settings.comments!,
+            widget.notif_settings.announcements!,
+            widget.notif_settings.messanger!);
       },
       secondary: const Icon(Icons.lightbulb_outline),
     );

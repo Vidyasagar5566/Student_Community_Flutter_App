@@ -9,6 +9,7 @@ import 'package:file_picker/file_picker.dart';
 import '../Files_disply_download/pdf_videos_images.dart';
 import 'package:testing_app/Year_Branch_Selection/Year_Branch_Selection.dart';
 import 'package:testing_app/Circular_designs/cure_clip.dart';
+import 'package:testing_app/Fcm_Notif_Domains/servers.dart';
 
 class upload_alertowidget extends StatefulWidget {
   Username app_user;
@@ -59,7 +60,7 @@ class _upload_alertowidgetState extends State<upload_alertowidget> {
                 value: all_university,
                 underline: Container(),
                 elevation: 0,
-                items: post_uni_selection
+                items: ['All', domains[widget.app_user.domain]!]
                     .map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,

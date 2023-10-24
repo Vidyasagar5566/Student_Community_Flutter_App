@@ -294,10 +294,10 @@ class _edit_clubState extends State<edit_club> {
                                                   EdgeInsets.all(15),
                                               content: Container(
                                                 margin: EdgeInsets.all(10),
-                                                child: Column(
+                                                child: const Column(
                                                     mainAxisSize:
                                                         MainAxisSize.min,
-                                                    children: const [
+                                                    children: [
                                                       Text(
                                                           "Please wait while uploading....."),
                                                       SizedBox(height: 10),
@@ -327,6 +327,7 @@ class _edit_clubState extends State<edit_club> {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         const SnackBar(
+                                          duration: Duration(milliseconds: 500),
                                           content: Text(
                                             "Failed",
                                             style:
@@ -358,6 +359,7 @@ class _edit_clubState extends State<edit_club> {
                                   onPressed: () {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
+                                        duration: Duration(milliseconds: 500),
                                         content: Text(
                                           "Anything cant be null",
                                           style: TextStyle(color: Colors.white),

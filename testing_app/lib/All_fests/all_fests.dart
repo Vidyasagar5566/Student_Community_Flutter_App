@@ -35,7 +35,7 @@ class _AllfestspagewidgetState extends State<Allfestspagewidget> {
         ),
         centerTitle: false,
         title: const Text(
-          "festS PAGE",
+          "FESTS PAGE",
           style: TextStyle(color: Colors.black),
         ),
         actions: [
@@ -75,12 +75,8 @@ class _AllfestspagewidgetState extends State<Allfestspagewidget> {
               List<ALL_FESTS> Allfests = snapshot.data;
               if (Allfests.isEmpty) {
                 return Container(
-                    margin: EdgeInsets.all(30),
-                    padding: EdgeInsets.all(30),
-                    child: Container(
-                      margin: EdgeInsets.all(100),
-                      child: Center(child: Text("No Fests Was Joined")),
-                    ));
+                  child: Center(child: Text("No Fests Was Joined")),
+                );
               } else {
                 return Allfestspagewidget1(Allfests, widget.app_user);
               }

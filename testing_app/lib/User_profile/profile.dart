@@ -542,219 +542,224 @@ class _userProfilePageState extends State<userProfilePage> {
                             ? clzCSFS(widget.app_user, widget.profile_user,
                                 'sac', [], [])
                             : Container(),
-            Container(
-              width: width,
-              height: height - 300,
-              padding: EdgeInsets.all(40),
-              decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30))),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) {
-                            return Scaffold(
-                                appBar: AppBar(
-                                  centerTitle: true,
-                                  iconTheme: IconThemeData(color: Colors.white),
-                                  title: Text(widget.profile_user.username!,
-                                      style: TextStyle(color: Colors.white)),
-                                  backgroundColor: Colors.indigoAccent[700],
-                                ),
-                                body: SingleChildScrollView(
-                                  child: user_postswidget(
-                                      widget.profile_user.email!,
-                                      widget.app_user,
-                                      'student',
-                                      0),
-                                ));
-                          }));
-                        },
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                                "Posts (" +
-                                    widget.profile_user.postCount.toString() +
-                                    ')',
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                    fontSize: 20)),
-                            const SizedBox(height: 10),
-                            Container(
-                              height: 150,
-                              width: width / 3,
-                              decoration: const BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20)),
-                                  image: DecorationImage(
-                                      image: AssetImage("images/posts.jpeg"),
-                                      fit: BoxFit.cover)),
-                            )
-                          ],
+            SingleChildScrollView(
+              child: Container(
+                width: width,
+                height: width * 1.25,
+                padding: EdgeInsets.all(40),
+                decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30))),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (BuildContext context) {
+                              return Scaffold(
+                                  appBar: AppBar(
+                                    centerTitle: true,
+                                    iconTheme:
+                                        IconThemeData(color: Colors.white),
+                                    title: Text(widget.profile_user.username!,
+                                        style: TextStyle(color: Colors.white)),
+                                    backgroundColor: Colors.indigoAccent[700],
+                                  ),
+                                  body: SingleChildScrollView(
+                                    child: user_postswidget(
+                                        widget.profile_user.email!,
+                                        widget.app_user,
+                                        'student',
+                                        0),
+                                  ));
+                            }));
+                          },
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                  "Posts (" +
+                                      widget.profile_user.postCount.toString() +
+                                      ')',
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                      fontSize: 20)),
+                              const SizedBox(height: 10),
+                              Container(
+                                height: 150,
+                                width: width / 3,
+                                decoration: const BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20)),
+                                    image: DecorationImage(
+                                        image: AssetImage("images/posts.jpeg"),
+                                        fit: BoxFit.cover)),
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) {
-                            return all_lostwidget1(
-                                widget.app_user,
-                                "lost/found",
-                                lst_buy_list,
-                                'All',
-                                widget.profile_user.email!);
-                          }));
-                        },
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                                "LostFound (" +
-                                    widget.profile_user.lstCount.toString() +
-                                    ')',
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                    fontSize: 20)),
-                            const SizedBox(height: 10),
-                            Container(
-                              height: 150,
-                              width: width / 3,
-                              decoration: const BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20)),
-                                  image: DecorationImage(
-                                      image: AssetImage(
-                                          "images/lost-and-found.gif"),
-                                      fit: BoxFit.cover)),
-                            )
-                          ],
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (BuildContext context) {
+                              return all_lostwidget1(
+                                  widget.app_user,
+                                  "lost/found",
+                                  lst_buy_list,
+                                  'All',
+                                  widget.profile_user.email!);
+                            }));
+                          },
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                  "LostFound (" +
+                                      widget.profile_user.lstCount.toString() +
+                                      ')',
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                      fontSize: 20)),
+                              const SizedBox(height: 10),
+                              Container(
+                                height: 150,
+                                width: width / 3,
+                                decoration: const BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20)),
+                                    image: DecorationImage(
+                                        image: AssetImage(
+                                            "images/lost-and-found.gif"),
+                                        fit: BoxFit.cover)),
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: 40),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (BuildContext context) {
+                              return all_lostwidget1(
+                                  widget.app_user,
+                                  "buy/shell",
+                                  lst_buy_list,
+                                  'All',
+                                  widget.profile_user.email!);
+                            }));
+                          },
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                  "BuySell (" +
+                                      widget.profile_user.buyCount.toString() +
+                                      ')',
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                      fontSize: 20)),
+                              const SizedBox(height: 10),
+                              Container(
+                                height: 150,
+                                width: width / 3,
+                                decoration: const BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20)),
+                                    image: DecorationImage(
+                                        image: AssetImage(
+                                            "images/buy_sell_std.png"),
+                                        fit: BoxFit.cover)),
+                              )
+                            ],
+                          ),
                         ),
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 40),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) {
-                            return all_lostwidget1(
-                                widget.app_user,
-                                "buy/shell",
-                                lst_buy_list,
-                                'All',
-                                widget.profile_user.email!);
-                          }));
-                        },
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                                "BuySell (" +
-                                    widget.profile_user.buyCount.toString() +
-                                    ')',
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                    fontSize: 20)),
-                            const SizedBox(height: 10),
-                            Container(
-                              height: 150,
-                              width: width / 3,
-                              decoration: const BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20)),
-                                  image: DecorationImage(
-                                      image:
-                                          AssetImage("images/buy_sell_std.png"),
-                                      fit: BoxFit.cover)),
-                            )
-                          ],
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () async {
-                          showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (context) {
-                                return AlertDialog(
-                                    contentPadding: EdgeInsets.all(15),
-                                    content: Container(
-                                      margin: EdgeInsets.all(10),
-                                      child: const Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Text("Please wait a min....."),
-                                            SizedBox(height: 10),
-                                            CircularProgressIndicator()
-                                          ]),
-                                    ));
-                              });
-                          var thread_list = await user_profile_servers()
-                              .get_user_thread_list(
-                                  widget.profile_user.email!, 'student', 0);
-                          Navigator.pop(context);
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) {
-                            return Scaffold(
-                                appBar: AppBar(
-                                  centerTitle: true,
-                                  iconTheme: IconThemeData(color: Colors.white),
-                                  title: Text(widget.profile_user.username!,
-                                      style: TextStyle(color: Colors.white)),
-                                  backgroundColor: Colors.indigoAccent[700],
-                                ),
-                                body: SingleChildScrollView(
-                                  child: alertwidget1(
-                                      thread_list,
-                                      widget.app_user,
-                                      widget.app_user.domain!,
-                                      true),
-                                ));
-                          }));
-                        },
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                                "Threads (" +
-                                    widget.profile_user.threadCount.toString() +
-                                    ')',
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                    fontSize: 20)),
-                            const SizedBox(height: 10),
-                            Container(
-                              height: 150,
-                              width: width / 3,
-                              decoration: const BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20)),
-                                  image: DecorationImage(
-                                      image: AssetImage(
-                                          "images/threads profile.jpeg"),
-                                      fit: BoxFit.cover)),
-                            )
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ],
+                        GestureDetector(
+                          onTap: () async {
+                            showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (context) {
+                                  return AlertDialog(
+                                      contentPadding: EdgeInsets.all(15),
+                                      content: Container(
+                                        margin: EdgeInsets.all(10),
+                                        child: const Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Text("Please wait a min....."),
+                                              SizedBox(height: 10),
+                                              CircularProgressIndicator()
+                                            ]),
+                                      ));
+                                });
+                            var thread_list = await user_profile_servers()
+                                .get_user_thread_list(
+                                    widget.profile_user.email!, 'student', 0);
+                            Navigator.pop(context);
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (BuildContext context) {
+                              return Scaffold(
+                                  appBar: AppBar(
+                                    centerTitle: true,
+                                    iconTheme:
+                                        IconThemeData(color: Colors.white),
+                                    title: Text(widget.profile_user.username!,
+                                        style: TextStyle(color: Colors.white)),
+                                    backgroundColor: Colors.indigoAccent[700],
+                                  ),
+                                  body: SingleChildScrollView(
+                                    child: alertwidget1(
+                                        thread_list,
+                                        widget.app_user,
+                                        widget.app_user.domain!,
+                                        true),
+                                  ));
+                            }));
+                          },
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                  "Threads (" +
+                                      widget.profile_user.threadCount
+                                          .toString() +
+                                      ')',
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                      fontSize: 20)),
+                              const SizedBox(height: 10),
+                              Container(
+                                height: 150,
+                                width: width / 3,
+                                decoration: const BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20)),
+                                    image: DecorationImage(
+                                        image: AssetImage(
+                                            "images/threads profile.jpeg"),
+                                        fit: BoxFit.cover)),
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

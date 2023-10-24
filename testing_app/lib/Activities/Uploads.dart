@@ -62,7 +62,7 @@ class _upload_eventwidgetState extends State<upload_eventwidget> {
                 value: all_university,
                 underline: Container(),
                 elevation: 0,
-                items: post_uni_selection
+                items: ['All', domains[widget.app_user.domain]!]
                     .map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,

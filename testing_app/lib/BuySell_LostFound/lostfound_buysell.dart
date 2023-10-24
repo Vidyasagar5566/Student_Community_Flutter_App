@@ -43,6 +43,7 @@ class _all_lostwidget1State extends State<all_lostwidget1> {
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          duration: const Duration(milliseconds: 500),
           content: Text("all the feed was shown..",
               style: TextStyle(color: Colors.white))));
     }
@@ -157,7 +158,7 @@ class _all_lostwidget1State extends State<all_lostwidget1> {
         : Container(
             decoration: const BoxDecoration(
                 image: DecorationImage(
-                    //image: post.post_pic,
+                    //image: post.post_pic
                     image: AssetImage("images/event background.jpg"),
                     fit: BoxFit.cover)),
             height: MediaQuery.of(context).size.height,
@@ -169,6 +170,7 @@ class _all_lostwidget1State extends State<all_lostwidget1> {
                     bool isTop = metrics.pixels == 0;
                     if (!isTop) {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          duration: const Duration(milliseconds: 300),
                           backgroundColor: Colors.white,
                           content: Text("loading....",
                               style: TextStyle(color: Colors.black))));
@@ -195,7 +197,6 @@ class _all_lostwidget1State extends State<all_lostwidget1> {
 
   Widget _buildLoadingScreen(Lost_Found lst, int index, String lst_posted_date,
       List<Lost_Found> lst_list) {
-    const IconData verified = IconData(0xe699, fontFamily: 'MaterialIcons');
     var width = MediaQuery.of(context).size.width;
     SmallUsername user = lst.username!;
     return GestureDetector(
@@ -447,6 +448,8 @@ class _lost_photowidgetState extends State<lost_photowidget> {
                                             "guest@nitc.ac.in") {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(const SnackBar(
+                                                  duration: Duration(
+                                                      milliseconds: 500),
                                                   content: Text(
                                                       "guest cannot hide contents..",
                                                       style: TextStyle(
@@ -490,6 +493,8 @@ class _lost_photowidgetState extends State<lost_photowidget> {
                                                         false);
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(const SnackBar(
+                                              duration: const Duration(
+                                                  milliseconds: 500),
                                               content: Text(
                                                   'We will remove These type of posts in your feed,',
                                                   style: TextStyle(
@@ -500,6 +505,8 @@ class _lost_photowidgetState extends State<lost_photowidget> {
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(
                                               const SnackBar(
+                                                duration: const Duration(
+                                                    milliseconds: 500),
                                                 content: Column(
                                                   children: [
                                                     Text(
@@ -781,6 +788,8 @@ class _lst_cmnt_pageState extends State<lst_cmnt_page> {
                                       "guest@nitc.ac.in") {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         const SnackBar(
+                                            duration: const Duration(
+                                                milliseconds: 500),
                                             content: Text(
                                                 "guest cannot share comments..",
                                                 style: TextStyle(
@@ -827,6 +836,8 @@ class _lst_cmnt_pageState extends State<lst_cmnt_page> {
                                       if (error1) {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(const SnackBar(
+                                                duration: const Duration(
+                                                    milliseconds: 500),
                                                 content: Text(
                                                     "Failed to send notifications",
                                                     style: TextStyle(

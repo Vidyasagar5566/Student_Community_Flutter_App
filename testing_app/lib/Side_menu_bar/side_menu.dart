@@ -18,7 +18,6 @@ class NavDrawer extends StatefulWidget {
 
 class _NavDrawerState extends State<NavDrawer> {
   @override
-  bool about = false;
   Widget build(BuildContext context) {
     return Drawer(
       shadowColor: Colors.white,
@@ -45,7 +44,7 @@ class _NavDrawerState extends State<NavDrawer> {
                             radius: 60,
                             backgroundImage:
                                 //post.profile_pic
-                                AssetImage("images/profile.jpg")))
+                                AssetImage("images/profile.jpg"))),
               ],
             ),
           ),
