@@ -47,7 +47,7 @@ List<ALERT_LIST> all_alerts = [];
 List<EVENT_LIST> all_events = [];
 List<POST_LIST> user_posts = [];
 List<SmallUsername> all_search_users = [];
-String user_name = "";
+Username app_user = Username();
 List<Messager> user_conversation = [];
 
 class get_ueser_widget extends StatefulWidget {
@@ -68,8 +68,8 @@ class _get_ueser_widgetState extends State<get_ueser_widget> {
           if (snapshot.hasError) {
             return crclr_ind_error();
           } else if (snapshot.hasData) {
-            Username app_user = snapshot.data;
-            user_name = app_user.username!;
+            app_user = snapshot.data;
+            app_user = app_user;
 
             star_user_mark(app_user);
 

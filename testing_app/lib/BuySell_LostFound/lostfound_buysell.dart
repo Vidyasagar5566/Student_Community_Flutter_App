@@ -174,7 +174,9 @@ class _all_lostwidget1State extends State<all_lostwidget1> {
                           backgroundColor: Colors.white,
                           content: Text("loading....",
                               style: TextStyle(color: Colors.black))));
-                      load_data_fun();
+                      if (total_loaded) {
+                        load_data_fun();
+                      }
                     }
                   }
                   return true;

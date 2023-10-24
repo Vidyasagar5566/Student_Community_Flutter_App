@@ -114,6 +114,7 @@ class _PostWithappBarState extends State<PostWithappBar> {
                                 fontWeight: FontWeight.w500, fontSize: 24)),
                       ));
                 } else {
+                  all_posts = post_list;
                   return appBarPostList(
                       post_list, widget.app_user, widget.domain, true);
                 }
