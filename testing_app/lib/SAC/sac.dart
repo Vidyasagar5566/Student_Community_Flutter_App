@@ -105,11 +105,6 @@ class _sacpagewidgetState extends State<sacpagewidget> {
             ),
           )
         : Container(
-            decoration: const BoxDecoration(
-                image: DecorationImage(
-                    //image: post.post_pic,
-                    image: AssetImage("images/event background.jpg"),
-                    fit: BoxFit.cover)),
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             child: SingleChildScrollView(
@@ -137,8 +132,14 @@ class _sacpagewidgetState extends State<sacpagewidget> {
       child: Container(
           margin: EdgeInsets.only(left: 6, right: 6, top: 8),
           padding: EdgeInsets.all(8),
-          decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(20)),
+          decoration: BoxDecoration(boxShadow: const [
+            BoxShadow(
+              color: Colors.grey,
+              offset: Offset(0, 2),
+              blurRadius: 6,
+              spreadRadius: 0,
+            ),
+          ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

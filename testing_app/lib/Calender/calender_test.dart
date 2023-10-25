@@ -28,9 +28,12 @@ List<Tab> get_tabs() {
   for (int i = 0; i < timetable_list.length; i++) {
     tabs.add(
       Tab(
-        child: Text(
-          timetable_list[i],
-          style: TextStyle(color: Colors.black),
+        child: Container(
+          padding: EdgeInsets.all(15),
+          child: Text(
+            timetable_list[i],
+            style: TextStyle(color: Colors.black),
+          ),
         ),
       ),
     );
@@ -160,17 +163,15 @@ class _calenderwidget1State extends State<calenderwidget1> {
               ),
             ),
             SizedBox(
-                height: 50,
+                height: 55,
                 child: AppBar(
                     backgroundColor: Colors.white,
                     bottom: TabBar(
+                      unselectedLabelColor: Colors.blueAccent,
+                      indicatorSize: TabBarIndicatorSize.label,
                       indicator: BoxDecoration(
-                          borderRadius:
-                              BorderRadius.circular(30), // Creates border
-                          color: Colors.blue),
-                      indicatorColor: Colors.white,
-                      isScrollable: true,
-                      labelColor: Colors.black,
+                          borderRadius: BorderRadius.circular(16),
+                          color: Colors.blueAccent),
                       tabs: get_tabs(),
                     ))),
             Expanded(
@@ -265,108 +266,107 @@ class _allEventsState extends State<allEvents> {
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
             ),
           )
-        : Container(
-            padding: EdgeInsets.only(top: 30),
-            decoration: const BoxDecoration(
-                image: DecorationImage(
-                    //image: post.post_pic,
-                    image: AssetImage("images/event background.jpg"),
-                    fit: BoxFit.cover)),
-            child: SingleChildScrollView(
-                child: ListView.builder(
-                    itemCount: filter_all_dates.length,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    padding: const EdgeInsets.only(bottom: 10),
-                    itemBuilder: (BuildContext context, int index) {
-                      String temp = filter_all_dates[index].split(' ')[0];
-                      String new_date = temp.split('-')[2] +
-                          ' - ' +
-                          months[temp.split('-')[1]].toString() +
-                          ' ' +
-                          temp.split('-')[0];
-                      return GestureDetector(
-                        onTap: () async {
-                          showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (context) {
-                                return AlertDialog(
-                                    contentPadding: EdgeInsets.all(15),
-                                    content: Container(
-                                      margin: EdgeInsets.all(10),
-                                      child: const Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Text("Please wait"),
-                                            CircularProgressIndicator()
-                                          ]),
-                                    ));
-                              });
-                          Map<List<CALENDER_EVENT>, List<EVENT_LIST>>
-                              total_data = await calendar_servers()
-                                  .get_calender_event_list(temp, widget.domain);
-                          Navigator.pop(context);
-                          List<CALENDER_EVENT> cal_event_data =
-                              total_data.keys.toList()[0];
-                          List<EVENT_LIST> activity_data =
-                              total_data.values.toList()[0];
+        : SingleChildScrollView(
+            child: ListView.builder(
+                itemCount: filter_all_dates.length,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                padding: const EdgeInsets.only(bottom: 10),
+                itemBuilder: (BuildContext context, int index) {
+                  String temp = filter_all_dates[index].split(' ')[0];
+                  String new_date = temp.split('-')[2] +
+                      ' - ' +
+                      months[temp.split('-')[1]].toString() +
+                      ' ' +
+                      temp.split('-')[0];
+                  return GestureDetector(
+                    onTap: () async {
+                      showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (context) {
+                            return AlertDialog(
+                                contentPadding: EdgeInsets.all(15),
+                                content: Container(
+                                  margin: EdgeInsets.all(10),
+                                  child: const Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text("Please wait"),
+                                        CircularProgressIndicator()
+                                      ]),
+                                ));
+                          });
+                      Map<List<CALENDER_EVENT>, List<EVENT_LIST>> total_data =
+                          await calendar_servers()
+                              .get_calender_event_list(temp, widget.domain);
+                      Navigator.pop(context);
+                      List<CALENDER_EVENT> cal_event_data =
+                          total_data.keys.toList()[0];
+                      List<EVENT_LIST> activity_data =
+                          total_data.values.toList()[0];
 
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  calender_events_display(widget.app_user,
-                                      cal_event_data, activity_data, temp)));
-                        },
-                        child: Container(
-                            margin: const EdgeInsets.only(
-                                left: 20, right: 20, bottom: 20),
-                            padding: const EdgeInsets.only(bottom: 8),
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20)),
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              calender_events_display(widget.app_user,
+                                  cal_event_data, activity_data, temp)));
+                    },
+                    child: Container(
+                        margin:
+                            const EdgeInsets.only(left: 20, right: 20, top: 20),
+                        padding: const EdgeInsets.only(bottom: 8),
+                        decoration: const BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey,
+                              offset: Offset(0, 2),
+                              blurRadius: 6,
+                              spreadRadius: 0,
                             ),
-                            child: Column(children: [
-                              Container(
-                                padding: EdgeInsets.all(10),
-                                child: Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.alarm,
-                                      color: Colors.green,
-                                    ),
-                                    const SizedBox(width: 20),
-                                    Text(
-                                        new_date +
-                                            ' ,  ' +
-                                            filter_all_dates[index]
-                                                .split(' ')[1]
-                                                .substring(0, 5),
-                                        style: const TextStyle(
-                                            color: Colors.green,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 15))
-                                  ],
+                          ],
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        child: Column(children: [
+                          Container(
+                            padding: EdgeInsets.all(10),
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  Icons.alarm,
+                                  color: Colors.green,
                                 ),
-                              ),
-                              Container(
-                                  padding: EdgeInsets.all(10),
-                                  child: Row(children: [
-                                    const Icon(Icons.event_note),
-                                    const SizedBox(width: 20),
-                                    Container(
-                                      width: wid / 1.7,
-                                      child: Text(
-                                          filter_all_dates[index]
-                                              .split('&&')[1],
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 15)),
-                                    )
-                                  ]))
-                            ])),
-                      );
-                    })));
+                                const SizedBox(width: 20),
+                                Text(
+                                    new_date +
+                                        ' ,  ' +
+                                        filter_all_dates[index]
+                                            .split(' ')[1]
+                                            .substring(0, 5),
+                                    style: const TextStyle(
+                                        color: Colors.green,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15))
+                              ],
+                            ),
+                          ),
+                          Container(
+                              padding: EdgeInsets.all(10),
+                              child: Row(children: [
+                                const Icon(Icons.event_note),
+                                const SizedBox(width: 20),
+                                Container(
+                                  width: wid / 1.7,
+                                  child: Text(
+                                      filter_all_dates[index].split('&&')[1],
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15)),
+                                )
+                              ]))
+                        ])),
+                  );
+                }));
   }
 }
 
@@ -436,6 +436,14 @@ class _dailyTimeTableState extends State<dailyTimeTable> {
                                 left: 20, right: 20, bottom: 20),
                             padding: const EdgeInsets.only(bottom: 8),
                             decoration: const BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey,
+                                  offset: Offset(0, 2),
+                                  blurRadius: 6,
+                                  spreadRadius: 0,
+                                ),
+                              ],
                               color: Colors.white,
                               borderRadius:
                                   BorderRadius.all(Radius.circular(20)),

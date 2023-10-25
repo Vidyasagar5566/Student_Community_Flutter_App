@@ -122,11 +122,6 @@ class _Allsportpagewidget1State extends State<Allsportpagewidget1> {
   Widget build(BuildContext context) {
     List<ALL_SPORTS> sport_list = widget.sport_list;
     return Container(
-        decoration: const BoxDecoration(
-            image: DecorationImage(
-                //image: post.post_pic,
-                image: AssetImage("images/event background.jpg"),
-                fit: BoxFit.cover)),
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: SingleChildScrollView(
@@ -156,7 +151,7 @@ class _Allsportpagewidget1State extends State<Allsportpagewidget1> {
             onDoubleTap: () async {
               if (widget.app_user.email == "guest@nitc.ac.in") {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  duration: Duration(milliseconds: 400),
+                    duration: Duration(milliseconds: 400),
                     content: Text("guests are not allowed to like..",
                         style: TextStyle(color: Colors.white))));
               } else {
@@ -194,9 +189,15 @@ class _Allsportpagewidget1State extends State<Allsportpagewidget1> {
             child: Container(
                 margin: EdgeInsets.all(5),
                 padding: EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8)),
+                decoration: BoxDecoration(boxShadow: const [
+                  BoxShadow(
+                    color: Colors.grey, // Shadow color
+                    offset: Offset(
+                        0, 2), // Offset of the shadow (horizontal, vertical)
+                    blurRadius: 6, // Spread of the shadow
+                    spreadRadius: 0, // Expansion of the shadow
+                  ),
+                ], color: Colors.white, borderRadius: BorderRadius.circular(8)),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -355,7 +356,8 @@ class _Allsportpagewidget1State extends State<Allsportpagewidget1> {
                                           "guest@nitc.ac.in") {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(const SnackBar(
-                                              duration: Duration(milliseconds: 400),
+                                                duration:
+                                                    Duration(milliseconds: 400),
                                                 content: Text(
                                                     "guests are not allowed to like..",
                                                     style: TextStyle(

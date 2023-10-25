@@ -140,7 +140,8 @@ class _userProfilePageState extends State<userProfilePage> {
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18)),
                                 Center(
-                                  child: Text(utf8convert(widget.app_user.bio!),
+                                  child: Text(
+                                      utf8convert(widget.profile_user.bio!),
                                       style: const TextStyle(fontSize: 15)),
                                 ),
                                 const SizedBox(height: 10),
@@ -156,7 +157,7 @@ class _userProfilePageState extends State<userProfilePage> {
                                       constraints: BoxConstraints(
                                         maxWidth: width / 2,
                                       ),
-                                      child: Text(widget.app_user.email!,
+                                      child: Text(widget.profile_user.email!,
                                           maxLines: 2,
                                           softWrap: false,
                                           overflow: TextOverflow.ellipsis,
@@ -179,7 +180,7 @@ class _userProfilePageState extends State<userProfilePage> {
                                       constraints: BoxConstraints(
                                         maxWidth: width / 2,
                                       ),
-                                      child: Text(widget.app_user.phnNum!,
+                                      child: Text(widget.profile_user.phnNum!,
                                           maxLines: 2,
                                           softWrap: false,
                                           overflow: TextOverflow.ellipsis,
@@ -202,7 +203,7 @@ class _userProfilePageState extends State<userProfilePage> {
                                       constraints: BoxConstraints(
                                         maxWidth: width / 2,
                                       ),
-                                      child: Text(widget.app_user.course!,
+                                      child: Text(widget.profile_user.course!,
                                           maxLines: 2,
                                           softWrap: false,
                                           overflow: TextOverflow.ellipsis,
@@ -226,7 +227,7 @@ class _userProfilePageState extends State<userProfilePage> {
                                         maxWidth: width / 2,
                                       ),
                                       child: Text(
-                                          widget.app_user.year.toString(),
+                                          widget.profile_user.year.toString(),
                                           maxLines: 2,
                                           softWrap: false,
                                           overflow: TextOverflow.ellipsis,
@@ -249,7 +250,7 @@ class _userProfilePageState extends State<userProfilePage> {
                                       constraints: BoxConstraints(
                                         maxWidth: width / 2,
                                       ),
-                                      child: Text(widget.app_user.branch!,
+                                      child: Text(widget.profile_user.branch!,
                                           maxLines: 2,
                                           softWrap: false,
                                           overflow: TextOverflow.ellipsis,
@@ -273,7 +274,7 @@ class _userProfilePageState extends State<userProfilePage> {
                                       constraints: BoxConstraints(
                                         maxWidth: width / 2,
                                       ),
-                                      child: Text(widget.app_user.batch!,
+                                      child: Text(widget.profile_user.batch!,
                                           maxLines: 2,
                                           softWrap: false,
                                           overflow: TextOverflow.ellipsis,

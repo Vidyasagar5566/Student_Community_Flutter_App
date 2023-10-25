@@ -116,8 +116,7 @@ class all_clubs_servers {
           'Authorization': 'token $token',
           "Content-Type": "application/json",
         },
-        body:
-            jsonEncode({'id': id, 'new_head_email': new_head_email}),
+        body: jsonEncode({'id': id, 'new_head_email': new_head_email}),
       );
       var data = json.decode(response.body) as Map;
       return data['error'];
@@ -173,7 +172,7 @@ class all_clubs_servers {
 
 // CLUB__MEMBS
 
-  Future<List<Username>> get_club_sprt_fest_membs(String team_mem) async {
+  Future<List<SmallUsername>> get_club_sprt_fest_membs(String team_mem) async {
     try {
       var token = storage.getItem('token');
       Map<String, String> queryParameters = {
@@ -187,14 +186,14 @@ class all_clubs_servers {
         "Content-Type": "application/json",
       });
       var data = json.decode(response.body) as List;
-      List<Username> temp = [];
+      List<SmallUsername> temp = [];
       data.forEach((element) {
-        Username post = Username.fromJson(element);
+        SmallUsername post = SmallUsername.fromJson(element);
         temp.add(post);
       });
       return temp;
     } catch (e) {
-      List<Username> temp = [];
+      List<SmallUsername> temp = [];
       return temp;
     }
   }

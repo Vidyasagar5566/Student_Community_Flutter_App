@@ -12,14 +12,17 @@ String utf8convert(String text) {
   return utf8.decode(bytes);
 }
 
-List<Tab> get_tabs(List<ALL_BRANCHES> all_branches) {
-  List<Tab> tabs = [];
+List<Container> get_tabs(List<ALL_BRANCHES> all_branches) {
+  List<Container> tabs = [];
   for (int i = 0; i < all_branches.length; i++) {
     tabs.add(
-      Tab(
-        child: Text(
-          all_branches[i].branchName!,
-          style: TextStyle(color: Colors.black),
+      Container(
+        width: 60,
+        child: Tab(
+          child: Text(
+            all_branches[i].branchName!,
+            style: TextStyle(color: Colors.black),
+          ),
         ),
       ),
     );
@@ -166,8 +169,8 @@ class _qn_an_branchsState extends State<qn_an_branchs> {
                     bottom: TabBar(
                       indicator: BoxDecoration(
                           borderRadius:
-                              BorderRadius.circular(30), // Creates border
-                          color: Colors.grey),
+                              BorderRadius.circular(20), // Creates border
+                          color: Colors.blueAccent),
                       indicatorColor: Colors.white,
                       isScrollable: true,
                       labelColor: Colors.black,
@@ -513,11 +516,12 @@ class _cal_subjectsState extends State<cal_subjects> {
                                 } else {
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(const SnackBar(
-                                        duration: Duration(milliseconds: 400),
+                                          duration: Duration(milliseconds: 400),
                                           content: Text(
-                                    "error occured please try again",
-                                    style: TextStyle(color: Colors.white),
-                                  )));
+                                            "error occured please try again",
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          )));
                                 }
                               }
                             }
@@ -827,11 +831,11 @@ class _cal_subjectsState extends State<cal_subjects> {
                                                                                   });
                                                                                 } else {
                                                                                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                                                                                    duration: Duration(milliseconds: 400),
+                                                                                      duration: Duration(milliseconds: 400),
                                                                                       content: Text(
-                                                                                    "error occured please try again",
-                                                                                    style: TextStyle(color: Colors.white),
-                                                                                  )));
+                                                                                        "error occured please try again",
+                                                                                        style: TextStyle(color: Colors.white),
+                                                                                      )));
                                                                                 }
                                                                               }
                                                                             }

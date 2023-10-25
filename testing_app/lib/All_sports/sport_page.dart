@@ -17,28 +17,40 @@ String utf8convert(String text) {
   return utf8.decode(bytes);
 }
 
-List<Tab> tabs = const [
+List<Tab> tabs = [
   Tab(
-    child: Text(
-      "About",
-      style: TextStyle(color: Colors.black),
+    child: Container(
+      margin: EdgeInsets.all(15),
+      child: const Text(
+        "About",
+        style: TextStyle(color: Colors.black),
+      ),
     ),
   ),
   Tab(
-      child: Text(
-    "Team members",
-    style: TextStyle(color: Colors.black),
+      child: Container(
+    margin: EdgeInsets.all(15),
+    child: const Text(
+      "Fest mem",
+      style: TextStyle(color: Colors.black),
+    ),
   )),
   Tab(
-    child: Text(
-      "Media files",
-      style: TextStyle(color: Colors.black),
+    child: Container(
+      margin: EdgeInsets.all(15),
+      child: const Text(
+        "Media files",
+        style: TextStyle(color: Colors.black),
+      ),
     ),
   ),
   Tab(
-    child: Text(
-      "Ground",
-      style: TextStyle(color: Colors.black),
+    child: Container(
+      margin: EdgeInsets.all(15),
+      child: const Text(
+        "Ground",
+        style: TextStyle(color: Colors.black),
+      ),
     ),
   ),
 ];
@@ -75,11 +87,6 @@ class _sportpagewidgetState extends State<sportpagewidget> {
             backgroundColor: Colors.white70,
           ),
           body: Container(
-              decoration: const BoxDecoration(
-                  image: DecorationImage(
-                      //image: post.post_pic,
-                      image: AssetImage("images/event background.jpg"),
-                      fit: BoxFit.cover)),
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
               child: Column(
@@ -136,13 +143,11 @@ class _sportpagewidgetState extends State<sportpagewidget> {
                       child: AppBar(
                           backgroundColor: Colors.white,
                           bottom: TabBar(
+                            unselectedLabelColor: Colors.blueAccent,
+                            indicatorSize: TabBarIndicatorSize.label,
                             indicator: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.circular(30), // Creates border
-                                color: Colors.blue),
-                            indicatorColor: Colors.white,
-                            isScrollable: true,
-                            labelColor: Colors.black,
+                                borderRadius: BorderRadius.circular(20),
+                                color: Colors.blueAccent),
                             tabs: tabs,
                           ))),
                   Expanded(
@@ -154,6 +159,15 @@ class _sportpagewidgetState extends State<sportpagewidget> {
                       margin: EdgeInsets.all(20),
                       padding: EdgeInsets.all(20),
                       decoration: BoxDecoration(
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.grey, // Shadow color
+                              offset: Offset(0,
+                                  2), // Offset of the shadow (horizontal, vertical)
+                              blurRadius: 6, // Spread of the shadow
+                              spreadRadius: 0, // Expansion of the shadow
+                            ),
+                          ],
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(20)),
                       child: Column(
@@ -171,15 +185,25 @@ class _sportpagewidgetState extends State<sportpagewidget> {
                     SingleChildScrollView(
                         child: Container(
                       margin: EdgeInsets.only(top: 20),
-                      child: sport_members(widget.sport.teamMembers!),
+                      child: sport_members(
+                          widget.app_user, widget.sport.teamMembers!),
                     )),
                     SingleChildScrollView(
                       child: Container(
                         width: width,
                         height: width * 1.2,
                         padding: EdgeInsets.all(40),
-                        margin: EdgeInsets.only(top: 40, bottom: 40),
+                        margin: EdgeInsets.only(top: 20, bottom: 40),
                         decoration: const BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey, // Shadow color
+                                offset: Offset(0,
+                                    2), // Offset of the shadow (horizontal, vertical)
+                                blurRadius: 6, // Spread of the shadow
+                                spreadRadius: 0, // Expansion of the shadow
+                              ),
+                            ],
                             color: Colors.white,
                             borderRadius: BorderRadius.all(
                               Radius.circular(30),
@@ -450,6 +474,15 @@ class _sportpagewidgetState extends State<sportpagewidget> {
                             margin: EdgeInsets.only(top: 100),
                             padding: EdgeInsets.only(top: 20),
                             decoration: BoxDecoration(
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: Colors.grey, // Shadow color
+                                    offset: Offset(0,
+                                        2), // Offset of the shadow (horizontal, vertical)
+                                    blurRadius: 6, // Spread of the shadow
+                                    spreadRadius: 0, // Expansion of the shadow
+                                  ),
+                                ],
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(20)),
                             child: GestureDetector(
@@ -497,8 +530,9 @@ class _sportpagewidgetState extends State<sportpagewidget> {
 }
 
 class sport_members extends StatefulWidget {
+  Username app_user;
   final String team_mem;
-  sport_members(this.team_mem);
+  sport_members(this.app_user, this.team_mem);
   //const sport_members({super.key});
 
   @override
@@ -508,7 +542,7 @@ class sport_members extends StatefulWidget {
 class _sport_membersState extends State<sport_members> {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Username>>(
+    return FutureBuilder<List<SmallUsername>>(
       future: all_sports_servers().get_club_sprt_fest_membs(widget.team_mem),
       builder: (ctx, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
@@ -520,12 +554,12 @@ class _sport_membersState extends State<sport_members> {
               ),
             );
           } else if (snapshot.hasData) {
-            List<Username> sport_mem_list = snapshot.data;
-            return sport_members1(sport_mem_list);
+            List<SmallUsername> sport_mem_list = snapshot.data;
+            return sport_members1(widget.app_user, sport_mem_list);
           }
         }
         return const Center(
-          child: CircularProgressIndicator(),
+          child: CircularProgressIndicator(color: Colors.white),
         );
       },
     );
@@ -533,8 +567,9 @@ class _sport_membersState extends State<sport_members> {
 }
 
 class sport_members1 extends StatefulWidget {
-  List<Username> sport_mem_list;
-  sport_members1(this.sport_mem_list);
+  Username app_user;
+  List<SmallUsername> sport_mem_list;
+  sport_members1(this.app_user, this.sport_mem_list);
 
   @override
   State<sport_members1> createState() => _sport_members1State();
@@ -549,18 +584,24 @@ class _sport_members1State extends State<sport_members1> {
         padding: EdgeInsets.zero,
         physics: NeverScrollableScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
-          Username sport_mem = widget.sport_mem_list[index];
+          SmallUsername sport_mem = widget.sport_mem_list[index];
           return _buildLoadingScreen(sport_mem);
         });
   }
 
-  Widget _buildLoadingScreen(Username sport_mem) {
+  Widget _buildLoadingScreen(SmallUsername sport_mem) {
     var width = MediaQuery.of(context).size.width;
     return Container(
         margin: EdgeInsets.all(2),
         padding: EdgeInsets.all(20),
-        decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(10)),
+        decoration: BoxDecoration(boxShadow: const [
+          BoxShadow(
+            color: Colors.grey, // Shadow color
+            offset: Offset(0, 2), // Offset of the shadow (horizontal, vertical)
+            blurRadius: 6, // Spread of the shadow
+            spreadRadius: 0, // Expansion of the shadow
+          ),
+        ], color: Colors.white, borderRadius: BorderRadius.circular(10)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -568,61 +609,7 @@ class _sport_members1State extends State<sport_members1> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
-                  children: [
-                    Container(
-                      width: 48,
-                      child: sport_mem.fileType! == '1'
-                          ? CircleAvatar(
-                              backgroundImage:
-                                  //post.profile_pic
-                                  NetworkImage(sport_mem.profilePic!))
-                          : const CircleAvatar(
-                              backgroundImage:
-                                  //post.profile_pic
-                                  AssetImage("images/profile.jpg")),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(left: 20),
-                      width: (width - 36) / 1.8,
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  constraints: BoxConstraints(
-                                      maxWidth: (width - 36) / 2.4),
-                                  child: Text(
-                                    sport_mem.username!,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    //"Vidya Sagar",
-                                    //lst_list[index].username,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16,
-                                      //color: Colors.white
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 10),
-                                userMarkNotation(sport_mem.starMark!)
-                              ],
-                            ),
-                            Text(
-                              //"B190838EC",
-                              domains[sport_mem.domain!]! +
-                                  " (" +
-                                  sport_mem.userMark! +
-                                  ")",
-                              overflow: TextOverflow.ellipsis,
-                              //lst_list.username.rollNum,
-                              //style: const TextStyle(color: Colors.white),
-                              maxLines: 1,
-                            )
-                          ]),
-                    )
-                  ],
+                  children: [UserProfileMark(widget.app_user, sport_mem)],
                 ),
                 Icon(Icons.more_horiz)
               ],

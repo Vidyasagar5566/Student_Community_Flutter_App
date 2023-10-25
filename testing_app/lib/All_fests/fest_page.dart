@@ -17,22 +17,31 @@ String utf8convert(String text) {
   return utf8.decode(bytes);
 }
 
-List<Tab> tabs = const [
+List<Tab> tabs = [
   Tab(
-    child: Text(
-      "About",
-      style: TextStyle(color: Colors.black),
+    child: Container(
+      margin: EdgeInsets.all(15),
+      child: const Text(
+        "About",
+        style: TextStyle(color: Colors.black),
+      ),
     ),
   ),
   Tab(
-      child: Text(
-    "fest members",
-    style: TextStyle(color: Colors.black),
+      child: Container(
+    margin: EdgeInsets.all(15),
+    child: const Text(
+      "Fest mem",
+      style: TextStyle(color: Colors.black),
+    ),
   )),
   Tab(
-    child: Text(
-      "Media files",
-      style: TextStyle(color: Colors.black),
+    child: Container(
+      margin: EdgeInsets.all(15),
+      child: const Text(
+        "Media files",
+        style: TextStyle(color: Colors.black),
+      ),
     ),
   ),
 ];
@@ -68,11 +77,7 @@ class _festpagewidgetState extends State<festpagewidget> {
             backgroundColor: Colors.white70,
           ),
           body: Container(
-              decoration: const BoxDecoration(
-                  image: DecorationImage(
-                      //image: post.post_pic,
-                      image: AssetImage("images/event background.jpg"),
-                      fit: BoxFit.cover)),
+              color: Colors.indigo,
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
               child: Column(
@@ -128,13 +133,11 @@ class _festpagewidgetState extends State<festpagewidget> {
                       child: AppBar(
                           backgroundColor: Colors.white,
                           bottom: TabBar(
+                            unselectedLabelColor: Colors.blueAccent,
+                            indicatorSize: TabBarIndicatorSize.label,
                             indicator: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.circular(30), // Creates border
-                                color: Colors.blue),
-                            indicatorColor: Colors.white,
-                            isScrollable: true,
-                            labelColor: Colors.black,
+                                borderRadius: BorderRadius.circular(20),
+                                color: Colors.blueAccent),
                             tabs: tabs,
                           ))),
                   Expanded(
@@ -146,6 +149,15 @@ class _festpagewidgetState extends State<festpagewidget> {
                       margin: EdgeInsets.all(20),
                       padding: EdgeInsets.all(20),
                       decoration: BoxDecoration(
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.grey, // Shadow color
+                              offset: Offset(0,
+                                  2), // Offset of the shadow (horizontal, vertical)
+                              blurRadius: 6, // Spread of the shadow
+                              spreadRadius: 0, // Expansion of the shadow
+                            ),
+                          ],
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(20)),
                       child: Column(
@@ -163,15 +175,25 @@ class _festpagewidgetState extends State<festpagewidget> {
                     SingleChildScrollView(
                         child: Container(
                       margin: EdgeInsets.only(top: 20),
-                      child: fest_members(widget.fest.teamMembers!),
+                      child: fest_members(
+                          widget.app_user, widget.fest.teamMembers!),
                     )),
                     SingleChildScrollView(
                       child: Container(
                         width: width,
                         height: width * 1.2,
                         padding: EdgeInsets.all(40),
-                        margin: EdgeInsets.only(top: 40, bottom: 40),
+                        margin: EdgeInsets.only(top: 20, bottom: 40),
                         decoration: const BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey, // Shadow color
+                                offset: Offset(0,
+                                    2), // Offset of the shadow (horizontal, vertical)
+                                blurRadius: 6, // Spread of the shadow
+                                spreadRadius: 0, // Expansion of the shadow
+                              ),
+                            ],
                             color: Colors.white,
                             borderRadius: BorderRadius.all(
                               Radius.circular(30),
@@ -442,8 +464,9 @@ class _festpagewidgetState extends State<festpagewidget> {
 }
 
 class fest_members extends StatefulWidget {
+  Username app_user;
   final String team_mem;
-  fest_members(this.team_mem);
+  fest_members(this.app_user, this.team_mem);
   //const fest_members({super.key});
 
   @override
@@ -453,7 +476,7 @@ class fest_members extends StatefulWidget {
 class _fest_membersState extends State<fest_members> {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Username>>(
+    return FutureBuilder<List<SmallUsername>>(
       future: all_fests_servers().get_club_sprt_fest_membs(widget.team_mem),
       builder: (ctx, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
@@ -465,7 +488,7 @@ class _fest_membersState extends State<fest_members> {
               ),
             );
           } else if (snapshot.hasData) {
-            List<Username> fest_mem_list = snapshot.data;
+            List<SmallUsername> fest_mem_list = snapshot.data;
             if (fest_mem_list.isEmpty) {
               return Container(
                   margin: EdgeInsets.all(30),
@@ -474,12 +497,12 @@ class _fest_membersState extends State<fest_members> {
                       style: TextStyle(
                           fontWeight: FontWeight.w500, fontSize: 24)));
             } else {
-              return fest_members1(fest_mem_list);
+              return fest_members1(widget.app_user, fest_mem_list);
             }
           }
         }
         return const Center(
-          child: CircularProgressIndicator(),
+          child: CircularProgressIndicator(color: Colors.white),
         );
       },
     );
@@ -487,8 +510,9 @@ class _fest_membersState extends State<fest_members> {
 }
 
 class fest_members1 extends StatefulWidget {
-  List<Username> fest_mem_list;
-  fest_members1(this.fest_mem_list);
+  Username app_user;
+  List<SmallUsername> fest_mem_list;
+  fest_members1(this.app_user, this.fest_mem_list);
 
   @override
   State<fest_members1> createState() => _fest_members1State();
@@ -503,18 +527,24 @@ class _fest_members1State extends State<fest_members1> {
         padding: EdgeInsets.zero,
         physics: NeverScrollableScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
-          Username fest_mem = widget.fest_mem_list[index];
+          SmallUsername fest_mem = widget.fest_mem_list[index];
           return _buildLoadingScreen(fest_mem);
         });
   }
 
-  Widget _buildLoadingScreen(Username fest_mem) {
+  Widget _buildLoadingScreen(SmallUsername fest_mem) {
     var width = MediaQuery.of(context).size.width;
     return Container(
         margin: EdgeInsets.all(2),
         padding: EdgeInsets.all(20),
-        decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(10)),
+        decoration: BoxDecoration(boxShadow: const [
+          BoxShadow(
+            color: Colors.grey, // Shadow color
+            offset: Offset(0, 2), // Offset of the shadow (horizontal, vertical)
+            blurRadius: 6, // Spread of the shadow
+            spreadRadius: 0, // Expansion of the shadow
+          ),
+        ], color: Colors.white, borderRadius: BorderRadius.circular(10)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -522,60 +552,7 @@ class _fest_members1State extends State<fest_members1> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
-                  children: [
-                    Container(
-                        width: 48,
-                        child: fest_mem.fileType! == '1'
-                            ? CircleAvatar(
-                                backgroundImage:
-                                    //post.profile_pic
-                                    NetworkImage(fest_mem.profilePic!))
-                            : const CircleAvatar(
-                                backgroundImage:
-                                    //post.profile_pic
-                                    AssetImage("images/profile.jpg"))),
-                    Container(
-                      padding: EdgeInsets.only(left: 20),
-                      width: (width - 36) / 1.8,
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  constraints: BoxConstraints(
-                                      maxWidth: (width - 36) / 2.4),
-                                  child: Text(
-                                    fest_mem.username!,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    //"Vidya Sagar",
-                                    //lst_list[index].username,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16,
-                                      //color: Colors.white
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 10),
-                                userMarkNotation(fest_mem.starMark!)
-                              ],
-                            ),
-                            Text(
-                              //"B190838EC",
-                              domains[fest_mem.domain!]! +
-                                  " (" +
-                                  fest_mem.userMark! +
-                                  ")",
-                              overflow: TextOverflow.ellipsis,
-                              //lst_list.username.rollNum,
-                              //style: const TextStyle(color: Colors.white),
-                              maxLines: 1,
-                            )
-                          ]),
-                    )
-                  ],
+                  children: [UserProfileMark(widget.app_user, fest_mem)],
                 ),
                 Icon(Icons.more_horiz)
               ],

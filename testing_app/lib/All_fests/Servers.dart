@@ -167,7 +167,7 @@ class all_fests_servers {
 
 // CLUB_OR_SPORT_MEMBS
 
-  Future<List<Username>> get_club_sprt_fest_membs(String team_mem) async {
+  Future<List<SmallUsername>> get_club_sprt_fest_membs(String team_mem) async {
     try {
       var token = storage.getItem('token');
       Map<String, String> queryParameters = {
@@ -181,14 +181,14 @@ class all_fests_servers {
         "Content-Type": "application/json",
       });
       var data = json.decode(response.body) as List;
-      List<Username> temp = [];
+      List<SmallUsername> temp = [];
       data.forEach((element) {
-        Username post = Username.fromJson(element);
+        SmallUsername post = SmallUsername.fromJson(element);
         temp.add(post);
       });
       return temp;
     } catch (e) {
-      List<Username> temp = [];
+      List<SmallUsername> temp = [];
       return temp;
     }
   }

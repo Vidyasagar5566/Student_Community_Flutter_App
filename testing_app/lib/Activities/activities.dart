@@ -113,71 +113,64 @@ class _activitieswidget1State extends State<activitieswidget1> {
               ),
             ))
         : SingleChildScrollView(
-            child: Container(
-                decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage("images/event background.jpg"),
-                        fit: BoxFit.cover)),
-                child: Column(
-                  children: [
-                    NotificationListener<ScrollEndNotification>(
-                        onNotification: (scrollEnd) {
-                          final metrics = scrollEnd.metrics;
-                          if (metrics.atEdge) {
-                            bool isTop = metrics.pixels == 0;
-                            if (!isTop) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      duration: Duration(milliseconds: 400),
-                                      backgroundColor: Colors.white,
-                                      content: Text("loading....",
-                                          style:
-                                              TextStyle(color: Colors.black))));
-                              load_data_fun();
-                            }
-                          }
-                          return true;
-                        },
-                        child: ListView.builder(
-                            itemCount: widget.event_list.length,
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            padding: EdgeInsets.only(bottom: 10),
-                            itemBuilder: (BuildContext context, int index) {
-                              EVENT_LIST event = widget.event_list[index];
-                              return single_event(event, widget.app_user);
-                            })),
-                    total_loaded
-                        ? widget.event_list.length > 10 && !widget.profile
-                            ? Container(
-                                width: width,
-                                height: 100,
-                                child: Center(
-                                    child: GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            total_loaded = false;
-                                          });
-                                          load_data_fun();
-                                        },
-                                        child: const Column(
-                                          children: [
-                                            Icon(Icons.add_circle_outline,
-                                                size: 40, color: Colors.blue),
-                                            Text(
-                                              "Tap To Load more",
-                                              style:
-                                                  TextStyle(color: Colors.blue),
-                                            )
-                                          ],
-                                        ))))
-                            : Container()
-                        : Container(
-                            width: 100,
+            child: Column(
+              children: [
+                NotificationListener<ScrollEndNotification>(
+                    onNotification: (scrollEnd) {
+                      final metrics = scrollEnd.metrics;
+                      if (metrics.atEdge) {
+                        bool isTop = metrics.pixels == 0;
+                        if (!isTop) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  duration: Duration(milliseconds: 400),
+                                  backgroundColor: Colors.white,
+                                  content: Text("loading....",
+                                      style: TextStyle(color: Colors.black))));
+                          load_data_fun();
+                        }
+                      }
+                      return true;
+                    },
+                    child: ListView.builder(
+                        itemCount: widget.event_list.length,
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        padding: EdgeInsets.only(bottom: 10),
+                        itemBuilder: (BuildContext context, int index) {
+                          EVENT_LIST event = widget.event_list[index];
+                          return single_event(event, widget.app_user);
+                        })),
+                total_loaded
+                    ? widget.event_list.length > 10 && !widget.profile
+                        ? Container(
+                            width: width,
                             height: 100,
-                            child: Center(child: CircularProgressIndicator()))
-                  ],
-                )),
+                            child: Center(
+                                child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        total_loaded = false;
+                                      });
+                                      load_data_fun();
+                                    },
+                                    child: const Column(
+                                      children: [
+                                        Icon(Icons.add_circle_outline,
+                                            size: 40, color: Colors.blue),
+                                        Text(
+                                          "Tap To Load more",
+                                          style: TextStyle(color: Colors.blue),
+                                        )
+                                      ],
+                                    ))))
+                        : Container()
+                    : Container(
+                        width: 100,
+                        height: 100,
+                        child: Center(child: CircularProgressIndicator()))
+              ],
+            ),
           );
   }
 }
@@ -271,6 +264,15 @@ class _single_eventState extends State<single_event> {
         margin: const EdgeInsets.all(5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.grey, // Shadow color
+              offset:
+                  Offset(0, 2), // Offset of the shadow (horizontal, vertical)
+              blurRadius: 6, // Spread of the shadow
+              spreadRadius: 0, // Expansion of the shadow
+            ),
+          ],
           color: Colors.white,
         ),
         child: Column(

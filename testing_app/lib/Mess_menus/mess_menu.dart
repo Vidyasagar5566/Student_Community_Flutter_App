@@ -5,49 +5,31 @@ import 'Servers.dart';
 import 'Models.dart';
 import 'package:testing_app/Fcm_Notif_Domains/servers.dart';
 
-List<Tab> tabs = const [
-  Tab(
-      child: Text(
-    "MON",
-    style: TextStyle(color: Colors.black),
-  )),
-  Tab(
-    child: Text(
-      "TUES",
-      style: TextStyle(color: Colors.black),
-    ),
-  ),
-  Tab(
-    child: Text(
-      "WED",
-      style: TextStyle(color: Colors.black),
-    ),
-  ),
-  Tab(
-    child: Text(
-      "THU",
-      style: TextStyle(color: Colors.black),
-    ),
-  ),
-  Tab(
-    child: Text(
-      "FRI",
-      style: TextStyle(color: Colors.black),
-    ),
-  ),
-  Tab(
-    child: Text(
-      "SAT",
-      style: TextStyle(color: Colors.black),
-    ),
-  ),
-  Tab(
-    child: Text(
-      "SUN",
-      style: TextStyle(color: Colors.black),
-    ),
-  ),
+List<String> weeks = [
+  "MON",
+  "TUES",
+  "WED",
+  "THU",
+  "THU",
+  "FRI",
+  "SAT",
+  "SUN",
 ];
+
+List<Container> tabs() {
+  List<Container> tabs = [];
+  for (int i = 0; i < weeks.length; i++) {
+    tabs.add(Container(
+      width: 60,
+      child: Tab(
+          child: Text(
+        weeks[i],
+        style: const TextStyle(color: Colors.black),
+      )),
+    ));
+  }
+  return tabs;
+}
 
 class all_mess_menu extends StatefulWidget {
   final String day;
@@ -69,21 +51,15 @@ class _all_mess_menuState extends State<all_mess_menu> {
             margin: EdgeInsets.all(100),
             child: Center(child: Text("No Data Was Found")),
           )
-        : Container(
-            decoration: const BoxDecoration(
-                image: DecorationImage(
-                    //image: post.post_pic,
-                    image: AssetImage("images/event background.jpg"),
-                    fit: BoxFit.cover)),
-            child: ListView.builder(
-                itemCount: mess_list.length,
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.only(bottom: 10),
-                itemBuilder: (BuildContext context, int index) {
-                  MESS_LIST hostel_menu = mess_list[index];
-                  return _buildLoadingScreen(hostel_menu);
-                }));
+        : ListView.builder(
+            itemCount: mess_list.length,
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            padding: EdgeInsets.only(bottom: 10),
+            itemBuilder: (BuildContext context, int index) {
+              MESS_LIST hostel_menu = mess_list[index];
+              return _buildLoadingScreen(hostel_menu);
+            });
   }
 
   Widget _buildLoadingScreen(MESS_LIST hostel_menu) {
@@ -119,14 +95,20 @@ class _all_mess_menuState extends State<all_mess_menu> {
               style: const TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: 25,
-                  color: Colors.white),
+                  color: Colors.black),
             ),
           ),
           Container(
               margin: const EdgeInsets.all(10),
               padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(20)),
+              decoration: BoxDecoration(boxShadow: const [
+                BoxShadow(
+                  color: Colors.grey,
+                  offset: Offset(0, 2),
+                  blurRadius: 6,
+                  spreadRadius: 0,
+                ),
+              ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
               width: 300,
               child: Column(
                 children: [
@@ -155,8 +137,14 @@ class _all_mess_menuState extends State<all_mess_menu> {
           Container(
               margin: const EdgeInsets.all(10),
               padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(20)),
+              decoration: BoxDecoration(boxShadow: const [
+                BoxShadow(
+                  color: Colors.grey,
+                  offset: Offset(0, 2),
+                  blurRadius: 6,
+                  spreadRadius: 0,
+                ),
+              ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
               width: 300,
               child: Column(
                 children: [
@@ -185,8 +173,14 @@ class _all_mess_menuState extends State<all_mess_menu> {
           Container(
               margin: const EdgeInsets.all(10),
               padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(20)),
+              decoration: BoxDecoration(boxShadow: const [
+                BoxShadow(
+                  color: Colors.grey,
+                  offset: Offset(0, 2),
+                  blurRadius: 6,
+                  spreadRadius: 0,
+                ),
+              ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
               width: 300,
               child: Column(
                 children: [
@@ -215,17 +209,23 @@ class _all_mess_menuState extends State<all_mess_menu> {
           Container(
               margin: const EdgeInsets.all(10),
               padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(20)),
+              decoration: BoxDecoration(boxShadow: const [
+                BoxShadow(
+                  color: Colors.grey,
+                  offset: Offset(0, 2),
+                  blurRadius: 6,
+                  spreadRadius: 0,
+                ),
+              ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
               width: 300,
               child: Column(
                 children: [
                   const SizedBox(height: 5),
-                  Center(
+                  const Center(
                     child: Text(
                       "Dinner",
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w600, fontSize: 20),
+                      style:
+                          TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
                     ),
                   ),
                   const SizedBox(height: 5),
@@ -307,12 +307,12 @@ class _messMenuState extends State<messMenu> {
                 backgroundColor: Colors.white70,
                 bottom: TabBar(
                   indicator: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30), // Creates border
-                      color: Colors.grey),
+                      borderRadius: BorderRadius.circular(21), // Creates border
+                      color: Colors.blueAccent),
                   indicatorColor: Colors.grey,
                   isScrollable: true,
                   labelColor: Colors.black,
-                  tabs: tabs,
+                  tabs: tabs(),
                 )),
             body: FutureBuilder<List<MESS_LIST>>(
               future:

@@ -8,49 +8,31 @@ import 'Uploads.dart';
 
 DateTime today_day = DateTime.now();
 
-List<Tab> tabs = const [
-  Tab(
-      child: Text(
-    "MON",
-    style: TextStyle(color: Colors.black),
-  )),
-  Tab(
-    child: Text(
-      "TUES",
-      style: TextStyle(color: Colors.black),
-    ),
-  ),
-  Tab(
-    child: Text(
-      "WED",
-      style: TextStyle(color: Colors.black),
-    ),
-  ),
-  Tab(
-    child: Text(
-      "THU",
-      style: TextStyle(color: Colors.black),
-    ),
-  ),
-  Tab(
-    child: Text(
-      "FRI",
-      style: TextStyle(color: Colors.black),
-    ),
-  ),
-  Tab(
-    child: Text(
-      "SAT",
-      style: TextStyle(color: Colors.black),
-    ),
-  ),
-  Tab(
-    child: Text(
-      "SUN",
-      style: TextStyle(color: Colors.black),
-    ),
-  ),
+List<String> weeks = [
+  "MON",
+  "TUES",
+  "WED",
+  "THU",
+  "THU",
+  "FRI",
+  "SAT",
+  "SUN",
 ];
+
+List<Container> tabs() {
+  List<Container> tabs = [];
+  for (int i = 0; i < weeks.length; i++) {
+    tabs.add(Container(
+      width: 60,
+      child: Tab(
+          child: Text(
+        weeks[i],
+        style: const TextStyle(color: Colors.black),
+      )),
+    ));
+  }
+  return tabs;
+}
 
 class Acadamic_timings extends StatefulWidget {
   final String day;
@@ -72,11 +54,6 @@ class _Acadamic_timingsState extends State<Acadamic_timings> {
             child: Center(child: Text("No Data Was Found")),
           )
         : Container(
-            decoration: const BoxDecoration(
-                image: DecorationImage(
-                    //image: post.post_pic,
-                    image: AssetImage("images/event background.jpg"),
-                    fit: BoxFit.cover)),
             child: SingleChildScrollView(
                 child: Container(
                     margin: EdgeInsets.all(15),
@@ -114,8 +91,14 @@ class _Acadamic_timingsState extends State<Acadamic_timings> {
     return Container(
         margin: const EdgeInsets.all(5),
         padding: const EdgeInsets.all(5),
-        decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(15)),
+        decoration: BoxDecoration(boxShadow: const [
+          BoxShadow(
+            color: Colors.grey,
+            offset: Offset(0, 2),
+            blurRadius: 6,
+            spreadRadius: 0,
+          ),
+        ], color: Colors.white, borderRadius: BorderRadius.circular(15)),
         child: Column(
           children: [
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
@@ -198,7 +181,7 @@ class _AcademicTimingsState extends State<AcademicTimings> {
   Widget build(BuildContext context) {
     return DefaultTabController(
       initialIndex: today_day.weekday - 1,
-      length: 7,
+      length: 8,
       child: Scaffold(
           appBar: AppBar(
               leading: const BackButton(
@@ -233,12 +216,12 @@ class _AcademicTimingsState extends State<AcademicTimings> {
               backgroundColor: Colors.white70,
               bottom: TabBar(
                 indicator: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30), // Creates border
-                    color: Colors.grey),
+                    borderRadius: BorderRadius.circular(21), // Creates border
+                    color: Colors.blueAccent),
                 indicatorColor: Colors.grey,
                 isScrollable: true,
                 labelColor: Colors.black,
-                tabs: tabs,
+                tabs: tabs(),
               )),
           body: FutureBuilder<List<ACADEMIC_LIST>>(
             future:

@@ -369,10 +369,18 @@ class _single_postState extends State<single_post> {
     SmallUsername user = post.username!;
     var width = MediaQuery.of(context).size.width;
     return Container(
-      margin: EdgeInsets.only(top: 10),
-      padding: const EdgeInsets.only(top: 20, bottom: 20, left: 5, right: 5),
-      decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(20)),
+      margin: EdgeInsets.only(top: 5),
+      padding: const EdgeInsets.only(top: 5, bottom: 3, left: 2, right: 2),
+      decoration: BoxDecoration(boxShadow: [
+        widget.index == -1
+            ? const BoxShadow()
+            : const BoxShadow(
+                color: Colors.grey,
+                offset: Offset(0, 2),
+                blurRadius: 2,
+                spreadRadius: 0,
+              ),
+      ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -382,6 +390,18 @@ class _single_postState extends State<single_post> {
               post.category == 'student'
                   ? UserProfileMark(widget.app_user, post.username!)
                   : UserProfileMarkAdmin(post, post.username, widget.app_user),
+              // Container(
+              //   constraints: BoxConstraints(
+              //     maxWidth: width * 0.25,
+              //   ),
+              //   child: Text(widget.post_posted_date,
+              //       maxLines: 3,
+              //       overflow: TextOverflow.ellipsis,
+              //       style: const TextStyle(
+              //           fontSize: 14,
+              //           color: Colors.black,
+              //           fontWeight: FontWeight.bold)),
+              // ),
               IconButton(
                 onPressed: () {
                   showDialog(
@@ -430,9 +450,7 @@ class _single_postState extends State<single_post> {
                                               fontWeight: FontWeight.bold))),
                                   const SizedBox(height: 4),
                                   Text(
-                                    //"Description about the post",
                                     utf8convert(post.description!),
-                                    //style: TextStyle(fontSize: 14),
                                   ),
                                   const SizedBox(height: 15),
                                   post.imgRatio == 1
@@ -557,7 +575,7 @@ class _single_postState extends State<single_post> {
                       });
                 },
                 icon: const Icon(
-                  Icons.more_horiz,
+                  Icons.more_vert,
                   //color: Colors.white70,
                   size: 30,
                 ),
@@ -815,22 +833,27 @@ class _single_postState extends State<single_post> {
                       icon: const FaIcon(FontAwesomeIcons.share, size: 23)),
                 ],
               ),
-//              Container(
-//                margin: const EdgeInsets.only(right: 20),
-//                child: Transform.rotate(
-//                  angle: 0,
-//                  child: IconButton(
-//                    onPressed: () {
-//                      //Share.share(
-//                      //    'hey! check out this new app https://play.google.com/store/search?q=pub%3ADivTag&c=apps');
-//                    },
-//                    icon: const Icon(
-//                      Icons.send,
-//                      size: 24,
-//                    ),
-//                  ),
-//                ),
-//              )
+              // ElevatedButton.icon(
+              //   onPressed: () {},
+              //   icon: FaIcon(Icons.report_problem_rounded),
+              //   label: Text('Report?'),
+              // ),
+              // Container(
+              //   margin: const EdgeInsets.only(right: 20),
+              //   child: Transform.rotate(
+              //     angle: 0,
+              //     child: IconButton(
+              //       onPressed: () {
+              //         //Share.share(
+              //         //    'hey! check out this new app https://play.google.com/store/search?q=pub%3ADivTag&c=apps');
+              //       },
+              //       icon: const Icon(
+              //         Icons.send,
+              //         size: 24,
+              //       ),
+              //     ),
+              //   ),
+              // )
             ],
           ),
         ],

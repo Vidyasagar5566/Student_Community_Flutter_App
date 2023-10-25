@@ -82,10 +82,6 @@ class _notifications1State extends State<notifications1> {
   Widget build(BuildContext context) {
     double wid = MediaQuery.of(context).size.width;
     return Container(
-        decoration: const BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("images/event background.jpg"),
-                fit: BoxFit.cover)),
         width: wid, //foo1(img_file),
         height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
@@ -110,8 +106,15 @@ class _notifications1State extends State<notifications1> {
       child: Container(
           margin: const EdgeInsets.only(top: 3),
           padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(5)),
+          decoration: BoxDecoration(boxShadow: const [
+            BoxShadow(
+              color: Colors.grey, 
+              offset:
+                  Offset(0, 2), 
+              blurRadius: 6, 
+              spreadRadius: 0, 
+            ),
+          ], color: Colors.white, borderRadius: BorderRadius.circular(5)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

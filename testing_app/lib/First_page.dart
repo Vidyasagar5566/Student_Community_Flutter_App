@@ -164,7 +164,7 @@ class _firstpageState extends State<firstpage> {
                                       widget.curr_index == 1 ||
                                       widget.curr_index == 3 ||
                                       widget.curr_index == 4
-                                  ? Colors.white
+                                  ? Colors.white //black
                                   : Colors.black),
                         )
                       : Text(
@@ -174,7 +174,7 @@ class _firstpageState extends State<firstpage> {
                                       widget.curr_index == 1 ||
                                       widget.curr_index == 3 ||
                                       widget.curr_index == 4
-                                  ? Colors.white
+                                  ? Colors.white //black
                                   : Colors.black),
                         )),
                   actions: [
@@ -241,7 +241,7 @@ class _firstpageState extends State<firstpage> {
                                               widget.curr_index == 1 ||
                                               widget.curr_index == 3 ||
                                               widget.curr_index == 4
-                                          ? Colors.white
+                                          ? Colors.white //indigo
                                           : Colors.indigo,
                                     ),
                                   ),
@@ -285,7 +285,7 @@ class _firstpageState extends State<firstpage> {
                                             widget.curr_index == 1 ||
                                             widget.curr_index == 3 ||
                                             widget.curr_index == 4
-                                        ? Colors.white
+                                        ? Colors.white //indigo
                                         : Colors.indigo,
                                   ))
                             ],
@@ -295,61 +295,75 @@ class _firstpageState extends State<firstpage> {
                           widget.curr_index == 1 ||
                           widget.curr_index == 3 ||
                           widget.curr_index == 4
-                      ? Colors.indigoAccent[700]
+                      ? Colors.indigoAccent[700] //white
                       : Colors.white,
                 ),
           drawer: NavDrawer(widget.app_user),
           body: widget.curr_index == 0
               ? SingleChildScrollView(
-                  child: Column(mainAxisSize: MainAxisSize.min, children: [
-                    Container(
-                      margin: const EdgeInsets.only(top: 20, bottom: 10),
-                      child: MAINBUTTONSwidget1(widget.app_user),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                            margin: const EdgeInsets.all(8),
-                            child: const Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  "Posts",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 15),
-                                ))),
-                        DropdownButton<String>(
-                            value: domain,
-                            underline: Container(),
-                            elevation: 0,
-                            items: domains_list
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(
-                                  value,
-                                  style: TextStyle(fontSize: 10),
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: (value) {
-                              setState(() {
-                                domain = value!;
-                              });
-                            })
-                      ],
-                    ),
-                    Flexible(child: postwidget(widget.app_user, domain))
-                  ]),
+                  child: Container(
+                    color: Colors.white,
+                    child: Column(mainAxisSize: MainAxisSize.min, children: [
+                      Container(
+                        margin: const EdgeInsets.only(top: 20, bottom: 10),
+                        child: MAINBUTTONSwidget1(widget.app_user),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                              margin: const EdgeInsets.all(8),
+                              child: const Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "Posts",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 15),
+                                  ))),
+                          DropdownButton<String>(
+                              value: domain,
+                              underline: Container(),
+                              elevation: 0,
+                              items: domains_list.map<DropdownMenuItem<String>>(
+                                  (String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style: TextStyle(fontSize: 10),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: (value) {
+                                setState(() {
+                                  domain = value!;
+                                });
+                              })
+                        ],
+                      ),
+                      Flexible(child: postwidget(widget.app_user, domain))
+                    ]),
+                  ),
                 )
               : widget.curr_index == 1
-                  ? calender(widget.app_user, domains1[domain]!)
+                  ? Container(
+                      color: Colors.white,
+                      child: calender(widget.app_user, domains1[domain]!))
                   : widget.curr_index == 2
-                      ? activitieswidget(widget.app_user, domains1[domain]!)
+                      ? Container(
+                          color: Colors.white,
+                          child: activitieswidget(
+                              widget.app_user, domains1[domain]!))
                       : widget.curr_index == 3
-                          ? alertwidget(widget.app_user, domains1[domain]!)
-                          : userProfilePage(widget.app_user, widget.app_user),
+                          ? Container(
+                              color: Colors.white,
+                              child: alertwidget(
+                                  widget.app_user, domains1[domain]!))
+                          : Container(
+                              color: Colors.white,
+                              child: userProfilePage(
+                                  widget.app_user, widget.app_user)),
           floatingActionButton: widget.curr_index == 1
               ? ElevatedButton.icon(
                   onPressed: () async {

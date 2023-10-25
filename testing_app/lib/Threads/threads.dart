@@ -124,8 +124,8 @@ class _alertwidget1State extends State<alertwidget1> {
                       ALERT_LIST alert = widget.alert_list[index];
                       return _buildLoadingScreen(alert, widget.alert_list);
                     }),
-                total_loaded && !widget.profile
-                    ? widget.alert_list.length > 10
+                total_loaded
+                    ? widget.alert_list.length > 10 && !widget.profile
                         ? Container(
                             width: width,
                             height: 100,
@@ -175,7 +175,8 @@ class _alertwidget1State extends State<alertwidget1> {
       child: Container(
           margin: const EdgeInsets.only(top: 8, left: 10, right: 10),
           padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(19)),
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(19)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -350,6 +351,7 @@ class _alert_commentwidgetState extends State<alert_commentwidget> {
           ],
           backgroundColor: Colors.indigoAccent[700]),
       body: Container(
+        color: Colors.white,
         margin: const EdgeInsets.all(10),
         child: SingleChildScrollView(
           child: Column(
@@ -456,10 +458,11 @@ class _lst_cmnt_pageState extends State<lst_cmnt_page> {
       ALERT_CMNT alert_cmnt, List<ALERT_CMNT> alert_cmnt_list) {
     SmallUsername user = alert_cmnt.username!;
     Username app_user = widget.app_user;
-    var width = MediaQuery.of(context).size.width;
     return Container(
         margin: const EdgeInsets.only(top: 5, left: 5, right: 5),
         padding: const EdgeInsets.all(5),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15), color: Colors.white),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

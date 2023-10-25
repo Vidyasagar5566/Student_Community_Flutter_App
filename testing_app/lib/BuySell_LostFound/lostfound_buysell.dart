@@ -150,17 +150,12 @@ class _all_lostwidget1State extends State<all_lostwidget1> {
     var height = MediaQuery.of(context).size.height;
     return lst_list.isEmpty
         ? Container(
-            margin: EdgeInsets.only(top: height / 3),
+            margin: EdgeInsets.only(top: 100),
             child: const Center(
                 child: Text(
               "No Data Was Found",
             )))
         : Container(
-            decoration: const BoxDecoration(
-                image: DecorationImage(
-                    //image: post.post_pic
-                    image: AssetImage("images/event background.jpg"),
-                    fit: BoxFit.cover)),
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             child: NotificationListener<ScrollEndNotification>(
@@ -214,8 +209,14 @@ class _all_lostwidget1State extends State<all_lostwidget1> {
           Container(
               margin: EdgeInsets.all(8),
               padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20), color: Colors.white),
+              decoration: BoxDecoration(boxShadow: const [
+                BoxShadow(
+                  color: Colors.grey,
+                  offset: Offset(0, 2),
+                  blurRadius: 6,
+                  spreadRadius: 0,
+                ),
+              ], borderRadius: BorderRadius.circular(20), color: Colors.white),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -318,7 +319,6 @@ class lost_photowidget extends StatefulWidget {
 class _lost_photowidgetState extends State<lost_photowidget> {
   @override
   Widget build(BuildContext context) {
-    String delete_error = "";
     final SmallUsername lst_user = widget.user;
     final Username app_user = widget.app_user;
     var width = MediaQuery.of(context).size.width;
@@ -555,7 +555,7 @@ class _lost_photowidgetState extends State<lost_photowidget> {
         backgroundColor: Colors.white70,
       ),
       body: Container(
-          color: Colors.indigo,
+          decoration: const BoxDecoration(color: Colors.indigo),
           height: MediaQuery.of(context).size.height,
           child: SingleChildScrollView(
             child: Column(
