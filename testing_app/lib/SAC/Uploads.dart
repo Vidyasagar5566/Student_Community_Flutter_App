@@ -278,6 +278,7 @@ class _edit_sac_memState extends State<edit_sac_mem> {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         const SnackBar(
+                                          duration: Duration(milliseconds: 400),
                                           content: Text(
                                             "Failed",
                                             style:
@@ -309,6 +310,7 @@ class _edit_sac_memState extends State<edit_sac_mem> {
                                   onPressed: () {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
+                                        duration: Duration(milliseconds: 400),
                                         content: Text(
                                           "Anything cant be null",
                                           style: TextStyle(color: Colors.white),

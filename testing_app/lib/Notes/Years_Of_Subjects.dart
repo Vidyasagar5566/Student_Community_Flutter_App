@@ -210,6 +210,7 @@ class _cal_sub_yearsState extends State<cal_sub_years> {
                               Navigator.pop(context);
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
+                                  duration: Duration(milliseconds: 400),
                                   content: Text(
                                     "Students are not allowed",
                                     style: TextStyle(color: Colors.white),
@@ -221,6 +222,7 @@ class _cal_sub_yearsState extends State<cal_sub_years> {
                                 Navigator.pop(context);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
+                                    duration: Duration(milliseconds: 400),
                                     content: Text(
                                       " year cant be null",
                                       style: TextStyle(color: Colors.white),
@@ -232,6 +234,7 @@ class _cal_sub_yearsState extends State<cal_sub_years> {
                                 Navigator.pop(context);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
+                                    duration: Duration(milliseconds: 400),
                                     content: Text(
                                       " sub_task was already present. plese check it out.",
                                       style: TextStyle(color: Colors.white),
@@ -260,6 +263,7 @@ class _cal_sub_yearsState extends State<cal_sub_years> {
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
+                                      duration: Duration(milliseconds: 400),
                                       content: Text(
                                         "error occured please try again",
                                         style: TextStyle(color: Colors.white),
@@ -447,6 +451,9 @@ class _cal_sub_yearsState extends State<cal_sub_years> {
                                                                         context)
                                                                     .showSnackBar(
                                                                   const SnackBar(
+                                                                    duration: Duration(
+                                                                        milliseconds:
+                                                                            400),
                                                                     content:
                                                                         Text(
                                                                       "Students are not allowed",
@@ -465,6 +472,9 @@ class _cal_sub_yearsState extends State<cal_sub_years> {
                                                                           context)
                                                                       .showSnackBar(
                                                                     const SnackBar(
+                                                                      duration: Duration(
+                                                                          milliseconds:
+                                                                              400),
                                                                       content:
                                                                           Text(
                                                                         "sub_name cant be null",
@@ -499,12 +509,11 @@ class _cal_sub_yearsState extends State<cal_sub_years> {
                                                                     ScaffoldMessenger.of(
                                                                             context)
                                                                         .showSnackBar(const SnackBar(
+                                                                            duration: Duration(milliseconds: 400),
                                                                             content: Text(
-                                                                      "error occured please try again",
-                                                                      style: TextStyle(
-                                                                          color:
-                                                                              Colors.white),
-                                                                    )));
+                                                                              "error occured please try again",
+                                                                              style: TextStyle(color: Colors.white),
+                                                                            )));
                                                                   }
                                                                 }
                                                               }

@@ -118,7 +118,7 @@ class _user_list_displayState extends State<user_list_display> {
         widget.all_search_users = all_search_users;
       });
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(duration: Duration(milliseconds: 400),
           content: Text("all the feed was shown..",
               style: TextStyle(color: Colors.white))));
     }
@@ -230,7 +230,7 @@ class _user_list_displayState extends State<user_list_display> {
                                 widget.sac_id, search_user.email!);
                             if (error) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
+                                  const SnackBar(duration: Duration(milliseconds: 400),
                                       content: Text(
                                           "Failed to transfer the head, try again",
                                           style:
@@ -387,7 +387,7 @@ class _user_list_displayState extends State<user_list_display> {
                           onPressed: () async {
                             if (new_sac_role == null) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
+                                  const SnackBar(duration: Duration(milliseconds: 400),
                                       content: Text("Club name cant be null",
                                           style:
                                               TextStyle(color: Colors.white))));
@@ -396,7 +396,7 @@ class _user_list_displayState extends State<user_list_display> {
                                   .create_sac(search_user.email!, new_sac_role);
                               if (error) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
+                                    const SnackBar(duration: Duration(milliseconds: 400),
                                         content: Text(
                                             "Failed to transfer the head, try again",
                                             style: TextStyle(

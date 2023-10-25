@@ -290,10 +290,10 @@ class _academic_createState extends State<academic_create> {
                                             contentPadding: EdgeInsets.all(15),
                                             content: Container(
                                               margin: EdgeInsets.all(10),
-                                              child: Column(
+                                              child: const Column(
                                                   mainAxisSize:
                                                       MainAxisSize.min,
-                                                  children: const [
+                                                  children: [
                                                     Text(
                                                         "Please wait while uploading....."),
                                                     SizedBox(height: 10),
@@ -324,6 +324,7 @@ class _academic_createState extends State<academic_create> {
                                   } else {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
+                                        duration: Duration(milliseconds: 400),
                                         content: Text(
                                           "Failed",
                                           style: TextStyle(color: Colors.white),
@@ -354,6 +355,7 @@ class _academic_createState extends State<academic_create> {
                                 onPressed: () {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
+                                      duration: Duration(milliseconds: 400),
                                       content: Text(
                                         "Anything cant be null",
                                         style: TextStyle(color: Colors.white),

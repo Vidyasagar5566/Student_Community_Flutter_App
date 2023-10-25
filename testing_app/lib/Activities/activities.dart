@@ -11,6 +11,7 @@ import 'package:dio/dio.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:testing_app/User_Star_Mark/User_Profile_Star_Mark.dart';
+import 'package:testing_app/Fcm_Notif_Domains/servers.dart';
 
 String utf8convert(String text) {
   List<int> bytes = text.toString().codeUnits;
@@ -90,6 +91,7 @@ class _activitieswidget1State extends State<activitieswidget1> {
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          duration: Duration(milliseconds: 300),
           content: Text("all the feed was shown..",
               style: TextStyle(color: Colors.white))));
     }
@@ -126,6 +128,7 @@ class _activitieswidget1State extends State<activitieswidget1> {
                             if (!isTop) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
+                                      duration: Duration(milliseconds: 400),
                                       backgroundColor: Colors.white,
                                       content: Text("loading....",
                                           style:
@@ -226,6 +229,7 @@ class _single_eventState extends State<single_event> {
         if (widget.app_user.email == "guest@nitc.ac.in") {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
+              duration: Duration(milliseconds: 400),
               content: Text(
                 "Guests are not allowed",
                 style: TextStyle(color: Colors.white),
@@ -350,6 +354,7 @@ class _single_eventState extends State<single_event> {
                         if (widget.app_user.email == "guest@nitc.ac.in") {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
+                              duration: Duration(milliseconds: 400),
                               content: Text(
                                 "Guests are not allowed",
                                 style: TextStyle(color: Colors.white),
@@ -739,7 +744,7 @@ class _event_photowidgetState extends State<event_photowidget> {
                                               const SizedBox(height: 10),
                                               update_text != null
                                                   ? TextButton(
-                                                      onPressed: () {
+                                                      onPressed: () async {
                                                         String temp =
                                                             update_text;
                                                         update_text = null;
@@ -749,11 +754,19 @@ class _event_photowidgetState extends State<event_photowidget> {
                                                               .insert(0,
                                                                   '&&&' + temp);
                                                         });
-                                                        activity_servers()
-                                                            .update_event(
-                                                                widget
-                                                                    .event.id!,
-                                                                temp);
+                                                        bool error =
+                                                            await activity_servers()
+                                                                .update_event(
+                                                                    widget.event
+                                                                        .id!,
+                                                                    temp);
+                                                        if (!error) {
+                                                          bool error1 = await servers()
+                                                              .send_notifications(
+                                                                  "Event :  update",
+                                                                  update_text,
+                                                                  4);
+                                                        }
                                                       },
                                                       child: const Text(
                                                         "Update",
@@ -905,6 +918,7 @@ class _video_displayState extends State<video_display> {
                           });
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
+                              duration: Duration(milliseconds: 400),
                               content: Platform.isAndroid
                                   ? const Text(
                                       'success, check your download folder',
@@ -923,6 +937,7 @@ class _video_displayState extends State<video_display> {
                           });
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
+                              duration: Duration(milliseconds: 400),
                               content: Text(
                                 'failed',
                                 style: TextStyle(color: Colors.white),

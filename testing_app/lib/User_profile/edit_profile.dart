@@ -334,6 +334,8 @@ class _editprofileState extends State<editprofile> {
                                         "guest@nitc.ac.in") {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(
+                                              duration:
+                                                  Duration(milliseconds: 400),
                                               content: Text(
                                                   "guest cannot update profile section..",
                                                   style: TextStyle(
@@ -388,6 +390,8 @@ class _editprofileState extends State<editprofile> {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
                                           const SnackBar(
+                                            duration:
+                                                Duration(milliseconds: 400),
                                             content: Text(
                                               "Failed",
                                               style: TextStyle(
@@ -420,6 +424,7 @@ class _editprofileState extends State<editprofile> {
                                   onPressed: () {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
+                                        duration: Duration(milliseconds: 400),
                                         content: Text(
                                           "Username and phone number cant be null",
                                           style: TextStyle(color: Colors.white),

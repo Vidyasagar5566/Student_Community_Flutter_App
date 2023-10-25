@@ -90,6 +90,7 @@ class _alertwidget1State extends State<alertwidget1> {
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          duration: Duration(milliseconds: 400),
           content: Text("all the feed was shown..",
               style: TextStyle(color: Colors.white))));
     }
@@ -319,6 +320,8 @@ class _alert_commentwidgetState extends State<alert_commentwidget> {
                                           } else {
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(const SnackBar(
+                                                    duration: Duration(
+                                                        milliseconds: 400),
                                                     content: Text(
                                                         "Error occured plz try again",
                                                         style: TextStyle(

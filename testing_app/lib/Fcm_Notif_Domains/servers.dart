@@ -9,6 +9,8 @@ class servers {
 
 // NOTIFICATIONS
 
+// 1 lst_buy, 2 posts, 3 posts_admin, 4 events, 5 threads, 6 comments, 7 announcements, 8 messanger
+
   Future<bool> send_notifications(
       String title, String description, int notiff_sett) async {
     try {

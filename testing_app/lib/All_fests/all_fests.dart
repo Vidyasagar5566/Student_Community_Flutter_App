@@ -156,6 +156,7 @@ class _Allfestspagewidget1State extends State<Allfestspagewidget1> {
             onDoubleTap: () async {
               if (widget.app_user.email == "guest@nitc.ac.in") {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  duration: Duration(milliseconds: 400),
                     content: Text("guests are not allowed to like..",
                         style: TextStyle(color: Colors.white))));
               } else {
@@ -278,6 +279,7 @@ class _Allfestspagewidget1State extends State<Allfestspagewidget1> {
                                   } else {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
+                                        duration: Duration(milliseconds: 400),
                                         content: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
@@ -351,6 +353,7 @@ class _Allfestspagewidget1State extends State<Allfestspagewidget1> {
                                           "guest@nitc.ac.in") {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(const SnackBar(
+                                              duration: Duration(milliseconds: 400),
                                                 content: Text(
                                                     "guests are not allowed to like..",
                                                     style: TextStyle(

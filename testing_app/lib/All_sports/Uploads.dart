@@ -414,6 +414,7 @@ class _edit_sportState extends State<edit_sport> {
                                   } else {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
+                                        duration: Duration(milliseconds: 400),
                                         content: Text(
                                           "Failed",
                                           style: TextStyle(color: Colors.white),
@@ -444,6 +445,7 @@ class _edit_sportState extends State<edit_sport> {
                                 onPressed: () {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
+                                      duration: Duration(milliseconds: 400),
                                       content: Text(
                                         "Anything cant be null",
                                         style: TextStyle(color: Colors.white),

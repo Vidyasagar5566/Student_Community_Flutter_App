@@ -72,6 +72,7 @@ class _Giving_RatingState extends State<Giving_Rating> {
           if (widget.app_user.email == "guest@nitc.ac.in") {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
+                duration: Duration(milliseconds: 400),
                 content: Text(
                   "Guests are not allowed open files",
                   style: TextStyle(color: Colors.white),
@@ -88,16 +89,18 @@ class _Giving_RatingState extends State<Giving_Rating> {
             if (!error[0]) {
               selected_rating.id = error[1];
               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  duration: Duration(milliseconds: 400),
                   content: Text(
-                "Thanks for your feedback, we will update the details soon.",
-                style: TextStyle(color: Colors.white),
-              )));
+                    "Thanks for your feedback, we will update the details soon.",
+                    style: TextStyle(color: Colors.white),
+                  )));
             } else {
               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  duration: Duration(milliseconds: 400),
                   content: Text(
-                "error occured please try again",
-                style: TextStyle(color: Colors.white),
-              )));
+                    "error occured please try again",
+                    style: TextStyle(color: Colors.white),
+                  )));
             }
           }
         },
@@ -381,6 +384,8 @@ class _placementsState extends State<placements> {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(
                                             const SnackBar(
+                                              duration:
+                                                  Duration(milliseconds: 400),
                                               content: Text(
                                                 "Guests/Students are not allowed",
                                                 style: TextStyle(
@@ -394,6 +399,8 @@ class _placementsState extends State<placements> {
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(
                                               const SnackBar(
+                                                duration:
+                                                    Duration(milliseconds: 400),
                                                 content: Text(
                                                   "sub name cant be null",
                                                   style: TextStyle(
@@ -426,11 +433,14 @@ class _placementsState extends State<placements> {
                                             } else {
                                               ScaffoldMessenger.of(context)
                                                   .showSnackBar(const SnackBar(
+                                                      duration: Duration(
+                                                          milliseconds: 400),
                                                       content: Text(
-                                                "error occured please try again",
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              )));
+                                                        "error occured please try again",
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                      )));
                                             }
                                           }
                                         }
@@ -697,6 +707,8 @@ class _placementsState extends State<placements> {
                                                                             context)
                                                                         .showSnackBar(
                                                                       const SnackBar(
+                                                                        duration:
+                                                                            Duration(milliseconds: 400),
                                                                         content:
                                                                             Text(
                                                                           "sub_name cant be null",
@@ -723,15 +735,13 @@ class _placementsState extends State<placements> {
                                                                             .subName = sub_name;
                                                                       });
                                                                     } else {
-                                                                      ScaffoldMessenger.of(
-                                                                              context)
-                                                                          .showSnackBar(const SnackBar(
-                                                                              content: Text(
-                                                                        "error occured please try again",
-                                                                        style: TextStyle(
-                                                                            color:
-                                                                                Colors.white),
-                                                                      )));
+                                                                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                                                          duration: Duration(milliseconds: 400),
+                                                                          content: Text(
+                                                                            "error occured please try again",
+                                                                            style:
+                                                                                TextStyle(color: Colors.white),
+                                                                          )));
                                                                     }
                                                                   }
                                                                 },
@@ -781,11 +791,15 @@ class _placementsState extends State<placements> {
                                                 ScaffoldMessenger.of(context)
                                                     .showSnackBar(
                                                         const SnackBar(
+                                                            duration: Duration(
+                                                                milliseconds:
+                                                                    400),
                                                             content: Text(
-                                                  "please wait data is loading.",
-                                                  style: TextStyle(
-                                                      color: Colors.white),
-                                                )));
+                                                              "please wait data is loading.",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white),
+                                                            )));
                                               }
                                             },
                                             child: Given_Rating(sub_rating))
@@ -850,6 +864,7 @@ class _private_switchState extends State<private_switch> {
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
+              duration: Duration(milliseconds: 400),
               content: Text(
                 "Students cannot create private sub topics",
                 style: TextStyle(color: Colors.white),
@@ -1017,6 +1032,7 @@ class _place_yearsState extends State<place_years> {
                                 Navigator.pop(context);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
+                                    duration: Duration(milliseconds: 400),
                                     content: Text(
                                       "Guests/Students are not allowed",
                                       style: TextStyle(color: Colors.white),
@@ -1028,6 +1044,7 @@ class _place_yearsState extends State<place_years> {
                                   Navigator.pop(context);
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
+                                      duration: Duration(milliseconds: 400),
                                       content: Text(
                                         " year cant be null",
                                         style: TextStyle(color: Colors.white),
@@ -1039,6 +1056,7 @@ class _place_yearsState extends State<place_years> {
                                   Navigator.pop(context);
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
+                                      duration: Duration(milliseconds: 400),
                                       content: Text(
                                         " sub_task was already present. plese check it out.",
                                         style: TextStyle(color: Colors.white),
@@ -1069,6 +1087,7 @@ class _place_yearsState extends State<place_years> {
                                   } else {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
+                                        duration: Duration(milliseconds: 400),
                                         content: Text(
                                           "error occured please try again",
                                           style: TextStyle(color: Colors.white),
@@ -1255,6 +1274,9 @@ class _place_yearsState extends State<place_years> {
                                                                         context)
                                                                     .showSnackBar(
                                                                   const SnackBar(
+                                                                    duration: Duration(
+                                                                        milliseconds:
+                                                                            400),
                                                                     content:
                                                                         Text(
                                                                       "Students are not allowed",
@@ -1273,6 +1295,9 @@ class _place_yearsState extends State<place_years> {
                                                                           context)
                                                                       .showSnackBar(
                                                                     const SnackBar(
+                                                                      duration: Duration(
+                                                                          milliseconds:
+                                                                              400),
                                                                       content:
                                                                           Text(
                                                                         "sub_name cant be null",
@@ -1397,10 +1422,11 @@ class _yearFilesState extends State<yearFiles> {
       setState(() {
         widget.cal_sub_files.remove(new_file);
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            duration: Duration(milliseconds: 400),
             content: Text(
-          "error occured please try again",
-          style: TextStyle(color: Colors.white),
-        )));
+              "error occured please try again",
+              style: TextStyle(color: Colors.white),
+            )));
       });
     }
   }
@@ -1521,6 +1547,7 @@ class _yearFilesState extends State<yearFiles> {
           if (widget.app_user.email == "guest@nitc.ac.in") {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
+                duration: Duration(milliseconds: 400),
                 content: Text(
                   "Guests are not allowed",
                   style: TextStyle(color: Colors.white),
@@ -1636,6 +1663,7 @@ class _yearFilesState extends State<yearFiles> {
         if (widget.app_user.email == "guest@nitc.ac.in") {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
+              duration: Duration(milliseconds: 400),
               content: Text(
                 "Guests are not allowed open files",
                 style: TextStyle(color: Colors.white),
@@ -1724,10 +1752,11 @@ class _yearFilesState extends State<yearFiles> {
                               } else {
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(const SnackBar(
+                                        duration: Duration(milliseconds: 400),
                                         content: Text(
-                                  "error occured please try again",
-                                  style: TextStyle(color: Colors.white),
-                                )));
+                                          "error occured please try again",
+                                          style: TextStyle(color: Colors.white),
+                                        )));
                               }
                             },
                             icon: const Icon(
@@ -1764,10 +1793,13 @@ class _yearFilesState extends State<yearFiles> {
                                     if (!error[0]) {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(
+                                              duration:
+                                                  Duration(milliseconds: 400),
                                               content: Text(
-                                        "edited successfully you ca go back and came again.",
-                                        style: TextStyle(color: Colors.white),
-                                      )));
+                                                "edited successfully you ca go back and came again.",
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              )));
                                       widget.cal_sub_files[index].uploaded =
                                           true;
                                       setState(() {
@@ -1778,10 +1810,13 @@ class _yearFilesState extends State<yearFiles> {
                                       setState(() {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(const SnackBar(
+                                                duration:
+                                                    Duration(milliseconds: 400),
                                                 content: Text(
-                                          "error occured please go back and come again.",
-                                          style: TextStyle(color: Colors.white),
-                                        )));
+                                                  "error occured please go back and come again.",
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                )));
                                       });
                                     }
                                   }

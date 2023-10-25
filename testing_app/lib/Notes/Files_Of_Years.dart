@@ -75,10 +75,11 @@ class _CalSubFilesState extends State<CalSubFiles> {
       setState(() {
         widget.cal_sub_files.remove(new_file);
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            duration: Duration(milliseconds: 400),
             content: Text(
-          "error occured please try again",
-          style: TextStyle(color: Colors.white),
-        )));
+              "error occured please try again",
+              style: TextStyle(color: Colors.white),
+            )));
       });
     }
   }
@@ -199,6 +200,7 @@ class _CalSubFilesState extends State<CalSubFiles> {
           if (widget.app_user.email == "guest@nitc.ac.in") {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
+                duration: Duration(milliseconds: 400),
                 content: Text(
                   "Guests are not allowed",
                   style: TextStyle(color: Colors.white),
@@ -314,6 +316,7 @@ class _CalSubFilesState extends State<CalSubFiles> {
         if (widget.app_user.email == "guest@nitc.ac.in") {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
+              duration: Duration(milliseconds: 400),
               content: Text(
                 "Guests are not allowed open files",
                 style: TextStyle(color: Colors.white),
@@ -392,10 +395,11 @@ class _CalSubFilesState extends State<CalSubFiles> {
                               if (widget.app_user.email == "guest@nitc.ac.in") {
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(const SnackBar(
+                                        duration: Duration(milliseconds: 400),
                                         content: Text(
-                                  "Guests are not allowed",
-                                  style: TextStyle(color: Colors.white),
-                                )));
+                                          "Guests are not allowed",
+                                          style: TextStyle(color: Colors.white),
+                                        )));
                               } else {
                                 bool error = await notes_servers()
                                     .delete_sub_files_list(widget
@@ -410,10 +414,12 @@ class _CalSubFilesState extends State<CalSubFiles> {
                                 } else {
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(const SnackBar(
+                                          duration: Duration(milliseconds: 400),
                                           content: Text(
-                                    "error occured please try again",
-                                    style: TextStyle(color: Colors.white),
-                                  )));
+                                            "error occured please try again",
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          )));
                                 }
                               }
                             },
@@ -450,10 +456,13 @@ class _CalSubFilesState extends State<CalSubFiles> {
                                     if (!error[0]) {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(
+                                              duration:
+                                                  Duration(milliseconds: 400),
                                               content: Text(
-                                        "edited successfully you ca go back and came again.",
-                                        style: TextStyle(color: Colors.white),
-                                      )));
+                                                "edited successfully you ca go back and came again.",
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              )));
                                       widget.cal_sub_files[index].uploaded =
                                           true;
                                       setState(() {
@@ -464,10 +473,13 @@ class _CalSubFilesState extends State<CalSubFiles> {
                                       setState(() {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(const SnackBar(
+                                                duration:
+                                                    Duration(milliseconds: 400),
                                                 content: Text(
-                                          "error occured please go back and come again.",
-                                          style: TextStyle(color: Colors.white),
-                                        )));
+                                                  "error occured please go back and come again.",
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                )));
                                       });
                                     }
                                   }

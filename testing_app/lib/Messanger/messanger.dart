@@ -286,6 +286,7 @@ class _messages_viewerState extends State<messages_viewer> {
     } else {
       if (intial != 'intial') {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            duration: Duration(milliseconds: 400),
             content: Text("all the feed was shown..",
                 style: TextStyle(color: Colors.white))));
       }
@@ -690,6 +691,8 @@ class _messages_viewerState extends State<messages_viewer> {
                                       "guest@nitc.ac.in") {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         const SnackBar(
+                                            duration:
+                                                Duration(milliseconds: 400),
                                             content: Text(
                                                 "guest cannot chat with others..",
                                                 style: TextStyle(

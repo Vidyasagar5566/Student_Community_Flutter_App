@@ -142,6 +142,8 @@ class _upload_notificationState extends State<upload_notification> {
                                         widget.app_user.isFaculty!) {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(
+                                              duration:
+                                                  Duration(milliseconds: 400),
                                               content: Text(
                                                   "Students/Guest cannot share notifications..",
                                                   style: TextStyle(
@@ -199,6 +201,8 @@ class _upload_notificationState extends State<upload_notification> {
                                           if (error) {
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(const SnackBar(
+                                                    duration: Duration(
+                                                        milliseconds: 400),
                                                     content: Text(
                                                         "Failed to send notifications",
                                                         style: TextStyle(
@@ -209,6 +213,8 @@ class _upload_notificationState extends State<upload_notification> {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(
                                             const SnackBar(
+                                              duration:
+                                                  Duration(milliseconds: 400),
                                               content: Text(
                                                 "Failed",
                                                 style: TextStyle(
@@ -221,6 +227,8 @@ class _upload_notificationState extends State<upload_notification> {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
                                           const SnackBar(
+                                            duration:
+                                                Duration(milliseconds: 400),
                                             content: Text(
                                               "Only Admin Can Share",
                                               style: TextStyle(
@@ -253,6 +261,7 @@ class _upload_notificationState extends State<upload_notification> {
                                   onPressed: () {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
+                                        duration: Duration(milliseconds: 400),
                                         content: Text(
                                           "Fill all the above details",
                                           style: TextStyle(color: Colors.white),

@@ -173,6 +173,8 @@ class _lst_found_uploadState extends State<lst_found_upload> {
                                         "guest@nitc.ac.in") {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(
+                                              duration:
+                                                  Duration(milliseconds: 400),
                                               content: Text(
                                                   "guest are not allowed to share lost/found..",
                                                   style: TextStyle(
@@ -225,6 +227,8 @@ class _lst_found_uploadState extends State<lst_found_upload> {
                                         if (res) {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(const SnackBar(
+                                                  duration: Duration(
+                                                      milliseconds: 400),
                                                   content: Text(
                                                       "Failed to send notifications",
                                                       style: TextStyle(
@@ -235,6 +239,8 @@ class _lst_found_uploadState extends State<lst_found_upload> {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
                                           const SnackBar(
+                                            duration:
+                                                Duration(milliseconds: 400),
                                             content: Text(
                                               "Failed",
                                               style: TextStyle(
@@ -267,6 +273,7 @@ class _lst_found_uploadState extends State<lst_found_upload> {
                                   onPressed: () {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
+                                        duration: Duration(milliseconds: 400),
                                         content: Text(
                                           "Fill all the details",
                                           style: TextStyle(color: Colors.white),
@@ -469,6 +476,8 @@ class _buy_sell_uploadState extends State<buy_sell_upload> {
                                         "guest@nitc.ac.in") {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(
+                                              duration:
+                                                  Duration(milliseconds: 400),
                                               content: Text(
                                                   "guest cannot share posts..",
                                                   style: TextStyle(
@@ -517,10 +526,12 @@ class _buy_sell_uploadState extends State<buy_sell_upload> {
                                             .send_notifications(
                                                 widget.app_user.email!,
                                                 title + " : " + description,
-                                                0);
+                                                1);
                                         if (error) {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(const SnackBar(
+                                                  duration: Duration(
+                                                      milliseconds: 400),
                                                   content: Text(
                                                       "Failed to send notifications",
                                                       style: TextStyle(
@@ -531,6 +542,8 @@ class _buy_sell_uploadState extends State<buy_sell_upload> {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
                                           const SnackBar(
+                                            duration:
+                                                Duration(milliseconds: 400),
                                             content: Text(
                                               "Failed",
                                               style: TextStyle(
@@ -563,6 +576,7 @@ class _buy_sell_uploadState extends State<buy_sell_upload> {
                                   onPressed: () {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
+                                        duration: Duration(milliseconds: 400),
                                         content: Text(
                                           "Fill all the details",
                                           style: TextStyle(color: Colors.white),

@@ -327,6 +327,8 @@ class _upload_eventwidgetState extends State<upload_eventwidget> {
                                         !widget.app_user.isAdmin!) {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(
+                                              duration:
+                                                  Duration(milliseconds: 400),
                                               content: Text(
                                                   "only admins can upload events..",
                                                   style: TextStyle(
@@ -380,10 +382,12 @@ class _upload_eventwidgetState extends State<upload_eventwidget> {
                                             .send_notifications(
                                                 "Event :  $title",
                                                 description,
-                                                3);
+                                                4);
                                         if (error) {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(const SnackBar(
+                                                  duration: Duration(
+                                                      milliseconds: 400),
                                                   content: Text(
                                                       "Failed to send notifications",
                                                       style: TextStyle(
@@ -394,6 +398,8 @@ class _upload_eventwidgetState extends State<upload_eventwidget> {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
                                           const SnackBar(
+                                            duration:
+                                                Duration(milliseconds: 400),
                                             content: Text(
                                               "Failed",
                                               style: TextStyle(
@@ -426,6 +432,7 @@ class _upload_eventwidgetState extends State<upload_eventwidget> {
                                   onPressed: () {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
+                                        duration: Duration(milliseconds: 400),
                                         content: Text(
                                           "Fill all the details",
                                           style: TextStyle(color: Colors.white),

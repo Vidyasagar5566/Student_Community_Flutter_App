@@ -345,6 +345,8 @@ class _upload_cal_eventState extends State<upload_cal_event> {
                                         !widget.app_user.isStudentAdmin!) {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(
+                                              duration:
+                                                  Duration(milliseconds: 400),
                                               content: Text(
                                                   "students/Guest cannot share any feedback/etc..",
                                                   style: TextStyle(
@@ -398,6 +400,8 @@ class _upload_cal_eventState extends State<upload_cal_event> {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
                                           const SnackBar(
+                                            duration:
+                                                Duration(milliseconds: 400),
                                             content: Text(
                                               "Failed",
                                               style: TextStyle(
@@ -430,6 +434,7 @@ class _upload_cal_eventState extends State<upload_cal_event> {
                                   onPressed: () {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
+                                        duration: Duration(milliseconds: 400),
                                         content: Text(
                                           "Fill all the details",
                                           style: TextStyle(color: Colors.white),

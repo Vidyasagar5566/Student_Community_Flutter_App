@@ -257,6 +257,8 @@ class _upload_alert_cmntState extends State<upload_alert_cmnt> {
                                         "guest@nitc.ac.in") {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(
+                                              duration:
+                                                  Duration(milliseconds: 400),
                                               content: Text(
                                                   "guest cannot share opinions..",
                                                   style: TextStyle(
@@ -303,6 +305,8 @@ class _upload_alert_cmntState extends State<upload_alert_cmnt> {
                                         Navigator.pop(context);
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(const SnackBar(
+                                                duration:
+                                                    Duration(milliseconds: 400),
                                                 content: Text(
                                                     "Uploaded successfully",
                                                     style: TextStyle(
@@ -318,10 +322,12 @@ class _upload_alert_cmntState extends State<upload_alert_cmnt> {
                                                     widget.alert.title! +
                                                     ' :' +
                                                     description,
-                                                4);
+                                                5);
                                         if (error) {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(const SnackBar(
+                                                  duration: Duration(
+                                                      milliseconds: 400),
                                                   content: Text(
                                                       "Failed to send notifications",
                                                       style: TextStyle(
@@ -331,6 +337,8 @@ class _upload_alert_cmntState extends State<upload_alert_cmnt> {
                                       } else {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(const SnackBar(
+                                                duration:
+                                                    Duration(milliseconds: 400),
                                                 content: Text("Failed",
                                                     style: TextStyle(
                                                         color: Colors.white))));
@@ -359,6 +367,7 @@ class _upload_alert_cmntState extends State<upload_alert_cmnt> {
                                   onPressed: () {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
+                                        duration: Duration(milliseconds: 400),
                                         content: Text(
                                           "Fill all the details",
                                           style: TextStyle(color: Colors.white),

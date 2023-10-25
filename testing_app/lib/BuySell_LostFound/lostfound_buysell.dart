@@ -834,7 +834,7 @@ class _lst_cmnt_pageState extends State<lst_cmnt_page> {
                                                   widget.lst.title! +
                                                   " : " +
                                                   comment,
-                                              5);
+                                              6);
                                       if (error1) {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(const SnackBar(

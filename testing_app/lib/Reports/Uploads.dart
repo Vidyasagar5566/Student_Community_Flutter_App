@@ -106,6 +106,8 @@ class _report_uploadState extends State<report_upload> {
                                         "guest@nitc.ac.in") {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(
+                                              duration:
+                                                  Duration(milliseconds: 400),
                                               content: Text(
                                                   "guest cannot report..",
                                                   style: TextStyle(
@@ -132,9 +134,9 @@ class _report_uploadState extends State<report_upload> {
                                                 ));
                                           });
                                       List<dynamic> error =
-                                          await report_servers()
-                                              .report_upload(description,
-                                                  widget.report_belongs);
+                                          await report_servers().report_upload(
+                                              description,
+                                              widget.report_belongs);
                                       Navigator.pop(context);
                                       if (!error[0]) {
                                         ScaffoldMessenger.of(context)
@@ -186,20 +188,26 @@ class _report_uploadState extends State<report_upload> {
                                                       Navigator.pop(context);
                                                       if (!error1) {
                                                         const SnackBar(
+                                                            duration: Duration(
+                                                                milliseconds:
+                                                                    400),
                                                             content: Text(
-                                                          "undo successfully",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white),
-                                                        ));
+                                                              "undo successfully",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white),
+                                                            ));
                                                       } else {
                                                         const SnackBar(
+                                                            duration: Duration(
+                                                                milliseconds:
+                                                                    400),
                                                             content: Text(
-                                                          "error occured!, dont worry no problem of submitting wrong contents,",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white),
-                                                        ));
+                                                              "error occured!, dont worry no problem of submitting wrong contents,",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white),
+                                                            ));
                                                       }
                                                     },
                                                     child: const Text(
@@ -215,6 +223,8 @@ class _report_uploadState extends State<report_upload> {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
                                           const SnackBar(
+                                            duration:
+                                                Duration(milliseconds: 400),
                                             content: Text(
                                               "Failed to report try again",
                                               style: TextStyle(
@@ -247,6 +257,7 @@ class _report_uploadState extends State<report_upload> {
                                   onPressed: () {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
+                                        duration: Duration(milliseconds: 400),
                                         content: Text(
                                           "Fill all the details",
                                           style: TextStyle(color: Colors.white),

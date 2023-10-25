@@ -294,6 +294,9 @@ class _single_postState extends State<single_post> {
                                                               context)
                                                           .showSnackBar(
                                                         const SnackBar(
+                                                          duration: Duration(
+                                                              milliseconds:
+                                                                  400),
                                                           content: Text(
                                                             "Failed",
                                                             style: TextStyle(

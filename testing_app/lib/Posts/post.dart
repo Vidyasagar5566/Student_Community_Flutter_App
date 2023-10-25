@@ -254,6 +254,7 @@ class _appBarPostListState extends State<appBarPostList> {
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          duration: Duration(milliseconds: 400),
           content: Text("all the feed was shown..",
               style: TextStyle(color: Colors.white))));
     }
@@ -463,6 +464,8 @@ class _single_postState extends State<single_post> {
                                           Navigator.pop(context);
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(const SnackBar(
+                                                  duration: Duration(
+                                                      milliseconds: 400),
                                                   content: Text(
                                                       "guest cannot hide contents..",
                                                       style: TextStyle(
@@ -506,6 +509,8 @@ class _single_postState extends State<single_post> {
                                                         false);
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(const SnackBar(
+                                              duration:
+                                                  Duration(milliseconds: 400),
                                               content: Text(
                                                   'This post will no longer in your feed',
                                                   style: TextStyle(
@@ -516,6 +521,8 @@ class _single_postState extends State<single_post> {
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(
                                               const SnackBar(
+                                                duration:
+                                                    Duration(milliseconds: 400),
                                                 content: Text(
                                                   'error occured try again',
                                                   style: TextStyle(
@@ -590,6 +597,7 @@ class _single_postState extends State<single_post> {
               onDoubleTap: () async {
                 if (widget.app_user.email == "guest@nitc.ac.in") {
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      duration: Duration(milliseconds: 400),
                       content: Text("guests are not allowed to like..",
                           style: TextStyle(color: Colors.white))));
                 } else {
@@ -732,6 +740,7 @@ class _single_postState extends State<single_post> {
                       if (widget.app_user.email == "guest@nitc.ac.in") {
                         ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
+                                duration: Duration(milliseconds: 400),
                                 content: Text(
                                     "guests are not allowed to like..",
                                     style: TextStyle(color: Colors.white))));
@@ -989,6 +998,8 @@ class _commentwidget1State extends State<commentwidget1> {
                                       "guest@nitc.ac.in") {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         const SnackBar(
+                                            duration:
+                                                Duration(milliseconds: 400),
                                             content: Text(
                                                 "guest cannot share comments..",
                                                 style: TextStyle(
@@ -1033,10 +1044,12 @@ class _commentwidget1State extends State<commentwidget1> {
                                                   widget.post.description! +
                                                   " : " +
                                                   comment,
-                                              5);
+                                              6);
                                       if (error1) {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(const SnackBar(
+                                                duration:
+                                                    Duration(milliseconds: 400),
                                                 content: Text(
                                                     "Failed to send notifications",
                                                     style: TextStyle(

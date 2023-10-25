@@ -283,6 +283,8 @@ class _upload_postwidgetState extends State<upload_postwidget> {
                                         "guest@nitc.ac.in") {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(
+                                              duration:
+                                                  Duration(milliseconds: 400),
                                               content: Text(
                                                   "guest cannot share posts..",
                                                   style: TextStyle(
@@ -334,9 +336,9 @@ class _upload_postwidgetState extends State<upload_postwidget> {
 
                                         await Future.delayed(
                                             Duration(seconds: 2));
-                                        int val = 6;
-                                        if (widget.app_user.isAdmin!) {
-                                          val = 1;
+                                        int val = 3;
+                                        if (widget.post_category == "student") {
+                                          val = 2;
                                         }
                                         bool error = await servers()
                                             .send_notifications(
@@ -348,6 +350,8 @@ class _upload_postwidgetState extends State<upload_postwidget> {
                                         if (error) {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(const SnackBar(
+                                                  duration: Duration(
+                                                      milliseconds: 400),
                                                   content: Text(
                                                       "Failed to send notifications",
                                                       style: TextStyle(
@@ -358,6 +362,8 @@ class _upload_postwidgetState extends State<upload_postwidget> {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
                                           const SnackBar(
+                                            duration:
+                                                Duration(milliseconds: 400),
                                             content: Text(
                                               "Failed",
                                               style: TextStyle(
@@ -390,6 +396,7 @@ class _upload_postwidgetState extends State<upload_postwidget> {
                                   onPressed: () {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
+                                        duration: Duration(milliseconds: 400),
                                         content: Text(
                                           "Fill all the details",
                                           style: TextStyle(color: Colors.white),

@@ -85,6 +85,7 @@ class _about_appState extends State<about_app> {
                           if (widget.app_user.email == "guest@nitc.ac.in") {
                             ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
+                                  duration: Duration(milliseconds: 400),
                                     content: Text(
                                         "guest cannot share any feedback/etc..",
                                         style:
@@ -177,7 +178,7 @@ class _about_appState extends State<about_app> {
                               );
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
+                                const SnackBar(duration: Duration(milliseconds: 400),
                                   content: Text(
                                     "error occured, please try again",
                                     style: TextStyle(color: Colors.white),
@@ -207,7 +208,7 @@ class _about_appState extends State<about_app> {
                         minWidth: double.infinity,
                         onPressed: () {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
+                            const SnackBar(duration: Duration(milliseconds: 400),
                               content: Text(
                                 "empty text cant be report,",
                                 style: TextStyle(color: Colors.white),

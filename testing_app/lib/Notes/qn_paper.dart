@@ -473,6 +473,7 @@ class _cal_subjectsState extends State<cal_subjects> {
                               Navigator.pop(context);
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
+                                  duration: Duration(milliseconds: 400),
                                   content: Text(
                                     "Students are not allowed",
                                     style: TextStyle(color: Colors.white),
@@ -484,6 +485,7 @@ class _cal_subjectsState extends State<cal_subjects> {
                                 Navigator.pop(context);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
+                                    duration: Duration(milliseconds: 400),
                                     content: Text(
                                       "sub name cant be null",
                                       style: TextStyle(color: Colors.white),
@@ -511,6 +513,7 @@ class _cal_subjectsState extends State<cal_subjects> {
                                 } else {
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(const SnackBar(
+                                        duration: Duration(milliseconds: 400),
                                           content: Text(
                                     "error occured please try again",
                                     style: TextStyle(color: Colors.white),
@@ -795,6 +798,7 @@ class _cal_subjectsState extends State<cal_subjects> {
                                                                               Navigator.pop(context);
                                                                               ScaffoldMessenger.of(context).showSnackBar(
                                                                                 const SnackBar(
+                                                                                  duration: Duration(milliseconds: 400),
                                                                                   content: Text(
                                                                                     "Students are not allowed",
                                                                                     style: TextStyle(color: Colors.white),
@@ -806,6 +810,7 @@ class _cal_subjectsState extends State<cal_subjects> {
                                                                                 Navigator.pop(context);
                                                                                 ScaffoldMessenger.of(context).showSnackBar(
                                                                                   const SnackBar(
+                                                                                    duration: Duration(milliseconds: 400),
                                                                                     content: Text(
                                                                                       "sub_name cant be null",
                                                                                       style: TextStyle(color: Colors.white),
@@ -822,6 +827,7 @@ class _cal_subjectsState extends State<cal_subjects> {
                                                                                   });
                                                                                 } else {
                                                                                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                                                                    duration: Duration(milliseconds: 400),
                                                                                       content: Text(
                                                                                     "error occured please try again",
                                                                                     style: TextStyle(color: Colors.white),

@@ -310,6 +310,8 @@ class _upload_alertowidgetState extends State<upload_alertowidget> {
                                         "guest@nitc.ac.in") {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(
+                                              duration:
+                                                  Duration(milliseconds: 400),
                                               content: Text(
                                                   "guest cannot share any feedback/etc..",
                                                   style: TextStyle(
@@ -366,27 +368,31 @@ class _upload_alertowidgetState extends State<upload_alertowidget> {
 
                                         await Future.delayed(
                                             Duration(seconds: 2));
-                                        /*           bool error = await servers()
+                                        bool error = await servers()
                                             .send_notifications(
                                                 widget.app_user.email!,
                                                 "Shared new isuues" +
                                                     title +
                                                     " : " +
                                                     description,
-                                                4);
+                                                5);
                                         if (error) {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(const SnackBar(
+                                                  duration: Duration(
+                                                      milliseconds: 400),
                                                   content: Text(
                                                       "Failed to send notifications",
                                                       style: TextStyle(
                                                           color:
                                                               Colors.white))));
-                                        }    */
+                                        }
                                       } else {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
                                           const SnackBar(
+                                            duration:
+                                                Duration(milliseconds: 400),
                                             content: Text(
                                               "Failed",
                                               style: TextStyle(
@@ -419,6 +425,7 @@ class _upload_alertowidgetState extends State<upload_alertowidget> {
                                   onPressed: () {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
+                                        duration: Duration(milliseconds: 400),
                                         content: Text(
                                           "Fill all the above details",
                                           style: TextStyle(color: Colors.white),

@@ -336,6 +336,7 @@ class _edit_festState extends State<edit_fest> {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         const SnackBar(
+                                          duration: Duration(milliseconds: 400),
                                           content: Text(
                                             "Failed",
                                             style:
@@ -367,6 +368,7 @@ class _edit_festState extends State<edit_fest> {
                                   onPressed: () {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
+                                        duration: Duration(milliseconds: 400),
                                         content: Text(
                                           "Anything cant be null",
                                           style: TextStyle(color: Colors.white),

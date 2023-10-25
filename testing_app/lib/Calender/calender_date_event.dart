@@ -303,6 +303,8 @@ class _calender_events_displayState extends State<calender_events_display> {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(
                                             const SnackBar(
+                                              duration:
+                                                  Duration(milliseconds: 400),
                                               content: Text(
                                                 "Guests are not allowed",
                                                 style: TextStyle(
@@ -317,6 +319,8 @@ class _calender_events_displayState extends State<calender_events_display> {
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(
                                               const SnackBar(
+                                                duration:
+                                                    Duration(milliseconds: 400),
                                                 content: Text(
                                                   "title or description cant be null",
                                                   style: TextStyle(
@@ -367,6 +371,8 @@ class _calender_events_displayState extends State<calender_events_display> {
                                                 ScaffoldMessenger.of(context)
                                                     .showSnackBar(
                                                   const SnackBar(
+                                                    duration: Duration(
+                                                        milliseconds: 400),
                                                     content: Text(
                                                       "error occured try again",
                                                       style: TextStyle(
@@ -578,6 +584,7 @@ class _calender_events_displayState extends State<calender_events_display> {
                                                   int.parse(cur_time[2])));
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
+                                      duration: Duration(milliseconds: 400),
                                       content: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
@@ -595,6 +602,8 @@ class _calender_events_displayState extends State<calender_events_display> {
                                                 ScaffoldMessenger.of(context)
                                                     .showSnackBar(
                                                   const SnackBar(
+                                                    duration: Duration(
+                                                        milliseconds: 400),
                                                     content: Text(
                                                       'undo successfully.',
                                                       style: TextStyle(
@@ -615,6 +624,7 @@ class _calender_events_displayState extends State<calender_events_display> {
                                 } catch (e) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
+                                      duration: Duration(milliseconds: 400),
                                       content: Text(
                                         'already added',
                                         style: TextStyle(color: Colors.white),
@@ -808,6 +818,9 @@ class _calender_events_displayState extends State<calender_events_display> {
                                                                       .of(context)
                                                                   .showSnackBar(
                                                                 const SnackBar(
+                                                                  duration: Duration(
+                                                                      milliseconds:
+                                                                          400),
                                                                   content: Text(
                                                                     "Guests are not allowed",
                                                                     style: TextStyle(
@@ -827,6 +840,9 @@ class _calender_events_displayState extends State<calender_events_display> {
                                                                         context)
                                                                     .showSnackBar(
                                                                   const SnackBar(
+                                                                    duration: Duration(
+                                                                        milliseconds:
+                                                                            400),
                                                                     content:
                                                                         Text(
                                                                       "title or description cant be null",
@@ -888,6 +904,8 @@ class _calender_events_displayState extends State<calender_events_display> {
                                                                             context)
                                                                         .showSnackBar(
                                                                       const SnackBar(
+                                                                        duration:
+                                                                            Duration(milliseconds: 400),
                                                                         content:
                                                                             Text(
                                                                           "error occured try again",
@@ -1022,6 +1040,7 @@ class _video_displayState extends State<video_display> {
                                   });
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
+                                      duration: Duration(milliseconds: 400),
                                       content: Text(
                                         'success',
                                         style: TextStyle(color: Colors.white),
@@ -1034,6 +1053,7 @@ class _video_displayState extends State<video_display> {
                                   });
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
+                                      duration: Duration(milliseconds: 400),
                                       content: Text(
                                         'failed',
                                         style: TextStyle(color: Colors.white),

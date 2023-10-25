@@ -327,6 +327,7 @@ class _edit_clubState extends State<edit_club> {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         const SnackBar(
+                                          
                                           duration: Duration(milliseconds: 500),
                                           content: Text(
                                             "Failed",
