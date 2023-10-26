@@ -258,7 +258,7 @@ class _UserProfileMarkState extends State<UserProfileMark> {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 10),
+                  const SizedBox(width: 9),
                   userMarkNotation(user.starMark!)
                 ],
               ),
@@ -352,7 +352,7 @@ class _smallUserProfileMarkState extends State<smallUserProfileMark> {
                             ),
                           ),
                         ),
-                        const SizedBox(width: 10),
+                        const SizedBox(width: 9),
                         smallUserMarkNotation(user.starMark!)
                       ],
                     ),
@@ -453,7 +453,7 @@ class _UserProfileMarkAdminState extends State<UserProfileMarkAdmin> {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 10),
+                  const SizedBox(width: 9),
                   userMarkNotation(category.starMark!)
                 ],
               ),
@@ -479,7 +479,7 @@ class _UserProfileMarkAdminState extends State<UserProfileMarkAdmin> {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 10),
+                  const SizedBox(width: 9),
                   userMarkNotation(widget.user.starMark!)
                 ],
               ),
@@ -561,7 +561,7 @@ class _UserMarkAdminState extends State<UserMarkAdmin> {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 10),
+                  const SizedBox(width: 9),
                   userMarkNotation(widget.category_post.starMark!)
                 ],
               ),
@@ -588,7 +588,7 @@ class _UserMarkAdminState extends State<UserMarkAdmin> {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 10),
+                  const SizedBox(width: 9),
                   userMarkNotation(widget.category_post.head.starMark!)
                 ],
               ),

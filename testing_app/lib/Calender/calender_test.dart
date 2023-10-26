@@ -29,7 +29,7 @@ List<Tab> get_tabs() {
     tabs.add(
       Tab(
         child: Container(
-          padding: EdgeInsets.all(15),
+          padding: EdgeInsets.all(6),
           child: Text(
             timetable_list[i],
             style: TextStyle(color: Colors.black),

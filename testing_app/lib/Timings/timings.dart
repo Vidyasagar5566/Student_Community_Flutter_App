@@ -13,7 +13,6 @@ List<String> weeks = [
   "TUES",
   "WED",
   "THU",
-  "THU",
   "FRI",
   "SAT",
   "SUN",
@@ -183,7 +182,7 @@ class _AcademicTimingsState extends State<AcademicTimings> {
   Widget build(BuildContext context) {
     return DefaultTabController(
       initialIndex: today_day.weekday - 1,
-      length: 8,
+      length: 7,
       child: Scaffold(
           appBar: AppBar(
               leading: const BackButton(

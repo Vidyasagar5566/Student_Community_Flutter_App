@@ -20,26 +20,32 @@ String utf8convert(String text) {
 List<Tab> tabs = [
   Tab(
     child: Container(
-      margin: EdgeInsets.all(15),
+      width: 60,
+      margin: EdgeInsets.all(6),
       child: const Text(
         "About",
+        textAlign: TextAlign.center,
         style: TextStyle(color: Colors.black),
       ),
     ),
   ),
   Tab(
       child: Container(
-    margin: EdgeInsets.all(15),
+    width: 85,
+    margin: EdgeInsets.all(6),
     child: const Text(
-      "Fest mem",
+      "Fest Mems",
+      textAlign: TextAlign.center,
       style: TextStyle(color: Colors.black),
     ),
   )),
   Tab(
     child: Container(
-      margin: EdgeInsets.all(15),
+      width: 85,
+      margin: EdgeInsets.all(6),
       child: const Text(
-        "Media files",
+        "Media Files",
+        textAlign: TextAlign.center,
         style: TextStyle(color: Colors.black),
       ),
     ),

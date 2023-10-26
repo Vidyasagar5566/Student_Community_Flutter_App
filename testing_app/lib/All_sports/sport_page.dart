@@ -20,33 +20,36 @@ String utf8convert(String text) {
 List<Tab> tabs = [
   Tab(
     child: Container(
-      margin: EdgeInsets.all(15),
+      width: 60,
       child: const Text(
         "About",
+        textAlign: TextAlign.center,
         style: TextStyle(color: Colors.black),
       ),
     ),
   ),
   Tab(
       child: Container(
-    margin: EdgeInsets.all(15),
+    width: 105,
     child: const Text(
       "Fest mem",
+      textAlign: TextAlign.center,
       style: TextStyle(color: Colors.black),
     ),
   )),
   Tab(
     child: Container(
-      margin: EdgeInsets.all(15),
+      width: 105,
       child: const Text(
         "Media files",
+        textAlign: TextAlign.center,
         style: TextStyle(color: Colors.black),
       ),
     ),
   ),
   Tab(
     child: Container(
-      margin: EdgeInsets.all(15),
+      width: 60,
       child: const Text(
         "Ground",
         style: TextStyle(color: Colors.black),
@@ -87,6 +90,7 @@ class _sportpagewidgetState extends State<sportpagewidget> {
             backgroundColor: Colors.white70,
           ),
           body: Container(
+              color: Colors.indigo,
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
               child: Column(

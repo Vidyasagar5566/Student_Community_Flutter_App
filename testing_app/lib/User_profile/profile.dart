@@ -593,7 +593,7 @@ class _userProfilePageState extends State<userProfilePage> {
                                       fontSize: 20)),
                               const SizedBox(height: 10),
                               Container(
-                                height: 150,
+                                height: width / 3,
                                 width: width / 3,
                                 decoration: const BoxDecoration(
                                     borderRadius:
@@ -630,7 +630,7 @@ class _userProfilePageState extends State<userProfilePage> {
                                       fontSize: 20)),
                               const SizedBox(height: 10),
                               Container(
-                                height: 150,
+                                height: width / 3,
                                 width: width / 3,
                                 decoration: const BoxDecoration(
                                     borderRadius:
@@ -674,7 +674,7 @@ class _userProfilePageState extends State<userProfilePage> {
                                       fontSize: 20)),
                               const SizedBox(height: 10),
                               Container(
-                                height: 150,
+                                height: width / 3,
                                 width: width / 3,
                                 decoration: const BoxDecoration(
                                     borderRadius:
@@ -744,7 +744,7 @@ class _userProfilePageState extends State<userProfilePage> {
                                       fontSize: 20)),
                               const SizedBox(height: 10),
                               Container(
-                                height: 150,
+                                height: width / 3,
                                 width: width / 3,
                                 decoration: const BoxDecoration(
                                     borderRadius:

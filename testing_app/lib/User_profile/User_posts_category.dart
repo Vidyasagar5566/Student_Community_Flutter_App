@@ -51,14 +51,16 @@ class _user_postswidgetState extends State<user_postswidget> {
           } else if (snapshot.hasData) {
             List<POST_LIST> post_list = snapshot.data;
             if (post_list.isEmpty) {
+              var height = MediaQuery.of(context).size.height;
               return Container(
-                  margin: EdgeInsets.all(30),
-                  padding: EdgeInsets.all(30),
-                  child: const Text("No posts yet",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 24,
-                          color: Colors.white)));
+                margin: EdgeInsets.only(top: height / 3),
+                child: const Center(
+                  child: Text(
+                    "No Posts Was Found",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+              );
             } else {
               user_posts = post_list;
               return user_postwidget1(post_list, widget.app_user);
@@ -88,30 +90,21 @@ class user_postwidget1 extends StatefulWidget {
 class _user_postwidget1State extends State<user_postwidget1> {
   @override
   Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height;
     List<POST_LIST> post_list = widget.post_list;
-    return widget.post_list.isEmpty
-        ? Container(
-            margin: EdgeInsets.only(top: height / 3),
-            child: const Center(
-              child: Text(
-                "No Posts Was Found",
-              ),
-            ))
-        : ListView.builder(
-            itemCount: post_list.length,
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            padding: EdgeInsets.only(bottom: 10),
-            itemBuilder: (BuildContext context, int index) {
-              POST_LIST post = user_posts[index];
+    return ListView.builder(
+        itemCount: post_list.length,
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        padding: EdgeInsets.only(bottom: 10),
+        itemBuilder: (BuildContext context, int index) {
+          POST_LIST post = user_posts[index];
 
-              var _convertedTimestamp = DateTime.parse(
-                  post.postedDate!); // Converting into [DateTime] object
-              String post_posted_date = GetTimeAgo.parse(_convertedTimestamp);
-              return single_post(
-                  post, widget.post_list, widget.app_user, post_posted_date);
-            });
+          var _convertedTimestamp = DateTime.parse(
+              post.postedDate!); // Converting into [DateTime] object
+          String post_posted_date = GetTimeAgo.parse(_convertedTimestamp);
+          return single_post(
+              post, widget.post_list, widget.app_user, post_posted_date);
+        });
   }
 }
 

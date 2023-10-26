@@ -341,6 +341,7 @@ class _sacProfilePageState extends State<sacProfilePage> {
   var event_list;
   @override
   Widget build(BuildContext context) {
+    var height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -360,7 +361,7 @@ class _sacProfilePageState extends State<sacProfilePage> {
                           ? activitieswidget1(event_list, widget.app_user,
                               widget.app_user.domain!, true)
                           : Container(
-                              margin: EdgeInsets.only(top: 100),
+                              margin: EdgeInsets.only(top: height / 3),
                               child:
                                   Center(child: CircularProgressIndicator())))
                   : SingleChildScrollView(
@@ -368,7 +369,7 @@ class _sacProfilePageState extends State<sacProfilePage> {
                           ? alertwidget1(thread_list, widget.app_user,
                               widget.app_user.domain!, true)
                           : Container(
-                              margin: EdgeInsets.only(top: 100),
+                              margin: EdgeInsets.only(top: height / 3),
                               child:
                                   Center(child: CircularProgressIndicator())),
                     )),
