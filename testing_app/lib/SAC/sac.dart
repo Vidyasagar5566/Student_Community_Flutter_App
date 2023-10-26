@@ -134,10 +134,11 @@ class _sacpagewidgetState extends State<sacpagewidget> {
           padding: EdgeInsets.all(8),
           decoration: BoxDecoration(boxShadow: const [
             BoxShadow(
-              color: Colors.grey,
-              offset: Offset(0, 2),
-              blurRadius: 6,
-              spreadRadius: 0,
+              color: Colors.grey, // Shadow color
+              offset:
+                  Offset(0, 1), // Offset of the shadow (horizontal, vertical)
+              blurRadius: 4, // Spread of the shadow
+              spreadRadius: 0, // Expansion of the shadow
             ),
           ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
           child: Column(

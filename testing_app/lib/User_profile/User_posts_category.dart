@@ -146,8 +146,14 @@ class _single_postState extends State<single_post> {
     return Container(
       margin: EdgeInsets.only(top: 10),
       padding: const EdgeInsets.only(top: 20, bottom: 20, left: 5, right: 5),
-      decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(20)),
+      decoration: BoxDecoration(boxShadow: const [
+        BoxShadow(
+          color: Colors.grey, // Shadow color
+          offset: Offset(0, 1), // Offset of the shadow (horizontal, vertical)
+          blurRadius: 4, // Spread of the shadow
+          spreadRadius: 0, // Expansion of the shadow
+        ),
+      ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

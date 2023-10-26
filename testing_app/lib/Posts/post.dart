@@ -85,11 +85,10 @@ class _PostWithappBarState extends State<PostWithappBar> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          centerTitle: true,
-          iconTheme: IconThemeData(color: Colors.white),
-          title: Text(widget.domain, style: TextStyle(color: Colors.white)),
-          backgroundColor: Colors.indigoAccent[700],
-        ),
+            centerTitle: true,
+            title: Text(widget.domain, style: TextStyle(color: Colors.black)),
+            backgroundColor: Colors.white //indigoAccent[700],
+            ),
         body: FutureBuilder<List<POST_LIST>>(
           future:
               post_servers().get_post_list(domains1[widget.domain]!, 0, true),

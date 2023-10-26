@@ -268,8 +268,8 @@ class _single_eventState extends State<single_event> {
             BoxShadow(
               color: Colors.grey, // Shadow color
               offset:
-                  Offset(0, 2), // Offset of the shadow (horizontal, vertical)
-              blurRadius: 6, // Spread of the shadow
+                  Offset(0, 1), // Offset of the shadow (horizontal, vertical)
+              blurRadius: 2, // Spread of the shadow
               spreadRadius: 0, // Expansion of the shadow
             ),
           ],

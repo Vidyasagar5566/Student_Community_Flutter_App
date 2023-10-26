@@ -211,10 +211,11 @@ class _all_lostwidget1State extends State<all_lostwidget1> {
               padding: EdgeInsets.all(10),
               decoration: BoxDecoration(boxShadow: const [
                 BoxShadow(
-                  color: Colors.grey,
-                  offset: Offset(0, 2),
-                  blurRadius: 6,
-                  spreadRadius: 0,
+                  color: Colors.grey, // Shadow color
+                  offset: Offset(
+                      0, 1), // Offset of the shadow (horizontal, vertical)
+                  blurRadius: 4, // Spread of the shadow
+                  spreadRadius: 0, // Expansion of the shadow
                 ),
               ], borderRadius: BorderRadius.circular(20), color: Colors.white),
               child: Column(

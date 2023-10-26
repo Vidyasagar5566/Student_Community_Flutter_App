@@ -170,7 +170,7 @@ class _qn_an_branchsState extends State<qn_an_branchs> {
                       indicator: BoxDecoration(
                           borderRadius:
                               BorderRadius.circular(20), // Creates border
-                          color: Colors.blueAccent),
+                          color: Colors.grey),
                       indicatorColor: Colors.white,
                       isScrollable: true,
                       labelColor: Colors.black,
