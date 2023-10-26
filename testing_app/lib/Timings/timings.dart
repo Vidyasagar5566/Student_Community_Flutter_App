@@ -38,7 +38,8 @@ class Acadamic_timings extends StatefulWidget {
   final String day;
   Username app_user;
   List<ACADEMIC_LIST> academic_list;
-  Acadamic_timings(this.day, this.app_user, this.academic_list);
+  String domain;
+  Acadamic_timings(this.day, this.app_user, this.academic_list, this.domain);
 
   @override
   State<Acadamic_timings> createState() => _Acadamic_timingsState();
@@ -107,7 +108,8 @@ class _Acadamic_timingsState extends State<Acadamic_timings> {
                 style:
                     const TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
               ),
-              widget.app_user.clzSacsHead!
+              widget.app_user.clzSacsHead! &&
+                      widget.app_user.domain == widget.domain
                   ? IconButton(
                       onPressed: () {
                         Navigator.of(context).push(
@@ -154,15 +156,15 @@ class _Acadamic_timingsState extends State<Acadamic_timings> {
 }
 
 List<Widget> tabscontent1(
-    List<ACADEMIC_LIST> academic_list, Username app_user) {
+    List<ACADEMIC_LIST> academic_list, Username app_user, String domain) {
   List<Widget> tabscontent1 = [
-    Acadamic_timings("MON", app_user, academic_list),
-    Acadamic_timings("TUE", app_user, academic_list),
-    Acadamic_timings("WED", app_user, academic_list),
-    Acadamic_timings("THU", app_user, academic_list),
-    Acadamic_timings("FRI", app_user, academic_list),
-    Acadamic_timings("SAT", app_user, academic_list),
-    Acadamic_timings("SUN", app_user, academic_list),
+    Acadamic_timings("MON", app_user, academic_list, domain),
+    Acadamic_timings("TUE", app_user, academic_list, domain),
+    Acadamic_timings("WED", app_user, academic_list, domain),
+    Acadamic_timings("THU", app_user, academic_list, domain),
+    Acadamic_timings("FRI", app_user, academic_list, domain),
+    Acadamic_timings("SAT", app_user, academic_list, domain),
+    Acadamic_timings("SUN", app_user, academic_list, domain),
   ];
   return tabscontent1;
 }
@@ -245,7 +247,8 @@ class _AcademicTimingsState extends State<AcademicTimings> {
               );
             },
           ),
-          floatingActionButton: widget.app_user.clzSacsHead!
+          floatingActionButton: widget.app_user.clzSacsHead! &&
+                  domains1[widget.domain] == widget.app_user.domain
               ? FloatingActionButton(
                   onPressed: () async {
                     Navigator.of(context).push(
@@ -267,7 +270,8 @@ class _AcademicTimingsState extends State<AcademicTimings> {
 
   Widget _buildListView(List<ACADEMIC_LIST> academic_list) {
     return Container(
-        child:
-            TabBarView(children: tabscontent1(academic_list, widget.app_user)));
+        child: TabBarView(
+            children: tabscontent1(
+                academic_list, widget.app_user, domains1[widget.domain]!)));
   }
 }
