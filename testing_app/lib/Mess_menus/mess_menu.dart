@@ -185,8 +185,8 @@ class _all_mess_menuState extends State<all_mess_menu> {
               child: Column(
                 children: [
                   const SizedBox(height: 5),
-                  Center(
-                    child: const Text(
+                  const Center(
+                    child: Text(
                       "Snacks",
                       style:
                           TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
