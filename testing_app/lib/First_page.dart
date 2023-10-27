@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:testing_app/Activities/Models.dart';
@@ -674,11 +676,11 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
                     children: [
                       Container(
                         width: div, //post.profile_pic
-                        child: const CircleAvatar(
+                        child: CircleAvatar(
                             backgroundImage: AssetImage("images/fest.png")),
                       ),
-                      const SizedBox(height: 10),
-                      const Text("Fests",
+                      SizedBox(height: 10),
+                      Text("Fests",
                           style: TextStyle(
                               fontWeight: FontWeight.w900, fontSize: 15))
                     ],
