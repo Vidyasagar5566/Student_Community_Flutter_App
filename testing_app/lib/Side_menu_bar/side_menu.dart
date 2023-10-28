@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:testing_app/User_profile/Models.dart';
@@ -86,6 +87,7 @@ class _NavDrawerState extends State<NavDrawer> {
             title: const Text('Logout'),
             onTap: () async {
               await GoogleSignIn().signOut();
+              FirebaseAuth.instance.signOut();
               LocalStorage storage = LocalStorage("usertoken");
               storage.clear();
 

@@ -40,6 +40,28 @@
   <script src="flutter.js" defer></script>
 </head>
 <body>
+  <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
+  <!-- Firebase Auth SDK -->
+  <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-auth.js"></script>
+  <script>
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCUyxxufqAAv8keeLMretLSI7BLU94nu60",
+    authDomain: "instabook-sign-in.firebaseapp.com",
+    projectId: "instabook-sign-in",
+    storageBucket: "instabook-sign-in.appspot.com",
+    messagingSenderId: "755978359706",
+    appId: "1:755978359706:web:1fb4aa52166717c633a023",
+    measurementId: "G-TG4KZM573Z"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig)
+  </script>
+
+<script src="main.dart.js" type="application/javascript"></script>
+
+
   <script>
     window.addEventListener('load', function(ev) {
       // Download main.dart.js
