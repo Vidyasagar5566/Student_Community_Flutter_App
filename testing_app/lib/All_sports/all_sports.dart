@@ -187,14 +187,14 @@ class _Allsportpagewidget1State extends State<Allsportpagewidget1> {
               }
             },
             child: Container(
-                margin: EdgeInsets.all(5),
+                margin: EdgeInsets.all(8),
                 padding: EdgeInsets.all(5),
                 decoration: BoxDecoration(boxShadow: const [
                   BoxShadow(
                     color: Colors.grey, // Shadow color
                     offset: Offset(
-                        0, 2), // Offset of the shadow (horizontal, vertical)
-                    blurRadius: 6, // Spread of the shadow
+                        0, 1), // Offset of the shadow (horizontal, vertical)
+                    blurRadius: 4, // Spread of the shadow
                     spreadRadius: 0, // Expansion of the shadow
                   ),
                 ], color: Colors.white, borderRadius: BorderRadius.circular(8)),

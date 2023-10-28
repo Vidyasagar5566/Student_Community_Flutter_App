@@ -102,10 +102,11 @@ class _all_mess_menuState extends State<all_mess_menu> {
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(boxShadow: const [
                 BoxShadow(
-                  color: Colors.grey,
-                  offset: Offset(0, 2),
-                  blurRadius: 6,
-                  spreadRadius: 0,
+                  color: Colors.grey, // Shadow color
+                  offset: Offset(
+                      0, 1), // Offset of the shadow (horizontal, vertical)
+                  blurRadius: 4, // Spread of the shadow
+                  spreadRadius: 0, // Expansion of the shadow
                 ),
               ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
               width: 300,
@@ -138,10 +139,11 @@ class _all_mess_menuState extends State<all_mess_menu> {
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(boxShadow: const [
                 BoxShadow(
-                  color: Colors.grey,
-                  offset: Offset(0, 2),
-                  blurRadius: 6,
-                  spreadRadius: 0,
+                  color: Colors.grey, // Shadow color
+                  offset: Offset(
+                      0, 1), // Offset of the shadow (horizontal, vertical)
+                  blurRadius: 4, // Spread of the shadow
+                  spreadRadius: 0, // Expansion of the shadow
                 ),
               ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
               width: 300,
@@ -174,10 +176,11 @@ class _all_mess_menuState extends State<all_mess_menu> {
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(boxShadow: const [
                 BoxShadow(
-                  color: Colors.grey,
-                  offset: Offset(0, 2),
-                  blurRadius: 6,
-                  spreadRadius: 0,
+                  color: Colors.grey, // Shadow color
+                  offset: Offset(
+                      0, 1), // Offset of the shadow (horizontal, vertical)
+                  blurRadius: 4, // Spread of the shadow
+                  spreadRadius: 0, // Expansion of the shadow
                 ),
               ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
               width: 300,
@@ -210,10 +213,11 @@ class _all_mess_menuState extends State<all_mess_menu> {
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(boxShadow: const [
                 BoxShadow(
-                  color: Colors.grey,
-                  offset: Offset(0, 2),
-                  blurRadius: 6,
-                  spreadRadius: 0,
+                  color: Colors.grey, // Shadow color
+                  offset: Offset(
+                      0, 1), // Offset of the shadow (horizontal, vertical)
+                  blurRadius: 4, // Spread of the shadow
+                  spreadRadius: 0, // Expansion of the shadow
                 ),
               ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
               width: 300,
@@ -307,7 +311,7 @@ class _messMenuState extends State<messMenu> {
                 bottom: TabBar(
                   indicator: BoxDecoration(
                       borderRadius: BorderRadius.circular(21), // Creates border
-                      color: Colors.blueAccent),
+                      color: Colors.grey),
                   indicatorColor: Colors.grey,
                   isScrollable: true,
                   labelColor: Colors.black,

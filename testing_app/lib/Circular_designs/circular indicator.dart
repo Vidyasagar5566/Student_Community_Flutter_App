@@ -82,14 +82,13 @@ class _crclr_ind_appbarState extends State<crclr_ind_appbar> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        iconTheme: IconThemeData(color: Colors.black),
-        title: const Text(
-          "InstaBook",
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Colors.indigoAccent[700],
-      ),
+          centerTitle: true,
+          title: const Text(
+            "InstaBook",
+            style: TextStyle(color: Colors.black),
+          ),
+          backgroundColor: Colors.white //indigoAccent[700],
+          ),
       body: Container(
         color: Colors.white,
         child: Column(
@@ -126,14 +125,14 @@ class _crclr_ind_errorState extends State<crclr_ind_error> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        iconTheme: IconThemeData(color: Colors.black),
-        title: const Text(
-          "InstaBook",
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Colors.indigoAccent[700],
-      ),
+          centerTitle: true,
+          iconTheme: IconThemeData(color: Colors.blue),
+          title: const Text(
+            "InstaBook",
+            style: TextStyle(color: Colors.black),
+          ),
+          backgroundColor: Colors.white //indigoAccent[700],
+          ),
       body: Container(
         color: Colors.white,
         child: Column(
@@ -197,14 +196,13 @@ class _check_connect_errorState extends State<check_connect_error> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        iconTheme: IconThemeData(color: Colors.black),
-        title: const Text(
-          "InstaBook",
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Colors.indigoAccent[700],
-      ),
+          centerTitle: true,
+          title: const Text(
+            "InstaBook",
+            style: TextStyle(color: Colors.black),
+          ),
+          backgroundColor: Colors.white //indigoAccent[700],
+          ),
       body: Container(
         color: Colors.white,
         child: Column(
@@ -240,14 +238,13 @@ class _networl_errorState extends State<networl_error> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          centerTitle: true,
-          iconTheme: IconThemeData(color: Colors.black),
-          title: const Text(
-            "InstaBook",
-            style: TextStyle(color: Colors.black),
-          ),
-          backgroundColor: Colors.indigoAccent[700],
-        ),
+            centerTitle: true,
+            title: const Text(
+              "InstaBook",
+              style: TextStyle(color: Colors.black),
+            ),
+            backgroundColor: Colors.white //indigoAccent[700],
+            ),
         body: Container(
           margin: const EdgeInsets.all(15),
           child: const Center(

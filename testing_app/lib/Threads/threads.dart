@@ -269,11 +269,11 @@ class _alert_commentwidgetState extends State<alert_commentwidget> {
       appBar: AppBar(
           centerTitle: false,
           leading: const BackButton(
-            color: Colors.white, // <-- SEE HERE
+            color: Colors.blue, // <-- SEE HERE
           ),
           title: Text(
             "Opinions (" + alert_cmnt_list.length.toString() + ")",
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.black),
           ),
           actions: [
             widget.app_user.email == widget.alert.username!.email!
@@ -349,7 +349,8 @@ class _alert_commentwidgetState extends State<alert_commentwidget> {
                   )
                 : Container()
           ],
-          backgroundColor: Colors.indigoAccent[700]),
+          backgroundColor: Colors.white //indigoAccent[700],
+          ),
       body: Container(
         color: Colors.white,
         margin: const EdgeInsets.all(10),

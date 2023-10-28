@@ -564,13 +564,15 @@ class _userProfilePageState extends State<userProfilePage> {
                                 builder: (BuildContext context) {
                               return Scaffold(
                                   appBar: AppBar(
-                                    centerTitle: true,
-                                    iconTheme:
-                                        IconThemeData(color: Colors.white),
-                                    title: Text(widget.profile_user.username!,
-                                        style: TextStyle(color: Colors.white)),
-                                    backgroundColor: Colors.indigoAccent[700],
-                                  ),
+                                      centerTitle: true,
+                                      iconTheme:
+                                          IconThemeData(color: Colors.blue),
+                                      title: Text(widget.profile_user.username!,
+                                          style:
+                                              TextStyle(color: Colors.black)),
+                                      backgroundColor:
+                                          Colors.white //indigoAccent[700],
+                                      ),
                                   body: SingleChildScrollView(
                                     child: user_postswidget(
                                         widget.profile_user.email!,

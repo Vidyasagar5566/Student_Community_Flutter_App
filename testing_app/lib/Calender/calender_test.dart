@@ -78,7 +78,6 @@ class _calenderState extends State<calender> {
             return calenderwidget1(widget.app_user, widget.domain);
           }
         }
-        print(widget.domain);
         return const Center(
           child: CircularProgressIndicator(),
         );
@@ -171,7 +170,7 @@ class _calenderwidget1State extends State<calenderwidget1> {
                       indicatorSize: TabBarIndicatorSize.label,
                       indicator: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
-                          color: Colors.blueAccent),
+                          color: Colors.grey),
                       tabs: get_tabs(),
                     ))),
             Expanded(
@@ -319,8 +318,8 @@ class _allEventsState extends State<allEvents> {
                           boxShadow: [
                             BoxShadow(
                               color: Colors.grey,
-                              offset: Offset(0, 2),
-                              blurRadius: 6,
+                              offset: Offset(0, 1),
+                              blurRadius: 2,
                               spreadRadius: 0,
                             ),
                           ],

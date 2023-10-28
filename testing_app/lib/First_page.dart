@@ -1,3 +1,4 @@
+// ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:testing_app/Activities/Models.dart';
@@ -157,25 +158,13 @@ class _firstpageState extends State<firstpage> {
                   centerTitle: false,
                   title: ((widget.app_user.email == "shiva@gmail.com" ||
                           widget.app_user.email == "guest@gmail.com")
-                      ? Text(
+                      ? const Text(
                           "InstaBook",
-                          style: TextStyle(
-                              color: widget.curr_index == 0 ||
-                                      widget.curr_index == 1 ||
-                                      widget.curr_index == 3 ||
-                                      widget.curr_index == 4
-                                  ? Colors.white //black
-                                  : Colors.black),
+                          style: TextStyle(color: Colors.black),
                         )
                       : Text(
                           domains[widget.app_user.domain!]!,
-                          style: TextStyle(
-                              color: widget.curr_index == 0 ||
-                                      widget.curr_index == 1 ||
-                                      widget.curr_index == 3 ||
-                                      widget.curr_index == 4
-                                  ? Colors.white //black
-                                  : Colors.black),
+                          style: const TextStyle(color: Colors.black),
                         )),
                   actions: [
                     widget.curr_index == 3 ||
@@ -185,14 +174,8 @@ class _firstpageState extends State<firstpage> {
                             value: domain,
                             underline: Container(),
                             elevation: 0,
-                            iconEnabledColor:
-                                widget.curr_index == 1 || widget.curr_index == 3
-                                    ? Colors.white
-                                    : Colors.black,
-                            iconDisabledColor:
-                                widget.curr_index == 1 || widget.curr_index == 3
-                                    ? Colors.white
-                                    : Colors.black,
+                            iconEnabledColor: Colors.black,
+                            iconDisabledColor: Colors.black,
                             items: domains_list
                                 .map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
@@ -234,15 +217,10 @@ class _firstpageState extends State<firstpage> {
                                         return notifications(widget.app_user);
                                       }));
                                     },
-                                    icon: Icon(
+                                    icon: const Icon(
                                       Icons.notifications_on_rounded,
                                       size: 30,
-                                      color: widget.curr_index == 0 ||
-                                              widget.curr_index == 1 ||
-                                              widget.curr_index == 3 ||
-                                              widget.curr_index == 4
-                                          ? Colors.white //indigo
-                                          : Colors.indigo,
+                                      color: Colors.indigo,
                                     ),
                                   ),
                                   Positioned(
@@ -278,25 +256,15 @@ class _firstpageState extends State<firstpage> {
                                       return messanger(widget.app_user);
                                     }));
                                   },
-                                  icon: FaIcon(
+                                  icon: const FaIcon(
                                     FontAwesomeIcons.facebookMessenger,
                                     size: 26,
-                                    color: widget.curr_index == 0 ||
-                                            widget.curr_index == 1 ||
-                                            widget.curr_index == 3 ||
-                                            widget.curr_index == 4
-                                        ? Colors.white //indigo
-                                        : Colors.indigo,
+                                    color: Colors.indigo,
                                   ))
                             ],
                           )
                   ],
-                  backgroundColor: widget.curr_index == 0 ||
-                          widget.curr_index == 1 ||
-                          widget.curr_index == 3 ||
-                          widget.curr_index == 4
-                      ? Colors.indigoAccent[700] //white
-                      : Colors.white,
+                  backgroundColor: Colors.white,
                 ),
           drawer: NavDrawer(widget.app_user),
           body: widget.curr_index == 0
@@ -404,7 +372,7 @@ class _firstpageState extends State<firstpage> {
                   label: const Text("Today Events",
                       style: TextStyle(
                           color: Colors.white, fontWeight: FontWeight.bold)),
-                  style: ElevatedButton.styleFrom(primary: Colors.deepPurple),
+                  style: ElevatedButton.styleFrom(primary: Colors.grey),
                 )
               : FloatingActionButton(
                   onPressed: () {
@@ -684,7 +652,8 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
                       Container(
                         width: div, //post.profile_pic
                         child: const CircleAvatar(
-                            backgroundImage: AssetImage("images/sport.jpg")),
+                            backgroundImage:
+                                AssetImage("images/sport.jpg")), //sport.jpg
                       ),
                       const SizedBox(height: 10),
                       const Text("Sports",
@@ -706,11 +675,11 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
                     children: [
                       Container(
                         width: div, //post.profile_pic
-                        child: const CircleAvatar(
+                        child: CircleAvatar(
                             backgroundImage: AssetImage("images/fest.png")),
                       ),
-                      const SizedBox(height: 10),
-                      const Text("Fests",
+                      SizedBox(height: 10),
+                      Text("Fests",
                           style: TextStyle(
                               fontWeight: FontWeight.w900, fontSize: 15))
                     ],
