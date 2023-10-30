@@ -56,36 +56,55 @@ class _messangerState extends State<messanger> {
           ],
           backgroundColor: Colors.white70,
         ),
-        body: FutureBuilder<List<Messanger>>(
-          future: messanger_servers().get_messages_list(),
-          builder: (ctx, AsyncSnapshot snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              if (snapshot.hasError) {
-                return Center(
-                  child: Text(
-                    '${snapshot.error} occurred',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                );
-              } else if (snapshot.hasData) {
-                List<Messanger> last_user_messages = snapshot.data;
-                if (last_user_messages.isEmpty) {
-                  return Container(
-                      margin: EdgeInsets.all(30),
-                      padding: EdgeInsets.all(30),
-                      child: const Text("No conversations started yet",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 24)));
-                } else {
-                  return messanger1(widget.app_user, last_user_messages);
-                }
-              }
-            }
-            return const Center(
-              child: CircularProgressIndicator(),
+        body: Container());
+  }
+}
+
+class fireBaseEmail_to_backendUsers extends StatefulWidget {
+  Username app_user;
+  List<String> user_emails;
+  fireBaseEmail_to_backendUsers(this.app_user, this.user_emails);
+
+  @override
+  State<fireBaseEmail_to_backendUsers> createState() =>
+      _fireBaseEmail_to_backendUsersState();
+}
+
+class _fireBaseEmail_to_backendUsersState
+    extends State<fireBaseEmail_to_backendUsers> {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<SmallUsername>>(
+      future: messanger_servers()
+          .get_fire_base_emails_to_backend_users(widget.user_emails.join('#')),
+      builder: (ctx, AsyncSnapshot snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                '${snapshot.error} occurred',
+                style: TextStyle(fontSize: 18),
+              ),
             );
-          },
-        ));
+          } else if (snapshot.hasData) {
+            List<SmallUsername> last_user_messages = snapshot.data;
+            if (last_user_messages.isEmpty) {
+              return Container(
+                  margin: EdgeInsets.all(30),
+                  padding: EdgeInsets.all(30),
+                  child: const Text("No conversations started yet",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500, fontSize: 24)));
+            } else {
+              return Container(); //messanger1(widget.app_user, last_user_messages);
+            }
+          }
+        }
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
   }
 }
 
