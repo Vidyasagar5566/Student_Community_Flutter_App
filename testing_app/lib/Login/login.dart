@@ -7,7 +7,6 @@ import '/first_page.dart';
 import '../Circular_designs/cure_clip.dart';
 import '../Circular_designs/circular indicator.dart';
 //import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-import 'dart:io';
 import 'Servers.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -55,7 +54,7 @@ Future<String> signInWithGoogle() async {
 
     final User currentUser = _auth.currentUser!;
     assert(user.uid == currentUser.uid);
-
+   
     print('signInWithGoogle succeeded: $user');
 
     return google_email;
