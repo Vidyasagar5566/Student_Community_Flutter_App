@@ -62,8 +62,10 @@ class _messangerState extends State<messanger> {
 
 class fireBaseEmail_to_backendUsers extends StatefulWidget {
   Username app_user;
+  List<String> user_messages;
   List<String> user_emails;
-  fireBaseEmail_to_backendUsers(this.app_user, this.user_emails);
+  fireBaseEmail_to_backendUsers(
+      this.app_user, this.user_messages, this.user_emails);
 
   @override
   State<fireBaseEmail_to_backendUsers> createState() =>
@@ -110,8 +112,9 @@ class _fireBaseEmail_to_backendUsersState
 
 class messanger1 extends StatefulWidget {
   Username app_user;
-  List<Messanger> last_user_messages;
-  messanger1(this.app_user, this.last_user_messages);
+  List<String> user_messages;
+  List<SmallUsername> message_users;
+  messanger1(this.app_user, this.user_messages, this.message_users);
 
   @override
   State<messanger1> createState() => _messanger1State();
@@ -140,20 +143,15 @@ class _messanger1State extends State<messanger1> {
               ]),
               const SizedBox(height: 10),
               ListView.builder(
-                  itemCount: widget.last_user_messages.length,
+                  itemCount: widget.message_users.length,
                   shrinkWrap: true,
                   padding: EdgeInsets.zero,
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (BuildContext context, int index) {
-                    var message_user;
-                    Messanger message = widget.last_user_messages[index];
-                    if (widget.app_user.email ==
-                        message.messageReceiver!.email) {
-                      message_user = message.messageSender!;
-                    } else {
-                      message_user = message.messageReceiver!;
-                    }
-                    return _buildLoadingScreen(message_user, message, index);
+                    SmallUsername message_user = widget.message_users[index];
+
+                    return _buildLoadingScreen(
+                        message_user, widget.user_messages[index], index);
                   }),
             ],
           )),
@@ -161,7 +159,7 @@ class _messanger1State extends State<messanger1> {
   }
 
   Widget _buildLoadingScreen(
-      SmallUsername message_user, Messanger message, int index) {
+      SmallUsername message_user, String user_message, int index) {
     var width = MediaQuery.of(context).size.width;
 
     return GestureDetector(
@@ -239,20 +237,12 @@ class _messanger1State extends State<messanger1> {
                   const SizedBox(
                     height: 10,
                   ),
-                  message.messageSeen!
-                      ? Text(
-                          "message : " + utf8convert(message.messageBody!),
-                          softWrap: false, maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          //post.description,,
-                        )
-                      : Text(
-                          "message : " + utf8convert(message.messageBody!),
-                          softWrap: false, maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(fontWeight: FontWeight.w600),
-                          //post.description,,
-                        )
+                  Text(
+                    "message : " + utf8convert(user_message),
+                    softWrap: false, maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    //post.description,,
+                  )
                 ],
               )),
         ],
