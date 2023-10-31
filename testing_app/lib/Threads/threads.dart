@@ -3,7 +3,7 @@ import 'Servers.dart';
 import 'Models.dart';
 import '/User_profile/Models.dart';
 import 'package:get_time_ago/get_time_ago.dart';
-import '/Files_disply_download/pdf_videos_images.dart';
+import '/Files_disply_download/Pdf_Videos_Images.dart';
 import '/First_page.dart';
 import 'Upload_opinion.dart';
 import '/User_Star_Mark/User_Profile_Star_Mark.dart';

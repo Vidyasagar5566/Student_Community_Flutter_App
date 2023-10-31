@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '/User_profile/Models.dart';
-import '/Fcm_Notif_Domains/servers.dart';
-import '/User_profile/profile.dart';
+import '/Fcm_Notif_Domains/Servers.dart';
+import '/User_profile/Profile.dart';
 import '/Login/Servers.dart';
 import '/All_clubs/Club_page.dart';
 import '/All_fests/Fest_page.dart';

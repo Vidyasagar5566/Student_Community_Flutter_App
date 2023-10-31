@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '/Fcm_Notif_Domains/servers.dart';
+import '/Fcm_Notif_Domains/Servers.dart';
 import 'Servers.dart';
 import 'Models.dart';
 import '/User_profile/Models.dart';
@@ -104,7 +104,6 @@ class _messanger1State extends State<messanger1> {
     return SingleChildScrollView(
       child: Container(
           color: Colors.white,
-          //height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           child: Column(
             children: [

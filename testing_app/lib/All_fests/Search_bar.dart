@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '/User_profile/Models.dart';
-import '/Fcm_Notif_Domains/servers.dart';
-import '/first_page.dart';
+import '/Fcm_Notif_Domains/Servers.dart';
+import '/First_page.dart';
 import 'Servers.dart';
 import '/User_Star_Mark/User_Profile_Star_Mark.dart';
 import 'Uploads.dart';
