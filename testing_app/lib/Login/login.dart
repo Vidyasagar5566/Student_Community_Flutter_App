@@ -65,7 +65,8 @@ Future<String> signInWithGoogle() async {
 
 Future<void> signOutGoogle() async {
   await GoogleSignIn().signOut();
-  FirebaseAuth.instance.signOut();
+
+  print("User Signed Out");
 }
 
 class loginpage extends StatefulWidget {

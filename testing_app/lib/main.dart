@@ -19,10 +19,12 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 //Main Function which run by default
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
 
+  await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
   FirebaseMessaging messaging = FirebaseMessaging.instance;
+
   NotificationSettings settings = await messaging.requestPermission(
     alert: true,
     announcement: false,
@@ -32,13 +34,13 @@ void main() async {
     provisional: false,
     sound: true,
   );
+
   NotificationService().initNotification();
+  tz.initializeTimeZones();
+
   FirebaseMessaging.onMessageOpenedApp.listen((remoteMessage) {
     Map<String, dynamic> message = remoteMessage.data;
   });
-
-  tz.initializeTimeZones();
-
   runApp(const MyApp());
 }
 
