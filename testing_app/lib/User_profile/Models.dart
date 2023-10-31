@@ -1,5 +1,6 @@
 class Username {
   int? id;
+  String? userUuid;
   String? password;
   bool? isSuperuser;
   String? firstName;
@@ -56,6 +57,7 @@ class Username {
   Map<String, dynamic>? clzSacs;
   Username(
       {this.id,
+      this.userUuid,
       this.password,
       this.isSuperuser,
       this.firstName,
@@ -112,6 +114,7 @@ class Username {
 
   Username.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    userUuid = json['user_uuid'];
     password = json['password'];
     isSuperuser = json['is_superuser'];
     firstName = json['first_name'];
@@ -170,6 +173,7 @@ class Username {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
+    data['user_uuid'] = this.userUuid;
     data['password'] = this.password;
     data['is_superuser'] = this.isSuperuser;
     data['first_name'] = this.firstName;
@@ -228,6 +232,7 @@ class Username {
 }
 
 class SmallUsername {
+  String? userUuid;
   String? username;
   String? domain;
   String? email;
@@ -243,7 +248,8 @@ class SmallUsername {
   bool? isTeamMem = false;
 
   SmallUsername(
-      {this.username,
+      {this.userUuid,
+      this.username,
       this.domain,
       this.email,
       this.rollNum,
@@ -257,6 +263,7 @@ class SmallUsername {
       this.isTeamMem});
 
   SmallUsername.fromJson(Map<String, dynamic> json) {
+    userUuid = json['user_uuid'];
     username = json['username'];
     domain = json['domain'];
     email = json['email'];
@@ -272,6 +279,7 @@ class SmallUsername {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['user_uuid'] = this.userUuid;
     data['username'] = this.username;
     data['domain'] = this.domain;
     data['email'] = this.email;
@@ -289,6 +297,7 @@ class SmallUsername {
 
 SmallUsername user_min(Username app_user) {
   SmallUsername min_user = SmallUsername();
+  min_user.userUuid = app_user.userUuid;
   min_user.username = app_user.username;
   min_user.domain = app_user.domain;
   min_user.email = app_user.email;
