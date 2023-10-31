@@ -130,3 +130,54 @@ class Messager {
     return data;
   }
 }
+
+class ChatRoomModel {
+  String? chatroomid;
+  Map<String, dynamic>? participants;
+  String? lastmessage;
+
+  ChatRoomModel({this.chatroomid, this.participants, this.lastmessage});
+
+  ChatRoomModel.FromMap(Map<String, dynamic> map) {
+    chatroomid = map["chatroomid"];
+    participants = map["participants"];
+    lastmessage = map["lastmessage"];
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      "chatroomid": chatroomid,
+      "participants": participants,
+      "lastmessage": lastmessage
+    };
+  }
+}
+
+class MessageModel {
+  String? messageid;
+  String? sender;
+  String? text;
+  DateTime? createdon;
+  bool? seen;
+
+  MessageModel(
+      {this.messageid, this.sender, this.text, this.createdon, this.seen});
+
+  MessageModel.FromMap(Map<String, dynamic> map) {
+    messageid = map["messageid"];
+    sender = map["sender"];
+    text = map["text"];
+    createdon = map["createdon"].toDate();
+    seen = map["seen"];
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      "messageid": messageid,
+      "sender": sender,
+      "text": text,
+      "createdon": createdon,
+      "seen": seen
+    };
+  }
+}
