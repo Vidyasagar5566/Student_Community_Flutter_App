@@ -1,12 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import '../main.dart';
 import 'Servers.dart';
 import 'Models.dart';
 import '/User_profile/Models.dart';
 import '/Fcm_Notif_Domains/servers.dart';
 import 'chatroom.dart';
-import 'messanger.dart';
 import '/First_page.dart';
 import '/User_Star_Mark/User_Profile_Star_Mark.dart';
 import '/Login/Servers.dart';
@@ -202,7 +200,7 @@ class _user_list_displayState extends State<user_list_display> {
     );
   }
 
-  Future<ChatRoomModel?> getChatRoomModel(SmallUsername targetuser)async{
+  Future<ChatRoomModel?> getChatRoomModel(SmallUsername targetuser) async {
     ChatRoomModel? chatroom1;
     QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection("chatrooms")
@@ -214,10 +212,9 @@ class _user_list_displayState extends State<user_list_display> {
     if (snapshot.docs.length > 0) {
       var docData = snapshot.docs[0].data();
       ChatRoomModel existingchatroom =
-      ChatRoomModel.FromMap(docData as Map<String, dynamic>);
+          ChatRoomModel.FromMap(docData as Map<String, dynamic>);
       chatroom1 = existingchatroom;
-    }
-    else{
+    } else {
       ChatRoomModel newchatroom = ChatRoomModel(
           chatroomid: uuid.v1(),
           lastmessage: "",
@@ -233,20 +230,17 @@ class _user_list_displayState extends State<user_list_display> {
     }
     return chatroom1;
   }
+
   Widget _buildLoadingScreen(SmallUsername search_user, int index) {
     var width = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () async {
-        ChatRoomModel? chatroomModel =
-        await getChatRoomModel(search_user);
+        ChatRoomModel? chatroomModel = await getChatRoomModel(search_user);
         if (chatroomModel != null) {
           Navigator.pop(context);
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) {
-                return chatroom(
-                    targetuser: search_user,
-                    chatRoom: chatroomModel);
-              }));
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return chatroom(targetuser: search_user, chatRoom: chatroomModel);
+          }));
         }
       },
       child: Container(
