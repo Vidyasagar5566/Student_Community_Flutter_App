@@ -89,8 +89,6 @@ class _messangerState extends State<messanger> {
   }
 }
 
-
-
 class messanger1 extends StatefulWidget {
   Username app_user;
   List<Messanger> last_user_messages;
