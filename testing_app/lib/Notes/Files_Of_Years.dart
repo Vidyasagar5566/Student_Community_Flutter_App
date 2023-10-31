@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
-import '../circular_designs/cure_clip.dart';
+import '../Circular_designs/Cure_clip.dart';
 import 'Servers.dart';
 import 'Models.dart';
-import 'package:testing_app/User_profile/Models.dart';
+import '/User_profile/Models.dart';
 import '../Files_disply_download/pdf_videos_images.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';

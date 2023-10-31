@@ -1,8 +1,8 @@
-import 'package:testing_app/User_profile/Models.dart';
-import 'package:testing_app/SAC/Models.dart';
-import 'package:testing_app/All_clubs/Models.dart';
-import 'package:testing_app/All_sports/Models.dart';
-import 'package:testing_app/All_fests/Models.dart';
+import '/User_profile/Models.dart';
+import '/SAC/Models.dart';
+import '/All_clubs/Models.dart';
+import '/All_sports/Models.dart';
+import '/All_fests/Models.dart';
 
 class EVENT_LIST {
   int? id;

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'calender_test.dart';
+import '/Calender/Calender.dart';
 import 'Servers.dart';
 import 'Models.dart';
-import 'package:testing_app/User_profile/Models.dart';
-import 'package:testing_app/Activities/Activities.dart';
+import '/User_profile/Models.dart';
+import '/Activities/Activities.dart';
 import 'dart:io';
 import '../Files_disply_download/pdf_videos_images.dart';
 import 'package:dio/dio.dart';
@@ -11,9 +11,9 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:video_player/video_player.dart';
 import 'dart:async';
-import 'package:testing_app/circular_designs/cure_clip.dart';
+import '/circular_designs/cure_clip.dart';
 import '../App_notifications/Remainder_nitifications.dart';
-import 'package:testing_app/Activities/Models.dart';
+import '/Activities/Models.dart';
 
 class calender_events_display extends StatefulWidget {
   Username app_user;

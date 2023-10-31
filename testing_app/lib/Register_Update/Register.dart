@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:testing_app/Register_Update/Servers.dart';
+import '/Register_Update/Servers.dart';
 import '/User_profile/Models.dart';
-import '/first_page.dart';
+import '/First_page.dart';
 
 List<String> courses = ["B.Tech", "M.Tech", "PG", "Phd", "MBA"];
 List<String> branches = [

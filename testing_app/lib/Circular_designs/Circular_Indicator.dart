@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../first_page.dart';
-import 'package:testing_app/Login/login.dart';
+import '/First_page.dart';
+import '../Login/Login.dart';
 
 class crclr_ind extends StatefulWidget {
   const crclr_ind({super.key});

@@ -7,7 +7,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 //import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'App_notifications/Remainder_nitifications.dart';
-import 'Login/login.dart';
+import 'Login/Login.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(message) async {
   await Firebase.initializeApp();
@@ -18,6 +18,7 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 
 //Main Function which run by default
 void main() async {
+  print('object');
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp();

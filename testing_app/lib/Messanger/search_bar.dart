@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'Servers.dart';
 import 'Models.dart';
-import 'package:testing_app/User_profile/Models.dart';
-import 'package:testing_app/Fcm_Notif_Domains/servers.dart';
-import 'messanger.dart';
-import 'package:testing_app/first_page.dart';
-import 'package:testing_app/User_Star_Mark/User_Profile_Star_Mark.dart';
-import 'package:testing_app/Login/Servers.dart';
-import 'package:testing_app/User_profile/profile.dart';
+import '/User_profile/Models.dart';
+import '/Fcm_Notif_Domains/Servers.dart';
+import 'Messanger.dart';
+import '/First_page.dart';
+import '/User_Star_Mark/User_Profile_Star_Mark.dart';
+import '/Login/Servers.dart';
+import '/User_profile/profile.dart';
 
 class search_bar extends StatefulWidget {
   Username app_user;

@@ -1,15 +1,14 @@
 import 'package:http/http.dart' as http;
 import 'package:localstorage/localstorage.dart';
-import 'package:testing_app/All_clubs/Models.dart';
-import 'package:testing_app/All_fests/Models.dart';
-import 'package:testing_app/All_sports/Models.dart';
-import 'package:testing_app/All_sports/Uploads.dart';
-import 'package:testing_app/SAC/Models.dart';
+import '/All_clubs/Models.dart';
+import '/All_fests/Models.dart';
+import '/All_sports/Models.dart';
+import '/SAC/Models.dart';
 import '/Posts/Models.dart';
 import 'dart:convert';
 import 'dart:io';
-import 'package:testing_app/Threads/Models.dart';
-import 'package:testing_app/Activities/Models.dart';
+import '/Threads/Models.dart';
+import '/Activities/Models.dart';
 
 class user_profile_servers {
   LocalStorage storage = LocalStorage("usertoken");

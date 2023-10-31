@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:testing_app/Fcm_Notif_Domains/servers.dart';
+import '/Fcm_Notif_Domains/Servers.dart';
 import 'Servers.dart';
 import 'Models.dart';
-import 'package:testing_app/User_profile/Models.dart';
+import '/User_profile/Models.dart';
 import 'dart:convert' show utf8;
 import 'dart:io';
 import 'package:video_player/video_player.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import '../Files_disply_download/pdf_videos_images.dart';
-import 'search_bar.dart';
+import 'Search_bar.dart';
 import 'Single_message.dart';
-import 'package:testing_app/User_Star_Mark/User_Profile_Star_Mark.dart';
+import '/User_Star_Mark/User_Profile_Star_Mark.dart';
 
 String utf8convert(String text) {
   List<int> bytes = text.toString().codeUnits;
@@ -127,7 +127,6 @@ class _messanger1State extends State<messanger1> {
     return SingleChildScrollView(
       child: Container(
           color: Colors.white,
-          //height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           child: Column(
             children: [

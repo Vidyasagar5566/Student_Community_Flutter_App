@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../circular_designs/cure_clip.dart';
+import '../Circular_designs/Cure_clip.dart';
 import 'Servers.dart';
 import 'Models.dart';
-import 'package:testing_app/User_profile/Models.dart';
+import '/User_profile/Models.dart';
 import 'Files_Of_Years.dart';
 import 'dart:convert' show utf8;
 

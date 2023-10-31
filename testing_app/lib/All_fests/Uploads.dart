@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:testing_app/User_profile/Models.dart';
+import '/User_profile/Models.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'Servers.dart';
-import '/first_page.dart';
+import '/First_page.dart';
 import 'Search_bar.dart';
 
 Map<String, dynamic> team_mems = {};

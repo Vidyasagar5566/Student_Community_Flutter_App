@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:testing_app/User_profile/Models.dart';
-import 'package:testing_app/Reports/Servers.dart';
+import '/User_profile/Models.dart';
+import '/Reports/Servers.dart';
 
 class about_app extends StatefulWidget {
   Username app_user;

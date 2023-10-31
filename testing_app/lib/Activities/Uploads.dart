@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
-import '/first_page.dart';
-import 'package:testing_app/User_profile/Models.dart';
-import 'package:testing_app/Fcm_Notif_Domains/servers.dart';
+import '/First_page.dart';
+import '/User_profile/Models.dart';
+import '/Fcm_Notif_Domains/Servers.dart';
 import 'Servers.dart';
 import 'package:video_player/video_player.dart';
 import 'package:intl/intl.dart';
-import 'package:testing_app/Circular_designs/cure_clip.dart';
+import '../Circular_designs/Cure_clip.dart';
 
 class upload_eventwidget extends StatefulWidget {
   Username app_user;

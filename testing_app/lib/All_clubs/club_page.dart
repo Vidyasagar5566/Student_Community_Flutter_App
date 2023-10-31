@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'Models.dart';
-import 'package:testing_app/User_profile/Models.dart';
-import 'package:testing_app/User_profile/Servers.dart';
-import 'package:testing_app/Fcm_Notif_Domains/servers.dart';
+import '/User_profile/Models.dart';
+import '/User_profile/Servers.dart';
 import 'Servers.dart';
 //import 'package:link_text/link_text.dart';
-import 'package:testing_app/User_Star_Mark/User_Profile_Star_Mark.dart';
+import '/User_Star_Mark/User_Profile_Star_Mark.dart';
 import 'dart:convert' show utf8;
-import 'package:testing_app/User_profile/User_posts_category.dart';
-import 'package:testing_app/Threads/Threads.dart';
-import 'package:testing_app/Activities/Activities.dart';
+import '/User_profile/User_posts_category.dart';
+import '/Threads/Threads.dart';
+import '/Activities/Activities.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 Map<String, dynamic> team_mems = {};

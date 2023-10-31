@@ -1,17 +1,17 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import '../first_page.dart';
+import '/First_page.dart';
 import 'Servers.dart';
 import 'Models.dart';
-import 'package:testing_app/User_profile/Models.dart';
-import 'package:testing_app/Fcm_Notif_Domains/servers.dart';
+import '/User_profile/Models.dart';
+import '/Fcm_Notif_Domains/Servers.dart';
 import 'dart:convert' show utf8;
 import 'Uploads.dart';
-import 'package:testing_app/Reports/Uploads.dart';
+import '/Reports/Uploads.dart';
 import 'package:get_time_ago/get_time_ago.dart';
 import 'dart:io';
-import '../Files_disply_download/pdf_videos_images.dart';
-import 'package:testing_app/User_Star_Mark/User_Profile_Star_Mark.dart';
+import '/Files_disply_download/pdf_videos_images.dart';
+import '/User_Star_Mark/User_Profile_Star_Mark.dart';
 
 String utf8convert(String text) {
   List<int> bytes = text.toString().codeUnits;
