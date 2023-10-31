@@ -89,8 +89,8 @@ class _fireBaseEmail_to_backendUsersState
               ),
             );
           } else if (snapshot.hasData) {
-            List<SmallUsername> last_user_messages = snapshot.data;
-            if (last_user_messages.isEmpty) {
+            List<SmallUsername> message_users = snapshot.data;
+            if (message_users.isEmpty) {
               return Container(
                   margin: EdgeInsets.all(30),
                   padding: EdgeInsets.all(30),
@@ -98,7 +98,8 @@ class _fireBaseEmail_to_backendUsersState
                       style: TextStyle(
                           fontWeight: FontWeight.w500, fontSize: 24)));
             } else {
-              return Container(); //messanger1(widget.app_user, last_user_messages);
+              return messanger1(
+                  widget.app_user, widget.user_messages, message_users);
             }
           }
         }
