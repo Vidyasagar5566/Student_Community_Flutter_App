@@ -148,4 +148,34 @@ class messanger_servers {
       return temp;
     }
   }
+
+
+  // CLUB__MEMBS
+
+  Future<List<SmallUsername>> get_fire_base_uuids_to_backend_users(
+      String user_uuids) async {
+    try {
+      var token = storage.getItem('token');
+      Map<String, String> queryParameters = {
+        'user_uuids': user_uuids,
+      };
+      String queryString = Uri(queryParameters: queryParameters).query;
+      String finalUrl = "$base_url/user_messanger1?$queryString";
+      var url = Uri.parse(finalUrl);
+      http.Response response = await http.put(url, headers: {
+        'Authorization': 'token $token',
+        "Content-Type": "application/json",
+      });
+      var data = json.decode(response.body) as List;
+      List<SmallUsername> temp = [];
+      data.forEach((element) {
+        SmallUsername post = SmallUsername.fromJson(element);
+        temp.add(post);
+      });
+      return temp;
+    } catch (e) {
+      List<SmallUsername> temp = [];
+      return temp;
+    }
+  }
 }

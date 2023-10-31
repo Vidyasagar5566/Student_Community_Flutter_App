@@ -1,9 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import '../main.dart';
 import 'Servers.dart';
 import 'Models.dart';
 import '/User_profile/Models.dart';
-import '/Fcm_Notif_Domains/Servers.dart';
-import 'Messanger.dart';
+import '/Fcm_Notif_Domains/servers.dart';
+import 'chatroom.dart';
+import 'messanger.dart';
 import '/First_page.dart';
 import '/User_Star_Mark/User_Profile_Star_Mark.dart';
 import '/Login/Servers.dart';
@@ -199,14 +202,52 @@ class _user_list_displayState extends State<user_list_display> {
     );
   }
 
+  Future<ChatRoomModel?> getChatRoomModel(SmallUsername targetuser)async{
+    ChatRoomModel? chatroom1;
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection("chatrooms")
+        .where("participants.${widget.app_user.userUuid}", isEqualTo: true)
+        .where("participants.${targetuser.userUuid}", isEqualTo: true)
+        .get();
+    print(widget.app_user.email.toString());
+    print(targetuser.email.toString());
+    if (snapshot.docs.length > 0) {
+      var docData = snapshot.docs[0].data();
+      ChatRoomModel existingchatroom =
+      ChatRoomModel.FromMap(docData as Map<String, dynamic>);
+      chatroom1 = existingchatroom;
+    }
+    else{
+      ChatRoomModel newchatroom = ChatRoomModel(
+          chatroomid: uuid.v1(),
+          lastmessage: "",
+          participants: {
+            widget.app_user.userUuid.toString(): true,
+            targetuser.userUuid.toString(): true
+          });
+      await FirebaseFirestore.instance
+          .collection("chatrooms")
+          .doc(newchatroom.chatroomid)
+          .set(newchatroom.toMap());
+      chatroom1 = newchatroom;
+    }
+    return chatroom1;
+  }
   Widget _buildLoadingScreen(SmallUsername search_user, int index) {
     var width = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () async {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (BuildContext context) {
-          return messages_viewer(widget.app_user, search_user, []);
-        }));
+        ChatRoomModel? chatroomModel =
+        await getChatRoomModel(search_user);
+        if (chatroomModel != null) {
+          Navigator.pop(context);
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) {
+                return chatroom(
+                    targetuser: search_user,
+                    chatRoom: chatroomModel);
+              }));
+        }
       },
       child: Container(
           margin: EdgeInsets.all(2),
