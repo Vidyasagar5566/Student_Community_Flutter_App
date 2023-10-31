@@ -11,7 +11,7 @@ import 'package:video_player/video_player.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:file_picker/file_picker.dart';
 import '../Files_disply_download/pdf_videos_images.dart';
-import '/Circular_designs/cure_clip.dart';
+import '../Circular_designs/Cure_clip.dart';
 
 class upload_postwidget extends StatefulWidget {
   Username app_user;
