@@ -1,4 +1,4 @@
-import 'package:testing_app/User_profile/Models.dart';
+import '/User_profile/Models.dart';
 
 class CALENDER_EVENT {
   int? id;

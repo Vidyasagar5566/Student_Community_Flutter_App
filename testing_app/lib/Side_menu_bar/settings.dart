@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'Servers.dart';
-import 'package:testing_app/User_profile/Models.dart';
+import '/User_profile/Models.dart';
 import 'Models.dart';
 
 class notif_settings extends StatefulWidget {

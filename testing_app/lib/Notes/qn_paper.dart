@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import '../circular_designs/cure_clip.dart';
 import 'Servers.dart';
 import 'Models.dart';
-import 'package:testing_app/User_profile/Models.dart';
+import '/User_profile/Models.dart';
 import 'dart:convert' show utf8;
 import 'Years_Of_Subjects.dart';
-import 'package:testing_app/Fcm_Notif_Domains/servers.dart';
+import '/Fcm_Notif_Domains/servers.dart';
 
 String utf8convert(String text) {
   List<int> bytes = text.toString().codeUnits;

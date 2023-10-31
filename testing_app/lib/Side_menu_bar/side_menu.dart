@@ -1,13 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
-import 'package:testing_app/User_profile/Models.dart';
-import 'package:testing_app/User_profile/Edit_profile.dart';
+import '/Side_menu_bar/Settings.dart';
+import '/User_profile/Models.dart';
+import '/User_profile/Edit_profile.dart';
 import 'About_app.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import '../side_menu_bar/settings.dart';
-import 'package:testing_app/Login/login.dart';
-import 'package:testing_app/User_Star_Mark/Edit_User_star_mark.dart';
+
+import '/Login/login.dart';
+import '/User_Star_Mark/Edit_User_star_mark.dart';
 
 class NavDrawer extends StatefulWidget {
   Username app_user;

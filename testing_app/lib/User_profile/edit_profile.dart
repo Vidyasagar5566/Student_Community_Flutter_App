@@ -3,8 +3,8 @@ import 'Servers.dart';
 import 'Models.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import '/first_page.dart';
-import 'package:testing_app/Register_Update/Register.dart';
+import '/First_page.dart';
+import '/Register_Update/Register.dart';
 
 class editprofile extends StatefulWidget {
   Username app_user;

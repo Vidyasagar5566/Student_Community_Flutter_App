@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:testing_app/All_clubs/Servers.dart';
-import 'package:testing_app/User_profile/Models.dart';
-import 'package:testing_app/Fcm_Notif_Domains/servers.dart';
-import 'package:testing_app/first_page.dart';
-import 'package:testing_app/User_Star_Mark/User_Profile_Star_Mark.dart';
+import '/All_clubs/Servers.dart';
+import '/User_profile/Models.dart';
+import '/Fcm_Notif_Domains/servers.dart';
+import '/First_page.dart';
+import '/User_Star_Mark/User_Profile_Star_Mark.dart';
 import 'Club_page.dart';
 
 class club_search_bar extends StatefulWidget {

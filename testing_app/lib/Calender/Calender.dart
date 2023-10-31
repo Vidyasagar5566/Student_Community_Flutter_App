@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'Calender_date_event.dart';
+import 'Calender_Date_Event.dart';
 import 'Servers.dart';
 import 'Models.dart';
-import 'package:testing_app/User_profile/Models.dart';
-import 'package:testing_app/Activities/Models.dart';
+import '/User_profile/Models.dart';
+import '/Activities/Models.dart';
 //import 'package:intl/intl.dart';
 
 List<String> all_dates = [];

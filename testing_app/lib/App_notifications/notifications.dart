@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'Servers.dart';
 import 'Models.dart';
-import 'package:testing_app/User_profile/Models.dart';
+import '/User_profile/Models.dart';
 //import 'package:link_text/link_text.dart';
 import 'dart:convert' show utf8;
-import 'package:testing_app/Fcm_Notif_Domains/servers.dart';
-import 'package:testing_app/User_Star_Mark/User_Profile_Star_Mark.dart';
+import '/Fcm_Notif_Domains/servers.dart';
+import '/User_Star_Mark/User_Profile_Star_Mark.dart';
 
 String utf8convert(String text) {
   List<int> bytes = text.toString().codeUnits;

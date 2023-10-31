@@ -1,7 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'package:localstorage/localstorage.dart';
 import 'dart:convert';
-import 'package:testing_app/User_profile/Models.dart';
+import '/User_profile/Models.dart';
 import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';

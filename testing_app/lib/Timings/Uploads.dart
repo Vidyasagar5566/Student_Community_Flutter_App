@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:testing_app/Timings/Servers.dart';
-import 'package:testing_app/User_profile/Models.dart';
-import 'package:testing_app/First_page.dart';
+import '/Timings/Servers.dart';
+import '/User_profile/Models.dart';
+import '/First_page.dart';
 
 class academic_create extends StatefulWidget {
   int id;

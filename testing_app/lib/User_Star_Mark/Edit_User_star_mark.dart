@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:testing_app/User_profile/Models.dart';
-import 'package:testing_app/Fcm_Notif_Domains/servers.dart';
-import 'package:testing_app/Messanger/Servers.dart';
-import 'package:testing_app/First_page.dart';
+import '/User_profile/Models.dart';
+import '/Fcm_Notif_Domains/servers.dart';
+import '/Messanger/Servers.dart';
+import '/First_page.dart';
 import 'Servers.dart';
 import 'User_Profile_Star_Mark.dart';
 
