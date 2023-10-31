@@ -8,7 +8,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'App_notifications/remainder_nitifications.dart';
 import 'Login/login.dart';
-
+import 'package:uuid/uuid.dart';
+var uuid = Uuid();
 Future<void> _firebaseMessagingBackgroundHandler(message) async {
   await Firebase.initializeApp();
 }

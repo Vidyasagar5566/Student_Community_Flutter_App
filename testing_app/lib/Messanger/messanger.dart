@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import '../First_page.dart';
 import '/Fcm_Notif_Domains/servers.dart';
 import 'Servers.dart';
 import 'Models.dart';
@@ -9,6 +11,7 @@ import 'package:video_player/video_player.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import '../Files_disply_download/pdf_videos_images.dart';
+import 'chatroom.dart';
 import 'search_bar.dart';
 import 'Single_message.dart';
 import '/User_Star_Mark/User_Profile_Star_Mark.dart';
@@ -27,6 +30,8 @@ class messanger extends StatefulWidget {
 }
 
 class _messangerState extends State<messanger> {
+  List<String> uids = [];
+  List<String> messages = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +61,67 @@ class _messangerState extends State<messanger> {
           ],
           backgroundColor: Colors.white70,
         ),
-        body: fireBaseUuids_to_backendUsers(widget.app_user, [], []));
+        body: StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection("chatrooms")
+                .where("participants.${app_user.userUuid}", isEqualTo: true)
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.active) {
+                if (snapshot.hasData) {
+                  QuerySnapshot chatroomsnapshot = snapshot.data as QuerySnapshot;
+                  for (int index = 0;
+                  index < chatroomsnapshot.docs.length;
+                  index = index + 1) {
+                    ChatRoomModel chatroommodel = ChatRoomModel.FromMap(
+                        chatroomsnapshot.docs[index].data()
+                        as Map<String, dynamic>);
+                    String? lastmessage = chatroommodel.lastmessage;
+                    Map<String, dynamic> participants =
+                    chatroommodel.participants!;
+                    List<String> participantKeys = participants.keys.toList();
+                    participantKeys.remove(app_user.userUuid);
+                    int flag = 0;
+                    int uidIndex = 0;
+                    for (int i = 0; i < uids.length; i++) {
+                      if (uids[i] == participantKeys[0]) {
+                        flag = 1;
+                        uidIndex = i;
+                      }
+                    }
+                    if (flag == 0) {
+                      uids.add(participantKeys[0]);
+                      if (lastmessage != null) {
+                        messages.add(lastmessage);
+                      }
+                    } else {
+                      if (lastmessage != null) {
+                        messages[uidIndex] = lastmessage;
+                      }
+                    }
+                  }
+
+                  for (int i = 0; i < uids.length; i++) {
+                    print("Uid" + uids[i]);
+                  }
+
+                  return fireBaseUuids_to_backendUsers(
+                      widget.app_user, messages, uids);
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text(snapshot.error.toString()),
+                  );
+                } else {
+                  return Center(
+                    child: Text("No Conversations Yet!"),
+                  );
+                }
+              } else {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            }));
   }
 }
 
@@ -158,16 +223,33 @@ class _messanger1State extends State<messanger1> {
     );
   }
 
+  Future<ChatRoomModel?> getChatRoomModel(SmallUsername targetuser) async {
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection("chatrooms")
+        .where("participants.${widget.app_user.userUuid}", isEqualTo: true)
+        .where("participants.${targetuser.userUuid}", isEqualTo: true)
+        .get();
+    var docData = snapshot.docs[0].data();
+    ChatRoomModel? existingchatroom =
+    ChatRoomModel.FromMap(docData as Map<String, dynamic>);
+
+    return existingchatroom;
+  }
+
   Widget _buildLoadingScreen(
       SmallUsername message_user, String user_message, int index) {
     var width = MediaQuery.of(context).size.width;
 
     return GestureDetector(
-      onTap: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (BuildContext context) {
-          return messages_viewer(widget.app_user, message_user, []);
-        }));
+      onTap: () async {
+        ChatRoomModel? chatroomModel = await getChatRoomModel(message_user);
+        if (chatroomModel != null) {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return chatroom(
+                targetuser: message_user,
+                chatRoom: chatroomModel);
+          }));
+        }
       },
       child: Column(
         children: [
