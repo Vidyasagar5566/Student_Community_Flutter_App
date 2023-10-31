@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import '/SAC/Uploads.dart';
-import '/Threads/Threads.dart';
+import '/Threads/threads.dart';
 import 'Servers.dart';
 import '/User_profile/Models.dart';
-import '/Fcm_Notif_Domains/Servers.dart';
+import '/Fcm_Notif_Domains/servers.dart';
 import 'Models.dart';
 import '/Reports/Uploads.dart';
 import 'Search_bar.dart';
 import '/User_Star_Mark/User_Profile_Star_Mark.dart';
 import '/User_profile/Servers.dart';
 import '/User_profile/User_posts_category.dart';
-import '/Activities/Activities.dart';
+import '/Activities/activities.dart';
 
 class sacpagewidget extends StatefulWidget {
   Username app_user;

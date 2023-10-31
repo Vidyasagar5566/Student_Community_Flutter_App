@@ -8,8 +8,8 @@ import 'Servers.dart';
 import 'dart:convert' show utf8;
 import '/User_Star_Mark/User_Profile_Star_Mark.dart';
 import '/User_profile/User_posts_category.dart';
-import '/Activities/Activities.dart';
-import '/Threads/Threads.dart';
+import '/Activities/activities.dart';
+import '/Threads/threads.dart';
 
 String utf8convert(String text) {
   List<int> bytes = text.toString().codeUnits;

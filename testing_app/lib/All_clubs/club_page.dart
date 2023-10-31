@@ -7,8 +7,8 @@ import 'Servers.dart';
 import '/User_Star_Mark/User_Profile_Star_Mark.dart';
 import 'dart:convert' show utf8;
 import '/User_profile/User_posts_category.dart';
-import '/Threads/Threads.dart';
-import '/Activities/Activities.dart';
+import '/Threads/threads.dart';
+import '/Activities/activities.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 Map<String, dynamic> team_mems = {};

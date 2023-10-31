@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
-import '../Circular_designs/Cure_clip.dart';
+import '../Circular_designs/cure_clip.dart';
 import 'Servers.dart';
 import 'Models.dart';
 import '/User_profile/Models.dart';

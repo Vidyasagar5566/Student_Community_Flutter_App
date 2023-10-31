@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import '/User_profile/Models.dart';
-import '/Fcm_Notif_Domains/Servers.dart';
-import '/User_profile/Profile.dart';
+import '/Fcm_Notif_Domains/servers.dart';
+import '/User_profile/profile.dart';
 import '/Login/Servers.dart';
-import '/All_clubs/Club_page.dart';
-import '/All_fests/Fest_page.dart';
-import '/All_sports/Sport_page.dart';
-import '/SAC/Sac.dart';
+import '/All_clubs/club_page.dart';
+import '/All_fests/fest_page.dart';
+import '/All_sports/sport_page.dart';
+import '/SAC/sac.dart';
 
 star_user_mark(Username app_user) {
   if (app_user.userMark != "St" || app_user.starMark != 0) {
