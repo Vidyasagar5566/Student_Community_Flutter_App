@@ -56,29 +56,29 @@ class _messangerState extends State<messanger> {
           ],
           backgroundColor: Colors.white70,
         ),
-        body: Container());
+        body: fireBaseUuids_to_backendUsers(widget.app_user, [], []));
   }
 }
 
-class fireBaseEmail_to_backendUsers extends StatefulWidget {
+class fireBaseUuids_to_backendUsers extends StatefulWidget {
   Username app_user;
   List<String> user_messages;
-  List<String> user_emails;
-  fireBaseEmail_to_backendUsers(
-      this.app_user, this.user_messages, this.user_emails);
+  List<String> user_uuids;
+  fireBaseUuids_to_backendUsers(
+      this.app_user, this.user_messages, this.user_uuids);
 
   @override
-  State<fireBaseEmail_to_backendUsers> createState() =>
-      _fireBaseEmail_to_backendUsersState();
+  State<fireBaseUuids_to_backendUsers> createState() =>
+      _fireBaseUuids_to_backendUsersState();
 }
 
-class _fireBaseEmail_to_backendUsersState
-    extends State<fireBaseEmail_to_backendUsers> {
+class _fireBaseUuids_to_backendUsersState
+    extends State<fireBaseUuids_to_backendUsers> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<SmallUsername>>(
       future: messanger_servers()
-          .get_fire_base_emails_to_backend_users(widget.user_emails.join('#')),
+          .get_fire_base_uuids_to_backend_users(widget.user_uuids.join('#')),
       builder: (ctx, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {

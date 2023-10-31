@@ -151,17 +151,17 @@ class messanger_servers {
 
   // CLUB__MEMBS
 
-  Future<List<SmallUsername>> get_fire_base_emails_to_backend_users(
-      String team_mem) async {
+  Future<List<SmallUsername>> get_fire_base_uuids_to_backend_users(
+      String user_uuids) async {
     try {
       var token = storage.getItem('token');
       Map<String, String> queryParameters = {
-        'team_mem': team_mem,
+        'user_uuids': user_uuids,
       };
       String queryString = Uri(queryParameters: queryParameters).query;
-      String finalUrl = "$base_url/club_sport_fest/mems?$queryString";
+      String finalUrl = "$base_url/user_messanger1?$queryString";
       var url = Uri.parse(finalUrl);
-      http.Response response = await http.get(url, headers: {
+      http.Response response = await http.put(url, headers: {
         'Authorization': 'token $token',
         "Content-Type": "application/json",
       });
