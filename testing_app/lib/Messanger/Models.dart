@@ -131,30 +131,29 @@ class Messager {
   }
 }
 
-class ChatRoomModel{
+class ChatRoomModel {
   String? chatroomid;
-  Map<String,dynamic>? participants;
+  Map<String, dynamic>? participants;
   String? lastmessage;
 
-  ChatRoomModel({this.chatroomid,this.participants,this.lastmessage});
+  ChatRoomModel({this.chatroomid, this.participants, this.lastmessage});
 
-  ChatRoomModel.FromMap(Map<String,dynamic> map)
-  {
+  ChatRoomModel.FromMap(Map<String, dynamic> map) {
     chatroomid = map["chatroomid"];
     participants = map["participants"];
     lastmessage = map["lastmessage"];
   }
 
-  Map<String,dynamic> toMap(){
-    return{
-      "chatroomid":chatroomid,
-      "participants":participants,
-      "lastmessage":lastmessage
+  Map<String, dynamic> toMap() {
+    return {
+      "chatroomid": chatroomid,
+      "participants": participants,
+      "lastmessage": lastmessage
     };
   }
 }
 
-class MessageModel{
+class MessageModel {
   String? messageid;
   String? sender;
   String? text;
@@ -162,11 +161,23 @@ class MessageModel{
   bool? seen;
   String? photo;
   int? type;
+  bool? insert = false;
+  File? offline_file;
+  bool? sent = true;
 
-  MessageModel({this.messageid,this.sender,this.text,this.createdon,this.seen,this.photo,this.type});
+  MessageModel(
+      {this.messageid,
+      this.sender,
+      this.text,
+      this.createdon,
+      this.seen,
+      this.photo,
+      this.type,
+      this.insert,
+      this.offline_file,
+      this.sent});
 
-  MessageModel.FromMap(Map<String,dynamic> map)
-  {
+  MessageModel.FromMap(Map<String, dynamic> map) {
     messageid = map["messageid"];
     sender = map["sender"];
     text = map["text"];
@@ -176,15 +187,15 @@ class MessageModel{
     type = map["type"];
   }
 
-  Map<String,dynamic> toMap(){
-    return{
-      "messageid":messageid,
-      "sender":sender,
-      "text":text,
-      "createdon":createdon,
-      "seen":seen,
-      "photo":photo,
-      "type":type
+  Map<String, dynamic> toMap() {
+    return {
+      "messageid": messageid,
+      "sender": sender,
+      "text": text,
+      "createdon": createdon,
+      "seen": seen,
+      "photo": photo,
+      "type": type
     };
   }
 }

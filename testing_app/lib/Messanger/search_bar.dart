@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import '../main.dart';
 import 'Servers.dart';
 import 'Models.dart';
 import '/User_profile/Models.dart';
@@ -10,7 +9,6 @@ import '/First_page.dart';
 import '/User_Star_Mark/User_Profile_Star_Mark.dart';
 import '/Login/Servers.dart';
 import '/User_profile/profile.dart';
-import 'package:uuid/uuid.dart';
 
 class search_bar extends StatefulWidget {
   Username app_user;
@@ -241,7 +239,7 @@ class _user_list_displayState extends State<user_list_display> {
         if (chatroomModel != null) {
           Navigator.pop(context);
           Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return chatroom(
+            return chatRoomStream(
                 targetuser: search_user,
                 chatRoom: chatroomModel,
                 app_user: widget.app_user);

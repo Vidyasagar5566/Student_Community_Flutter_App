@@ -1,16 +1,13 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:testing_app/Files_disply_download/pdf_videos_images.dart';
-import 'messanger.dart';
 import 'Models.dart';
 import 'package:testing_app/User_profile/Models.dart';
 
 class single_message extends StatefulWidget {
   Username app_user;
-  Messager message;
-  SmallUsername message_user;
-  single_message(this.message, this.app_user, this.message_user);
+  MessageModel currentmessage;
+  single_message(this.app_user, this.currentmessage);
 
   @override
   State<single_message> createState() => _single_messageState();
@@ -21,8 +18,8 @@ class _single_messageState extends State<single_message> {
 
   @override
   Widget build(BuildContext context) {
-    Messager message = widget.message;
-    return widget.app_user.email == message.messageSender
+    MessageModel message = widget.currentmessage;
+    return widget.app_user.email == message.sender
         ? Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisAlignment: MainAxisAlignment.end,
@@ -39,39 +36,39 @@ class _single_messageState extends State<single_message> {
           );
   }
 
-  _buildScreen(Messager message) {
-    return message.messagFileType == '0'
+  _buildScreen(MessageModel message) {
+    return message.type == 0
         ? _textMessage(message)
         : GestureDetector(
             onTap: () {
-              if (!message.insertMessage!) {
-                message.file = File('images/fest.png');
+              if (!message.insert!) {
+                message.offline_file = File('images/fest.png');
               }
-              if (message.messagFileType == '2') {
+              if (message.type == 2) {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return video_display4(message.insertMessage!, message.file!,
-                      message.messageFile!);
+                  return video_display4(
+                      message.insert!, message.offline_file!, message.photo!);
                 }));
               }
-              if (message.messagFileType == '1') {
+              if (message.type == 1) {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return image_display(message.insertMessage!, message.file!,
-                      message.messageFile!);
+                  return image_display(
+                      message.insert!, message.offline_file!, message.photo!);
                 }));
               }
             },
-            child: message.messagFileType == '1'
+            child: message.type == 1
                 ? _imageMessage(message)
-                : message.messagFileType == '2'
+                : message.type == 2
                     ? _videoMessage(message)
                     : _pdf_Message(message));
   }
 
-  _textMessage(Messager message) {
+  _textMessage(MessageModel message) {
     var width = MediaQuery.of(context).size.width;
-    return widget.app_user.email == message.messageSender!
+    return widget.app_user.email == message.sender!
         ? Container(
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.only(
@@ -90,9 +87,7 @@ class _single_messageState extends State<single_message> {
                     // mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(
-                        message.insertMessage!
-                            ? message.messageBody!
-                            : utf8convert(message.messageBody!),
+                        message.text!,
                         softWrap: true,
                         style: const TextStyle(
                             color: Colors.white,
@@ -101,7 +96,7 @@ class _single_messageState extends State<single_message> {
                       ),
                     ],
                   ),
-                  (!widget.message.messageSent!)
+                  (!message.sent!)
                       ? const Row(
                           // mainAxisAlignment: MainAxisAlignment.end,
                           children: [
@@ -114,7 +109,7 @@ class _single_messageState extends State<single_message> {
                       : Row(
                           // mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            message.messageSeen == false
+                            message.seen == false
                                 ? const Icon(
                                     Icons.remove_red_eye,
                                     color: Colors.blueGrey,
@@ -144,7 +139,7 @@ class _single_messageState extends State<single_message> {
             margin: const EdgeInsets.all(6),
             padding: const EdgeInsets.all(9),
             child: Text(
-              utf8convert(message.messageBody!),
+              message.text!,
               softWrap: true,
               style: const TextStyle(
                   color: Colors.black,
@@ -153,13 +148,13 @@ class _single_messageState extends State<single_message> {
             ));
   }
 
-  _imageMessage(Messager message) {
+  _imageMessage(MessageModel message) {
     return Container(
       width: 200,
       margin: EdgeInsets.all(10),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: widget.message.messageSender! == widget.app_user.email
+          color: widget.currentmessage.sender! == widget.app_user.email
               ? Colors.indigo[900]
               : Colors.grey[400]),
       child: Column(
@@ -171,32 +166,25 @@ class _single_messageState extends State<single_message> {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
                     color: Colors.blue[50],
-                    image: message.insertMessage!
+                    image: message.insert!
                         ? DecorationImage(
-                            image: FileImage(message.file!), fit: BoxFit.cover)
+                            image: FileImage(message.offline_file!),
+                            fit: BoxFit.cover)
                         : DecorationImage(
-                            image: NetworkImage(message.messageFile!),
+                            image: NetworkImage(message.photo!),
                             fit: BoxFit.cover))),
           ),
-          message.insertMessage!
-              ? Text(message.messageBody!,
-                  style: TextStyle(
-                      color:
-                          widget.message.messageSender! == widget.app_user.email
-                              ? Colors.white
-                              : Colors.black))
-              : Text(utf8convert(message.messageBody!),
-                  style: TextStyle(
-                      color:
-                          widget.message.messageSender! == widget.app_user.email
-                              ? Colors.white
-                              : Colors.black)),
-          widget.message.messageSender! == widget.app_user.email
+          Text(message.text!,
+              style: TextStyle(
+                  color: widget.currentmessage.sender! == widget.app_user.email
+                      ? Colors.white
+                      : Colors.black)),
+          widget.currentmessage.sender! == widget.app_user.email
               ? Container(
-                  child: (!widget.message.messageSent!)
-                      ? Row(
+                  child: (!widget.currentmessage.sent!)
+                      ? const Row(
                           mainAxisAlignment: MainAxisAlignment.end,
-                          children: const [
+                          children: [
                               Icon(
                                 Icons.more_horiz,
                                 color: Colors.white,
@@ -206,7 +194,7 @@ class _single_messageState extends State<single_message> {
                       : Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            message.messageSeen == false
+                            message.seen == false
                                 ? const Icon(
                                     Icons.remove_red_eye,
                                     color: Colors.blueGrey,
@@ -226,13 +214,13 @@ class _single_messageState extends State<single_message> {
     );
   }
 
-  _videoMessage(Messager message) {
+  _videoMessage(MessageModel message) {
     return Container(
       width: 200,
       margin: EdgeInsets.all(10),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: widget.message.messageSender! == widget.app_user.email
+          color: widget.currentmessage.sender! == widget.app_user.email
               ? Colors.indigo[900]
               : Colors.grey[400]),
       child: Column(
@@ -257,8 +245,8 @@ class _single_messageState extends State<single_message> {
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (BuildContext context) {
-                            return video_display4(message.insertMessage!,
-                                message.file!, message.messageFile!);
+                            return video_display4(message.insert!,
+                                message.offline_file!, message.photo!);
                           }));
                         },
                       ))
@@ -267,22 +255,14 @@ class _single_messageState extends State<single_message> {
               ],
             ),
           ),
-          message.insertMessage!
-              ? Text(message.messageBody!,
-                  style: TextStyle(
-                      color:
-                          widget.message.messageSender! == widget.app_user.email
-                              ? Colors.white
-                              : Colors.black))
-              : Text(utf8convert(message.messageBody!),
-                  style: TextStyle(
-                      color:
-                          widget.message.messageSender! == widget.app_user.email
-                              ? Colors.white
-                              : Colors.black)),
-          widget.message.messageSender == widget.app_user.email
+          Text(message.text!,
+              style: TextStyle(
+                  color: widget.currentmessage.sender! == widget.app_user.email
+                      ? Colors.white
+                      : Colors.black)),
+          widget.currentmessage.sender == widget.app_user.email
               ? Container(
-                  child: (!widget.message.messageSent!)
+                  child: (!widget.currentmessage.sent!)
                       ? Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: const [
@@ -295,7 +275,7 @@ class _single_messageState extends State<single_message> {
                       : Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            message.messageSeen == false
+                            message.seen == false
                                 ? const Icon(
                                     Icons.remove_red_eye,
                                     color: Colors.blueGrey,
@@ -315,15 +295,15 @@ class _single_messageState extends State<single_message> {
     );
   }
 
-  _pdf_Message(Messager message) {
+  _pdf_Message(MessageModel message) {
     return GestureDetector(
         onTap: () {
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (BuildContext context) {
-            if (!message.insertMessage!) {
-              return pdfviewer(message.file!);
+            if (message.insert!) {
+              return pdfviewer(message.offline_file!);
             } else {
-              return pdfviewer1(message.messageFile!, true);
+              return pdfviewer1(message.photo!, true);
             }
           }));
         },
@@ -332,7 +312,7 @@ class _single_messageState extends State<single_message> {
           margin: EdgeInsets.all(10),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: widget.message.messageSender! == widget.app_user.email
+              color: widget.currentmessage.sender! == widget.app_user.email
                   ? Colors.indigo[900]
                   : Colors.grey[400]),
           child: Column(
@@ -348,22 +328,15 @@ class _single_messageState extends State<single_message> {
                           fit: BoxFit.cover)),
                 ),
               ),
-              message.insertMessage!
-                  ? Text(message.messageBody!,
-                      style: TextStyle(
-                          color: widget.message.messageSender! ==
-                                  widget.app_user.email
-                              ? Colors.white
-                              : Colors.black))
-                  : Text(utf8convert(message.messageBody!),
-                      style: TextStyle(
-                          color: widget.message.messageSender! ==
-                                  widget.app_user.email
+              Text(message.text!,
+                  style: TextStyle(
+                      color:
+                          widget.currentmessage.sender! == widget.app_user.email
                               ? Colors.white
                               : Colors.black)),
-              widget.message.messageSender! == widget.app_user.email
+              widget.currentmessage.sender! == widget.app_user.email
                   ? Container(
-                      child: (!widget.message.messageSent!)
+                      child: (!widget.currentmessage.sent!)
                           ? Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: const [
@@ -376,7 +349,7 @@ class _single_messageState extends State<single_message> {
                           : Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                message.messageSeen == false
+                                message.seen == false
                                     ? const Icon(
                                         Icons.remove_red_eye,
                                         color: Colors.blueGrey,

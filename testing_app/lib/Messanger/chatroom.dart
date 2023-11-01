@@ -1,15 +1,12 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:testing_app/Messanger/Single_message.dart';
 import '/Files_disply_download/pdf_videos_images.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:testing_app/First_page.dart';
 import 'package:testing_app/User_profile/Models.dart';
 import 'package:video_player/video_player.dart';
@@ -18,16 +15,75 @@ import 'package:uuid/uuid.dart';
 
 var uuid = Uuid();
 
-class chatroom extends StatefulWidget {
+class chatRoomStream extends StatefulWidget {
   final SmallUsername targetuser;
   final ChatRoomModel chatRoom;
   final Username app_user;
 
-  const chatroom(
+  const chatRoomStream(
       {Key? key,
       required this.targetuser,
       required this.chatRoom,
       required this.app_user})
+      : super(key: key);
+
+  @override
+  State<chatRoomStream> createState() => _chatRoomStreamState();
+}
+
+class _chatRoomStreamState extends State<chatRoomStream> {
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection("chatrooms")
+            .doc(widget.chatRoom.chatroomid)
+            .collection("messages")
+            .orderBy("createdon", descending: true)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.active) {
+            if (snapshot.hasData) {
+              QuerySnapshot datasnapshot = snapshot.data as QuerySnapshot;
+              List<MessageModel> all_messages = [];
+              for (int i = 0; i < datasnapshot.docs.length; i++) {
+                MessageModel currentmessage = MessageModel.FromMap(
+                    datasnapshot.docs[i].data() as Map<String, dynamic>);
+                all_messages.add(currentmessage);
+              }
+              return chatroom(
+                targetuser: widget.targetuser,
+                chatRoom: widget.chatRoom,
+                app_user: widget.app_user,
+                all_messages: all_messages,
+              );
+            } else if (snapshot.hasError) {
+              return const Text(
+                  "An error occured please check your internet connection");
+            } else {
+              return const Text("Send a Hi to your beloved friend");
+            }
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        });
+    ;
+  }
+}
+
+class chatroom extends StatefulWidget {
+  final SmallUsername targetuser;
+  final ChatRoomModel chatRoom;
+  final Username app_user;
+  List<MessageModel> all_messages;
+  chatroom(
+      {Key? key,
+      required this.targetuser,
+      required this.chatRoom,
+      required this.app_user,
+      required this.all_messages})
       : super(key: key);
 
   @override
@@ -36,8 +92,6 @@ class chatroom extends StatefulWidget {
 
 class _chatroomState extends State<chatroom> {
   TextEditingController messagecontroller = TextEditingController();
-  var image;
-  String message_file_type = '0';
   bool _showController = true;
   VideoPlayerController? _videoPlayerController;
 
@@ -54,31 +108,41 @@ class _chatroomState extends State<chatroom> {
   }
 
   File? imagefile;
+  int file_type = 0;
 
   void sendMessage() async {
     String msg = messagecontroller.text.trim();
-    int type = 0;
-    if (imagefile != null) {
-      type = 1;
-    }
     messagecontroller.clear();
     if (imagefile != null) {
-      String uid = uuid.v1();
-      UploadTask uploadtask = FirebaseStorage.instance
-          .ref("photo_messages")
-          .child(uid.toString())
-          .putFile(imagefile!);
-      TaskSnapshot snapshot = await uploadtask;
-      String imageurl = await snapshot.ref.getDownloadURL();
+      File temp_img_file = imagefile!;
+      setState(() {
+        imagefile = null;
+      });
       MessageModel newmessage = MessageModel(
           messageid: uuid.v1(),
           seen: false,
           createdon: DateTime.now(),
           sender: app_user.email,
           text: msg,
-          photo: imageurl,
-          type: 1);
-      FirebaseFirestore.instance
+          photo: '',
+          type: file_type,
+          sent: false,
+          offline_file: temp_img_file,
+          insert: true);
+      setState(() {
+        widget.all_messages.insert(0, newmessage);
+      });
+      String uid = uuid.v1();
+      UploadTask uploadtask = FirebaseStorage.instance
+          .ref("photo_messages")
+          .child(uid.toString())
+          .putFile(temp_img_file);
+      TaskSnapshot snapshot = await uploadtask;
+      String imageurl = await snapshot.ref.getDownloadURL();
+      setState(() {
+        newmessage.photo = imageurl;
+      });
+      await FirebaseFirestore.instance
           .collection("chatrooms")
           .doc(widget.chatRoom.chatroomid)
           .collection("messages")
@@ -109,76 +173,6 @@ class _chatroomState extends State<chatroom> {
     }
   }
 
-  void ShowPhotoOptions() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text("Upload Profile Pic"),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ListTile(
-                  onTap: () {
-                    Navigator.pop(context);
-                    SelectImage(ImageSource.gallery);
-                  },
-                  leading: Icon(Icons.photo_album),
-                  title: Text('Gallery'),
-                ),
-                ListTile(
-                  onTap: () {
-                    Navigator.pop(context);
-                    SelectImage(ImageSource.camera);
-                  },
-                  leading: Icon(Icons.camera),
-                  title: Text('Camera'),
-                ),
-              ],
-            ),
-          );
-        });
-  }
-
-  void SelectImage(ImageSource source) async {
-    XFile? pickedfile = await ImagePicker().pickImage(source: source);
-    if (pickedfile != null) {
-      CropImage(pickedfile);
-    }
-  }
-
-  void CropImage(XFile file) async {
-    CroppedFile? croppedimage = await ImageCropper()
-        .cropImage(sourcePath: file.path, compressQuality: 20);
-
-    if (croppedimage != null) {
-      File? newfile = File(croppedimage.path);
-      setState(() {
-        imagefile = newfile;
-      });
-    }
-    sendImage();
-  }
-
-  void sendImage() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-              content: Column(
-            children: [
-              Expanded(child: Image.file(File(imagefile!.path))),
-              CupertinoButton(
-                  child: Text("send"),
-                  onPressed: () {
-                    sendMessage();
-                    Navigator.pop(context);
-                  })
-            ],
-          ));
-        });
-  }
-
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -203,109 +197,15 @@ class _chatroomState extends State<chatroom> {
             children: [
               Expanded(
                   child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: StreamBuilder(
-                  stream: FirebaseFirestore.instance
-                      .collection("chatrooms")
-                      .doc(widget.chatRoom.chatroomid)
-                      .collection("messages")
-                      .orderBy("createdon", descending: true)
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.active) {
-                      if (snapshot.hasData) {
-                        QuerySnapshot datasnapshot =
-                            snapshot.data as QuerySnapshot;
-                        return ListView.builder(
-                          reverse: true,
-                          itemCount: datasnapshot.docs.length,
-                          itemBuilder: (context, index) {
-                            MessageModel currentmessage = MessageModel.FromMap(
-                                datasnapshot.docs[index].data()
-                                    as Map<String, dynamic>);
-                            if (currentmessage.type == 0) {
-                              return Row(
-                                  mainAxisAlignment:
-                                      (currentmessage.sender == app_user.email)
-                                          ? MainAxisAlignment.end
-                                          : MainAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                        margin:
-                                            EdgeInsets.symmetric(vertical: 5),
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 10, horizontal: 10),
-                                        decoration: BoxDecoration(
-                                            color: (currentmessage.sender ==
-                                                    app_user.email)
-                                                ? Colors.blue
-                                                : Colors.grey,
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                        child: Text(
-                                          currentmessage.text.toString(),
-                                          style: TextStyle(color: Colors.white),
-                                        ))
-                                  ]);
-                            } else if (currentmessage.type == 1) {
-                              return Row(
-                                  mainAxisAlignment:
-                                      (currentmessage.sender == app_user.email)
-                                          ? MainAxisAlignment.end
-                                          : MainAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                        margin:
-                                            EdgeInsets.symmetric(vertical: 5),
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 10, horizontal: 10),
-                                        decoration: BoxDecoration(
-                                            color: (currentmessage.sender ==
-                                                    app_user.email)
-                                                ? Colors.blue
-                                                : Colors.grey,
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                        child: Stack(children: [
-                                          Image.network(
-                                            currentmessage.photo.toString(),
-                                            loadingBuilder: (context, child,
-                                                loadingProgress) {
-                                              if (loadingProgress == null) {
-                                                return child;
-                                              }
-                                              return Center(
-                                                child:
-                                                    CircularProgressIndicator(),
-                                              );
-                                            },
-                                            fit: BoxFit.fitHeight,
-                                            height: MediaQuery.sizeOf(context)
-                                                    .height *
-                                                0.3,
-                                            width: MediaQuery.sizeOf(context)
-                                                    .width *
-                                                0.7,
-                                          )
-                                        ]))
-                                  ]);
-                            }
-                          },
-                        );
-                      } else if (snapshot.hasError) {
-                        return const Text(
-                            "An error occured please check your internet connection");
-                      } else {
-                        return const Text("Send a Hi to your beloved friend");
-                      }
-                    } else {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                  },
-                ),
-              )),
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: ListView.builder(
+                        reverse: true,
+                        itemCount: widget.all_messages.length,
+                        itemBuilder: (context, index) {
+                          return single_message(
+                              widget.app_user, widget.all_messages[index]);
+                        },
+                      ))),
               Container(
                 color: Colors.white,
                 child: Container(
@@ -334,9 +234,7 @@ class _chatroomState extends State<chatroom> {
                                   Icon(Icons.text_fields, color: Colors.white),
                               border: InputBorder.none),
                           onChanged: (value) {
-                            setState(() {
-                              value = messagecontroller.text.trim();
-                            });
+                            setState(() {});
                           },
                           validator: (value) {
                             return value!.isEmpty ? 'please enter email' : null;
@@ -346,7 +244,7 @@ class _chatroomState extends State<chatroom> {
                       const SizedBox(width: 1),
                       IconButton(
                         onPressed: () async {
-                          if (image == null) {
+                          if (imagefile == null) {
                             showDialog(
                                 context: context,
                                 barrierDismissible: false,
@@ -386,9 +284,9 @@ class _chatroomState extends State<chatroom> {
                                                             imageQuality: 35);
                                                     //final bytes = await File(image1!.path).readAsBytes();
                                                     setState(() {
-                                                      image =
+                                                      imagefile =
                                                           File(image1!.path);
-                                                      message_file_type = "1";
+                                                      file_type = 1;
                                                       //final img.Image image = img.decodeImage(bytes)!;
                                                     });
                                                   },
@@ -408,12 +306,12 @@ class _chatroomState extends State<chatroom> {
                                                     );
                                                     //final bytes = await File(image1!.path).readAsBytes();
                                                     setState(() {
-                                                      image =
+                                                      imagefile =
                                                           File(image1!.path);
-                                                      message_file_type = "2";
+                                                      file_type = 2;
                                                       //final img.Image image = img.decodeImage(bytes)!;
                                                     });
-                                                    loadVideoPlayer(image);
+                                                    loadVideoPlayer(imagefile!);
                                                   },
                                                   icon: const Icon(
                                                     Icons
@@ -434,10 +332,10 @@ class _chatroomState extends State<chatroom> {
                                                     );
 
                                                     setState(() {
-                                                      image = File(
+                                                      imagefile = File(
                                                           result!.paths.first ??
                                                               '');
-                                                      message_file_type = "3";
+                                                      file_type = 3;
                                                       //final img.Image image = img.decodeImage(bytes)!;
                                                     });
                                                   },
@@ -452,7 +350,7 @@ class _chatroomState extends State<chatroom> {
                                   );
                                 });
                           }
-                          if (image != null) {
+                          if (imagefile != null) {
                             showDialog(
                                 context: context,
                                 builder: (context) {
@@ -468,7 +366,7 @@ class _chatroomState extends State<chatroom> {
                                                   onPressed: () {
                                                     Navigator.pop(context);
                                                     setState(() {
-                                                      image = null;
+                                                      imagefile = null;
                                                     });
                                                   },
                                                   child: const Text(
@@ -481,7 +379,7 @@ class _chatroomState extends State<chatroom> {
                                                       Icons.close_outlined))
                                             ],
                                           ),
-                                          image != null
+                                          imagefile != null
                                               ? Container(
                                                   //height: width * 1.4, // image_ratio,
                                                   //width: width,
@@ -491,10 +389,9 @@ class _chatroomState extends State<chatroom> {
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               20)),
-                                                  child: message_file_type ==
-                                                          "1"
-                                                      ? Image.file(image)
-                                                      : message_file_type == "2"
+                                                  child: file_type == 1
+                                                      ? Image.file(imagefile!)
+                                                      : file_type == 2
                                                           ? GestureDetector(
                                                               onTap: () {
                                                                 setState(() {
@@ -561,8 +458,7 @@ class _chatroomState extends State<chatroom> {
                                                                 ),
                                                               ),
                                                             )
-                                                          : message_file_type ==
-                                                                  "3"
+                                                          : file_type == 3
                                                               ? GestureDetector(
                                                                   onTap: () {
                                                                     Navigator.of(
@@ -571,7 +467,7 @@ class _chatroomState extends State<chatroom> {
                                                                             (BuildContext
                                                                                 context) {
                                                                       return pdfviewer(
-                                                                          image);
+                                                                          imagefile!);
                                                                     }));
                                                                   },
                                                                   child: Center(
@@ -595,7 +491,7 @@ class _chatroomState extends State<chatroom> {
                                 });
                           }
                         },
-                        icon: image == null
+                        icon: imagefile == null
                             ? const Icon(
                                 Icons.camera_alt_outlined,
                                 size: 30,
@@ -608,7 +504,7 @@ class _chatroomState extends State<chatroom> {
                               ),
                       ),
                       const SizedBox(width: 1),
-                      (messagecontroller.text.trim() != "" || image != null)
+                      (messagecontroller.text.trim() != "" || imagefile != null)
                           ? Container(
                               child: IconButton(
                                 onPressed: () async {
