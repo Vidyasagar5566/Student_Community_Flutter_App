@@ -54,11 +54,12 @@ class _chatroomState extends State<chatroom> {
       appBar: AppBar(
           title: Row(
         children: [
-          CircleAvatar(
-            backgroundImage:
-                NetworkImage(widget.targetuser.profilePic.toString()),
-          ),
-          SizedBox(
+          widget.targetuser.fileType == '1'
+              ? CircleAvatar(
+                  backgroundImage: NetworkImage(widget.targetuser.profilePic!))
+              : const CircleAvatar(
+                  backgroundImage: AssetImage("images/profile.jpg")),
+          const SizedBox(
             width: 20,
           ),
           Text(widget.targetuser.username.toString())
