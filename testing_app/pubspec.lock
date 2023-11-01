@@ -329,6 +329,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.5.12"
+  firebase_storage:
+    dependency: "direct main"
+    description:
+      name: firebase_storage
+      sha256: "4cce7efd856dfb98b0e0ffe3ee22039133f940e3a3cb00bfa7ce42bfebc17311"
+      url: "https://pub.dev"
+    source: hosted
+    version: "11.4.1"
+  firebase_storage_platform_interface:
+    dependency: transitive
+    description:
+      name: firebase_storage_platform_interface
+      sha256: f8cd0343fbf0b53fd5d85172cdb3311206bf71500d538e29941f440cc034a0aa
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.0.1"
+  firebase_storage_web:
+    dependency: transitive
+    description:
+      name: firebase_storage_web
+      sha256: ea654cf19e2cb60acfd90e3f439aedbb36852b37b0c4521fbbd8569c80d65624
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.6.12"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -512,14 +536,38 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.17"
+  image_cropper:
+    dependency: "direct main"
+    description:
+      name: image_cropper
+      sha256: "19340e50a8c09124ef2196884e9eb79d219d84cb819cfbf52141221216e30515"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.0.0"
+  image_cropper_for_web:
+    dependency: transitive
+    description:
+      name: image_cropper_for_web
+      sha256: "865d798b5c9d826f1185b32e5d0018c4183ddb77b7b82a931e1a06aa3b74974e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
+  image_cropper_platform_interface:
+    dependency: transitive
+    description:
+      name: image_cropper_platform_interface
+      sha256: ee160d686422272aa306125f3b6fb1c1894d9b87a5e20ed33fa008e7285da11e
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.0.0"
   image_picker:
     dependency: "direct main"
     description:
       name: image_picker
-      sha256: "6296e98782726d37f59663f0727d0e978eee1ced1ffed45ccaba591786a7f7b3"
+      sha256: "7d7f2768df2a8b0a3cefa5ef4f84636121987d403130e70b17ef7e2cf650ba84"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.1"
+    version: "1.0.4"
   image_picker_android:
     dependency: transitive
     description:

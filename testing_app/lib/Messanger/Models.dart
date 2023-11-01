@@ -160,8 +160,10 @@ class MessageModel{
   String? text;
   DateTime? createdon;
   bool? seen;
+  String? photo;
+  int? type;
 
-  MessageModel({this.messageid,this.sender,this.text,this.createdon,this.seen});
+  MessageModel({this.messageid,this.sender,this.text,this.createdon,this.seen,this.photo,this.type});
 
   MessageModel.FromMap(Map<String,dynamic> map)
   {
@@ -170,6 +172,8 @@ class MessageModel{
     text = map["text"];
     createdon = map["createdon"].toDate();
     seen = map["seen"];
+    photo = map["photo"];
+    type = map["type"];
   }
 
   Map<String,dynamic> toMap(){
@@ -178,7 +182,9 @@ class MessageModel{
       "sender":sender,
       "text":text,
       "createdon":createdon,
-      "seen":seen
+      "seen":seen,
+      "photo":photo,
+      "type":type
     };
   }
 }
