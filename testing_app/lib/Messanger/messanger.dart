@@ -69,21 +69,21 @@ class _messangerState extends State<messanger> {
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.active) {
                 if (snapshot.hasData) {
-                  QuerySnapshot chatroomsnapshot =
-                      snapshot.data as QuerySnapshot;
+                  QuerySnapshot chatroomsnapshot = snapshot.data as QuerySnapshot;
                   for (int index = 0;
-                      index < chatroomsnapshot.docs.length;
-                      index = index + 1) {
+                  index < chatroomsnapshot.docs.length;
+                  index = index + 1) {
                     ChatRoomModel chatroommodel = ChatRoomModel.FromMap(
                         chatroomsnapshot.docs[index].data()
-                            as Map<String, dynamic>);
+                        as Map<String, dynamic>);
                     String? lastmessage = chatroommodel.lastmessage;
                     Map<String, dynamic> participants =
-                        chatroommodel.participants!;
+                    chatroommodel.participants!;
                     List<String> participantKeys = participants.keys.toList();
                     participantKeys.remove(app_user.userUuid);
                     int flag = 0;
                     int uidIndex = 0;
+                    if(lastmessage!=""){
                     for (int i = 0; i < uids.length; i++) {
                       if (uids[i] == participantKeys[0]) {
                         flag = 1;
@@ -100,7 +100,7 @@ class _messangerState extends State<messanger> {
                         messages[uidIndex] = lastmessage;
                       }
                     }
-                  }
+                  }}
 
                   return fireBaseUuids_to_backendUsers(
                       widget.app_user, messages, uids);
@@ -228,7 +228,7 @@ class _messanger1State extends State<messanger1> {
         .get();
     var docData = snapshot.docs[0].data();
     ChatRoomModel? existingchatroom =
-        ChatRoomModel.FromMap(docData as Map<String, dynamic>);
+    ChatRoomModel.FromMap(docData as Map<String, dynamic>);
 
     return existingchatroom;
   }

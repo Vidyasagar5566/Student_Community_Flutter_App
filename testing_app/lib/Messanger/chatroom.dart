@@ -5,6 +5,11 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '/Files_disply_download/pdf_videos_images.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:testing_app/First_page.dart';
 import 'package:testing_app/User_profile/Models.dart';
 import 'package:video_player/video_player.dart';
@@ -48,28 +53,130 @@ class _chatroomState extends State<chatroom> {
     });
   }
 
+  File? imagefile;
+
   void sendMessage() async {
     String msg = messagecontroller.text.trim();
+    int type = 0;
+    if (imagefile != null) {
+      type = 1;
+    }
     messagecontroller.clear();
-    if (msg != "") {
+    if (imagefile != null) {
+      String uid = uuid.v1();
+      UploadTask uploadtask = FirebaseStorage.instance
+          .ref("photo_messages")
+          .child(uid.toString())
+          .putFile(imagefile!);
+      TaskSnapshot snapshot = await uploadtask;
+      String imageurl = await snapshot.ref.getDownloadURL();
       MessageModel newmessage = MessageModel(
           messageid: uuid.v1(),
           seen: false,
           createdon: DateTime.now(),
           sender: app_user.email,
-          text: msg);
+          text: msg,
+          photo: imageurl,
+          type: 1);
       FirebaseFirestore.instance
           .collection("chatrooms")
           .doc(widget.chatRoom.chatroomid)
           .collection("messages")
           .doc(newmessage.messageid)
           .set(newmessage.toMap());
-      widget.chatRoom.lastmessage = msg;
-      FirebaseFirestore.instance
-          .collection("chatrooms")
-          .doc(widget.chatRoom.chatroomid)
-          .set(widget.chatRoom.toMap());
+    } else {
+      if (msg != "") {
+        MessageModel newmessage = MessageModel(
+            messageid: uuid.v1(),
+            seen: false,
+            createdon: DateTime.now(),
+            sender: app_user.email,
+            text: msg,
+            photo: "",
+            type: 0);
+        FirebaseFirestore.instance
+            .collection("chatrooms")
+            .doc(widget.chatRoom.chatroomid)
+            .collection("messages")
+            .doc(newmessage.messageid)
+            .set(newmessage.toMap());
+        widget.chatRoom.lastmessage = msg;
+        FirebaseFirestore.instance
+            .collection("chatrooms")
+            .doc(widget.chatRoom.chatroomid)
+            .set(widget.chatRoom.toMap());
+      }
     }
+  }
+
+  void ShowPhotoOptions() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Upload Profile Pic"),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ListTile(
+                  onTap: () {
+                    Navigator.pop(context);
+                    SelectImage(ImageSource.gallery);
+                  },
+                  leading: Icon(Icons.photo_album),
+                  title: Text('Gallery'),
+                ),
+                ListTile(
+                  onTap: () {
+                    Navigator.pop(context);
+                    SelectImage(ImageSource.camera);
+                  },
+                  leading: Icon(Icons.camera),
+                  title: Text('Camera'),
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
+  void SelectImage(ImageSource source) async {
+    XFile? pickedfile = await ImagePicker().pickImage(source: source);
+    if (pickedfile != null) {
+      CropImage(pickedfile);
+    }
+  }
+
+  void CropImage(XFile file) async {
+    CroppedFile? croppedimage = await ImageCropper()
+        .cropImage(sourcePath: file.path, compressQuality: 20);
+
+    if (croppedimage != null) {
+      File? newfile = File(croppedimage.path);
+      setState(() {
+        imagefile = newfile;
+      });
+    }
+    sendImage();
+  }
+
+  void sendImage() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+              content: Column(
+            children: [
+              Expanded(child: Image.file(File(imagefile!.path))),
+              CupertinoButton(
+                  child: Text("send"),
+                  onPressed: () {
+                    sendMessage();
+                    Navigator.pop(context);
+                  })
+            ],
+          ));
+        });
   }
 
   @override
@@ -116,30 +223,73 @@ class _chatroomState extends State<chatroom> {
                             MessageModel currentmessage = MessageModel.FromMap(
                                 datasnapshot.docs[index].data()
                                     as Map<String, dynamic>);
-                            return Row(
-                                mainAxisAlignment:
-                                    (currentmessage.sender == app_user.email)
-                                        ? MainAxisAlignment.end
-                                        : MainAxisAlignment.start,
-                                children: [
-                                  Container(
-                                      margin: const EdgeInsets.symmetric(
-                                          vertical: 5),
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 10, horizontal: 10),
-                                      decoration: BoxDecoration(
-                                          color: (currentmessage.sender ==
-                                                  app_user.email)
-                                              ? Colors.blue
-                                              : Colors.grey,
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                      child: Text(
-                                        currentmessage.text.toString(),
-                                        style: const TextStyle(
-                                            color: Colors.white),
-                                      ))
-                                ]);
+                            if (currentmessage.type == 0) {
+                              return Row(
+                                  mainAxisAlignment:
+                                      (currentmessage.sender == app_user.email)
+                                          ? MainAxisAlignment.end
+                                          : MainAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                        margin:
+                                            EdgeInsets.symmetric(vertical: 5),
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 10, horizontal: 10),
+                                        decoration: BoxDecoration(
+                                            color: (currentmessage.sender ==
+                                                    app_user.email)
+                                                ? Colors.blue
+                                                : Colors.grey,
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        child: Text(
+                                          currentmessage.text.toString(),
+                                          style: TextStyle(color: Colors.white),
+                                        ))
+                                  ]);
+                            } else if (currentmessage.type == 1) {
+                              return Row(
+                                  mainAxisAlignment:
+                                      (currentmessage.sender == app_user.email)
+                                          ? MainAxisAlignment.end
+                                          : MainAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                        margin:
+                                            EdgeInsets.symmetric(vertical: 5),
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 10, horizontal: 10),
+                                        decoration: BoxDecoration(
+                                            color: (currentmessage.sender ==
+                                                    app_user.email)
+                                                ? Colors.blue
+                                                : Colors.grey,
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        child: Stack(children: [
+                                          Image.network(
+                                            currentmessage.photo.toString(),
+                                            loadingBuilder: (context, child,
+                                                loadingProgress) {
+                                              if (loadingProgress == null) {
+                                                return child;
+                                              }
+                                              return Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              );
+                                            },
+                                            fit: BoxFit.fitHeight,
+                                            height: MediaQuery.sizeOf(context)
+                                                    .height *
+                                                0.3,
+                                            width: MediaQuery.sizeOf(context)
+                                                    .width *
+                                                0.7,
+                                          )
+                                        ]))
+                                  ]);
+                            }
                           },
                         );
                       } else if (snapshot.hasError) {

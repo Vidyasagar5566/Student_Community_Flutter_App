@@ -131,53 +131,60 @@ class Messager {
   }
 }
 
-class ChatRoomModel {
+class ChatRoomModel{
   String? chatroomid;
-  Map<String, dynamic>? participants;
+  Map<String,dynamic>? participants;
   String? lastmessage;
 
-  ChatRoomModel({this.chatroomid, this.participants, this.lastmessage});
+  ChatRoomModel({this.chatroomid,this.participants,this.lastmessage});
 
-  ChatRoomModel.FromMap(Map<String, dynamic> map) {
+  ChatRoomModel.FromMap(Map<String,dynamic> map)
+  {
     chatroomid = map["chatroomid"];
     participants = map["participants"];
     lastmessage = map["lastmessage"];
   }
 
-  Map<String, dynamic> toMap() {
-    return {
-      "chatroomid": chatroomid,
-      "participants": participants,
-      "lastmessage": lastmessage
+  Map<String,dynamic> toMap(){
+    return{
+      "chatroomid":chatroomid,
+      "participants":participants,
+      "lastmessage":lastmessage
     };
   }
 }
 
-class MessageModel {
+class MessageModel{
   String? messageid;
   String? sender;
   String? text;
   DateTime? createdon;
   bool? seen;
+  String? photo;
+  int? type;
 
-  MessageModel(
-      {this.messageid, this.sender, this.text, this.createdon, this.seen});
+  MessageModel({this.messageid,this.sender,this.text,this.createdon,this.seen,this.photo,this.type});
 
-  MessageModel.FromMap(Map<String, dynamic> map) {
+  MessageModel.FromMap(Map<String,dynamic> map)
+  {
     messageid = map["messageid"];
     sender = map["sender"];
     text = map["text"];
     createdon = map["createdon"].toDate();
     seen = map["seen"];
+    photo = map["photo"];
+    type = map["type"];
   }
 
-  Map<String, dynamic> toMap() {
-    return {
-      "messageid": messageid,
-      "sender": sender,
-      "text": text,
-      "createdon": createdon,
-      "seen": seen
+  Map<String,dynamic> toMap(){
+    return{
+      "messageid":messageid,
+      "sender":sender,
+      "text":text,
+      "createdon":createdon,
+      "seen":seen,
+      "photo":photo,
+      "type":type
     };
   }
 }
