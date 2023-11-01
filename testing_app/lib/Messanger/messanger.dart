@@ -83,6 +83,7 @@ class _messangerState extends State<messanger> {
                     participantKeys.remove(app_user.userUuid);
                     int flag = 0;
                     int uidIndex = 0;
+                    if(lastmessage!=""){
                     for (int i = 0; i < uids.length; i++) {
                       if (uids[i] == participantKeys[0]) {
                         flag = 1;
@@ -99,7 +100,7 @@ class _messangerState extends State<messanger> {
                         messages[uidIndex] = lastmessage;
                       }
                     }
-                  }
+                  }}
 
                   for (int i = 0; i < uids.length; i++) {
                     print("Uid" + uids[i]);
