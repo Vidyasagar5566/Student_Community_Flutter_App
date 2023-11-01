@@ -239,7 +239,10 @@ class _user_list_displayState extends State<user_list_display> {
         if (chatroomModel != null) {
           Navigator.pop(context);
           Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return chatroom(targetuser: search_user, chatRoom: chatroomModel);
+            return chatroom(
+                targetuser: search_user,
+                chatRoom: chatroomModel,
+                app_user: widget.app_user);
           }));
         }
       },

@@ -102,10 +102,6 @@ class _messangerState extends State<messanger> {
                     }
                   }
 
-                  for (int i = 0; i < uids.length; i++) {
-                    print("Uid" + uids[i]);
-                  }
-
                   return fireBaseUuids_to_backendUsers(
                       widget.app_user, messages, uids);
                 } else if (snapshot.hasError) {
@@ -246,7 +242,7 @@ class _messanger1State extends State<messanger1> {
         ChatRoomModel? chatroomModel = await getChatRoomModel(message_user);
         if (chatroomModel != null) {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return chatroom(targetuser: message_user, chatRoom: chatroomModel);
+            return chatroom(targetuser: message_user, chatRoom: chatroomModel,app_user: widget.app_user);
           }));
         }
       },
