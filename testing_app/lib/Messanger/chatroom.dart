@@ -2,9 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:testing_app/First_page.dart';
 import 'package:testing_app/User_profile/Models.dart';
-
-import '../main.dart';
 import 'Models.dart';
+import 'package:uuid/uuid.dart';
+
+var uuid = Uuid();
 
 class chatroom extends StatefulWidget {
   final SmallUsername targetuser;
@@ -47,23 +48,23 @@ class _chatroomState extends State<chatroom> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
           title: Row(
-            children: [
-              CircleAvatar(
-                backgroundImage:
-                NetworkImage(widget.targetuser.profilePic.toString()),
-              ),
-              SizedBox(
-                width: 20,
-              ),
-              Text(widget.targetuser.username.toString())
-            ],
-          )),
+        children: [
+          widget.targetuser.fileType == '1'
+              ? CircleAvatar(
+                  backgroundImage: NetworkImage(widget.targetuser.profilePic!))
+              : const CircleAvatar(
+                  backgroundImage: AssetImage("images/profile.jpg")),
+          const SizedBox(
+            width: 20,
+          ),
+          Text(widget.targetuser.username.toString())
+        ],
+      )),
       body: SafeArea(
         child: Container(
           child: Column(
