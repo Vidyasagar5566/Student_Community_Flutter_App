@@ -150,6 +150,9 @@ class _chatroomState extends State<chatroom> {
           .doc(newmessage.messageid)
           .set(newmessage.toMap());
       widget.chatRoom.lastmessage = msg;
+      widget.chatRoom.lastmessagetype = file_type;
+      widget.chatRoom.lastmessageseen = false;
+      widget.chatRoom.lastmessagetime = DateTime.now();
       FirebaseFirestore.instance
           .collection("chatrooms")
           .doc(widget.chatRoom.chatroomid)
@@ -171,6 +174,9 @@ class _chatroomState extends State<chatroom> {
             .doc(newmessage.messageid)
             .set(newmessage.toMap());
         widget.chatRoom.lastmessage = msg;
+        widget.chatRoom.lastmessagetype = file_type;
+        widget.chatRoom.lastmessageseen = false;
+        widget.chatRoom.lastmessagetime = DateTime.now();
         FirebaseFirestore.instance
             .collection("chatrooms")
             .doc(widget.chatRoom.chatroomid)

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get_time_ago/get_time_ago.dart';
 import '../First_page.dart';
 import '/Fcm_Notif_Domains/servers.dart';
 import 'Servers.dart';
@@ -25,7 +26,7 @@ class messanger extends StatefulWidget {
 
 class _messangerState extends State<messanger> {
   List<String> uids = [];
-  List<String> messages = [];
+  List<List<dynamic>> messages = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,36 +66,29 @@ class _messangerState extends State<messanger> {
                 if (snapshot.hasData) {
                   QuerySnapshot chatroomsnapshot =
                       snapshot.data as QuerySnapshot;
+                  uids = [];
+                  messages = [];
                   for (int index = 0;
                       index < chatroomsnapshot.docs.length;
                       index = index + 1) {
                     ChatRoomModel chatroommodel = ChatRoomModel.FromMap(
                         chatroomsnapshot.docs[index].data()
                             as Map<String, dynamic>);
-                    String? lastmessage = chatroommodel.lastmessage;
+
                     Map<String, dynamic> participants =
                         chatroommodel.participants!;
                     List<String> participantKeys = participants.keys.toList();
                     participantKeys.remove(app_user.userUuid);
-                    int flag = 0;
-                    int uidIndex = 0;
-                    if (lastmessage != "") {
-                      for (int i = 0; i < uids.length; i++) {
-                        if (uids[i] == participantKeys[0]) {
-                          flag = 1;
-                          uidIndex = i;
-                        }
-                      }
-                      if (flag == 0) {
-                        uids.add(participantKeys[0]);
-                        if (lastmessage != null) {
-                          messages.add(lastmessage);
-                        }
-                      } else {
-                        if (lastmessage != null) {
-                          messages[uidIndex] = lastmessage;
-                        }
-                      }
+
+                    if (chatroommodel.lastmessage != "" ||
+                        chatroommodel.lastmessagetype! > 0) {
+                      uids.add(participantKeys[0]);
+                      messages.add([
+                        chatroommodel.lastmessage!,
+                        chatroommodel.lastmessagetype!,
+                        chatroommodel.lastmessageseen!,
+                        chatroommodel.lastmessagetime!
+                      ]);
                     }
                   }
 
@@ -120,7 +114,7 @@ class _messangerState extends State<messanger> {
 
 class fireBaseUuids_to_backendUsers extends StatefulWidget {
   Username app_user;
-  List<String> user_messages;
+  List<List<dynamic>> user_messages;
   List<String> user_uuids;
   fireBaseUuids_to_backendUsers(
       this.app_user, this.user_messages, this.user_uuids);
@@ -171,7 +165,7 @@ class _fireBaseUuids_to_backendUsersState
 
 class messanger1 extends StatefulWidget {
   Username app_user;
-  List<String> user_messages;
+  List<List<dynamic>> user_messages;
   List<SmallUsername> message_users;
   messanger1(this.app_user, this.user_messages, this.message_users);
 
@@ -230,8 +224,11 @@ class _messanger1State extends State<messanger1> {
   }
 
   Widget _buildLoadingScreen(
-      SmallUsername message_user, String user_message, int index) {
+      SmallUsername message_user, List<dynamic> user_message, int index) {
     var width = MediaQuery.of(context).size.width;
+    var _convertedTimestamp = DateTime.parse(
+        user_message[3].toString()); // Converting into [DateTime] object
+    String message_posted_date = GetTimeAgo.parse(_convertedTimestamp);
 
     return GestureDetector(
       onTap: () async {
@@ -307,18 +304,41 @@ class _messanger1State extends State<messanger1> {
                           ),
                         ],
                       ),
-                      Icon(Icons.more_horiz)
+                      Text(message_posted_date.substring(0, 6),
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 13))
                     ],
                   ),
                   const SizedBox(
                     height: 10,
                   ),
-                  Text(
-                    "message : " + utf8convert(user_message),
-                    softWrap: false, maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    //post.description,,
-                  )
+                  user_message[1] == 0
+                      ? Text(
+                          "message : " + user_message[0],
+                          softWrap: false, maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          //post.description,,
+                        )
+                      : user_message[1] == 1
+                          ? Text(
+                              "message : " + user_message[0] + "(Photo)",
+                              softWrap: false, maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              //post.description,,
+                            )
+                          : user_message[1] == 2
+                              ? Text(
+                                  "message : " + user_message[0] + "(Video)",
+                                  softWrap: false, maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  //post.description,,
+                                )
+                              : Text(
+                                  "message : " + user_message[0] + "(PdfFile)",
+                                  softWrap: false, maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  //post.description,,
+                                )
                 ],
               )),
         ],
