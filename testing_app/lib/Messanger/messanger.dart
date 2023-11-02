@@ -78,10 +78,26 @@ class _messangerState extends State<messanger> {
                     List<String> participantKeys = participants.keys.toList();
                     participantKeys.remove(app_user.userUuid);
 
+                    int flag = 0;
+                    int uidIndex = 0;
                     if (lastmessageid != "-1") {
-                      messages.add(lastmessageid!);
-                      chatroomids.add(chatroommodel.chatroomid!);
-                      uids.add(participantKeys[0]);
+                      for (int i = 0; i < uids.length; i++) {
+                        if (uids[i] == participantKeys[0]) {
+                          flag = 1;
+                          uidIndex = i;
+                        }
+                      }
+                      if (flag == 0) {
+                        uids.add(participantKeys[0]);
+                        chatroomids.add(chatroommodel.chatroomid!);
+                        if (lastmessageid != null) {
+                          messages.add(lastmessageid);
+                        }
+                      } else {
+                        if (lastmessageid != null) {
+                          messages[uidIndex] = lastmessageid;
+                        }
+                      }
                     }
                   }
                   return messageIdsToMessages(
