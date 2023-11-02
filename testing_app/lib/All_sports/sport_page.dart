@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'Models.dart';
 import '/User_profile/Models.dart';
-import '/Fcm_Notif_Domains/Servers.dart';
+import '/Fcm_Notif_Domains/servers.dart';
 import 'Servers.dart';
 import '/User_profile/Servers.dart';
 //import 'package:link_text/link_text.dart';
 import 'dart:convert' show utf8;
 import '/User_Star_Mark/User_Profile_Star_Mark.dart';
 import '/User_profile/User_posts_category.dart';
-import '/Threads/Threads.dart';
-import '/Activities/Activities.dart';
+import '/Threads/threads.dart';
+import '/Activities/activities.dart';
 
 String utf8convert(String text) {
   List<int> bytes = text.toString().codeUnits;

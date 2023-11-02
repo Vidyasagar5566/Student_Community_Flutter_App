@@ -5,7 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'Servers.dart';
 import '/First_page.dart';
 import 'Search_bar.dart';
-import 'Club_page.dart';
+import 'club_page.dart';
 
 class edit_club extends StatefulWidget {
   Username app_user;
