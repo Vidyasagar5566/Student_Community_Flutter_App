@@ -6,12 +6,12 @@ import 'package:image_picker/image_picker.dart';
 import '/First_page.dart';
 import 'Servers.dart';
 import '/User_profile/Models.dart';
-import '/Fcm_Notif_Domains/Servers.dart';
+import '/Fcm_Notif_Domains/servers.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:file_picker/file_picker.dart';
-import '../Files_disply_download/Pdf_Videos_Images.dart';
-import '../Circular_designs/Cure_clip.dart';
+import '../Files_disply_download/pdf_videos_images.dart';
+import '../Circular_designs/cure_clip.dart';
 
 class upload_postwidget extends StatefulWidget {
   Username app_user;

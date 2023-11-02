@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:testing_app/Messanger/Single_message.dart';
+import 'package:testing_app/Messanger/messanger.dart';
 import '/Files_disply_download/pdf_videos_images.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
@@ -51,6 +52,7 @@ class _chatRoomStreamState extends State<chatRoomStream> {
                     datasnapshot.docs[i].data() as Map<String, dynamic>);
                 all_messages.add(currentmessage);
               }
+
               return chatroom(
                 targetuser: widget.targetuser,
                 chatRoom: widget.chatRoom,
@@ -78,6 +80,7 @@ class chatroom extends StatefulWidget {
   final ChatRoomModel chatRoom;
   final Username app_user;
   List<MessageModel> all_messages;
+
   chatroom(
       {Key? key,
       required this.targetuser,
@@ -169,6 +172,7 @@ class _chatroomState extends State<chatroom> {
             .collection("messages")
             .doc(newmessage.messageid)
             .set(newmessage.toMap());
+        print("sent");
         widget.chatRoom.lastmessageid = newmessage.messageid;
         FirebaseFirestore.instance
             .collection("chatrooms")
@@ -183,19 +187,29 @@ class _chatroomState extends State<chatroom> {
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-          title: Row(
-        children: [
-          widget.targetuser.fileType == '1'
-              ? CircleAvatar(
-                  backgroundImage: NetworkImage(widget.targetuser.profilePic!))
-              : const CircleAvatar(
-                  backgroundImage: AssetImage("images/profile.jpg")),
-          const SizedBox(
-            width: 20,
+          automaticallyImplyLeading: false,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return messanger(app_user);
+              }));
+            },
           ),
-          Text(widget.targetuser.username.toString())
-        ],
-      )),
+          title: Row(
+            children: [
+              widget.targetuser.fileType == '1'
+                  ? CircleAvatar(
+                      backgroundImage:
+                          NetworkImage(widget.targetuser.profilePic!))
+                  : const CircleAvatar(
+                      backgroundImage: AssetImage("images/profile.jpg")),
+              const SizedBox(
+                width: 20,
+              ),
+              Text(widget.targetuser.username.toString())
+            ],
+          )),
       body: SafeArea(
         child: Container(
           child: Column(
@@ -203,19 +217,24 @@ class _chatroomState extends State<chatroom> {
               Expanded(
                   child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: ListView.builder(
-                        reverse: true,
-                        itemCount: widget.all_messages.length,
-                        itemBuilder: (context, index) {
-                          return single_message(
-                              widget.app_user, widget.all_messages[index]);
-                        },
-                      ))),
+                      child: widget.all_messages.isEmpty
+                          ? Container(
+                              child: const Center(
+                                  child: Text("No conversation started yet.")),
+                            )
+                          : ListView.builder(
+                              reverse: true,
+                              itemCount: widget.all_messages.length,
+                              itemBuilder: (context, index) {
+                                return single_message(widget.app_user,
+                                    widget.all_messages[index]);
+                              },
+                            ))),
               Container(
                 color: Colors.white,
                 child: Container(
                   width: MediaQuery.of(context).size.width,
-                  height: 80,
+                  height: 50,
                   padding: const EdgeInsets.only(right: 12),
                   margin: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
@@ -225,6 +244,7 @@ class _chatroomState extends State<chatroom> {
                     children: [
                       Container(
                         width: width * 0.60,
+                        margin: EdgeInsets.only(left: 10),
                         child: TextFormField(
                           controller: messagecontroller,
                           style: const TextStyle(color: Colors.black),
@@ -232,11 +252,7 @@ class _chatroomState extends State<chatroom> {
                           minLines: 1,
                           maxLines: 2,
                           decoration: const InputDecoration(
-                              fillColor: Colors.white,
-                              labelText: 'message',
-                              hintText: 'typing.....',
-                              prefixIcon:
-                                  Icon(Icons.text_fields, color: Colors.white),
+                              hintText: 'Message.....',
                               border: InputBorder.none),
                           onChanged: (value) {
                             setState(() {});
