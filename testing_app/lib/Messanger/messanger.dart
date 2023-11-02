@@ -124,7 +124,8 @@ class messageIdsToMessages extends StatefulWidget {
 class _messageIdsToMessagesState extends State<messageIdsToMessages> {
   bool loaded_messages = false;
   List<MessageModel> last_user_messages = [];
-  Future fetchmodelbyid() async {
+
+  Future<List<MessageModel>> fetchmodelbyid() async {
     for (int i = 0; i < widget.messages.length; i++) {
       String? chatroomid = widget.chatroomids[i];
       String? lastmessageid = widget.messages[i];
@@ -140,24 +141,42 @@ class _messageIdsToMessagesState extends State<messageIdsToMessages> {
       MessageModel lastmessagemodel = MessageModel.FromMap(usermap);
       last_user_messages.add(lastmessagemodel);
     }
-    setState(() {
-      loaded_messages = true;
-    });
-  }
-
-  void initState() {
-    super.initState();
-    fetchmodelbyid();
+    return last_user_messages;
   }
 
   @override
   Widget build(BuildContext context) {
-    return loaded_messages
-        ? fireBaseUuids_to_backendUsers(
-            widget.app_user, last_user_messages, widget.uids)
-        : Center(
-            child: CircularProgressIndicator(),
-          );
+    return FutureBuilder<List<MessageModel>>(
+      future: fetchmodelbyid(),
+      builder: (ctx, AsyncSnapshot snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                '${snapshot.error} occurred',
+                style: TextStyle(fontSize: 18),
+              ),
+            );
+          } else if (snapshot.hasData) {
+            last_user_messages = snapshot.data;
+            if (last_user_messages.isEmpty) {
+              return Container(
+                  margin: EdgeInsets.all(30),
+                  padding: EdgeInsets.all(30),
+                  child: const Text("No conversations started yet",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500, fontSize: 24)));
+            } else {
+              return fireBaseUuids_to_backendUsers(
+                  widget.app_user, last_user_messages, widget.uids);
+            }
+          }
+        }
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
   }
 }
 

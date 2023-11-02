@@ -187,29 +187,19 @@ class _chatroomState extends State<chatroom> {
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-          automaticallyImplyLeading: false,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return messanger(app_user);
-              }));
-            },
-          ),
           title: Row(
-            children: [
-              widget.targetuser.fileType == '1'
-                  ? CircleAvatar(
-                      backgroundImage:
-                          NetworkImage(widget.targetuser.profilePic!))
-                  : const CircleAvatar(
-                      backgroundImage: AssetImage("images/profile.jpg")),
-              const SizedBox(
-                width: 20,
-              ),
-              Text(widget.targetuser.username.toString())
-            ],
-          )),
+        children: [
+          widget.targetuser.fileType == '1'
+              ? CircleAvatar(
+                  backgroundImage: NetworkImage(widget.targetuser.profilePic!))
+              : const CircleAvatar(
+                  backgroundImage: AssetImage("images/profile.jpg")),
+          const SizedBox(
+            width: 20,
+          ),
+          Text(widget.targetuser.username.toString())
+        ],
+      )),
       body: SafeArea(
         child: Container(
           child: Column(
