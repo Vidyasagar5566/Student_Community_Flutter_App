@@ -17,7 +17,6 @@ String utf8convert(String text) {
 
 class messanger extends StatefulWidget {
   Username app_user;
-
   messanger(this.app_user);
 
   @override
@@ -26,16 +25,8 @@ class messanger extends StatefulWidget {
 
 class _messangerState extends State<messanger> {
   List<String> uids = [];
-  List<MessageModel> messages = [];
-
-  Future<MessageModel> fetchmodelbyid(String? chatroomid,String? lastmessageid)async{
-    CollectionReference messagecollection= await FirebaseFirestore.instance.collection("chatrooms").doc(chatroomid).collection('messages');
-    QuerySnapshot messagessnapshot = await messagecollection.where("messageid",isEqualTo: lastmessageid).get();
-    Map<String, dynamic> usermap = messagessnapshot.docs[0]
-        .data() as Map<String, dynamic>;
-    MessageModel lastmessagemodel = MessageModel.FromMap(usermap);
-    return lastmessagemodel;
-  }
+  List<String> messages = [];
+  List<String> chatroomids = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,33 +77,15 @@ class _messangerState extends State<messanger> {
                         chatroommodel.participants!;
                     List<String> participantKeys = participants.keys.toList();
                     participantKeys.remove(app_user.userUuid);
-                    int flag = 0;
-                    int uidIndex = 0;
-                    MessageModel lastmessagemodel=fetchmodelbyid(chatroommodel.chatroomid, lastmessageid) as MessageModel;
-
 
                     if (lastmessageid != "-1") {
-                      for (int i = 0; i < uids.length; i++) {
-                        if (uids[i] == participantKeys[0]) {
-                          flag = 1;
-                          uidIndex = i;
-                        }
-                      }
-                      if (flag == 0) {
-                        uids.add(participantKeys[0]);
-                        if (lastmessageid != null) {
-                          messages.add(lastmessagemodel);
-                        }
-                      } else {
-                        if (lastmessageid != null) {
-                          messages[uidIndex] = lastmessagemodel;
-                        }
-                      }
+                      messages.add(lastmessageid!);
+                      chatroomids.add(chatroommodel.chatroomid!);
+                      uids.add(participantKeys[0]);
                     }
                   }
-
-                  return fireBaseUuids_to_backendUsers(
-                      widget.app_user, messages, uids);
+                  return messageIdsToMessages(
+                      widget.app_user, messages, uids, chatroomids);
                 } else if (snapshot.hasError) {
                   return Center(
                     child: Text(snapshot.error.toString()),
@@ -131,13 +104,65 @@ class _messangerState extends State<messanger> {
   }
 }
 
+class messageIdsToMessages extends StatefulWidget {
+  Username app_user;
+  List<String> messages;
+  List<String> uids;
+  List<String> chatroomids;
+  messageIdsToMessages(
+      this.app_user, this.messages, this.uids, this.chatroomids);
+
+  @override
+  State<messageIdsToMessages> createState() => _messageIdsToMessagesState();
+}
+
+class _messageIdsToMessagesState extends State<messageIdsToMessages> {
+  bool loaded_messages = false;
+  List<MessageModel> last_user_messages = [];
+  Future fetchmodelbyid() async {
+    for (int i = 0; i < widget.messages.length; i++) {
+      String? chatroomid = widget.chatroomids[i];
+      String? lastmessageid = widget.messages[i];
+      CollectionReference messagecollection = await FirebaseFirestore.instance
+          .collection("chatrooms")
+          .doc(chatroomid)
+          .collection('messages');
+      QuerySnapshot messagessnapshot = await messagecollection
+          .where("messageid", isEqualTo: lastmessageid)
+          .get();
+      Map<String, dynamic> usermap =
+          messagessnapshot.docs[0].data() as Map<String, dynamic>;
+      MessageModel lastmessagemodel = MessageModel.FromMap(usermap);
+      last_user_messages.add(lastmessagemodel);
+    }
+    setState(() {
+      loaded_messages = true;
+    });
+  }
+
+  void initState() {
+    super.initState();
+    fetchmodelbyid();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return loaded_messages
+        ? fireBaseUuids_to_backendUsers(
+            widget.app_user, last_user_messages, widget.uids)
+        : Center(
+            child: CircularProgressIndicator(),
+          );
+  }
+}
+
 class fireBaseUuids_to_backendUsers extends StatefulWidget {
   Username app_user;
-  List<String> user_messages;
+  List<MessageModel> last_user_messages;
   List<String> user_uuids;
 
   fireBaseUuids_to_backendUsers(
-      this.app_user, this.user_messages, this.user_uuids);
+      this.app_user, this.last_user_messages, this.user_uuids);
 
   @override
   State<fireBaseUuids_to_backendUsers> createState() =>
@@ -171,7 +196,7 @@ class _fireBaseUuids_to_backendUsersState
                           fontWeight: FontWeight.w500, fontSize: 24)));
             } else {
               return messanger1(
-                  widget.app_user, widget.user_messages, message_users);
+                  widget.app_user, widget.last_user_messages, message_users);
             }
           }
         }
@@ -185,10 +210,10 @@ class _fireBaseUuids_to_backendUsersState
 
 class messanger1 extends StatefulWidget {
   Username app_user;
-  List<String> user_messages;
+  List<MessageModel> last_user_message;
   List<SmallUsername> message_users;
 
-  messanger1(this.app_user, this.user_messages, this.message_users);
+  messanger1(this.app_user, this.last_user_message, this.message_users);
 
   @override
   State<messanger1> createState() => _messanger1State();
@@ -224,7 +249,7 @@ class _messanger1State extends State<messanger1> {
                     SmallUsername message_user = widget.message_users[index];
 
                     return _buildLoadingScreen(
-                        message_user, widget.user_messages[index], index);
+                        message_user, widget.last_user_message[index], index);
                   }),
             ],
           )),
@@ -245,7 +270,7 @@ class _messanger1State extends State<messanger1> {
   }
 
   Widget _buildLoadingScreen(
-      SmallUsername message_user, String user_message, int index) {
+      SmallUsername message_user, MessageModel user_message, int index) {
     var width = MediaQuery.of(context).size.width;
 
     return GestureDetector(
@@ -329,7 +354,7 @@ class _messanger1State extends State<messanger1> {
                     height: 10,
                   ),
                   Text(
-                    "message : " + utf8convert(user_message),
+                    "message : " + utf8convert(user_message.text!),
                     softWrap: false, maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     //post.description,,
