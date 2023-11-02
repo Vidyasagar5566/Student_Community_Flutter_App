@@ -25,7 +25,7 @@ class messanger extends StatefulWidget {
 
 class _messangerState extends State<messanger> {
   List<String> uids = [];
-  List<String> messages = [];
+  List<MessageModel> messages = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,33 +71,14 @@ class _messangerState extends State<messanger> {
                     ChatRoomModel chatroommodel = ChatRoomModel.FromMap(
                         chatroomsnapshot.docs[index].data()
                             as Map<String, dynamic>);
-                    String? lastmessage = chatroommodel.lastmessage;
+                    MessageModel lastmessage = MessageModel();
                     Map<String, dynamic> participants =
                         chatroommodel.participants!;
                     List<String> participantKeys = participants.keys.toList();
                     participantKeys.remove(app_user.userUuid);
-                    int flag = 0;
-                    int uidIndex = 0;
-                    if (lastmessage != "") {
-                      for (int i = 0; i < uids.length; i++) {
-                        if (uids[i] == participantKeys[0]) {
-                          flag = 1;
-                          uidIndex = i;
-                        }
-                      }
-                      if (flag == 0) {
-                        uids.add(participantKeys[0]);
-                        if (lastmessage != null) {
-                          messages.add(lastmessage);
-                        }
-                      } else {
-                        if (lastmessage != null) {
-                          messages[uidIndex] = lastmessage;
-                        }
-                      }
-                    }
+                    messages.add(lastmessage);
+                    uids.add(participantKeys[0]);
                   }
-
                   return fireBaseUuids_to_backendUsers(
                       widget.app_user, messages, uids);
                 } else if (snapshot.hasError) {
@@ -120,10 +101,10 @@ class _messangerState extends State<messanger> {
 
 class fireBaseUuids_to_backendUsers extends StatefulWidget {
   Username app_user;
-  List<String> user_messages;
+  List<MessageModel> last_user_message;
   List<String> user_uuids;
   fireBaseUuids_to_backendUsers(
-      this.app_user, this.user_messages, this.user_uuids);
+      this.app_user, this.last_user_message, this.user_uuids);
 
   @override
   State<fireBaseUuids_to_backendUsers> createState() =>
@@ -157,7 +138,7 @@ class _fireBaseUuids_to_backendUsersState
                           fontWeight: FontWeight.w500, fontSize: 24)));
             } else {
               return messanger1(
-                  widget.app_user, widget.user_messages, message_users);
+                  widget.app_user, widget.last_user_message, message_users);
             }
           }
         }
@@ -171,9 +152,9 @@ class _fireBaseUuids_to_backendUsersState
 
 class messanger1 extends StatefulWidget {
   Username app_user;
-  List<String> user_messages;
+  List<MessageModel> last_user_message;
   List<SmallUsername> message_users;
-  messanger1(this.app_user, this.user_messages, this.message_users);
+  messanger1(this.app_user, this.last_user_message, this.message_users);
 
   @override
   State<messanger1> createState() => _messanger1State();
@@ -209,7 +190,7 @@ class _messanger1State extends State<messanger1> {
                     SmallUsername message_user = widget.message_users[index];
 
                     return _buildLoadingScreen(
-                        message_user, widget.user_messages[index], index);
+                        message_user, widget.last_user_message[index], index);
                   }),
             ],
           )),
@@ -230,7 +211,7 @@ class _messanger1State extends State<messanger1> {
   }
 
   Widget _buildLoadingScreen(
-      SmallUsername message_user, String user_message, int index) {
+      SmallUsername message_user, MessageModel last_user_message, int index) {
     var width = MediaQuery.of(context).size.width;
 
     return GestureDetector(
@@ -314,7 +295,7 @@ class _messanger1State extends State<messanger1> {
                     height: 10,
                   ),
                   Text(
-                    "message : " + utf8convert(user_message),
+                    "message : " + utf8convert(last_user_message.text!),
                     softWrap: false, maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     //post.description,,

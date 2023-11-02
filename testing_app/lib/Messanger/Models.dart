@@ -134,21 +134,21 @@ class Messager {
 class ChatRoomModel {
   String? chatroomid;
   Map<String, dynamic>? participants;
-  String? lastmessage;
+  String? lastmessageid;
 
-  ChatRoomModel({this.chatroomid, this.participants, this.lastmessage});
+  ChatRoomModel({this.chatroomid, this.participants, this.lastmessageid});
 
   ChatRoomModel.FromMap(Map<String, dynamic> map) {
     chatroomid = map["chatroomid"];
     participants = map["participants"];
-    lastmessage = map["lastmessage"];
+    lastmessageid = map["lastmessageid"];
   }
 
   Map<String, dynamic> toMap() {
     return {
       "chatroomid": chatroomid,
       "participants": participants,
-      "lastmessage": lastmessage
+      "lastmessageid": lastmessageid
     };
   }
 }
