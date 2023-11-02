@@ -149,6 +149,7 @@ class _chatroomState extends State<chatroom> {
           .collection("messages")
           .doc(newmessage.messageid)
           .set(newmessage.toMap());
+      widget.chatRoom.lastmessageid = newmessage.messageid;
     } else {
       if (msg != "") {
         MessageModel newmessage = MessageModel(
@@ -165,7 +166,7 @@ class _chatroomState extends State<chatroom> {
             .collection("messages")
             .doc(newmessage.messageid)
             .set(newmessage.toMap());
-        widget.chatRoom.lastmessage = msg;
+        widget.chatRoom.lastmessageid = newmessage.messageid;
         FirebaseFirestore.instance
             .collection("chatrooms")
             .doc(widget.chatRoom.chatroomid)
@@ -216,7 +217,7 @@ class _chatroomState extends State<chatroom> {
                 color: Colors.white,
                 child: Container(
                   width: MediaQuery.of(context).size.width,
-                  height: 70,
+                  height: 50,
                   padding: const EdgeInsets.only(right: 12),
                   margin: const EdgeInsets.all(20),
                   decoration: BoxDecoration(

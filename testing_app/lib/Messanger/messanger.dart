@@ -17,6 +17,7 @@ String utf8convert(String text) {
 
 class messanger extends StatefulWidget {
   Username app_user;
+
   messanger(this.app_user);
 
   @override
@@ -25,7 +26,16 @@ class messanger extends StatefulWidget {
 
 class _messangerState extends State<messanger> {
   List<String> uids = [];
-  List<String> messages = [];
+  List<MessageModel> messages = [];
+
+  Future<MessageModel> fetchmodelbyid(String? chatroomid,String? lastmessageid)async{
+    CollectionReference messagecollection= await FirebaseFirestore.instance.collection("chatrooms").doc(chatroomid).collection('messages');
+    QuerySnapshot messagessnapshot = await messagecollection.where("messageid",isEqualTo: lastmessageid).get();
+    Map<String, dynamic> usermap = messagessnapshot.docs[0]
+        .data() as Map<String, dynamic>;
+    MessageModel lastmessagemodel = MessageModel.FromMap(usermap);
+    return lastmessagemodel;
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,14 +81,17 @@ class _messangerState extends State<messanger> {
                     ChatRoomModel chatroommodel = ChatRoomModel.FromMap(
                         chatroomsnapshot.docs[index].data()
                             as Map<String, dynamic>);
-                    String? lastmessage = chatroommodel.lastmessage;
+                    String? lastmessageid = chatroommodel.lastmessageid;
                     Map<String, dynamic> participants =
                         chatroommodel.participants!;
                     List<String> participantKeys = participants.keys.toList();
                     participantKeys.remove(app_user.userUuid);
                     int flag = 0;
                     int uidIndex = 0;
-                    if (lastmessage != "") {
+                    MessageModel lastmessagemodel=fetchmodelbyid(chatroommodel.chatroomid, lastmessageid) as MessageModel;
+
+
+                    if (lastmessageid != "-1") {
                       for (int i = 0; i < uids.length; i++) {
                         if (uids[i] == participantKeys[0]) {
                           flag = 1;
@@ -87,12 +100,12 @@ class _messangerState extends State<messanger> {
                       }
                       if (flag == 0) {
                         uids.add(participantKeys[0]);
-                        if (lastmessage != null) {
-                          messages.add(lastmessage);
+                        if (lastmessageid != null) {
+                          messages.add(lastmessagemodel);
                         }
                       } else {
-                        if (lastmessage != null) {
-                          messages[uidIndex] = lastmessage;
+                        if (lastmessageid != null) {
+                          messages[uidIndex] = lastmessagemodel;
                         }
                       }
                     }
@@ -122,6 +135,7 @@ class fireBaseUuids_to_backendUsers extends StatefulWidget {
   Username app_user;
   List<String> user_messages;
   List<String> user_uuids;
+
   fireBaseUuids_to_backendUsers(
       this.app_user, this.user_messages, this.user_uuids);
 
@@ -173,6 +187,7 @@ class messanger1 extends StatefulWidget {
   Username app_user;
   List<String> user_messages;
   List<SmallUsername> message_users;
+
   messanger1(this.app_user, this.user_messages, this.message_users);
 
   @override
