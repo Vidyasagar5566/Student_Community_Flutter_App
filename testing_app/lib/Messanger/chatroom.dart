@@ -149,6 +149,11 @@ class _chatroomState extends State<chatroom> {
           .collection("messages")
           .doc(newmessage.messageid)
           .set(newmessage.toMap());
+      widget.chatRoom.lastmessage = msg;
+      FirebaseFirestore.instance
+          .collection("chatrooms")
+          .doc(widget.chatRoom.chatroomid)
+          .set(widget.chatRoom.toMap());
     } else {
       if (msg != "") {
         MessageModel newmessage = MessageModel(
