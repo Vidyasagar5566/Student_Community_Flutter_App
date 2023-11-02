@@ -51,6 +51,7 @@ class _chatRoomStreamState extends State<chatRoomStream> {
                     datasnapshot.docs[i].data() as Map<String, dynamic>);
                 all_messages.add(currentmessage);
               }
+
               return chatroom(
                 targetuser: widget.targetuser,
                 chatRoom: widget.chatRoom,
@@ -198,19 +199,24 @@ class _chatroomState extends State<chatroom> {
               Expanded(
                   child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: ListView.builder(
-                        reverse: true,
-                        itemCount: widget.all_messages.length,
-                        itemBuilder: (context, index) {
-                          return single_message(
-                              widget.app_user, widget.all_messages[index]);
-                        },
-                      ))),
+                      child: widget.all_messages.isEmpty
+                          ? Container(
+                              child: const Center(
+                                  child: Text("No conversation started yet.")),
+                            )
+                          : ListView.builder(
+                              reverse: true,
+                              itemCount: widget.all_messages.length,
+                              itemBuilder: (context, index) {
+                                return single_message(widget.app_user,
+                                    widget.all_messages[index]);
+                              },
+                            ))),
               Container(
                 color: Colors.white,
                 child: Container(
                   width: MediaQuery.of(context).size.width,
-                  height: 80,
+                  height: 70,
                   padding: const EdgeInsets.only(right: 12),
                   margin: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
@@ -220,6 +226,7 @@ class _chatroomState extends State<chatroom> {
                     children: [
                       Container(
                         width: width * 0.60,
+                        margin: EdgeInsets.only(left: 10),
                         child: TextFormField(
                           controller: messagecontroller,
                           style: const TextStyle(color: Colors.black),
@@ -227,11 +234,7 @@ class _chatroomState extends State<chatroom> {
                           minLines: 1,
                           maxLines: 2,
                           decoration: const InputDecoration(
-                              fillColor: Colors.white,
-                              labelText: 'message',
-                              hintText: 'typing.....',
-                              prefixIcon:
-                                  Icon(Icons.text_fields, color: Colors.white),
+                              hintText: 'Message.....',
                               border: InputBorder.none),
                           onChanged: (value) {
                             setState(() {});
