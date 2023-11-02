@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:testing_app/Messanger/Single_message.dart';
+import 'package:testing_app/Messanger/messanger.dart';
 import '/Files_disply_download/pdf_videos_images.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
@@ -79,6 +80,7 @@ class chatroom extends StatefulWidget {
   final ChatRoomModel chatRoom;
   final Username app_user;
   List<MessageModel> all_messages;
+
   chatroom(
       {Key? key,
       required this.targetuser,
@@ -170,6 +172,7 @@ class _chatroomState extends State<chatroom> {
             .collection("messages")
             .doc(newmessage.messageid)
             .set(newmessage.toMap());
+        print("sent");
         widget.chatRoom.lastmessageid = newmessage.messageid;
         FirebaseFirestore.instance
             .collection("chatrooms")
@@ -184,19 +187,29 @@ class _chatroomState extends State<chatroom> {
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-          title: Row(
-        children: [
-          widget.targetuser.fileType == '1'
-              ? CircleAvatar(
-                  backgroundImage: NetworkImage(widget.targetuser.profilePic!))
-              : const CircleAvatar(
-                  backgroundImage: AssetImage("images/profile.jpg")),
-          const SizedBox(
-            width: 20,
+          automaticallyImplyLeading: false,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return messanger(app_user);
+              }));
+            },
           ),
-          Text(widget.targetuser.username.toString())
-        ],
-      )),
+          title: Row(
+            children: [
+              widget.targetuser.fileType == '1'
+                  ? CircleAvatar(
+                      backgroundImage:
+                          NetworkImage(widget.targetuser.profilePic!))
+                  : const CircleAvatar(
+                      backgroundImage: AssetImage("images/profile.jpg")),
+              const SizedBox(
+                width: 20,
+              ),
+              Text(widget.targetuser.username.toString())
+            ],
+          )),
       body: SafeArea(
         child: Container(
           child: Column(

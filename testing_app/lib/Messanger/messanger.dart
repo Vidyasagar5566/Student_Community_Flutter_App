@@ -73,6 +73,7 @@ class _messangerState extends State<messanger> {
                         chatroomsnapshot.docs[index].data()
                             as Map<String, dynamic>);
                     String? lastmessageid = chatroommodel.lastmessageid;
+                    String? chatroomid = chatroommodel.chatroomid;
                     Map<String, dynamic> participants =
                         chatroommodel.participants!;
                     List<String> participantKeys = participants.keys.toList();
@@ -89,14 +90,14 @@ class _messangerState extends State<messanger> {
                       }
                       if (flag == 0) {
                         uids.add(participantKeys[0]);
-                        chatroomids.add(chatroommodel.chatroomid!);
-                        if (lastmessageid != null) {
-                          messages.add(lastmessageid);
-                        }
+                        chatroomids.add(chatroomid!);
+
+                          messages.add(lastmessageid!);
+
                       } else {
-                        if (lastmessageid != null) {
-                          messages[uidIndex] = lastmessageid;
-                        }
+
+                          messages[uidIndex] = lastmessageid!;
+
                       }
                     }
                   }
