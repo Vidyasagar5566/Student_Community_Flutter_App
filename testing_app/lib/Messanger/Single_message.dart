@@ -90,9 +90,9 @@ class _single_messageState extends State<single_message> {
                         message.text!,
                         softWrap: true,
                         style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontStyle: FontStyle.italic),
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
                       ),
                     ],
                   ),
@@ -142,9 +142,9 @@ class _single_messageState extends State<single_message> {
               message.text!,
               softWrap: true,
               style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 16,
-                  fontStyle: FontStyle.italic),
+                color: Colors.black,
+                fontSize: 16,
+              ),
             ));
   }
 

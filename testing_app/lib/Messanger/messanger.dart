@@ -87,7 +87,8 @@ class _messangerState extends State<messanger> {
                         chatroommodel.lastmessage!,
                         chatroommodel.lastmessagetype!,
                         chatroommodel.lastmessageseen!,
-                        chatroommodel.lastmessagetime!
+                        chatroommodel.lastmessagetime!,
+                        chatroommodel.lastmessagesender!
                       ]);
                     }
                   }
@@ -104,7 +105,7 @@ class _messangerState extends State<messanger> {
                   );
                 }
               } else {
-                return Center(
+                return const Center(
                   child: CircularProgressIndicator(),
                 );
               }
@@ -126,6 +127,7 @@ class fireBaseUuids_to_backendUsers extends StatefulWidget {
 
 class _fireBaseUuids_to_backendUsersState
     extends State<fireBaseUuids_to_backendUsers> {
+  List<SmallUsername> message_users = [];
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<SmallUsername>>(
@@ -141,7 +143,7 @@ class _fireBaseUuids_to_backendUsersState
               ),
             );
           } else if (snapshot.hasData) {
-            List<SmallUsername> message_users = snapshot.data;
+            message_users = snapshot.data;
             if (message_users.isEmpty) {
               return Container(
                   margin: EdgeInsets.all(30),
@@ -155,9 +157,10 @@ class _fireBaseUuids_to_backendUsersState
             }
           }
         }
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
+        if (message_users.isEmpty) {
+          return Center(child: CircularProgressIndicator());
+        }
+        return messanger1(widget.app_user, widget.user_messages, message_users);
       },
     );
   }
@@ -304,7 +307,7 @@ class _messanger1State extends State<messanger1> {
                           ),
                         ],
                       ),
-                      Text(message_posted_date.substring(0, 6),
+                      Text(message_posted_date.substring(0, 6) + '..ago',
                           style: const TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 13))
                     ],
@@ -312,33 +315,66 @@ class _messanger1State extends State<messanger1> {
                   const SizedBox(
                     height: 10,
                   ),
-                  user_message[1] == 0
-                      ? Text(
-                          "message : " + user_message[0],
-                          softWrap: false, maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          //post.description,,
-                        )
-                      : user_message[1] == 1
+                  Row(
+                    children: [
+                      Text("Message : "),
+                      user_message[4] == widget.app_user.email
+                          ? user_message[2]
+                              ? const Icon(
+                                  Icons.remove_red_eye,
+                                  color: Colors.blue,
+                                  size: 14,
+                                )
+                              : const Icon(
+                                  Icons.remove_red_eye,
+                                  color: Colors.blueGrey,
+                                  size: 14,
+                                )
+                          : Container(),
+                      SizedBox(width: 3),
+                      user_message[1] == 0
                           ? Text(
-                              "message : " + user_message[0] + "(Photo)",
+                              user_message[0],
                               softWrap: false, maxLines: 1,
                               overflow: TextOverflow.ellipsis,
+                              style: user_message[2]
+                                  ? TextStyle()
+                                  : TextStyle(fontWeight: FontWeight.bold),
                               //post.description,,
                             )
-                          : user_message[1] == 2
+                          : user_message[1] == 1
                               ? Text(
-                                  "message : " + user_message[0] + "(Video)",
+                                  user_message[0] + "(Photo)",
                                   softWrap: false, maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
+                                  style: user_message[2]
+                                      ? TextStyle()
+                                      : TextStyle(fontWeight: FontWeight.bold),
                                   //post.description,,
                                 )
-                              : Text(
-                                  "message : " + user_message[0] + "(PdfFile)",
-                                  softWrap: false, maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  //post.description,,
-                                )
+                              : user_message[1] == 2
+                                  ? Text(
+                                      user_message[0] + "(Video)",
+                                      softWrap: false, maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: user_message[2]
+                                          ? TextStyle()
+                                          : TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                      //post.description,,
+                                    )
+                                  : Text(
+                                      user_message[0] + "(PdfFile)",
+                                      softWrap: false, maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: user_message[2]
+                                          ? TextStyle()
+                                          : TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                      //post.description,,
+                                    )
+                    ],
+                  )
                 ],
               )),
         ],

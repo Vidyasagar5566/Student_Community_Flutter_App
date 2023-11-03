@@ -221,6 +221,7 @@ class _user_list_displayState extends State<user_list_display> {
           lastmessagetype: 0,
           lastmessageseen: false,
           lastmessagetime: DateTime.now(),
+          lastmessagesender: widget.app_user.email,
           participants: {
             widget.app_user.userUuid.toString(): true,
             targetuser.userUuid.toString(): true
