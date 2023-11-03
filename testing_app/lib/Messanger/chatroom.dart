@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:testing_app/Messanger/Servers.dart';
 import 'package:testing_app/Messanger/Single_message.dart';
 import '/Files_disply_download/pdf_videos_images.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -32,6 +33,7 @@ class chatRoomStream extends StatefulWidget {
 }
 
 class _chatRoomStreamState extends State<chatRoomStream> {
+  List<MessageModel> all_messages = [];
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -45,11 +47,36 @@ class _chatRoomStreamState extends State<chatRoomStream> {
           if (snapshot.connectionState == ConnectionState.active) {
             if (snapshot.hasData) {
               QuerySnapshot datasnapshot = snapshot.data as QuerySnapshot;
-              List<MessageModel> all_messages = [];
+              all_messages = [];
+
+              /// loop to get all chat room messages
               for (int i = 0; i < datasnapshot.docs.length; i++) {
                 MessageModel currentmessage = MessageModel.FromMap(
                     datasnapshot.docs[i].data() as Map<String, dynamic>);
                 all_messages.add(currentmessage);
+              }
+
+              //loop to make messages seen when chat room was opened
+              for (int i = 0; i < all_messages.length; i++) {
+                if (all_messages[i].sender != widget.app_user.email &&
+                    all_messages[i].seen == false) {
+                  all_messages[i].seen = true;
+                  FirebaseFirestore.instance
+                      .collection("chatrooms")
+                      .doc(widget.chatRoom.chatroomid)
+                      .collection("messages")
+                      .doc(all_messages[i].messageid)
+                      .set(all_messages[i].toMap());
+                }
+              }
+
+              // condition to make last message seen on the messanger page
+              if (widget.chatRoom.lastmessagesender != widget.app_user.email) {
+                widget.chatRoom.lastmessageseen = true;
+                FirebaseFirestore.instance
+                    .collection("chatrooms")
+                    .doc(widget.chatRoom.chatroomid)
+                    .set(widget.chatRoom.toMap());
               }
 
               return chatroom(
@@ -114,6 +141,10 @@ class _chatroomState extends State<chatroom> {
   void sendMessage() async {
     String msg = messagecontroller.text.trim();
     messagecontroller.clear();
+    int type = file_type;
+    setState(() {
+      file_type = 0;
+    });
     if (imagefile != null) {
       File temp_img_file = imagefile!;
       setState(() {
@@ -126,7 +157,7 @@ class _chatroomState extends State<chatroom> {
           sender: app_user.email,
           text: msg,
           photo: '',
-          type: file_type,
+          type: type,
           sent: false,
           offline_file: temp_img_file,
           insert: true);
@@ -149,7 +180,11 @@ class _chatroomState extends State<chatroom> {
           .collection("messages")
           .doc(newmessage.messageid)
           .set(newmessage.toMap());
-      widget.chatRoom.lastmessageid = newmessage.messageid;
+      widget.chatRoom.lastmessage = msg;
+      widget.chatRoom.lastmessagetype = type;
+      widget.chatRoom.lastmessageseen = false;
+      widget.chatRoom.lastmessagetime = DateTime.now();
+      widget.chatRoom.lastmessagesender = app_user.email;
       FirebaseFirestore.instance
           .collection("chatrooms")
           .doc(widget.chatRoom.chatroomid)
@@ -170,13 +205,18 @@ class _chatroomState extends State<chatroom> {
             .collection("messages")
             .doc(newmessage.messageid)
             .set(newmessage.toMap());
-        widget.chatRoom.lastmessageid = newmessage.messageid;
+        widget.chatRoom.lastmessage = msg;
+        widget.chatRoom.lastmessagetype = type;
+        widget.chatRoom.lastmessageseen = false;
+        widget.chatRoom.lastmessagetime = DateTime.now();
+        widget.chatRoom.lastmessagesender = app_user.email;
         FirebaseFirestore.instance
             .collection("chatrooms")
             .doc(widget.chatRoom.chatroomid)
             .set(widget.chatRoom.toMap());
       }
     }
+    messanger_servers().user_messages_notif(widget.targetuser.email!, msg);
   }
 
   @override

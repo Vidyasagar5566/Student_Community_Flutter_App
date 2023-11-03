@@ -134,21 +134,40 @@ class Messager {
 class ChatRoomModel {
   String? chatroomid;
   Map<String, dynamic>? participants;
-  String? lastmessageid;
+  String? lastmessage;
+  int? lastmessagetype;
+  bool? lastmessageseen;
+  DateTime? lastmessagetime;
+  String? lastmessagesender;
 
-  ChatRoomModel({this.chatroomid, this.participants, this.lastmessageid});
+  ChatRoomModel(
+      {this.chatroomid,
+      this.participants,
+      this.lastmessage,
+      this.lastmessagetype,
+      this.lastmessageseen,
+      this.lastmessagetime,
+      this.lastmessagesender});
 
   ChatRoomModel.FromMap(Map<String, dynamic> map) {
     chatroomid = map["chatroomid"];
     participants = map["participants"];
-    lastmessageid = map["lastmessageid"];
+    lastmessage = map["lastmessage"];
+    lastmessagetype = map['lastmessagetype'];
+    lastmessageseen = map['lastmessageseen'];
+    lastmessagetime = map['lastmessagetime'].toDate();
+    lastmessagesender = map['lastmessagesender'];
   }
 
   Map<String, dynamic> toMap() {
     return {
       "chatroomid": chatroomid,
       "participants": participants,
-      "lastmessageid": lastmessageid
+      "lastmessage": lastmessage,
+      "lastmessagetype": lastmessagetype,
+      "lastmessageseen": lastmessageseen,
+      "lastmessagetime": lastmessagetime,
+      "lastmessagesender": lastmessagesender,
     };
   }
 }
