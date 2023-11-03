@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:testing_app/Messanger/Servers.dart';
 import 'package:testing_app/Messanger/Single_message.dart';
 import '/Files_disply_download/pdf_videos_images.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -215,6 +216,7 @@ class _chatroomState extends State<chatroom> {
             .set(widget.chatRoom.toMap());
       }
     }
+    messanger_servers().user_messages_notif(widget.targetuser.email!, msg);
   }
 
   @override
