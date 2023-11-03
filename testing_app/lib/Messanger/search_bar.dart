@@ -217,7 +217,11 @@ class _user_list_displayState extends State<user_list_display> {
     } else {
       ChatRoomModel newchatroom = ChatRoomModel(
           chatroomid: uuid.v1(),
-          lastmessageid: "-1",
+          lastmessage: "",
+          lastmessagetype: 0,
+          lastmessageseen: false,
+          lastmessagetime: DateTime.now(),
+          lastmessagesender: widget.app_user.email,
           participants: {
             widget.app_user.userUuid.toString(): true,
             targetuser.userUuid.toString(): true
