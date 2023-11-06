@@ -6,7 +6,6 @@ import '/Calender/Calender_date_event.dart';
 import '/Calender/Calender.dart';
 import '/Calender/Models.dart';
 import '/Fcm_Notif_Domains/Servers.dart';
-import '/Messanger/Models.dart';
 import '/Notes/QN_paper.dart';
 import '/Placements/Placements.dart';
 import '/Register_Update/Register.dart';
@@ -36,7 +35,7 @@ import 'Side_menu_bar/Side_menu.dart';
 import 'BuySell_LostFound/LostFound_BuySell.dart';
 import 'Circular_designs/Circular_Indicator.dart';
 import 'App_notifications/Notifications.dart';
-import 'Messanger/Messanger.dart';
+import 'Messanger/messanger.dart';
 import 'dart:async';
 import 'Calender/Servers.dart';
 
@@ -47,7 +46,6 @@ List<EVENT_LIST> all_events = [];
 List<POST_LIST> user_posts = [];
 List<SmallUsername> all_search_users = [];
 Username app_user = Username();
-List<Messager> user_conversation = [];
 
 class get_ueser_widget extends StatefulWidget {
   int curr_index;
@@ -251,7 +249,7 @@ class _firstpageState extends State<firstpage> {
                                     Navigator.of(context).push(
                                         MaterialPageRoute(
                                             builder: (BuildContext context) {
-                                      return messanger(widget.app_user);
+                                      return messanger(widget.app_user, 0);
                                     }));
                                   },
                                   icon: const FaIcon(

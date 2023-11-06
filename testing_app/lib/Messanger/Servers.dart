@@ -51,13 +51,18 @@ class messanger_servers {
       String queryString = Uri(queryParameters: queryParameters).query;
       String finalUrl = "$base_url/user_messanger1?$queryString";
       var url = Uri.parse(finalUrl);
-      http.Response response = await http.delete(url, headers: {
-        'Authorization': 'token $token',
-        "Content-Type": "application/json",
-      });
+      http.Response response = await http.delete(
+        url,
+        headers: {
+          'Authorization': 'token $token',
+          "Content-Type": "application/json",
+        },
+      );
       var data = json.decode(response.body) as Map;
+      print(data);
       return data['error'];
     } catch (e) {
+      print(e);
       return true;
     }
   }
