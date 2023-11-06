@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'Models.dart';
 import 'dart:io';
 
-
 class placemeny_servers {
   LocalStorage storage = LocalStorage("usertoken");
   String base_url = 'http://StudentCommunity.pythonanywhere.com';
@@ -329,7 +328,7 @@ class placemeny_servers {
       return temp;
     } catch (e) {
       List<RATINGS> temp = [];
-      print(temp);
+      print(e);
       return temp;
     }
   }

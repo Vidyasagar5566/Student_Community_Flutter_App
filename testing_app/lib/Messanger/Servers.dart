@@ -20,7 +20,7 @@ class messanger_servers {
         'num_list': num_list.toString()
       };
       String queryString = Uri(queryParameters: queryParameters).query;
-      String finalUrl = "$base_url/user_messanger1?$queryString";
+      String finalUrl = "$base_url/user_messanger?$queryString";
       var url = Uri.parse(finalUrl);
       http.Response response = await http.get(url, headers: {
         'Authorization': 'token $token',
@@ -49,7 +49,7 @@ class messanger_servers {
         'message': message
       };
       String queryString = Uri(queryParameters: queryParameters).query;
-      String finalUrl = "$base_url/user_messanger1?$queryString";
+      String finalUrl = "$base_url/user_messanger?$queryString";
       var url = Uri.parse(finalUrl);
       http.Response response = await http.delete(
         url,
@@ -59,10 +59,9 @@ class messanger_servers {
         },
       );
       var data = json.decode(response.body) as Map;
-      print(data);
+
       return data['error'];
     } catch (e) {
-      print(e);
       return true;
     }
   }
@@ -77,7 +76,7 @@ class messanger_servers {
         'user_uuids': user_uuids,
       };
       String queryString = Uri(queryParameters: queryParameters).query;
-      String finalUrl = "$base_url/user_messanger1?$queryString";
+      String finalUrl = "$base_url/user_messanger?$queryString";
       var url = Uri.parse(finalUrl);
       http.Response response = await http.put(url, headers: {
         'Authorization': 'token $token',

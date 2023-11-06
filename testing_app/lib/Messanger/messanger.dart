@@ -160,7 +160,7 @@ class _messangerState extends State<messanger> {
                     );
                   } else {
                     return Center(
-                      child: Text("No Conversations Yet!"),
+                      child: Text("No communities formed Yet!"),
                     );
                   }
                 } else {
@@ -179,7 +179,7 @@ class _messangerState extends State<messanger> {
               icon: Icon(
                 Icons.person_2_outlined,
               )),
-          //*
+
           BottomNavigationBarItem(
               label: "Communities",
               icon: Icon(

@@ -34,10 +34,13 @@ class _search_barState extends State<search_bar> {
 
   @override
   Widget build(BuildContext context) {
-    for (int i = 0; i < widget.chatroomedit.participants!.length; i++) {
-      List<String> uuids = widget.chatroomedit.participants!.keys.toList();
-      group_mems[uuids[i]] = true;
+    if (widget.chatroomedit.participants != null) {
+      for (int i = 0; i < widget.chatroomedit.participants!.length; i++) {
+        List<String> uuids = widget.chatroomedit.participants!.keys.toList();
+        group_mems[uuids[i]] = true;
+      }
     }
+
     return Scaffold(
       appBar: AppBar(
         flexibleSpace: Container(

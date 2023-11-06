@@ -361,8 +361,12 @@ class _chatroomState extends State<chatroom> {
                             reverse: true,
                             itemCount: widget.all_messages.length,
                             itemBuilder: (context, index) {
-                              return single_message(
-                                  widget.app_user, widget.all_messages[index]);
+                              bool groupChatroom =
+                                  widget.targetuser_uuids.length == 1
+                                      ? false
+                                      : true;
+                              return single_message(widget.app_user,
+                                  widget.all_messages[index], groupChatroom);
                             },
                           ))),
             Container(
@@ -378,7 +382,7 @@ class _chatroomState extends State<chatroom> {
                 child: Row(
                   children: [
                     Container(
-                      width: width * 0.60,
+                      width: width * 0.55,
                       margin: EdgeInsets.only(left: 10),
                       child: TextFormField(
                         controller: messagecontroller,
