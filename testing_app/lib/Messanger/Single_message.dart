@@ -87,12 +87,17 @@ class _single_messageState extends State<single_message> {
                   Row(
                     // mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text(
-                        message.text!,
-                        softWrap: true,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
+                      Container(
+                        constraints: BoxConstraints(
+                          maxWidth: width - 100,
+                        ),
+                        child: Text(
+                          message.text!,
+                          softWrap: true,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
                         ),
                       ),
                     ],
@@ -128,9 +133,6 @@ class _single_messageState extends State<single_message> {
               ),
             ))
         : Container(
-            // constraints: BoxConstraints(
-            //   maxWidth: width - 80,
-            // ),
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(11),
@@ -143,12 +145,17 @@ class _single_messageState extends State<single_message> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  message.text!,
-                  softWrap: true,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
+                Container(
+                  constraints: BoxConstraints(
+                    maxWidth: width - 100,
+                  ),
+                  child: Text(
+                    message.text!,
+                    softWrap: true,
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 4),

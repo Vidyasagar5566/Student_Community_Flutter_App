@@ -406,45 +406,66 @@ class _Personmessanger1State extends State<Personmessanger1> {
                           : Container(),
                       SizedBox(width: 3),
                       user_message.lastmessagetype == 0
-                          ? Text(
-                              user_message.lastmessage!,
-                              softWrap: false, maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: user_message.lastmessageseen!
-                                  ? TextStyle()
-                                  : TextStyle(fontWeight: FontWeight.bold),
-                              //post.description,,
+                          ? Container(
+                              constraints: BoxConstraints(
+                                maxWidth: width - 120,
+                              ),
+                              child: Text(
+                                user_message.lastmessage!,
+                                softWrap: false, maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: user_message.lastmessageseen!
+                                    ? TextStyle()
+                                    : TextStyle(fontWeight: FontWeight.bold),
+                                //post.description,,
+                              ),
                             )
                           : user_message.lastmessagetype == 1
-                              ? Text(
-                                  user_message.lastmessage! + "(Photo)",
-                                  softWrap: false, maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: user_message.lastmessageseen!
-                                      ? TextStyle()
-                                      : TextStyle(fontWeight: FontWeight.bold),
-                                  //post.description,,
+                              ? Container(
+                                  constraints: BoxConstraints(
+                                    maxWidth: width - 120,
+                                  ),
+                                  child: Text(
+                                    user_message.lastmessage! + "(Photo)",
+                                    softWrap: false, maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: user_message.lastmessageseen!
+                                        ? TextStyle()
+                                        : TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                    //post.description,,
+                                  ),
                                 )
                               : user_message.lastmessagetype == 2
-                                  ? Text(
-                                      user_message.lastmessage! + "(Video)",
-                                      softWrap: false, maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: user_message.lastmessageseen!
-                                          ? TextStyle()
-                                          : TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                      //post.description,,
+                                  ? Container(
+                                      constraints: BoxConstraints(
+                                        maxWidth: width - 120,
+                                      ),
+                                      child: Text(
+                                        user_message.lastmessage! + "(Video)",
+                                        softWrap: false, maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: user_message.lastmessageseen!
+                                            ? TextStyle()
+                                            : TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                        //post.description,,
+                                      ),
                                     )
-                                  : Text(
-                                      user_message.lastmessage! + "(PdfFile)",
-                                      softWrap: false, maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: user_message.lastmessageseen!
-                                          ? TextStyle()
-                                          : TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                      //post.description,,
+                                  : Container(
+                                      constraints: BoxConstraints(
+                                        maxWidth: width - 120,
+                                      ),
+                                      child: Text(
+                                        user_message.lastmessage! + "(PdfFile)",
+                                        softWrap: false, maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: user_message.lastmessageseen!
+                                            ? TextStyle()
+                                            : TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                        //post.description,,
+                                      ),
                                     )
                     ],
                   )
@@ -588,46 +609,68 @@ class _Groupmessanger1State extends State<Groupmessanger1> {
                       Text("Message : "),
                       SizedBox(width: 3),
                       group_chat_room.lastmessagetype == 0
-                          ? Text(
-                              group_chat_room.lastmessage!,
-                              softWrap: false, maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: group_chat_room.lastmessageseen!
-                                  ? TextStyle()
-                                  : TextStyle(fontWeight: FontWeight.bold),
-                              //post.description,,
+                          ? Container(
+                              constraints: BoxConstraints(
+                                maxWidth: width - 120,
+                              ),
+                              child: Text(
+                                group_chat_room.lastmessage!,
+                                softWrap: false, maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: group_chat_room.lastmessageseen!
+                                    ? TextStyle()
+                                    : TextStyle(fontWeight: FontWeight.bold),
+                                //post.description,,
+                              ),
                             )
                           : group_chat_room.lastmessagetype == 1
-                              ? Text(
-                                  group_chat_room.lastmessage! + "(Photo)",
-                                  softWrap: false, maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: group_chat_room.lastmessageseen!
-                                      ? TextStyle()
-                                      : TextStyle(fontWeight: FontWeight.bold),
-                                  //post.description,,
+                              ? Container(
+                                  constraints: BoxConstraints(
+                                    maxWidth: width - 120,
+                                  ),
+                                  child: Text(
+                                    group_chat_room.lastmessage! + "(Photo)",
+                                    softWrap: false, maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: group_chat_room.lastmessageseen!
+                                        ? TextStyle()
+                                        : TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                    //post.description,,
+                                  ),
                                 )
                               : group_chat_room.lastmessagetype == 2
-                                  ? Text(
-                                      group_chat_room.lastmessage! + "(Video)",
-                                      softWrap: false, maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: group_chat_room.lastmessageseen!
-                                          ? TextStyle()
-                                          : TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                      //post.description,,
+                                  ? Container(
+                                      constraints: BoxConstraints(
+                                        maxWidth: width - 120,
+                                      ),
+                                      child: Text(
+                                        group_chat_room.lastmessage! +
+                                            "(Video)",
+                                        softWrap: false, maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: group_chat_room.lastmessageseen!
+                                            ? TextStyle()
+                                            : TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                        //post.description,,
+                                      ),
                                     )
-                                  : Text(
-                                      group_chat_room.lastmessage! +
-                                          "(PdfFile)",
-                                      softWrap: false, maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: group_chat_room.lastmessageseen!
-                                          ? TextStyle()
-                                          : TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                      //post.description,,
+                                  : Container(
+                                      constraints: BoxConstraints(
+                                        maxWidth: width - 120,
+                                      ),
+                                      child: Text(
+                                        group_chat_room.lastmessage! +
+                                            "(PdfFile)",
+                                        softWrap: false, maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: group_chat_room.lastmessageseen!
+                                            ? TextStyle()
+                                            : TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                        //post.description,,
+                                      ),
                                     )
                     ],
                   )
