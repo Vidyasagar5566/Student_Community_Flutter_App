@@ -88,7 +88,7 @@ class _sacpagewidgetState extends State<sacpagewidget> {
                       widget.app_user, 0, widget.app_user.domain!, true);
                 }));
               },
-              tooltip: 'create club',
+              tooltip: 'create sac',
               elevation: 4.0,
               child: const Icon(
                 Icons.add,
@@ -221,7 +221,7 @@ class _sacpagewidgetState extends State<sacpagewidget> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   const Text(
-                                    'Only for club admin',
+                                    'Only for sac admin',
                                     style: TextStyle(color: Colors.white),
                                   ),
                                   TextButton(
@@ -373,7 +373,7 @@ class _sacProfilePageState extends State<sacProfilePage> {
           child: widget.curr_index == 0
               ? SingleChildScrollView(
                   child: user_postswidget(
-                      '', widget.app_user, 'club', widget.sac.id!),
+                      '', widget.app_user, 'sac', widget.sac.id!),
                 )
               : widget.curr_index == 1
                   ? SingleChildScrollView(
