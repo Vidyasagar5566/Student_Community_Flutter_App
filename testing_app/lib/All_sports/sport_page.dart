@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'Models.dart';
 import '/User_profile/Models.dart';
@@ -180,8 +181,15 @@ class _sportpagewidgetState extends State<sportpagewidget> {
                             height: 30,
                           ),
                           //Link
-                          Text(
-                            utf8convert(widget.sport.description!),
+                          SelectableLinkify(
+                            onOpen: (url) async {
+                              if (await canLaunch(url.url)) {
+                                await launch(url.url);
+                              } else {
+                                throw 'Could not launch $url';
+                              }
+                            },
+                            text: utf8convert(widget.sport.description!),
                           ),
                         ],
                       ),

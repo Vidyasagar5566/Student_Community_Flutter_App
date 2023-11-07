@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '/User_profile/Servers.dart';
 import 'Models.dart';
 import '/Fcm_Notif_Domains/Servers.dart';
@@ -139,8 +141,16 @@ class _userProfilePageState extends State<userProfilePage> {
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18)),
                                 Center(
-                                  child: Text(
-                                      utf8convert(widget.profile_user.bio!),
+                                  child: SelectableLinkify(
+                                      onOpen: (url) async {
+                                        if (await canLaunch(url.url)) {
+                                          await launch(url.url);
+                                        } else {
+                                          throw 'Could not launch $url';
+                                        }
+                                      },
+                                      text:
+                                          utf8convert(widget.profile_user.bio!),
                                       style: const TextStyle(fontSize: 15)),
                                 ),
                                 const SizedBox(height: 10),
@@ -179,13 +189,24 @@ class _userProfilePageState extends State<userProfilePage> {
                                       constraints: BoxConstraints(
                                         maxWidth: width / 2,
                                       ),
-                                      child: Text(widget.profile_user.phnNum!,
-                                          maxLines: 2,
-                                          softWrap: false,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                              color: Colors.blue,
-                                              fontWeight: FontWeight.w500)),
+                                      child: GestureDetector(
+                                        onTap: () async {
+                                          final call = Uri.parse('tel:+91 ' +
+                                              widget.profile_user.phnNum!);
+                                          if (await canLaunchUrl(call)) {
+                                            launchUrl(call);
+                                          } else {
+                                            throw 'Could not launch $call';
+                                          }
+                                        },
+                                        child: Text(widget.profile_user.phnNum!,
+                                            maxLines: 2,
+                                            softWrap: false,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(
+                                                color: Colors.blue,
+                                                fontWeight: FontWeight.w500)),
+                                      ),
                                     )
                                   ],
                                 ),

@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:testing_app/Files_disply_download/pdf_videos_images.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'Models.dart';
 import 'package:testing_app/User_profile/Models.dart';
 
@@ -91,9 +93,15 @@ class _single_messageState extends State<single_message> {
                         constraints: BoxConstraints(
                           maxWidth: width - 100,
                         ),
-                        child: Text(
-                          message.text!,
-                          softWrap: true,
+                        child: SelectableLinkify(
+                          onOpen: (url) async {
+                            if (await canLaunch(url.url)) {
+                              await launch(url.url);
+                            } else {
+                              throw 'Could not launch $url';
+                            }
+                          },
+                          text: message.text!,
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 16,
@@ -149,9 +157,15 @@ class _single_messageState extends State<single_message> {
                   constraints: BoxConstraints(
                     maxWidth: width - 100,
                   ),
-                  child: Text(
-                    message.text!,
-                    softWrap: true,
+                  child: SelectableLinkify(
+                    onOpen: (url) async {
+                      if (await canLaunch(url.url)) {
+                        await launch(url.url);
+                      } else {
+                        throw 'Could not launch $url';
+                      }
+                    },
+                    text: message.text!,
                     style: const TextStyle(
                       color: Colors.black,
                       fontSize: 16,
@@ -204,7 +218,15 @@ class _single_messageState extends State<single_message> {
           ),
           Container(
             margin: EdgeInsets.all(4),
-            child: Text(message.text!,
+            child: SelectableLinkify(
+                onOpen: (url) async {
+                  if (await canLaunch(url.url)) {
+                    await launch(url.url);
+                  } else {
+                    throw 'Could not launch $url';
+                  }
+                },
+                text: message.text!,
                 style: TextStyle(
                     color:
                         widget.currentmessage.sender! == widget.app_user.email
@@ -306,7 +328,15 @@ class _single_messageState extends State<single_message> {
           ),
           Container(
             margin: EdgeInsets.all(4),
-            child: Text(message.text!,
+            child: SelectableLinkify(
+                onOpen: (url) async {
+                  if (await canLaunch(url.url)) {
+                    await launch(url.url);
+                  } else {
+                    throw 'Could not launch $url';
+                  }
+                },
+                text: message.text!,
                 style: TextStyle(
                     color:
                         widget.currentmessage.sender! == widget.app_user.email
@@ -400,7 +430,15 @@ class _single_messageState extends State<single_message> {
               ),
               Container(
                 margin: EdgeInsets.all(4),
-                child: Text(message.text!,
+                child: SelectableLinkify(
+                    onOpen: (url) async {
+                      if (await canLaunch(url.url)) {
+                        await launch(url.url);
+                      } else {
+                        throw 'Could not launch $url';
+                      }
+                    },
+                    text: message.text!,
                     style: TextStyle(
                         color: widget.currentmessage.sender! ==
                                 widget.app_user.email

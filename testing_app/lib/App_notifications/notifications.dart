@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'Servers.dart';
 import 'Models.dart';
 import '/User_profile/Models.dart';
@@ -108,11 +110,10 @@ class _notifications1State extends State<notifications1> {
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(boxShadow: const [
             BoxShadow(
-              color: Colors.grey, 
-              offset:
-                  Offset(0, 2), 
-              blurRadius: 6, 
-              spreadRadius: 0, 
+              color: Colors.grey,
+              offset: Offset(0, 2),
+              blurRadius: 6,
+              spreadRadius: 0,
             ),
           ], color: Colors.white, borderRadius: BorderRadius.circular(5)),
           child: Column(
@@ -239,8 +240,15 @@ class _notifications1State extends State<notifications1> {
                 ],
               ),
               const SizedBox(height: 10),
-              Text(
-                utf8convert(notif.description!),
+              SelectableLinkify(
+                onOpen: (url) async {
+                  if (await canLaunch(url.url)) {
+                    await launch(url.url);
+                  } else {
+                    throw 'Could not launch $url';
+                  }
+                },
+                text: utf8convert(notif.description!),
               )
             ],
           )),

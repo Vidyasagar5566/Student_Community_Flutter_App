@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'Servers.dart';
 import 'Models.dart';
 import '/User_profile/Models.dart';
@@ -448,8 +450,15 @@ class _single_postState extends State<single_post> {
                                               color: Colors.black,
                                               fontWeight: FontWeight.bold))),
                                   const SizedBox(height: 4),
-                                  Text(
-                                    utf8convert(post.description!),
+                                  SelectableLinkify(
+                                    onOpen: (url) async {
+                                      if (await canLaunch(url.url)) {
+                                        await launch(url.url);
+                                      } else {
+                                        throw 'Could not launch $url';
+                                      }
+                                    },
+                                    text: utf8convert(post.description!),
                                   ),
                                   const SizedBox(height: 15),
                                   post.imgRatio == 1
@@ -597,7 +606,6 @@ class _single_postState extends State<single_post> {
               utf8convert(post.description!),
               style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
               maxLines: post.imgRatio == 0 ? 12 : 4,
-              overflow: TextOverflow.ellipsis,
             ),
           ),
           const SizedBox(

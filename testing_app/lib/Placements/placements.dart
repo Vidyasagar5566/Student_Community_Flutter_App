@@ -25,20 +25,20 @@ class _Given_RatingState extends State<Given_Rating> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         widget.sub_rating.floor() >= 1
-            ? const Icon(Icons.favorite, color: Colors.white)
-            : const Icon(Icons.favorite_border, color: Colors.white),
+            ? const Icon(Icons.star, color: Colors.white)
+            : const Icon(Icons.star_border, color: Colors.white),
         widget.sub_rating.floor() >= 2
-            ? const Icon(Icons.favorite, color: Colors.white)
-            : const Icon(Icons.favorite_border, color: Colors.white),
+            ? const Icon(Icons.star, color: Colors.white)
+            : const Icon(Icons.star_border, color: Colors.white),
         widget.sub_rating.floor() >= 3
-            ? const Icon(Icons.favorite, color: Colors.white)
-            : const Icon(Icons.favorite_border, color: Colors.white),
+            ? const Icon(Icons.star, color: Colors.white)
+            : const Icon(Icons.star_border, color: Colors.white),
         widget.sub_rating.floor() >= 4
-            ? const Icon(Icons.favorite, color: Colors.white)
-            : const Icon(Icons.favorite_border, color: Colors.white),
+            ? const Icon(Icons.star, color: Colors.white)
+            : const Icon(Icons.star_border, color: Colors.white),
         widget.sub_rating.floor() >= 5
-            ? const Icon(Icons.favorite, color: Colors.white)
-            : const Icon(Icons.favorite_border, color: Colors.white),
+            ? const Icon(Icons.star, color: Colors.white)
+            : const Icon(Icons.star_border, color: Colors.white),
       ],
     );
   }
@@ -105,8 +105,8 @@ class _Giving_RatingState extends State<Giving_Rating> {
           }
         },
         icon: selected_rating.rating! >= index
-            ? const Icon(Icons.favorite, color: Colors.white)
-            : const Icon(Icons.favorite_border, color: Colors.white));
+            ? const Icon(Icons.star, color: Colors.white)
+            : const Icon(Icons.star_border, color: Colors.white));
   }
 }
 

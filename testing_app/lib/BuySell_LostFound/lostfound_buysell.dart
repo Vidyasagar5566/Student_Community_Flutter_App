@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '/First_page.dart';
 import 'Servers.dart';
 import 'Models.dart';
@@ -580,7 +582,15 @@ class _lost_photowidgetState extends State<lost_photowidget> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(20)),
                   child: //Link
-                      Text(utf8convert(widget.description),
+                       SelectableLinkify(
+                  onOpen: (url) async {
+                    if (await canLaunch(url.url)) {
+                      await launch(url.url);
+                    } else {
+                      throw 'Could not launch $url';
+                    }
+                  },
+                  text:utf8convert(widget.description),
                           //'''My black crocs kept outside my room(6A 38) are missing from todays afternoon.if anyone took it by mistake please keep them back. the picture is attached down.''',
                           style: const TextStyle(
                             fontSize: 18,

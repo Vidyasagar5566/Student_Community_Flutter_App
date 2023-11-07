@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '/First_page.dart';
 import 'Models.dart';
 import '/User_profile/Models.dart';
@@ -454,8 +456,8 @@ class _event_photowidgetState extends State<event_photowidget> {
             color: Colors.blue, // <-- SEE HERE
           ),
           centerTitle: true,
-          title: const Text(
-            "NIT CALICUT",
+          title: Text(
+            domains[widget.app_user.domain!]!,
             //"Event name",
             style: TextStyle(color: Colors.black),
           ),
@@ -492,8 +494,15 @@ class _event_photowidgetState extends State<event_photowidget> {
                     color: Colors.white,
                   ),
                   child: //Link
-                      Text(
-                    utf8convert(widget.event.description!),
+                      SelectableLinkify(
+                    onOpen: (url) async {
+                      if (await canLaunch(url.url)) {
+                        await launch(url.url);
+                      } else {
+                        throw 'Could not launch $url';
+                      }
+                    },
+                    text: utf8convert(widget.event.description!),
                     //"Description",
                     //style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18),
                   ),
@@ -814,10 +823,25 @@ class _event_photowidgetState extends State<event_photowidget> {
                           child: Center(
                             child: update.substring(0, 3) == '&&&'
                                 ? //Link
-                                Text(update.substring(3, update.length))
+                                SelectableLinkify(
+                                    onOpen: (url) async {
+                                      if (await canLaunch(url.url)) {
+                                        await launch(url.url);
+                                      } else {
+                                        throw 'Could not launch $url';
+                                      }
+                                    },
+                                    text: update.substring(3, update.length))
                                 : //Link
-                                Text(
-                                    utf8convert(update),
+                                SelectableLinkify(
+                                    onOpen: (url) async {
+                                      if (await canLaunch(url.url)) {
+                                        await launch(url.url);
+                                      } else {
+                                        throw 'Could not launch $url';
+                                      }
+                                    },
+                                    text: utf8convert(update),
                                   ),
                           ),
                         );

@@ -7,6 +7,8 @@ import '/Files_disply_download/Pdf_Videos_Images.dart';
 import '/First_page.dart';
 import 'Upload_opinion.dart';
 import '/User_Star_Mark/User_Profile_Star_Mark.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 //import 'package:link_text/link_text.dart';
 import 'dart:convert' show utf8;
@@ -369,7 +371,15 @@ class _alert_commentwidgetState extends State<alert_commentwidget> {
                   : UserProfileMarkAdmin(
                       widget.alert, widget.alert.username, widget.app_user),
               const SizedBox(height: 20),
-              Text(widget.alert.description!,
+              SelectableLinkify(
+                  onOpen: (url) async {
+                    if (await canLaunch(url.url)) {
+                      await launch(url.url);
+                    } else {
+                      throw 'Could not launch $url';
+                    }
+                  },
+                  text: widget.alert.description!,
                   style: const TextStyle(fontSize: 15)),
               const SizedBox(height: 30),
               all_files_display(
@@ -547,8 +557,15 @@ class _lst_cmnt_pageState extends State<lst_cmnt_page> {
             ],
           ),
           const SizedBox(height: 20),
-          Text(
-              alert_cmnt.insertMessage!
+          SelectableLinkify(
+              onOpen: (url) async {
+                if (await canLaunch(url.url)) {
+                  await launch(url.url);
+                } else {
+                  throw 'Could not launch $url';
+                }
+              },
+              text: alert_cmnt.insertMessage!
                   ? alert_cmnt.comment!
                   : utf8convert(alert_cmnt.comment!),
               style: const TextStyle(fontSize: 15)),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
 import 'Models.dart';
 import '/User_profile/Models.dart';
 import '/User_profile/Servers.dart';
 import 'Servers.dart';
-//import 'package:link_text/link_text.dart';
 import '/User_Star_Mark/User_Profile_Star_Mark.dart';
 import 'dart:convert' show utf8;
 import '/User_profile/User_posts_category.dart';
@@ -170,8 +170,15 @@ class _clubpagewidgetState extends State<clubpagewidget> {
                           height: 30,
                         ),
                         //Link
-                        Text(
-                          utf8convert(widget.club.description!),
+                        SelectableLinkify(
+                          onOpen: (url) async {
+                            if (await canLaunch(url.url)) {
+                              await launch(url.url);
+                            } else {
+                              throw 'Could not launch $url';
+                            }
+                          },
+                          text: utf8convert(widget.club.description!),
                         ),
                       ],
                     ),
