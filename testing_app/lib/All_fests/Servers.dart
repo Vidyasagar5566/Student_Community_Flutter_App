@@ -205,7 +205,7 @@ class all_fests_servers {
         'num_list': num_list.toString()
       };
       String queryString = Uri(queryParameters: queryParameters).query;
-      String finalUrl = "$base_url/user_messanger1?$queryString";
+      String finalUrl = "$base_url/user_messanger?$queryString";
       var url = Uri.parse(finalUrl);
       http.Response response = await http.get(url, headers: {
         'Authorization': 'token $token',
