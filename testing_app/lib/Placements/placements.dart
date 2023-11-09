@@ -77,9 +77,13 @@ class _Giving_RatingState extends State<Giving_Rating> {
                   initialValue: selected_rating.description,
                   style: TextStyle(color: Colors.white),
                   minLines: 2,
+                  cursorColor: Colors.white,
                   maxLines: 3,
                   decoration: const InputDecoration(
                     enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.white),
+                    ),
+                    disabledBorder: OutlineInputBorder(
                       borderSide: const BorderSide(color: Colors.white),
                     ),
                     counterStyle: TextStyle(color: Colors.white),
@@ -327,7 +331,8 @@ class _placementsState extends State<placements> {
         .get_sub_place_list("CPC", '@nitc.ac.in', 'B.Tech');
     setState(() {
       loaded_data = true;
-      widget.cal_sub_names = plac_names;
+      cal_sub_names = plac_names;
+      widget.cal_sub_names = cal_sub_names.sublist(0, cal_sub_names.length);
     });
   }
 
@@ -394,18 +399,25 @@ class _placementsState extends State<placements> {
                                 ),
                                 const SizedBox(width: 20),
                                 SizedBox(
-                                    width: wid / 1.7,
-                                    child: Text(
-                                      "Placements : " +
-                                          widget.cal_sub_names.length
-                                              .toString(),
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 25,
-                                          fontWeight: FontWeight.w700),
-                                    )),
+                                  width: 200,
+                                  child: TextField(
+                                    cursorColor: Colors.white,
+                                    keyboardType: TextInputType.emailAddress,
+                                    style: TextStyle(color: Colors.white),
+                                    decoration: const InputDecoration(
+                                      hintText: "Search Company Name",
+                                      hintStyle: TextStyle(color: Colors.white),
+                                    ),
+                                    onChanged: (String value) {
+                                      setState(() {
+                                        widget.cal_sub_names = cal_sub_names
+                                            .where((element) => element.subName!
+                                                .contains(value))
+                                            .toList();
+                                      });
+                                    },
+                                  ),
+                                ),
                               ],
                             ))
                       ],

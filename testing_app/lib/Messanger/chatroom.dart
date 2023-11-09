@@ -43,20 +43,95 @@ class _chatRoomStreamState extends State<chatRoomStream> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: Row(
-          children: [
-            widget.targetuser.fileType == '1'
-                ? CircleAvatar(
-                    backgroundImage:
-                        NetworkImage(widget.targetuser.profilePic!))
-                : const CircleAvatar(
-                    backgroundImage: AssetImage("images/profile.jpg")),
-            const SizedBox(
-              width: 20,
-            ),
-            Text(widget.targetuser.username.toString())
+          title: Row(
+            children: [
+              widget.targetuser.fileType == '1'
+                  ? CircleAvatar(
+                      backgroundImage:
+                          NetworkImage(widget.targetuser.profilePic!))
+                  : const CircleAvatar(
+                      backgroundImage: AssetImage("images/profile.jpg")),
+              const SizedBox(
+                width: 20,
+              ),
+              Text(widget.targetuser.username.toString())
+            ],
+          ),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          contentPadding: EdgeInsets.all(15),
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(),
+                                  IconButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      icon: const Icon(Icons.close))
+                                ],
+                              ),
+                              const SizedBox(height: 20),
+                              const Center(
+                                  child: Text(
+                                      "Are you sure do you want to delete this?",
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold))),
+                              const SizedBox(height: 10),
+                              Container(
+                                margin: const EdgeInsets.all(30),
+                                child: OutlinedButton(
+                                    onPressed: () async {
+                                      setState(() {
+                                        widget.chatRoom.participants![
+                                                widget.app_user.userUuid!] =
+                                            !widget.chatRoom.participants![
+                                                widget.app_user.userUuid!];
+                                      });
+                                      await FirebaseFirestore.instance
+                                          .collection("chatrooms")
+                                          .doc(widget.chatRoom.chatroomid)
+                                          .set(widget.chatRoom.toMap());
+                                      Navigator.pop(context);
+                                      Navigator.pop(context);
+                                    },
+                                    child: widget.chatRoom.participants![
+                                                widget.app_user.userUuid!] ==
+                                            false
+                                        ? const Text(
+                                            "Un Block",
+                                            style:
+                                                TextStyle(color: Colors.blue),
+                                          )
+                                        : const Text(
+                                            "Block",
+                                            style:
+                                                TextStyle(color: Colors.blue),
+                                          )),
+                              )
+                            ],
+                          ),
+                        );
+                      });
+                },
+                child:
+                    widget.chatRoom.participants![widget.app_user.userUuid!] ==
+                            false
+                        ? const Text("Un Block")
+                        : const Text("Block"))
           ],
-        )),
+        ),
         body: StreamBuilder(
             stream: FirebaseFirestore.instance
                 .collection("chatrooms")
@@ -108,7 +183,10 @@ class _chatRoomStreamState extends State<chatRoomStream> {
                     targetuser_uuids: [widget.targetuser.userUuid!],
                     chatRoom: widget.chatRoom,
                     app_user: widget.app_user,
-                    all_messages: all_messages,
+                    all_messages: widget
+                            .chatRoom.participants![widget.app_user.userUuid!]!
+                        ? all_messages
+                        : [],
                   );
                 } else if (snapshot.hasError) {
                   return const Text(
@@ -172,7 +250,65 @@ class _GroupChatRoomStreamState extends State<GroupChatRoomStream> {
                       }));
                     },
                     child: Text("Edit Group"))
-                : Container()
+                : TextButton(
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              contentPadding: EdgeInsets.all(15),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(),
+                                      IconButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          icon: const Icon(Icons.close))
+                                    ],
+                                  ),
+                                  const SizedBox(height: 20),
+                                  const Center(
+                                      child: Text(
+                                          "Are you sure do you want to Exit group?",
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold))),
+                                  const SizedBox(height: 10),
+                                  Container(
+                                    margin: const EdgeInsets.all(30),
+                                    child: OutlinedButton(
+                                        onPressed: () async {
+                                          setState(() {
+                                            widget.chatRoom.participants!
+                                                .remove(
+                                                    widget.app_user.userUuid);
+                                          });
+                                          await FirebaseFirestore.instance
+                                              .collection("chatrooms")
+                                              .doc(widget.chatRoom.chatroomid)
+                                              .set(widget.chatRoom.toMap());
+                                          Navigator.of(context);
+                                          Navigator.of(context);
+                                        },
+                                        child: const Center(
+                                            child: Text(
+                                          "Exit",
+                                          style: TextStyle(color: Colors.blue),
+                                        ))),
+                                  )
+                                ],
+                              ),
+                            );
+                          });
+                    },
+                    child: Text("Exit Group"))
           ],
         ),
         body: StreamBuilder(
@@ -255,67 +391,49 @@ class _chatroomState extends State<chatroom> {
   int file_type = 0;
 
   void sendMessage() async {
-    String msg = messagecontroller.text.trim();
-    messagecontroller.clear();
-    int type = file_type;
-    setState(() {
-      file_type = 0;
-    });
-    if (imagefile != null) {
-      File temp_img_file = imagefile!;
-      setState(() {
-        imagefile = null;
-      });
-      MessageModel newmessage = MessageModel(
-          messageid: uuid.v1(),
-          seen: false,
-          createdon: DateTime.now(),
-          sender: app_user.email,
-          text: msg,
-          photo: '',
-          type: type,
-          sent: false,
-          offline_file: temp_img_file,
-          insert: true);
-      setState(() {
-        widget.all_messages.insert(0, newmessage);
-      });
-      String uid = uuid.v1();
-      UploadTask uploadtask = FirebaseStorage.instance
-          .ref("photo_messages")
-          .child(uid.toString())
-          .putFile(temp_img_file);
-      TaskSnapshot snapshot = await uploadtask;
-      String imageurl = await snapshot.ref.getDownloadURL();
-      setState(() {
-        newmessage.photo = imageurl;
-      });
-      await FirebaseFirestore.instance
-          .collection("chatrooms")
-          .doc(widget.chatRoom.chatroomid)
-          .collection("messages")
-          .doc(newmessage.messageid)
-          .set(newmessage.toMap());
-      widget.chatRoom.lastmessage = msg;
-      widget.chatRoom.lastmessagetype = type;
-      widget.chatRoom.lastmessageseen = false;
-      widget.chatRoom.lastmessagetime = DateTime.now();
-      widget.chatRoom.lastmessagesender = app_user.email;
-      FirebaseFirestore.instance
-          .collection("chatrooms")
-          .doc(widget.chatRoom.chatroomid)
-          .set(widget.chatRoom.toMap());
+    if (!widget.chatRoom.participants!.values.elementAt(0) ||
+        !widget.chatRoom.participants!.values.elementAt(1)) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          duration: Duration(milliseconds: 400),
+          content: Text("You cannot send message to this user..",
+              style: TextStyle(color: Colors.white))));
     } else {
-      if (msg != "") {
+      String msg = messagecontroller.text.trim();
+      messagecontroller.clear();
+      int type = file_type;
+      setState(() {
+        file_type = 0;
+      });
+      if (imagefile != null) {
+        File temp_img_file = imagefile!;
+        setState(() {
+          imagefile = null;
+        });
         MessageModel newmessage = MessageModel(
             messageid: uuid.v1(),
             seen: false,
             createdon: DateTime.now(),
             sender: app_user.email,
             text: msg,
-            photo: "",
-            type: 0);
-        FirebaseFirestore.instance
+            photo: '',
+            type: type,
+            sent: false,
+            offline_file: temp_img_file,
+            insert: true);
+        setState(() {
+          widget.all_messages.insert(0, newmessage);
+        });
+        String uid = uuid.v1();
+        UploadTask uploadtask = FirebaseStorage.instance
+            .ref("photo_messages")
+            .child(uid.toString())
+            .putFile(temp_img_file);
+        TaskSnapshot snapshot = await uploadtask;
+        String imageurl = await snapshot.ref.getDownloadURL();
+        setState(() {
+          newmessage.photo = imageurl;
+        });
+        await FirebaseFirestore.instance
             .collection("chatrooms")
             .doc(widget.chatRoom.chatroomid)
             .collection("messages")
@@ -326,19 +444,46 @@ class _chatroomState extends State<chatroom> {
         widget.chatRoom.lastmessageseen = false;
         widget.chatRoom.lastmessagetime = DateTime.now();
         widget.chatRoom.lastmessagesender = app_user.email;
-        FirebaseFirestore.instance
+        await FirebaseFirestore.instance
             .collection("chatrooms")
             .doc(widget.chatRoom.chatroomid)
             .set(widget.chatRoom.toMap());
+      } else {
+        if (msg != "") {
+          MessageModel newmessage = MessageModel(
+              messageid: uuid.v1(),
+              seen: false,
+              createdon: DateTime.now(),
+              sender: app_user.email,
+              text: msg,
+              photo: "",
+              type: 0);
+          FirebaseFirestore.instance
+              .collection("chatrooms")
+              .doc(widget.chatRoom.chatroomid)
+              .collection("messages")
+              .doc(newmessage.messageid)
+              .set(newmessage.toMap());
+          widget.chatRoom.lastmessage = msg;
+          widget.chatRoom.lastmessagetype = type;
+          widget.chatRoom.lastmessageseen = false;
+          widget.chatRoom.lastmessagetime = DateTime.now();
+          widget.chatRoom.lastmessagesender = app_user.email;
+          FirebaseFirestore.instance
+              .collection("chatrooms")
+              .doc(widget.chatRoom.chatroomid)
+              .set(widget.chatRoom.toMap());
+        }
       }
-    }
 
-    if (widget.targetuser_uuids.length == 1) {
-      messanger_servers()
-          .user_messages_notif(widget.targetuser_uuids.join("#"), msg);
-    } else {
-      messanger_servers().user_messages_notif(widget.targetuser_uuids.join("#"),
-          msg + " : From " + widget.chatRoom.group_name!);
+      if (widget.targetuser_uuids.length == 1) {
+        messanger_servers()
+            .user_messages_notif(widget.targetuser_uuids.join("#"), msg);
+      } else {
+        messanger_servers().user_messages_notif(
+            widget.targetuser_uuids.join("#"),
+            msg + " : From " + widget.chatRoom.group_name!);
+      }
     }
   }
 

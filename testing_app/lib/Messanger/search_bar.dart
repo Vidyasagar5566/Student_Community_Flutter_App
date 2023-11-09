@@ -276,12 +276,32 @@ class _user_list_displayState extends State<user_list_display> {
 
   Future<ChatRoomModel?> getChatRoomModel(SmallUsername targetuser) async {
     ChatRoomModel? chatroom1;
+    List<List<bool>> all_poss = [
+      [true, false],
+      [false, true],
+      [false, false]
+    ];
     QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection("chatrooms")
         .where("group", isEqualTo: false)
         .where("participants.${widget.app_user.userUuid}", isEqualTo: true)
         .where("participants.${targetuser.userUuid}", isEqualTo: true)
         .get();
+    ;
+    for (int i = 0; i < 3; i++) {
+      if (snapshot.docs.length > 0) {
+        break;
+      }
+      snapshot = await FirebaseFirestore.instance
+          .collection("chatrooms")
+          .where("group", isEqualTo: false)
+          .where("participants.${widget.app_user.userUuid}",
+              isEqualTo: all_poss[i][0])
+          .where("participants.${targetuser.userUuid}",
+              isEqualTo: all_poss[i][1])
+          .get();
+    }
+
     if (snapshot.docs.length > 0) {
       var docData = snapshot.docs[0].data();
       ChatRoomModel existingchatroom =
