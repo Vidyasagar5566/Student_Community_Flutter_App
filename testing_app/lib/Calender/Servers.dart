@@ -78,6 +78,7 @@ class calendar_servers {
       String file_type,
       String branch,
       String year,
+      String all_university,
       String event_date) async {
     try {
       var token = storage.getItem('token');
@@ -87,6 +88,10 @@ class calendar_servers {
       if (file_type != "0") {
         base64file = base64Encode(file.readAsBytesSync());
         fileName = file.path.split("/").last;
+      }
+      bool is_all_university = true;
+      if (all_university != "All") {
+        is_all_university = false;
       }
       var url = Uri.parse(finalUrl);
       http.Response response = await http.post(url,
@@ -103,6 +108,7 @@ class calendar_servers {
             'file_type': file_type,
             'branch': branch,
             'year': year,
+            'all_universities': is_all_university,
             'event_date': event_date
           }));
       var data = json.decode(response.body) as Map;

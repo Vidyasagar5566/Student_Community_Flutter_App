@@ -605,7 +605,7 @@ class _sport_members1State extends State<sport_members1> {
     var width = MediaQuery.of(context).size.width;
     return Container(
         margin: EdgeInsets.all(2),
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.all(10),
         decoration: BoxDecoration(boxShadow: const [
           BoxShadow(
             color: Colors.grey, // Shadow color
@@ -623,7 +623,7 @@ class _sport_members1State extends State<sport_members1> {
                 Row(
                   children: [UserProfileMark(widget.app_user, sport_mem)],
                 ),
-                Icon(Icons.more_horiz)
+                // Icon(Icons.more_horiz)
               ],
             ),
             const SizedBox(

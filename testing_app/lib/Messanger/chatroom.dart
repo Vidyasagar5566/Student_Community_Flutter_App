@@ -144,9 +144,7 @@ class _GroupChatRoomStreamState extends State<GroupChatRoomStream> {
             onTap: () {
               Navigator.of(context)
                   .push(MaterialPageRoute(builder: (BuildContext context) {
-                return groupUsersDisplay(
-                    widget.chatRoom.participants!.keys.toList(),
-                    widget.app_user);
+                return groupUsersDisplay(widget.chatRoom, widget.app_user);
               }));
             },
             child: Row(
@@ -161,18 +159,20 @@ class _GroupChatRoomStreamState extends State<GroupChatRoomStream> {
             ),
           ),
           actions: [
-            TextButton(
-                onPressed: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (BuildContext context) {
-                    return search_bar(
-                        widget.app_user,
-                        domains[widget.app_user.domain]!,
-                        'edit_group',
-                        widget.chatRoom);
-                  }));
-                },
-                child: Text("Edit Group"))
+            widget.chatRoom.group_creator == widget.app_user.email
+                ? TextButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (BuildContext context) {
+                        return search_bar(
+                            widget.app_user,
+                            domains[widget.app_user.domain]!,
+                            'edit_group',
+                            widget.chatRoom);
+                      }));
+                    },
+                    child: Text("Edit Group"))
+                : Container()
           ],
         ),
         body: StreamBuilder(
@@ -708,9 +708,9 @@ class _chatroomState extends State<chatroom> {
 }
 
 class groupUsersDisplay extends StatefulWidget {
-  List<String> user_uuids;
+  ChatRoomModel group_chat_room;
   Username app_user;
-  groupUsersDisplay(this.user_uuids, this.app_user);
+  groupUsersDisplay(this.group_chat_room, this.app_user);
 
   @override
   State<groupUsersDisplay> createState() => _groupUsersDisplayState();
@@ -718,13 +718,16 @@ class groupUsersDisplay extends StatefulWidget {
 
 class _groupUsersDisplayState extends State<groupUsersDisplay> {
   List<SmallUsername> group_users = [];
+
   @override
   Widget build(BuildContext context) {
+    List<String> user_uuids =
+        widget.group_chat_room.participants!.keys.toList();
     return Scaffold(
       appBar: AppBar(title: Text("Group_Users")),
       body: FutureBuilder<List<SmallUsername>>(
         future: messanger_servers()
-            .get_fire_base_uuids_to_backend_users(widget.user_uuids.join('#')),
+            .get_fire_base_uuids_to_backend_users(user_uuids.join('#')),
         builder: (ctx, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasError) {
@@ -821,7 +824,7 @@ class _groupUsersDisplayState extends State<groupUsersDisplay> {
                       ),
                       Container(
                         padding: EdgeInsets.only(left: 20),
-                        width: (width - 36) / 1.8,
+                        width: (width - 36) / 1.4,
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -841,7 +844,17 @@ class _groupUsersDisplayState extends State<groupUsersDisplay> {
                                     ),
                                   ),
                                   const SizedBox(width: 10),
-                                  userMarkNotation(search_user.starMark!)
+                                  userMarkNotation(search_user.starMark!),
+                                  const SizedBox(width: 6),
+                                  widget.group_chat_room.group_creator ==
+                                          search_user.email
+                                      ? const Text(
+                                          "(GroupAdmin)",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.blue),
+                                        )
+                                      : Container()
                                 ],
                               ),
                               Text(

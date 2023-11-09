@@ -34,7 +34,7 @@ List<Tab> tabs = [
     width: 85,
     margin: EdgeInsets.all(6),
     child: const Text(
-      "Fest Mems",
+      "Fest mems",
       textAlign: TextAlign.center,
       style: TextStyle(color: Colors.black),
     ),
@@ -44,7 +44,7 @@ List<Tab> tabs = [
       width: 85,
       margin: EdgeInsets.all(6),
       child: const Text(
-        "Media Files",
+        "Media files",
         textAlign: TextAlign.center,
         style: TextStyle(color: Colors.black),
       ),
@@ -549,7 +549,7 @@ class _fest_members1State extends State<fest_members1> {
     var width = MediaQuery.of(context).size.width;
     return Container(
         margin: EdgeInsets.all(2),
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.all(10),
         decoration: BoxDecoration(boxShadow: const [
           BoxShadow(
             color: Colors.grey, // Shadow color
@@ -567,7 +567,7 @@ class _fest_members1State extends State<fest_members1> {
                 Row(
                   children: [UserProfileMark(widget.app_user, fest_mem)],
                 ),
-                Icon(Icons.more_horiz)
+                // Icon(Icons.more_horiz)
               ],
             ),
             const SizedBox(

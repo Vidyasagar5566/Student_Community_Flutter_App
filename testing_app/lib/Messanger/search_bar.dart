@@ -818,6 +818,7 @@ class _creatingNewGroupState extends State<creatingNewGroup> {
                                               widget.app_user.email,
                                           participants: group_mems,
                                           group: true,
+                                          group_creator: widget.app_user.email,
                                           group_name: group_name,
                                           group_icon: imageurl,
                                           participants_seen: {});

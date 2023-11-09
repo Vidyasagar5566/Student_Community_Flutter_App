@@ -10,6 +10,7 @@ class ChatRoomModel {
   DateTime? lastmessagetime;
   String? lastmessagesender;
   bool? group = false;
+  String? group_creator;
   String? group_name;
   String? group_icon;
   Map<String, dynamic>? participants_seen;
@@ -23,6 +24,7 @@ class ChatRoomModel {
       this.lastmessagetime,
       this.lastmessagesender,
       this.group,
+      this.group_creator,
       this.group_name,
       this.group_icon,
       this.participants_seen});
@@ -36,6 +38,7 @@ class ChatRoomModel {
     lastmessagetime = map['lastmessagetime'].toDate();
     lastmessagesender = map['lastmessagesender'];
     group = map['group'];
+    group_creator = map['group_creator'];
     group_name = map['group_name'];
     group_icon = map['group_icon'];
     participants_seen = map['participants_seen'];
@@ -51,6 +54,7 @@ class ChatRoomModel {
       "lastmessagetime": lastmessagetime,
       "lastmessagesender": lastmessagesender,
       "group": group,
+      "group_creator": group_creator,
       "group_name": group_name,
       "group_icon": group_icon,
       "participants_seen": participants_seen,

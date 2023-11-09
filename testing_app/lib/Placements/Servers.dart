@@ -333,7 +333,8 @@ class placemeny_servers {
     }
   }
 
-  Future<List<dynamic>> post_sub_rating(int rating, String sub_id) async {
+  Future<List<dynamic>> post_sub_rating(
+      int rating, String review, String sub_id) async {
     try {
       var token = storage.getItem('token');
       String finalUrl = "$base_url/ratings";
@@ -343,10 +344,8 @@ class placemeny_servers {
             'Authorization': 'token $token',
             "Content-Type": "application/json",
           },
-          body: jsonEncode({
-            'rating': rating,
-            'sub_id': sub_id,
-          }));
+          body: jsonEncode(
+              {'rating': rating, 'sub_id': sub_id, 'review': review}));
       var data = json.decode(response.body) as Map;
 
       return [data['error'], data['id']];

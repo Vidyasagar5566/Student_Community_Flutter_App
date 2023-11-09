@@ -56,14 +56,94 @@ class Giving_Rating extends StatefulWidget {
 class _Giving_RatingState extends State<Giving_Rating> {
   @override
   Widget build(BuildContext context) {
-    print(selected_rating.rating);
-    return Row(children: [
-      _build_screen(1),
-      _build_screen(2),
-      _build_screen(3),
-      _build_screen(4),
-      _build_screen(5),
-    ]);
+    return Container(
+      width: MediaQuery.of(context).size.width - 20,
+      child: Column(
+        children: [
+          Row(children: [
+            _build_screen(1),
+            _build_screen(2),
+            _build_screen(3),
+            _build_screen(4),
+            _build_screen(5),
+          ]),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              SizedBox(
+                width: 240,
+                child: TextFormField(
+                  keyboardType: TextInputType.emailAddress,
+                  initialValue: selected_rating.description,
+                  style: TextStyle(color: Colors.white),
+                  minLines: 2,
+                  maxLines: 3,
+                  decoration: const InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.white),
+                    ),
+                    counterStyle: TextStyle(color: Colors.white),
+                    labelText: "Experience",
+                    labelStyle: TextStyle(color: Colors.white),
+                    hintStyle: TextStyle(color: Colors.white),
+                    hintText: "Good Working Environment",
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                  ),
+                  onChanged: (String value) {
+                    setState(() {
+                      selected_rating.description = value;
+                    });
+                  },
+                ),
+              ),
+              const SizedBox(width: 4),
+              IconButton(
+                  onPressed: () async {
+                    if (widget.app_user.email == "guest@nitc.ac.in") {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          duration: Duration(milliseconds: 400),
+                          content: Text(
+                            "Guests are not allowed open files",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      );
+                    } else {
+                      List<dynamic> error = await placemeny_servers()
+                          .post_sub_rating(
+                              selected_rating.rating!,
+                              selected_rating.description!,
+                              widget.sub_id.toString());
+                      if (!error[0]) {
+                        selected_rating.id = error[1];
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                                content: Text(
+                          "Thanks for your feedback, we will update the details soon.",
+                          style: TextStyle(color: Colors.white),
+                        )));
+                      } else {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                                content: Text(
+                          "error occured please try again",
+                          style: TextStyle(color: Colors.white),
+                        )));
+                      }
+                    }
+                  },
+                  icon: Icon(Icons.cloud_upload, color: Colors.white)
+                  // Text("Update Review",
+                  //     style: TextStyle(color: Colors.white)),
+                  ),
+            ],
+          ),
+          const SizedBox(height: 10),
+        ],
+      ),
+    );
   }
 
   _build_screen(int index) {
@@ -84,23 +164,23 @@ class _Giving_RatingState extends State<Giving_Rating> {
               selected_rating.rating = index;
             });
             List<dynamic> error = await placemeny_servers().post_sub_rating(
-                selected_rating.rating!, widget.sub_id.toString());
+                selected_rating.rating!,
+                selected_rating.description!,
+                widget.sub_id.toString());
             print(error);
             if (!error[0]) {
               selected_rating.id = error[1];
               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  duration: Duration(milliseconds: 400),
                   content: Text(
-                    "Thanks for your feedback, we will update the details soon.",
-                    style: TextStyle(color: Colors.white),
-                  )));
+                "Thanks for your feedback, we will update the details soon.",
+                style: TextStyle(color: Colors.white),
+              )));
             } else {
               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  duration: Duration(milliseconds: 400),
                   content: Text(
-                    "error occured please try again",
-                    style: TextStyle(color: Colors.white),
-                  )));
+                "error occured please try again",
+                style: TextStyle(color: Colors.white),
+              )));
             }
           }
         },
@@ -201,10 +281,13 @@ class _Show_all_sub_ratingsState extends State<Show_all_sub_ratings> {
                           const Text("Review: ",
                               style: TextStyle(color: Colors.white)),
                           const SizedBox(width: 10),
-                          Text(
-                            widget.all_sub_ratings[index].description!,
-                            maxLines: 10,
-                            style: const TextStyle(color: Colors.white),
+                          Container(
+                            width: 160,
+                            child: Text(
+                              widget.all_sub_ratings[index].description!,
+                              maxLines: 10,
+                              style: const TextStyle(color: Colors.white),
+                            ),
                           )
                         ],
                       )
@@ -485,6 +568,7 @@ class _placementsState extends State<placements> {
                               widget.cal_sub_names[index], [])));
                     },
                     child: Container(
+                      width: wid - 16,
                       decoration: BoxDecoration(
                         borderRadius:
                             const BorderRadius.all(Radius.circular(10)),

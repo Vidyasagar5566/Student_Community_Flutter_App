@@ -85,7 +85,7 @@ class _about_appState extends State<about_app> {
                           if (widget.app_user.email == "guest@nitc.ac.in") {
                             ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                  duration: Duration(milliseconds: 400),
+                                    duration: Duration(milliseconds: 400),
                                     content: Text(
                                         "guest cannot share any feedback/etc..",
                                         style:
@@ -178,7 +178,8 @@ class _about_appState extends State<about_app> {
                               );
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(duration: Duration(milliseconds: 400),
+                                const SnackBar(
+                                  duration: Duration(milliseconds: 400),
                                   content: Text(
                                     "error occured, please try again",
                                     style: TextStyle(color: Colors.white),
@@ -208,7 +209,8 @@ class _about_appState extends State<about_app> {
                         minWidth: double.infinity,
                         onPressed: () {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(duration: Duration(milliseconds: 400),
+                            const SnackBar(
+                              duration: Duration(milliseconds: 400),
                               content: Text(
                                 "empty text cant be report,",
                                 style: TextStyle(color: Colors.white),
@@ -242,14 +244,10 @@ class _about_appState extends State<about_app> {
                       color: Colors.black.withOpacity(0.2),
                       fontStyle: FontStyle.italic)),
               const SizedBox(height: 8),
-              Text("B190838EC",
+              Text("Alumin of Nit Calicut(2019 - 2023)",
                   style: TextStyle(
                       color: Colors.black.withOpacity(0.2),
                       fontStyle: FontStyle.italic)),
-              Text("Contact email: brvsagar5566@gmail.com",
-                  style: TextStyle(
-                      color: Colors.black.withOpacity(0.2),
-                      fontStyle: FontStyle.italic))
             ]),
           ),
         ));

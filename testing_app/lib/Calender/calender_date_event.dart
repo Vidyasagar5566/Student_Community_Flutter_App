@@ -354,6 +354,7 @@ class _calender_events_displayState extends State<calender_events_display> {
                                                         '0',
                                                         '0000',
                                                         '@',
+                                                        'All',
                                                         widget.date +
                                                             'T' +
                                                             formattedTime);
