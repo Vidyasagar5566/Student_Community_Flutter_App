@@ -86,8 +86,7 @@ class login_servers {
       Username user = Username.fromJson(data);
       return user;
     } catch (e) {
-      var data = [];
-      Username user = Username.fromJson(data[0]);
+      Username user = Username();
       return user;
     }
   }

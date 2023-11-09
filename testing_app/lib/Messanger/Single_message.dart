@@ -93,15 +93,16 @@ class _single_messageState extends State<single_message> {
                         constraints: BoxConstraints(
                           maxWidth: width - 100,
                         ),
-                        child: SelectableLinkify(
-                          onOpen: (url) async {
-                            if (await canLaunch(url.url)) {
-                              await launch(url.url);
-                            } else {
-                              throw 'Could not launch $url';
-                            }
-                          },
-                          text: message.text!,
+                        child: SelectableText(
+                          // onOpen: (url) async {
+                          //   if (await canLaunch(url.url)) {
+                          //     await launch(url.url);
+                          //   } else {
+                          //     throw 'Could not launch $url';
+                          //   }
+                          // },
+                          // text:
+                          message.text!,
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 16,
@@ -157,15 +158,16 @@ class _single_messageState extends State<single_message> {
                   constraints: BoxConstraints(
                     maxWidth: width - 100,
                   ),
-                  child: SelectableLinkify(
-                    onOpen: (url) async {
-                      if (await canLaunch(url.url)) {
-                        await launch(url.url);
-                      } else {
-                        throw 'Could not launch $url';
-                      }
-                    },
-                    text: message.text!,
+                  child: SelectableText(
+                    // onOpen: (url) async {
+                    //   if (await canLaunch(url.url)) {
+                    //     await launch(url.url);
+                    //   } else {
+                    //     throw 'Could not launch $url';
+                    //   }
+                    // },
+                    // text:
+                    message.text!,
                     style: const TextStyle(
                       color: Colors.black,
                       fontSize: 16,

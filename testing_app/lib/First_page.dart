@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:testing_app/Login/login.dart';
 import '/Activities/Uploads.dart';
 import '/App_notifications/Uploads.dart';
 import '/Calender/Calender_date_event.dart';
@@ -66,6 +67,9 @@ class _get_ueser_widgetState extends State<get_ueser_widget> {
             return crclr_ind_error();
           } else if (snapshot.hasData) {
             app_user = snapshot.data;
+            if (app_user.email == null) {
+              return loginpage("error occured please login again");
+            }
             app_user = app_user;
 
             star_user_mark(app_user);

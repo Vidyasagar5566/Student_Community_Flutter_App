@@ -131,7 +131,12 @@ class _editprofileState extends State<editprofile> {
                               });
                             },
                             validator: (value) {
-                              return value!.isEmpty
+                              if (value!.length != 10) {
+                                return value.isEmpty
+                                    ? 'please enter 10 digit number'
+                                    : null;
+                              }
+                              return value.isEmpty
                                   ? 'please enter number'
                                   : null;
                             },
