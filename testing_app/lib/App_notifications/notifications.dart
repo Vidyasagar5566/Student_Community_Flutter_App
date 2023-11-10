@@ -193,7 +193,6 @@ class _notifications1State extends State<notifications1> {
                                         const SizedBox(height: 10),
                                         Container(
                                           margin: const EdgeInsets.all(30),
-                                          color: Colors.blue[900],
                                           child: OutlinedButton(
                                               onPressed: () async {
                                                 bool error =
@@ -216,7 +215,7 @@ class _notifications1State extends State<notifications1> {
                                                   child: Text(
                                                 "Delete",
                                                 style: TextStyle(
-                                                    color: Colors.white),
+                                                    color: Colors.blue),
                                               ))),
                                         ),
                                         const SizedBox(height: 10),

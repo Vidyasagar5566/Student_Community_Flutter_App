@@ -308,7 +308,6 @@ class _user_list_displayState extends State<user_list_display> {
                         const SizedBox(height: 10),
                         Container(
                           margin: const EdgeInsets.all(30),
-                          color: Colors.blue[900],
                           child: OutlinedButton(
                               onPressed: () async {
                                 if (search_user.userMark == "" ||
@@ -348,7 +347,7 @@ class _user_list_displayState extends State<user_list_display> {
                               child: const Center(
                                   child: Text(
                                 "Update User",
-                                style: TextStyle(color: Colors.white),
+                                style: TextStyle(color: Colors.blue),
                               ))),
                         )
                       ],

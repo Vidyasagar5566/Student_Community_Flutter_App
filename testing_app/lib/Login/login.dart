@@ -369,7 +369,6 @@ class _loginpageState extends State<loginpage> {
                                   Container(
                                     margin: const EdgeInsets.all(30),
                                     decoration: BoxDecoration(
-                                        color: Colors.blue[900],
                                         borderRadius: const BorderRadius.all(
                                             Radius.circular(10))),
                                     child: OutlinedButton(
@@ -390,7 +389,7 @@ class _loginpageState extends State<loginpage> {
                                         child: const Center(
                                             child: Text(
                                           "Continue as guest?",
-                                          style: TextStyle(color: Colors.white),
+                                          style: TextStyle(color: Colors.blue),
                                         ))),
                                   ),
                                   const SizedBox(height: 10),

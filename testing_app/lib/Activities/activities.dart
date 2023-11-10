@@ -348,7 +348,7 @@ class _single_eventState extends State<single_event> {
                   ),
             const SizedBox(height: 8),
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              smallUserProfileMark(widget.app_user, user),
+              UserProfileMarkAdmin(event, event.username, widget.app_user),
               Container(
                 margin: EdgeInsets.only(right: 20),
                 child: Row(
@@ -637,7 +637,6 @@ class _event_photowidgetState extends State<event_photowidget> {
                                                       margin:
                                                           const EdgeInsets.all(
                                                               30),
-                                                      color: Colors.blue[900],
                                                       child: OutlinedButton(
                                                           onPressed: () async {
                                                             bool error =
@@ -673,7 +672,7 @@ class _event_photowidgetState extends State<event_photowidget> {
                                                             "Delete",
                                                             style: TextStyle(
                                                                 color: Colors
-                                                                    .white),
+                                                                    .blue),
                                                           ))),
                                                     ),
                                                     const SizedBox(height: 10),

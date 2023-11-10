@@ -54,7 +54,10 @@ class _chatRoomStreamState extends State<chatRoomStream> {
               const SizedBox(
                 width: 20,
               ),
-              Text(widget.targetuser.username.toString())
+              Container(
+                  width: 140,
+                  child: Text(widget.targetuser.username.toString(),
+                      overflow: TextOverflow.ellipsis))
             ],
           ),
           actions: [
@@ -82,8 +85,7 @@ class _chatRoomStreamState extends State<chatRoomStream> {
                               ),
                               const SizedBox(height: 20),
                               const Center(
-                                  child: Text(
-                                      "Are you sure do you want to delete this?",
+                                  child: Text("Do you want to Block this User?",
                                       style: TextStyle(
                                           fontSize: 14,
                                           color: Colors.black,
@@ -232,24 +234,90 @@ class _GroupChatRoomStreamState extends State<GroupChatRoomStream> {
                 const SizedBox(
                   width: 20,
                 ),
-                Text(widget.chatRoom.group_name.toString())
+                Container(
+                  width: 140,
+                  child: Text(widget.chatRoom.group_name.toString(),
+                      overflow: TextOverflow.ellipsis),
+                )
               ],
             ),
           ),
           actions: [
             widget.chatRoom.group_creator == widget.app_user.email
-                ? TextButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (BuildContext context) {
-                        return search_bar(
-                            widget.app_user,
-                            domains[widget.app_user.domain]!,
-                            'edit_group',
-                            widget.chatRoom);
-                      }));
-                    },
-                    child: Text("Edit Group"))
+                ? Row(
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (BuildContext context) {
+                              return search_bar(
+                                  widget.app_user,
+                                  domains[widget.app_user.domain]!,
+                                  'edit_group',
+                                  widget.chatRoom);
+                            }));
+                          },
+                          icon: Icon(Icons.edit, color: Colors.blue)),
+                      const SizedBox(width: 1),
+                      IconButton(
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    contentPadding: EdgeInsets.all(15),
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Container(),
+                                            IconButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                icon: const Icon(Icons.close))
+                                          ],
+                                        ),
+                                        const SizedBox(height: 20),
+                                        const Center(
+                                            child: Text(
+                                                "Are you sure do you want to Delete group?",
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.bold))),
+                                        const SizedBox(height: 10),
+                                        Container(
+                                          margin: const EdgeInsets.all(30),
+                                          child: OutlinedButton(
+                                              onPressed: () async {
+                                                Navigator.pop(context);
+                                                Navigator.pop(context);
+                                                await FirebaseFirestore.instance
+                                                    .collection("chatrooms")
+                                                    .doc(widget
+                                                        .chatRoom.chatroomid)
+                                                    .delete();
+                                              },
+                                              child: const Center(
+                                                  child: Text(
+                                                "Delete",
+                                                style: TextStyle(
+                                                    color: Colors.blue),
+                                              ))),
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                });
+                          },
+                          icon: Icon(Icons.delete_forever, color: Colors.blue))
+                    ],
+                  )
                 : TextButton(
                     onPressed: () {
                       showDialog(
@@ -294,8 +362,8 @@ class _GroupChatRoomStreamState extends State<GroupChatRoomStream> {
                                               .collection("chatrooms")
                                               .doc(widget.chatRoom.chatroomid)
                                               .set(widget.chatRoom.toMap());
-                                          Navigator.of(context);
-                                          Navigator.of(context);
+                                          Navigator.pop(context);
+                                          Navigator.pop(context);
                                         },
                                         child: const Center(
                                             child: Text(
@@ -892,15 +960,17 @@ class _groupUsersDisplayState extends State<groupUsersDisplay> {
                         style: TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 24)));
               } else {
-                return ListView.builder(
-                    itemCount: group_users.length,
-                    shrinkWrap: true,
-                    padding: EdgeInsets.zero,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (BuildContext context, int index) {
-                      SmallUsername group_user = group_users[index];
-                      return _buildLoadingScreen(group_user, index);
-                    });
+                return SingleChildScrollView(
+                  child: ListView.builder(
+                      itemCount: group_users.length,
+                      shrinkWrap: true,
+                      padding: EdgeInsets.zero,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (BuildContext context, int index) {
+                        SmallUsername group_user = group_users[index];
+                        return _buildLoadingScreen(group_user, index);
+                      }),
+                );
               }
             }
           }
@@ -956,62 +1026,151 @@ class _groupUsersDisplayState extends State<groupUsersDisplay> {
                     }
                   },
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        width: 48, //post.profile_pic
-                        child: search_user.fileType == '1'
-                            ? CircleAvatar(
-                                backgroundImage:
-                                    NetworkImage(search_user.profilePic!))
-                            : const CircleAvatar(
-                                backgroundImage:
-                                    AssetImage("images/profile.jpg")),
-                      ),
-                      Container(
-                        padding: EdgeInsets.only(left: 20),
-                        width: (width - 36) / 1.4,
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
+                      Row(
+                        children: [
+                          Container(
+                            width: 48, //post.profile_pic
+                            child: search_user.fileType == '1'
+                                ? CircleAvatar(
+                                    backgroundImage:
+                                        NetworkImage(search_user.profilePic!))
+                                : const CircleAvatar(
+                                    backgroundImage:
+                                        AssetImage("images/profile.jpg")),
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(left: 20),
+                            width: (width - 36) / 1.4,
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Container(
-                                    constraints: BoxConstraints(
-                                        maxWidth: (width - 36) / 2.4),
-                                    child: Text(
-                                      search_user.username!,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 16,
+                                  Row(
+                                    children: [
+                                      Container(
+                                        constraints: BoxConstraints(
+                                            maxWidth: (width - 36) / 2.4),
+                                        child: Text(
+                                          search_user.username!,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 16,
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                      const SizedBox(width: 10),
+                                      userMarkNotation(search_user.starMark!),
+                                      const SizedBox(width: 6),
+                                      widget.group_chat_room.group_creator ==
+                                              search_user.email
+                                          ? const Text(
+                                              "(GroupAdmin)",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.blue),
+                                            )
+                                          : Container()
+                                    ],
                                   ),
-                                  const SizedBox(width: 10),
-                                  userMarkNotation(search_user.starMark!),
-                                  const SizedBox(width: 6),
-                                  widget.group_chat_room.group_creator ==
-                                          search_user.email
-                                      ? const Text(
-                                          "(GroupAdmin)",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.blue),
-                                        )
-                                      : Container()
-                                ],
-                              ),
-                              Text(
-                                domains[search_user.domain!]! +
-                                    " (" +
-                                    search_user.userMark! +
-                                    ")",
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                              ),
-                            ]),
+                                  Text(
+                                    domains[search_user.domain!]! +
+                                        " (" +
+                                        search_user.userMark! +
+                                        ")",
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                  ),
+                                ]),
+                          ),
+                        ],
                       ),
+                      widget.app_user.email ==
+                              widget.group_chat_room.group_creator
+                          ? IconButton(
+                              onPressed: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        contentPadding: EdgeInsets.all(15),
+                                        content: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Container(),
+                                                IconButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    icon:
+                                                        const Icon(Icons.close))
+                                              ],
+                                            ),
+                                            const SizedBox(height: 20),
+                                            const Center(
+                                                child: Text(
+                                                    "Do you want to Remove this User?",
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.bold))),
+                                            const SizedBox(height: 10),
+                                            Container(
+                                              margin: const EdgeInsets.all(30),
+                                              child: OutlinedButton(
+                                                  onPressed: () async {
+                                                    widget.group_chat_room
+                                                        .participants!
+                                                        .remove(search_user
+                                                            .userUuid);
+                                                    await FirebaseFirestore
+                                                        .instance
+                                                        .collection("chatrooms")
+                                                        .doc(widget
+                                                            .group_chat_room
+                                                            .chatroomid)
+                                                        .set(widget
+                                                            .group_chat_room
+                                                            .toMap());
+                                                    setState(() {
+                                                      group_users
+                                                          .remove(search_user);
+                                                    });
+
+                                                    Navigator.pop(context);
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(const SnackBar(
+                                                            duration: Duration(
+                                                                milliseconds:
+                                                                    400),
+                                                            content: Text(
+                                                                "User was removed successfully",
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white))));
+                                                  },
+                                                  child: const Text(
+                                                    "Remove",
+                                                    style: TextStyle(
+                                                        color: Colors.blue),
+                                                  )),
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    });
+                              },
+                              icon: Icon(Icons.more_vert))
+                          : Container()
                     ],
                   ),
                 ),

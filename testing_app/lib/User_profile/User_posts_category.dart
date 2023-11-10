@@ -261,7 +261,6 @@ class _single_postState extends State<single_post> {
                                             const SizedBox(height: 10),
                                             Container(
                                               margin: const EdgeInsets.all(30),
-                                              color: Colors.blue[900],
                                               child: OutlinedButton(
                                                   onPressed: () async {
                                                     Navigator.pop(context);
@@ -309,7 +308,7 @@ class _single_postState extends State<single_post> {
                                                       child: Text(
                                                     "Delete",
                                                     style: TextStyle(
-                                                        color: Colors.white),
+                                                        color: Colors.blue),
                                                   ))),
                                             ),
                                             const SizedBox(height: 10),

@@ -310,7 +310,6 @@ class _alert_commentwidgetState extends State<alert_commentwidget> {
                                   const SizedBox(height: 10),
                                   Container(
                                     margin: const EdgeInsets.all(30),
-                                    color: Colors.blue[900],
                                     child: OutlinedButton(
                                         onPressed: () async {
                                           bool error = await threads_servers()
@@ -326,8 +325,8 @@ class _alert_commentwidgetState extends State<alert_commentwidget> {
                                                     content: Text(
                                                         "Error occured plz try again",
                                                         style: TextStyle(
-                                                            color: Colors
-                                                                .white))));
+                                                            color:
+                                                                Colors.blue))));
                                           }
                                         },
                                         child: const Center(
@@ -513,7 +512,6 @@ class _lst_cmnt_pageState extends State<lst_cmnt_page> {
                                       const SizedBox(height: 10),
                                       Container(
                                         margin: const EdgeInsets.all(30),
-                                        color: Colors.blue[900],
                                         child: OutlinedButton(
                                             onPressed: () async {
                                               setState(() {
@@ -536,8 +534,8 @@ class _lst_cmnt_pageState extends State<lst_cmnt_page> {
                                             child: const Center(
                                                 child: Text(
                                               "Delete",
-                                              style: TextStyle(
-                                                  color: Colors.white),
+                                              style:
+                                                  TextStyle(color: Colors.blue),
                                             ))),
                                       ),
                                       const SizedBox(height: 10),

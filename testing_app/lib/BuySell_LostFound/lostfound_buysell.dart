@@ -375,7 +375,6 @@ class _lost_photowidgetState extends State<lost_photowidget> {
                                   const SizedBox(height: 10),
                                   Container(
                                     margin: const EdgeInsets.all(30),
-                                    color: Colors.blue[900],
                                     child: OutlinedButton(
                                         onPressed: () async {
                                           bool error = await bs_lf_servers()
@@ -396,7 +395,7 @@ class _lost_photowidgetState extends State<lost_photowidget> {
                                         child: const Center(
                                             child: Text(
                                           "Delete",
-                                          style: TextStyle(color: Colors.white),
+                                          style: TextStyle(color: Colors.blue),
                                         ))),
                                   ),
                                 ],
@@ -582,15 +581,15 @@ class _lost_photowidgetState extends State<lost_photowidget> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(20)),
                   child: //Link
-                       SelectableLinkify(
-                  onOpen: (url) async {
-                    if (await canLaunch(url.url)) {
-                      await launch(url.url);
-                    } else {
-                      throw 'Could not launch $url';
-                    }
-                  },
-                  text:utf8convert(widget.description),
+                      SelectableLinkify(
+                          onOpen: (url) async {
+                            if (await canLaunch(url.url)) {
+                              await launch(url.url);
+                            } else {
+                              throw 'Could not launch $url';
+                            }
+                          },
+                          text: utf8convert(widget.description),
                           //'''My black crocs kept outside my room(6A 38) are missing from todays afternoon.if anyone took it by mistake please keep them back. the picture is attached down.''',
                           style: const TextStyle(
                             fontSize: 18,
@@ -945,7 +944,6 @@ class _lst_cmnt_pageState extends State<lst_cmnt_page> {
                                           const SizedBox(height: 10),
                                           Container(
                                             margin: const EdgeInsets.all(30),
-                                            color: Colors.blue[900],
                                             child: OutlinedButton(
                                                 onPressed: () async {
                                                   setState(() {
@@ -969,7 +967,7 @@ class _lst_cmnt_pageState extends State<lst_cmnt_page> {
                                                     child: Text(
                                                   "Delete",
                                                   style: TextStyle(
-                                                      color: Colors.white),
+                                                      color: Colors.blue),
                                                 ))),
                                           ),
                                           const SizedBox(height: 10),

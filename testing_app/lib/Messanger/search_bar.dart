@@ -35,8 +35,8 @@ class _search_barState extends State<search_bar> {
   @override
   Widget build(BuildContext context) {
     if (widget.chatroomedit.participants != null) {
+      List<String> uuids = widget.chatroomedit.participants!.keys.toList();
       for (int i = 0; i < widget.chatroomedit.participants!.length; i++) {
-        List<String> uuids = widget.chatroomedit.participants!.keys.toList();
         group_mems[uuids[i]] = true;
       }
     }
@@ -69,25 +69,28 @@ class _search_barState extends State<search_bar> {
           },
         ),
         actions: [
-          DropdownButton<String>(
-              value: widget.domain,
-              underline: Container(),
-              iconEnabledColor: Colors.white,
-              elevation: 0,
-              items: domains_list.map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(
-                    value,
-                    style: TextStyle(fontSize: 10),
-                  ),
-                );
-              }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  widget.domain = value!;
-                });
-              })
+          widget.group_create_edit == ""
+              ? DropdownButton<String>(
+                  value: widget.domain,
+                  underline: Container(),
+                  iconEnabledColor: Colors.white,
+                  elevation: 0,
+                  items: domains_list
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(
+                        value,
+                        style: TextStyle(fontSize: 10),
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      widget.domain = value!;
+                    });
+                  })
+              : Container()
         ],
         backgroundColor: Colors.white70,
       ),
@@ -113,7 +116,14 @@ class _search_barState extends State<search_bar> {
                         style: TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 24)));
               } else {
-                all_search_users = users_list;
+                if (widget.chatroomedit.participants != null) {
+                  for (int i = 0; i < users_list.length; i++) {
+                    if (widget.chatroomedit.participants!.keys
+                        .contains(users_list[i].userUuid)) {
+                      users_list[i].isTeamMem = true;
+                    }
+                  }
+                }
                 return user_list_display(
                     users_list,
                     widget.app_user,
@@ -211,6 +221,47 @@ class _user_list_displayState extends State<user_list_display> {
     });
   }
 
+  bool select_all = false;
+  select_all_users_fun(bool? value) {
+    if (value == true) {
+      for (int i = 0; i < widget.all_search_users.length; i++) {
+        setState(() {
+          widget.all_search_users[i].isTeamMem = true;
+          group_mems[widget.all_search_users[i].userUuid!] = true;
+        });
+      }
+    } else {
+      for (int i = 0; i < widget.all_search_users.length; i++) {
+        if (widget.group_create_edit == "edit_group") {
+          if (widget.chatRoom.participants!
+                  .containsKey(widget.all_search_users[i].userUuid) ==
+              false) {
+            setState(() {
+              widget.all_search_users[i].isTeamMem = false;
+            });
+            try {
+              setState(() {
+                group_mems.remove(widget.all_search_users[i].userUuid!);
+              });
+            } catch (e) {}
+          }
+        } else {
+          setState(() {
+            widget.all_search_users[i].isTeamMem = false;
+          });
+          try {
+            setState(() {
+              group_mems.remove(widget.all_search_users[i].userUuid!);
+            });
+          } catch (e) {}
+        }
+      }
+    }
+    setState(() {
+      select_all = value!;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -226,6 +277,25 @@ class _user_list_displayState extends State<user_list_display> {
             )
           : Column(
               children: [
+                (widget.group_create_edit != "") &&
+                        (widget.app_user.isAdmin! ||
+                            widget.app_user.isStudentAdmin!)
+                    ? Container(
+                        margin: EdgeInsets.only(left: 40, right: 20),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Select all"),
+                              Checkbox(
+                                value: select_all,
+                                onChanged: (bool? value) {
+                                  select_all_users_fun(value);
+                                },
+                              )
+                            ]),
+                      )
+                    : Container(),
+                const SizedBox(height: 10),
                 ListView.builder(
                     itemCount: widget.all_search_users.length,
                     shrinkWrap: true,
@@ -558,10 +628,7 @@ class _user_list_displayState extends State<user_list_display> {
   }
 
   Widget _buildLoadingScreen_edit_group(SmallUsername search_user, int index) {
-    Map<String, bool> group_mems = {};
     var width = MediaQuery.of(context).size.width;
-    search_user.isTeamMem =
-        widget.chatRoom.participants!.containsKey(search_user.userUuid);
     return GestureDetector(
       onTap: () async {},
       child: Container(
@@ -626,6 +693,9 @@ class _user_list_displayState extends State<user_list_display> {
                   Checkbox(
                     value: search_user.isTeamMem,
                     onChanged: (bool? value) {
+                      setState(() {
+                        search_user.isTeamMem = value!;
+                      });
                       if (value == true) {
                         setState(() {
                           group_mems[search_user.userUuid!] = true;
@@ -635,9 +705,6 @@ class _user_list_displayState extends State<user_list_display> {
                           group_mems.remove(search_user.userUuid);
                         });
                       }
-                      setState(() {
-                        search_user.isTeamMem = value!;
-                      });
                     },
                   )
                 ],
@@ -817,8 +884,11 @@ class _creatingNewGroupState extends State<creatingNewGroup> {
                                                       ]),
                                                 ));
                                           });
-                                      group_mems[widget.app_user.userUuid!] =
-                                          true;
+                                      setState(() {
+                                        group_mems[widget.app_user.userUuid!] =
+                                            true;
+                                      });
+
                                       String uid = uuid.v1();
                                       UploadTask uploadtask = FirebaseStorage
                                           .instance
@@ -1072,8 +1142,11 @@ class _editGroupChatState extends State<editGroupChat> {
                                                       ]),
                                                 ));
                                           });
-                                      group_mems[widget.app_user.userUuid!] =
-                                          true;
+                                      setState(() {
+                                        group_mems[widget.app_user.userUuid!] =
+                                            true;
+                                      });
+
                                       String imageurl =
                                           widget.editchatroom.group_icon!;
                                       if (new_group_icon != null) {
@@ -1136,7 +1209,7 @@ class _editGroupChatState extends State<editGroupChat> {
                                   },
                                   color: Colors.green[200],
                                   textColor: Colors.white,
-                                  child: const Text("Create",
+                                  child: const Text("Edit",
                                       style: TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.w500)),

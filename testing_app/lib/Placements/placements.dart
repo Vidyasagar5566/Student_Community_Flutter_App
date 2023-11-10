@@ -525,6 +525,16 @@ class _placementsState extends State<placements> {
                                                 widget.cal_sub_names
                                                     .add(new_sub_name);
                                               });
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(const SnackBar(
+                                                      duration: Duration(
+                                                          milliseconds: 400),
+                                                      content: Text(
+                                                        "Added Successfully",
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                      )));
                                             } else {
                                               ScaffoldMessenger.of(context)
                                                   .showSnackBar(const SnackBar(
@@ -932,48 +942,6 @@ class _placementsState extends State<placements> {
   }
 }
 
-bool _lights = false;
-
-class private_switch extends StatefulWidget {
-  Username app_user;
-  private_switch(this.app_user);
-
-  @override
-  State<private_switch> createState() => _private_switchState();
-}
-
-class _private_switchState extends State<private_switch> {
-  @override
-  Widget build(BuildContext context) {
-    return SwitchListTile(
-      title: const Text(
-        "Make Private?",
-        style: TextStyle(fontWeight: FontWeight.w200),
-      ),
-      activeColor: Colors.blue,
-      value: _lights,
-      onChanged: (bool value) {
-        if (widget.app_user.isAdmin!) {
-          setState(() {
-            _lights = !_lights;
-          });
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              duration: Duration(milliseconds: 400),
-              content: Text(
-                "Students cannot create private sub topics",
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-          );
-        }
-      },
-      secondary: const Icon(Icons.lightbulb_outline),
-    );
-  }
-}
-
 class place_years extends StatefulWidget {
   Username app_user;
   CAL_SUB_NAMES cal_sub_name;
@@ -1119,7 +1087,6 @@ class _place_yearsState extends State<place_years> {
                           ),
                         ),
                         const SizedBox(height: 10),
-                        private_switch(widget.app_user),
                         const SizedBox(height: 10),
                         TextButton(
                             onPressed: () async {
@@ -1167,19 +1134,28 @@ class _place_yearsState extends State<place_years> {
                                           .add_cal_sub_year(
                                               widget.cal_sub_name.id.toString(),
                                               year_name,
-                                              _lights);
+                                              false);
 
                                   if (!error[0]) {
                                     CAL_SUB_YEARS new_sub_year =
                                         CAL_SUB_YEARS();
                                     new_sub_year.id = error[1];
                                     new_sub_year.yearName = year_name;
-                                    new_sub_year.private = _lights;
+                                    new_sub_year.private = false;
                                     new_sub_year.username =
                                         user_min(widget.app_user);
                                     setState(() {
                                       sub_years.add(new_sub_year);
                                     });
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                            duration:
+                                                Duration(milliseconds: 400),
+                                            content: Text(
+                                              "Added Successfully",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            )));
                                   } else {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
@@ -1284,7 +1260,6 @@ class _place_yearsState extends State<place_years> {
                                     ),
                                     IconButton(
                                       onPressed: () {
-                                        _lights = sub_years[index].private!;
                                         year_name = sub_years[index].yearName;
                                         showDialog(
                                             context: context,
@@ -1354,8 +1329,6 @@ class _place_yearsState extends State<place_years> {
                                                         ),
                                                         const SizedBox(
                                                             height: 10),
-                                                        private_switch(
-                                                            widget.app_user),
                                                         const SizedBox(
                                                             height: 10),
                                                         TextButton(
@@ -1413,7 +1386,7 @@ class _place_yearsState extends State<place_years> {
                                                                               index]
                                                                           .id
                                                                           .toString(),
-                                                                      _lights);
+                                                                      false);
                                                                   if (!error) {
                                                                     setState(
                                                                         () {
@@ -1422,7 +1395,7 @@ class _place_yearsState extends State<place_years> {
                                                                           year_name;
                                                                       sub_years[index]
                                                                               .private =
-                                                                          _lights;
+                                                                          false;
                                                                     });
                                                                   } else {
                                                                     ScaffoldMessenger.of(
@@ -1514,6 +1487,12 @@ class _yearFilesState extends State<yearFiles> {
         new_file.id = error[1];
         new_file.uploaded = true;
       });
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          duration: Duration(milliseconds: 400),
+          content: Text(
+            "Added Successfully",
+            style: TextStyle(color: Colors.white),
+          )));
     } else {
       setState(() {
         widget.cal_sub_files.remove(new_file);
