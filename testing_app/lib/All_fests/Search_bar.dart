@@ -259,7 +259,7 @@ class _user_list_displayState extends State<user_list_display> {
                           child: const Center(
                               child: Text(
                             "Transfer",
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(color: Colors.blue),
                           ))),
                     )
                   ],
@@ -428,7 +428,7 @@ class _user_list_displayState extends State<user_list_display> {
                           child: const Center(
                               child: Text(
                             "Create fest",
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(color: Colors.blue),
                           ))),
                     )
                   ],
