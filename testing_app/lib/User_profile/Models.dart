@@ -26,6 +26,7 @@ class Username {
   bool? isFaculty;
   bool? isAdmin;
   bool? isStudentAdmin;
+  bool? is_placement_admin;
   String? instabookRole;
   String? facultyRole;
   String? adminRole;
@@ -83,6 +84,7 @@ class Username {
       this.isFaculty,
       this.isAdmin,
       this.isStudentAdmin,
+      this.is_placement_admin,
       this.instabookRole,
       this.facultyRole,
       this.adminRole,
@@ -140,6 +142,7 @@ class Username {
     isFaculty = json['is_faculty'];
     isAdmin = json['is_admin'];
     isStudentAdmin = json['is_student_admin'];
+    is_placement_admin = json['is_placement_admin'];
     instabookRole = json['instabook_role'];
     facultyRole = json['faculty_role'];
     adminRole = json['admin_role'];
@@ -199,6 +202,7 @@ class Username {
     data['is_faculty'] = this.isFaculty;
     data['is_admin'] = this.isAdmin;
     data['is_student_admin'] = this.isStudentAdmin;
+    data['is_placement_admin'] = this.is_placement_admin;
     data['instabook_role'] = this.instabookRole;
     data['faculty_role'] = this.facultyRole;
     data['admin_role'] = this.adminRole;

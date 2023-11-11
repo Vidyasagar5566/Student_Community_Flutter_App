@@ -8,7 +8,7 @@ import '/Calender/Calender.dart';
 import '/Calender/Models.dart';
 import '/Fcm_Notif_Domains/Servers.dart';
 import '/Notes/QN_paper.dart';
-import '/Placements/Placements.dart';
+import '/Placements/placements.dart';
 import '/Register_Update/Register.dart';
 import '/SAC/Sac.dart';
 import '/Side_menu_bar/Servers.dart';
@@ -882,7 +882,7 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (BuildContext context) {
-                            return placements(widget.app_user, []);
+                            return placements(widget.app_user, [], 0);
                           }));
                         },
                         child: Column(

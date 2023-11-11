@@ -8,38 +8,6 @@ class placemeny_servers {
   LocalStorage storage = LocalStorage("usertoken");
   String base_url = 'http://StudentCommunity.pythonanywhere.com';
 
-// BRANCHES OF A COURSES.
-
-  Future<List<ALL_BRANCHES>> get_branches_list(
-      String domain, String course) async {
-    try {
-      var token = storage.getItem('token');
-      Map<String, String> queryParameters = {
-        'domain': domain,
-        'course': course
-      };
-      String queryString = Uri(queryParameters: queryParameters).query;
-      String finalUrl = "$base_url/all_branches/list1?$queryString";
-      var url = Uri.parse(finalUrl);
-      http.Response response = await http.get(url, headers: {
-        'Authorization': 'token $token',
-        "Content-Type": "application/json",
-      });
-
-      var data = json.decode(response.body) as List;
-      List<ALL_BRANCHES> temp = [];
-      data.forEach((element) {
-        ALL_BRANCHES post = ALL_BRANCHES.fromJson(element);
-        temp.add(post);
-      });
-      return temp;
-    } catch (e) {
-      List<ALL_BRANCHES> temp = [];
-      //return temp;
-      return temp;
-    }
-  }
-
 //PLACEMENTS OR SUBJECTS
 
   Future<List<CAL_SUB_NAMES>> get_sub_place_list(
@@ -73,7 +41,8 @@ class placemeny_servers {
     }
   }
 
-  Future<List<dynamic>> post_cal_sub(String sub_name, String sub_id) async {
+  Future<List<dynamic>> post_cal_sub(
+      String sub_name, String sub_id, bool InternCompany) async {
     try {
       var token = storage.getItem('token');
       String finalUrl = "$base_url/cal_dates_subs/list1";
@@ -83,12 +52,15 @@ class placemeny_servers {
             'Authorization': 'token $token',
             "Content-Type": "application/json",
           },
-          body: jsonEncode({'sub_name': sub_name, 'sub_id': sub_id}));
+          body: jsonEncode({
+            'sub_name': sub_name,
+            'sub_id': sub_id,
+            "InternCompany": InternCompany
+          }));
       var data = json.decode(response.body) as Map;
-      print(data);
+
       return [data['error'], data['id']];
     } catch (e) {
-      print('error');
       return [true, -1];
     }
   }

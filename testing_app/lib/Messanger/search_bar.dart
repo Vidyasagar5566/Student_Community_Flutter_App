@@ -204,11 +204,15 @@ class _user_list_displayState extends State<user_list_display> {
   void load_data_fun() async {
     List<SmallUsername> latest_search_users = await messanger_servers()
         .get_searched_user_list(widget.username_match, domains1[widget.domain]!,
-            all_search_users.length);
+            widget.all_search_users.length);
     if (latest_search_users.length != 0) {
-      all_search_users += latest_search_users;
+      if (select_all == true) {
+        for (int i = 0; i < latest_search_users.length; i++) {
+          latest_search_users[i].isTeamMem = true;
+        }
+      }
       setState(() {
-        widget.all_search_users = all_search_users;
+        widget.all_search_users += latest_search_users;
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -276,7 +280,13 @@ class _user_list_displayState extends State<user_list_display> {
               ],
             )
           : Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Container(
+                    margin: EdgeInsets.only(left: 10, right: 20),
+                    child: Text("First " +
+                        widget.all_search_users.length.toString() +
+                        " Users")),
                 (widget.group_create_edit != "") &&
                         (widget.app_user.isAdmin! ||
                             widget.app_user.isStudentAdmin!)
@@ -400,6 +410,35 @@ class _user_list_displayState extends State<user_list_display> {
     return chatroom1;
   }
 
+  UsetToUserProfile(SmallUsername search_user) async {
+    if (widget.app_user.email != search_user.email) {
+      showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) {
+            return AlertDialog(
+                contentPadding: EdgeInsets.all(15),
+                content: Container(
+                  margin: EdgeInsets.all(10),
+                  child:
+                      const Column(mainAxisSize: MainAxisSize.min, children: [
+                    Text("Please wait while loading....."),
+                    SizedBox(height: 10),
+                    CircularProgressIndicator()
+                  ]),
+                ));
+          });
+      Username all_profile_user =
+          await login_servers().get_user(search_user.email!);
+      Navigator.pop(context);
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (BuildContext context) {
+        return Scaffold(
+            body: userProfilePage(widget.app_user, all_profile_user));
+      }));
+    }
+  }
+
   Widget _buildLoadingScreen(SmallUsername search_user, int index) {
     var width = MediaQuery.of(context).size.width;
     return GestureDetector(
@@ -428,35 +467,7 @@ class _user_list_displayState extends State<user_list_display> {
                 children: [
                   GestureDetector(
                     onTap: () async {
-                      if (widget.app_user.email != search_user.email) {
-                        showDialog(
-                            context: context,
-                            barrierDismissible: false,
-                            builder: (context) {
-                              return AlertDialog(
-                                  contentPadding: EdgeInsets.all(15),
-                                  content: Container(
-                                    margin: EdgeInsets.all(10),
-                                    child: const Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Text(
-                                              "Please wait while loading....."),
-                                          SizedBox(height: 10),
-                                          CircularProgressIndicator()
-                                        ]),
-                                  ));
-                            });
-                        Username all_profile_user =
-                            await login_servers().get_user(search_user.email!);
-                        Navigator.pop(context);
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (BuildContext context) {
-                          return Scaffold(
-                              body: userProfilePage(
-                                  widget.app_user, all_profile_user));
-                        }));
-                      }
+                      await UsetToUserProfile(search_user);
                     },
                     child: Row(
                       children: [
@@ -543,53 +554,58 @@ class _user_list_displayState extends State<user_list_display> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: [
-                      Container(
-                          width: 48,
-                          child: search_user.fileType! == '1'
-                              ? CircleAvatar(
-                                  backgroundImage:
-                                      NetworkImage(search_user.profilePic!))
-                              : const CircleAvatar(
-                                  backgroundImage:
-                                      AssetImage("images/profile.jpg"))),
-                      Container(
-                        padding: EdgeInsets.only(left: 20),
-                        width: (width - 36) / 1.8,
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Container(
-                                    constraints: BoxConstraints(
-                                        maxWidth: (width - 36) / 2.4),
-                                    child: Text(
-                                      search_user.username!,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 16,
+                  GestureDetector(
+                    onTap: () async {
+                      await UsetToUserProfile(search_user);
+                    },
+                    child: Row(
+                      children: [
+                        Container(
+                            width: 48,
+                            child: search_user.fileType! == '1'
+                                ? CircleAvatar(
+                                    backgroundImage:
+                                        NetworkImage(search_user.profilePic!))
+                                : const CircleAvatar(
+                                    backgroundImage:
+                                        AssetImage("images/profile.jpg"))),
+                        Container(
+                          padding: EdgeInsets.only(left: 20),
+                          width: (width - 36) / 1.8,
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Container(
+                                      constraints: BoxConstraints(
+                                          maxWidth: (width - 36) / 2.4),
+                                      child: Text(
+                                        search_user.username!,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 16,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  userMarkNotation(search_user.starMark!)
-                                ],
-                              ),
-                              Text(
-                                domains[search_user.domain!]! +
-                                    " (" +
-                                    search_user.userMark! +
-                                    ")",
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                              )
-                            ]),
-                      )
-                    ],
+                                    const SizedBox(width: 10),
+                                    userMarkNotation(search_user.starMark!)
+                                  ],
+                                ),
+                                Text(
+                                  domains[search_user.domain!]! +
+                                      " (" +
+                                      search_user.userMark! +
+                                      ")",
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                )
+                              ]),
+                        )
+                      ],
+                    ),
                   ),
                   Checkbox(
                     value: search_user.isTeamMem,
@@ -642,53 +658,58 @@ class _user_list_displayState extends State<user_list_display> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: [
-                      Container(
-                          width: 48,
-                          child: search_user.fileType! == '1'
-                              ? CircleAvatar(
-                                  backgroundImage:
-                                      NetworkImage(search_user.profilePic!))
-                              : const CircleAvatar(
-                                  backgroundImage:
-                                      AssetImage("images/profile.jpg"))),
-                      Container(
-                        padding: EdgeInsets.only(left: 20),
-                        width: (width - 36) / 1.8,
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Container(
-                                    constraints: BoxConstraints(
-                                        maxWidth: (width - 36) / 2.4),
-                                    child: Text(
-                                      search_user.username!,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 16,
+                  GestureDetector(
+                    onTap: () async {
+                      await UsetToUserProfile(search_user);
+                    },
+                    child: Row(
+                      children: [
+                        Container(
+                            width: 48,
+                            child: search_user.fileType! == '1'
+                                ? CircleAvatar(
+                                    backgroundImage:
+                                        NetworkImage(search_user.profilePic!))
+                                : const CircleAvatar(
+                                    backgroundImage:
+                                        AssetImage("images/profile.jpg"))),
+                        Container(
+                          padding: EdgeInsets.only(left: 20),
+                          width: (width - 36) / 1.8,
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Container(
+                                      constraints: BoxConstraints(
+                                          maxWidth: (width - 36) / 2.4),
+                                      child: Text(
+                                        search_user.username!,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 16,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  userMarkNotation(search_user.starMark!)
-                                ],
-                              ),
-                              Text(
-                                domains[search_user.domain!]! +
-                                    " (" +
-                                    search_user.userMark! +
-                                    ")",
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                              )
-                            ]),
-                      )
-                    ],
+                                    const SizedBox(width: 10),
+                                    userMarkNotation(search_user.starMark!)
+                                  ],
+                                ),
+                                Text(
+                                  domains[search_user.domain!]! +
+                                      " (" +
+                                      search_user.userMark! +
+                                      ")",
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                )
+                              ]),
+                        )
+                      ],
+                    ),
                   ),
                   Checkbox(
                     value: search_user.isTeamMem,
