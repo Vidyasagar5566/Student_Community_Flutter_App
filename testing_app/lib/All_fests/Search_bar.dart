@@ -235,7 +235,6 @@ class _user_list_displayState extends State<user_list_display> {
                     const SizedBox(height: 10),
                     Container(
                       margin: const EdgeInsets.all(30),
-                      color: Colors.blue[900],
                       child: OutlinedButton(
                           onPressed: () async {
                             bool error = await all_fests_servers()
@@ -396,7 +395,6 @@ class _user_list_displayState extends State<user_list_display> {
                     const SizedBox(height: 10),
                     Container(
                       margin: const EdgeInsets.all(30),
-                      color: Colors.blue[900],
                       child: OutlinedButton(
                           onPressed: () async {
                             if (new_fest_name == null) {

@@ -39,30 +39,30 @@ class _AllsportpagewidgetState extends State<Allsportpagewidget> {
           "SPORTS PAGE",
           style: TextStyle(color: Colors.black),
         ),
-        actions: [
-          DropdownButton<String>(
-              value: widget.domain,
-              underline: Container(),
-              elevation: 0,
-              items: domains_list.map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(
-                    value,
-                    style: TextStyle(fontSize: 10),
-                  ),
-                );
-              }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  widget.domain = value!;
-                });
-              })
-        ],
+        // actions: [
+        //   DropdownButton<String>(
+        //       value: widget.domain,
+        //       underline: Container(),
+        //       elevation: 0,
+        //       items: domains_list.map<DropdownMenuItem<String>>((String value) {
+        //         return DropdownMenuItem<String>(
+        //           value: value,
+        //           child: Text(
+        //             value,
+        //             style: TextStyle(fontSize: 10),
+        //           ),
+        //         );
+        //       }).toList(),
+        //       onChanged: (value) {
+        //         setState(() {
+        //           widget.domain = value!;
+        //         });
+        //       })
+        // ],
         backgroundColor: Colors.white70,
       ),
       body: FutureBuilder<List<ALL_SPORTS>>(
-        future: all_sports_servers().get_sport_list(domains1[widget.domain]!),
+        future: all_sports_servers().get_sport_list(widget.domain),
         builder: (ctx, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasError) {

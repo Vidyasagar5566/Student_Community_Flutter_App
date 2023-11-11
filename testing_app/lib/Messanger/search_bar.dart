@@ -68,30 +68,30 @@ class _search_barState extends State<search_bar> {
             });
           },
         ),
-        actions: [
-          widget.group_create_edit == ""
-              ? DropdownButton<String>(
-                  value: widget.domain,
-                  underline: Container(),
-                  iconEnabledColor: Colors.white,
-                  elevation: 0,
-                  items: domains_list
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(
-                        value,
-                        style: TextStyle(fontSize: 10),
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      widget.domain = value!;
-                    });
-                  })
-              : Container()
-        ],
+        // actions: [
+        //   widget.group_create_edit == ""
+        //       ? DropdownButton<String>(
+        //           value: widget.domain,
+        //           underline: Container(),
+        //           iconEnabledColor: Colors.white,
+        //           elevation: 0,
+        //           items: domains_list
+        //               .map<DropdownMenuItem<String>>((String value) {
+        //             return DropdownMenuItem<String>(
+        //               value: value,
+        //               child: Text(
+        //                 value,
+        //                 style: TextStyle(fontSize: 10),
+        //               ),
+        //             );
+        //           }).toList(),
+        //           onChanged: (value) {
+        //             setState(() {
+        //               widget.domain = value!;
+        //             });
+        //           })
+        //       : Container()
+        // ],
         backgroundColor: Colors.white70,
       ),
       body: FutureBuilder<List<SmallUsername>>(
@@ -443,15 +443,22 @@ class _user_list_displayState extends State<user_list_display> {
     var width = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () async {
-        ChatRoomModel? chatroomModel = await getChatRoomModel(search_user);
-        if (chatroomModel != null) {
-          Navigator.pop(context);
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return chatRoomStream(
-                targetuser: search_user,
-                chatRoom: chatroomModel,
-                app_user: widget.app_user);
-          }));
+        if (widget.app_user.email == "guest@nitc.ac.in") {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              duration: Duration(milliseconds: 400),
+              content: Text("guest cannot chat with others..",
+                  style: TextStyle(color: Colors.white))));
+        } else {
+          ChatRoomModel? chatroomModel = await getChatRoomModel(search_user);
+          if (chatroomModel != null) {
+            Navigator.pop(context);
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return chatRoomStream(
+                  targetuser: search_user,
+                  chatRoom: chatroomModel,
+                  app_user: widget.app_user);
+            }));
+          }
         }
       },
       child: Container(

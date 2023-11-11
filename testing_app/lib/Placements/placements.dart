@@ -109,7 +109,7 @@ class _Giving_RatingState extends State<Giving_Rating> {
                         const SnackBar(
                           duration: Duration(milliseconds: 400),
                           content: Text(
-                            "Guests are not allowed open files",
+                            "Guests are not allowed.",
                             style: TextStyle(color: Colors.white),
                           ),
                         ),
@@ -158,7 +158,7 @@ class _Giving_RatingState extends State<Giving_Rating> {
               const SnackBar(
                 duration: Duration(milliseconds: 400),
                 content: Text(
-                  "Guests are not allowed open files",
+                  "Guests are not allowed",
                   style: TextStyle(color: Colors.white),
                 ),
               ),
@@ -206,6 +206,7 @@ class Show_all_sub_ratings extends StatefulWidget {
 class _Show_all_sub_ratingsState extends State<Show_all_sub_ratings> {
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
     return SingleChildScrollView(
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -226,6 +227,7 @@ class _Show_all_sub_ratingsState extends State<Show_all_sub_ratings> {
                 padding: const EdgeInsets.only(bottom: 10),
                 itemBuilder: (BuildContext context, int index) {
                   return Container(
+                    width: width - 80,
                     margin: const EdgeInsets.all(4),
                     padding: EdgeInsets.all(14),
                     decoration: BoxDecoration(
@@ -237,7 +239,6 @@ class _Show_all_sub_ratingsState extends State<Show_all_sub_ratings> {
                         )),
                     child: Column(mainAxisSize: MainAxisSize.min, children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             widget.all_sub_ratings[index].username!.email!,
@@ -336,8 +337,9 @@ class _private_switchState extends State<private_switch> {
 class placements extends StatefulWidget {
   Username app_user;
   List<CAL_SUB_NAMES> cal_sub_names;
-  int curr_index;
-  placements(this.app_user, this.cal_sub_names, this.curr_index);
+
+  String domain;
+  placements(this.app_user, this.cal_sub_names, this.domain);
 
   @override
   State<placements> createState() => _placementsState();
@@ -357,7 +359,7 @@ class _placementsState extends State<placements> {
 
   void load_data_fun() async {
     List<CAL_SUB_NAMES> plac_names = await placemeny_servers()
-        .get_sub_place_list("CPC", '@nitc.ac.in', 'B.Tech');
+        .get_sub_place_list("CPC", widget.domain, 'B.Tech');
     setState(() {
       cal_sub_names = plac_names;
       loaded_data = true;
@@ -434,7 +436,6 @@ class _placementsState extends State<placements> {
                               SizedBox(
                                 width: 200,
                                 child: TextFormField(
-                                  autofocus: true,
                                   cursorColor: Colors.white,
                                   keyboardType: TextInputType.emailAddress,
                                   style: TextStyle(color: Colors.white),
@@ -1855,7 +1856,7 @@ class _yearFilesState extends State<yearFiles> {
             const SnackBar(
               duration: Duration(milliseconds: 400),
               content: Text(
-                "Guests are not allowed open files",
+                "Guests are not allowed",
                 style: TextStyle(color: Colors.white),
               ),
             ),

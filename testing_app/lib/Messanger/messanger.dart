@@ -64,14 +64,23 @@ class _messangerState extends State<messanger> {
                   child: Stack(children: [
                     IconButton(
                       onPressed: () {
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (BuildContext context) {
-                          return search_bar(
-                              widget.app_user,
-                              domains[widget.app_user.domain]!,
-                              'create_group',
-                              ChatRoomModel());
-                        }));
+                        if (widget.app_user.email == "guest@nitc.ac.in") {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  duration: Duration(milliseconds: 400),
+                                  content: Text(
+                                      "guest cannot chat create groups..",
+                                      style: TextStyle(color: Colors.white))));
+                        } else {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) {
+                            return search_bar(
+                                widget.app_user,
+                                domains[widget.app_user.domain]!,
+                                'create_group',
+                                ChatRoomModel());
+                          }));
+                        }
                       },
                       icon: const Icon(Icons.group_add_outlined, size: 25),
                     ),
