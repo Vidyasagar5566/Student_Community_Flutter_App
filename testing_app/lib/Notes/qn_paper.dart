@@ -66,31 +66,12 @@ class _branchAndSemsState extends State<branchAndSems> {
             style: TextStyle(color: Colors.black),
           ),
           actions: [
-            // DropdownButton<String>(
-            //     value: widget.course,
-            //     underline: Container(),
-            //     elevation: 0,
-            //     items:
-            //         course_list.map<DropdownMenuItem<String>>((String value) {
-            //       return DropdownMenuItem<String>(
-            //         value: value,
-            //         child: Text(
-            //           value,
-            //           style: TextStyle(fontSize: 10),
-            //         ),
-            //       );
-            //     }).toList(),
-            //     onChanged: (value) {
-            //       setState(() {
-            //         widget.course = value!;
-            //       });
-            //     }),
             DropdownButton<String>(
-                value: widget.domain,
+                value: widget.course,
                 underline: Container(),
                 elevation: 0,
-                items: domains_list_new
-                    .map<DropdownMenuItem<String>>((String value) {
+                items:
+                    course_list.map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Text(
@@ -101,9 +82,28 @@ class _branchAndSemsState extends State<branchAndSems> {
                 }).toList(),
                 onChanged: (value) {
                   setState(() {
-                    widget.domain = value!;
+                    widget.course = value!;
                   });
                 }),
+            // DropdownButton<String>(
+            //     value: widget.domain,
+            //     underline: Container(),
+            //     elevation: 0,
+            //     items: domains_list_new
+            //         .map<DropdownMenuItem<String>>((String value) {
+            //       return DropdownMenuItem<String>(
+            //         value: value,
+            //         child: Text(
+            //           value,
+            //           style: TextStyle(fontSize: 10),
+            //         ),
+            //       );
+            //     }).toList(),
+            //     onChanged: (value) {
+            //       setState(() {
+            //         widget.domain = value!;
+            //       });
+            //     }),
           ],
           backgroundColor: Colors.white70,
         ),
