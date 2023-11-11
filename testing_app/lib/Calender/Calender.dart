@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:testing_app/Fcm_Notif_Domains/Servers.dart';
 import 'Calender_Date_Event.dart';
 import 'Servers.dart';
 import 'Models.dart';
@@ -63,7 +64,7 @@ class calender extends StatefulWidget {
 class _calenderState extends State<calender> {
   Widget build(BuildContext context) {
     return FutureBuilder<List<String>>(
-      future: calendar_servers().get_cal_list(widget.domain),
+      future: calendar_servers().get_cal_list(domains1[widget.domain]!),
       builder: (ctx, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {

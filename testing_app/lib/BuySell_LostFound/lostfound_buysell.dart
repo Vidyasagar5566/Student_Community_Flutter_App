@@ -80,32 +80,32 @@ class _all_lostwidget1State extends State<all_lostwidget1> {
                   "Sharings",
                   style: TextStyle(color: Colors.black),
                 ),
-          actions: [
-            widget.email == 'All'
-                ? DropdownButton<String>(
-                    value: widget.domain,
-                    underline: Container(),
-                    elevation: 0,
-                    items: domains_list
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(
-                          value,
-                          style: TextStyle(fontSize: 10),
-                        ),
-                      );
-                    }).toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        widget.domain = value!;
-                        lst_buy_list = [];
-                        total_loaded = false;
-                        load_data_fun();
-                      });
-                    })
-                : Container()
-          ],
+          // actions: [
+          //   widget.email == 'All'
+          //       ? DropdownButton<String>(
+          //           value: widget.domain,
+          //           underline: Container(),
+          //           elevation: 0,
+          //           items: domains_list
+          //               .map<DropdownMenuItem<String>>((String value) {
+          //             return DropdownMenuItem<String>(
+          //               value: value,
+          //               child: Text(
+          //                 value,
+          //                 style: TextStyle(fontSize: 10),
+          //               ),
+          //             );
+          //           }).toList(),
+          //           onChanged: (value) {
+          //             setState(() {
+          //               widget.domain = value!;
+          //               lst_buy_list = [];
+          //               total_loaded = false;
+          //               load_data_fun();
+          //             });
+          //           })
+          //       : Container()
+          // ],
           backgroundColor: Colors.white70,
         ),
         body: !total_loaded && lst_buy_list.length == 0

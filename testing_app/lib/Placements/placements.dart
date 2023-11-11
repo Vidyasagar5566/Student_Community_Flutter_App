@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:testing_app/Fcm_Notif_Domains/Servers.dart';
 import 'dart:io';
 import '../Circular_designs/Cure_clip.dart';
 import 'Servers.dart';
@@ -358,7 +359,7 @@ class _placementsState extends State<placements> {
 
   void load_data_fun() async {
     List<CAL_SUB_NAMES> plac_names = await placemeny_servers()
-        .get_sub_place_list("CPC", widget.domain, 'B.Tech');
+        .get_sub_place_list("CPC", domains1[widget.domain]!, 'B.Tech');
     setState(() {
       cal_sub_names = plac_names;
       loaded_data = true;

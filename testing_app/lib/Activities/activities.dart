@@ -33,7 +33,7 @@ class _activitieswidgetState extends State<activitieswidget> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<EVENT_LIST>>(
-      future: activity_servers().get_event_list(widget.domain, 0),
+      future: activity_servers().get_event_list(domains1[widget.domain]!, 0),
       builder: (ctx, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {

@@ -461,14 +461,6 @@ class _single_postState extends State<single_post> {
                                     text: utf8convert(post.description!),
                                   ),
                                   const SizedBox(height: 15),
-                                  post.imgRatio == 1
-                                      ? Container(
-                                          height: width,
-                                          width: width,
-                                          child: Image.network(post.img!),
-                                        )
-                                      : Container(),
-                                  const SizedBox(height: 10),
                                   TextButton(
                                       onPressed: () {
                                         Navigator.of(context).push(

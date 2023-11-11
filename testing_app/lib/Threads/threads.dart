@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:testing_app/Fcm_Notif_Domains/Servers.dart';
 import 'Servers.dart';
 import 'Models.dart';
 import '/User_profile/Models.dart';
@@ -31,7 +32,7 @@ class _alertwidgetState extends State<alertwidget> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<ALERT_LIST>>(
-      future: threads_servers().get_alert_list(widget.domain, 0),
+      future: threads_servers().get_alert_list(domains1[widget.domain]!, 0),
       builder: (ctx, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {

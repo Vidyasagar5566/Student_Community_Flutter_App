@@ -167,102 +167,101 @@ class _firstpageState extends State<firstpage> {
                           style: const TextStyle(color: Colors.black),
                         )),
                   actions: [
-                    widget.curr_index == 3 ||
-                            widget.curr_index == 2 ||
-                            widget.curr_index == 1
-                        ? DropdownButton<String>(
-                            value: domain,
-                            underline: Container(),
-                            elevation: 0,
-                            iconEnabledColor: Colors.black,
-                            iconDisabledColor: Colors.black,
-                            items: domains_list
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(
-                                  value,
-                                  style: TextStyle(fontSize: 10),
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: (value) {
-                              setState(() {
-                                domain = value!;
-                              });
-                            })
-                        : Row(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    widget.app_user.notifCount = 0;
-                                  });
-                                  menu_bar_servers().notif_seen();
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (BuildContext context) {
-                                    return notifications(widget.app_user);
-                                  }));
-                                },
-                                child: Stack(children: [
-                                  IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        widget.app_user.notifCount = 0;
-                                      });
-                                      menu_bar_servers().notif_seen();
-                                      Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                              builder: (BuildContext context) {
-                                        return notifications(widget.app_user);
-                                      }));
-                                    },
-                                    icon: const Icon(
-                                      Icons.notifications_on_rounded,
-                                      size: 30,
-                                      color: Colors.indigo,
-                                    ),
-                                  ),
-                                  Positioned(
-                                    right: 7,
-                                    top: 7,
-                                    child: Container(
-                                      padding: EdgeInsets.all(2),
-                                      decoration: BoxDecoration(
-                                        color: Colors.red,
-                                        borderRadius: BorderRadius.circular(6),
-                                      ),
-                                      constraints: const BoxConstraints(
-                                        minWidth: 14,
-                                        minHeight: 14,
-                                      ),
-                                      child: Text(
-                                        notif_count.toString(),
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 8,
-                                        ),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                  )
-                                ]),
+                    // widget.curr_index == 3 ||
+                    //         widget.curr_index == 2 ||
+                    //         widget.curr_index == 1
+                    //     ? DropdownButton<String>(
+                    //         value: domain,
+                    //         underline: Container(),
+                    //         elevation: 0,
+                    //         iconEnabledColor: Colors.black,
+                    //         iconDisabledColor: Colors.black,
+                    //         items: domains_list
+                    //             .map<DropdownMenuItem<String>>((String value) {
+                    //           return DropdownMenuItem<String>(
+                    //             value: value,
+                    //             child: Text(
+                    //               value,
+                    //               style: TextStyle(fontSize: 10),
+                    //             ),
+                    //           );
+                    //         }).toList(),
+                    //         onChanged: (value) {
+                    //           setState(() {
+                    //             domain = value!;
+                    //           });
+                    //         })
+                    //     :
+                    Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              widget.app_user.notifCount = 0;
+                            });
+                            menu_bar_servers().notif_seen();
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (BuildContext context) {
+                              return notifications(widget.app_user);
+                            }));
+                          },
+                          child: Stack(children: [
+                            IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  widget.app_user.notifCount = 0;
+                                });
+                                menu_bar_servers().notif_seen();
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                  return notifications(widget.app_user);
+                                }));
+                              },
+                              icon: const Icon(
+                                Icons.notifications_on_rounded,
+                                size: 30,
+                                color: Colors.indigo,
                               ),
-                              IconButton(
-                                  onPressed: () {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) {
-                                      return messanger(widget.app_user, 0);
-                                    }));
-                                  },
-                                  icon: const FaIcon(
-                                    FontAwesomeIcons.facebookMessenger,
-                                    size: 26,
-                                    color: Colors.indigo,
-                                  ))
-                            ],
-                          )
+                            ),
+                            Positioned(
+                              right: 7,
+                              top: 7,
+                              child: Container(
+                                padding: EdgeInsets.all(2),
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                constraints: const BoxConstraints(
+                                  minWidth: 14,
+                                  minHeight: 14,
+                                ),
+                                child: Text(
+                                  notif_count.toString(),
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 8,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            )
+                          ]),
+                        ),
+                        IconButton(
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                                return messanger(widget.app_user, 0);
+                              }));
+                            },
+                            icon: const FaIcon(
+                              FontAwesomeIcons.facebookMessenger,
+                              size: 26,
+                              color: Colors.indigo,
+                            ))
+                      ],
+                    )
                   ],
                   backgroundColor: Colors.white,
                 ),
@@ -289,25 +288,25 @@ class _firstpageState extends State<firstpage> {
                                         fontWeight: FontWeight.w400,
                                         fontSize: 15),
                                   ))),
-                          DropdownButton<String>(
-                              value: domain,
-                              underline: Container(),
-                              elevation: 0,
-                              items: domains_list.map<DropdownMenuItem<String>>(
-                                  (String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(
-                                    value,
-                                    style: TextStyle(fontSize: 10),
-                                  ),
-                                );
-                              }).toList(),
-                              onChanged: (value) {
-                                setState(() {
-                                  domain = value!;
-                                });
-                              })
+                          // DropdownButton<String>(
+                          //     value: domain,
+                          //     underline: Container(),
+                          //     elevation: 0,
+                          //     items: domains_list.map<DropdownMenuItem<String>>(
+                          //         (String value) {
+                          //       return DropdownMenuItem<String>(
+                          //         value: value,
+                          //         child: Text(
+                          //           value,
+                          //           style: TextStyle(fontSize: 10),
+                          //         ),
+                          //       );
+                          //     }).toList(),
+                          //     onChanged: (value) {
+                          //       setState(() {
+                          //         domain = value!;
+                          //       });
+                          //     })
                         ],
                       ),
                       Flexible(child: postwidget(widget.app_user, domain))
@@ -317,17 +316,18 @@ class _firstpageState extends State<firstpage> {
               : widget.curr_index == 1
                   ? Container(
                       color: Colors.white,
-                      child: calender(widget.app_user, domains1[domain]!))
+                      child: calender(
+                          widget.app_user, domains[widget.app_user.domain]!))
                   : widget.curr_index == 2
                       ? Container(
                           color: Colors.white,
-                          child: activitieswidget(
-                              widget.app_user, domains1[domain]!))
+                          child: activitieswidget(widget.app_user,
+                              domains[widget.app_user.domain]!))
                       : widget.curr_index == 3
                           ? Container(
                               color: Colors.white,
-                              child: alertwidget(
-                                  widget.app_user, domains1[domain]!))
+                              child: alertwidget(widget.app_user,
+                                  domains[widget.app_user.domain]!))
                           : Container(
                               color: Colors.white,
                               child: userProfilePage(
@@ -353,7 +353,8 @@ class _firstpageState extends State<firstpage> {
                         });
                     Map<List<CALENDER_EVENT>, List<EVENT_LIST>> total_data =
                         await calendar_servers().get_calender_event_list(
-                            today.toString().split(" ")[0], domains1[domain]!);
+                            today.toString().split(" ")[0],
+                            widget.app_user.domain!);
                     Navigator.pop(context);
                     List<CALENDER_EVENT> cal_event_data =
                         total_data.keys.toList()[0];
@@ -621,7 +622,8 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
                   onTap: () {
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (BuildContext context) {
-                      return Allclubpagewidget(widget.app_user, 'All');
+                      return Allclubpagewidget(
+                          widget.app_user, domains[widget.app_user.domain]!);
                     }));
                   },
                   child: Column(
@@ -644,7 +646,8 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
                   onTap: () {
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (BuildContext context) {
-                      return Allsportpagewidget(widget.app_user, 'All');
+                      return Allsportpagewidget(
+                          widget.app_user, domains[widget.app_user.domain]!);
                     }));
                   },
                   child: Column(
@@ -668,7 +671,8 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
                   onTap: () {
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (BuildContext context) {
-                      return Allfestspagewidget(widget.app_user, 'All');
+                      return Allfestspagewidget(
+                          widget.app_user, domains[widget.app_user.domain]!);
                     }));
                   },
                   child: Column(
@@ -786,7 +790,7 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
                             backgroundImage: AssetImage("images/student.png")),
                       ),
                       const SizedBox(height: 10),
-                      const Text("Students",
+                      const Text("Campus",
                           style: TextStyle(
                               fontWeight: FontWeight.w900, fontSize: 15))
                     ],
@@ -799,8 +803,12 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (BuildContext context) {
-                            return all_lostwidget1(widget.app_user, "buy/shell",
-                                lst_buy_list, 'All', 'All');
+                            return all_lostwidget1(
+                                widget.app_user,
+                                "buy/shell",
+                                lst_buy_list,
+                                domains[widget.app_user.domain]!,
+                                'All');
                           }));
                         },
                         child: Column(
@@ -882,8 +890,8 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (BuildContext context) {
-                            return placements(
-                                widget.app_user, [], widget.app_user.domain!);
+                            return placements(widget.app_user, [],
+                                domains[widget.app_user.domain]!);
                           }));
                         },
                         child: Column(

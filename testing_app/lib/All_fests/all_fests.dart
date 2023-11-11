@@ -61,7 +61,7 @@ class _AllfestspagewidgetState extends State<Allfestspagewidget> {
         backgroundColor: Colors.white70,
       ),
       body: FutureBuilder<List<ALL_FESTS>>(
-        future: all_fests_servers().get_fests_list(widget.domain),
+        future: all_fests_servers().get_fests_list(domains1[widget.domain]!),
         builder: (ctx, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasError) {

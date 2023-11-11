@@ -62,7 +62,7 @@ class _AllsportpagewidgetState extends State<Allsportpagewidget> {
         backgroundColor: Colors.white70,
       ),
       body: FutureBuilder<List<ALL_SPORTS>>(
-        future: all_sports_servers().get_sport_list(widget.domain),
+        future: all_sports_servers().get_sport_list(domains1[widget.domain]!),
         builder: (ctx, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasError) {
