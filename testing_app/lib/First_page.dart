@@ -882,7 +882,8 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (BuildContext context) {
-                            return placements(widget.app_user, [], 0);
+                            return placements(
+                                widget.app_user, [], widget.app_user.domain!);
                           }));
                         },
                         child: Column(

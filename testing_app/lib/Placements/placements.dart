@@ -337,7 +337,6 @@ class _private_switchState extends State<private_switch> {
 class placements extends StatefulWidget {
   Username app_user;
   List<CAL_SUB_NAMES> cal_sub_names;
-
   String domain;
   placements(this.app_user, this.cal_sub_names, this.domain);
 
