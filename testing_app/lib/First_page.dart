@@ -76,7 +76,7 @@ class _get_ueser_widgetState extends State<get_ueser_widget> {
 
             if (!app_user.isDetails!) {
               return LoginRegister(app_user);
-            } else if (app_user.updateMark != "instabook") {
+            } else if (app_user.updateMark != "instabook3") {
               return appUpdate();
             } else {
               return firstpage(widget.curr_index, app_user);
