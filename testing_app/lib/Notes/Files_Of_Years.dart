@@ -197,7 +197,7 @@ class _CalSubFilesState extends State<CalSubFiles> {
                   ])))),
       floatingActionButton: ElevatedButton.icon(
         onPressed: () async {
-          if (widget.app_user.email == "guest@nitc.ac.in") {
+         if (widget.app_user.email!.split('@')[0] == "guest") {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 duration: Duration(milliseconds: 400),
@@ -313,7 +313,7 @@ class _CalSubFilesState extends State<CalSubFiles> {
     var wid = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () {
-        if (widget.app_user.email == "guest@nitc.ac.in") {
+         if (widget.app_user.email!.split('@')[0] == "guest") {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               duration: Duration(milliseconds: 400),
@@ -392,7 +392,7 @@ class _CalSubFilesState extends State<CalSubFiles> {
                             widget.cal_sub_files[index].username!.email
                         ? IconButton(
                             onPressed: () async {
-                              if (widget.app_user.email == "guest@nitc.ac.in") {
+                     if (widget.app_user.email!.split('@')[0] == "guest") {
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(const SnackBar(
                                         duration: Duration(milliseconds: 400),

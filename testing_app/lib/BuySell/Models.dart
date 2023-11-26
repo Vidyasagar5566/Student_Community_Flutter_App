@@ -10,6 +10,7 @@ class Lost_Found {
   SmallUsername? username;
   double? imgRatio;
   String? tag;
+  String? category;
 
   Lost_Found(
       {this.id,
@@ -20,7 +21,8 @@ class Lost_Found {
       this.postedDate,
       this.username,
       this.imgRatio,
-      this.tag});
+      this.tag,
+      this.category});
 
   Lost_Found.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -34,6 +36,7 @@ class Lost_Found {
         : null;
     imgRatio = json['img_ratio'];
     tag = json['tag'];
+    tag = json['category'];
   }
 
   Map<String, dynamic> toJson() {
@@ -49,6 +52,7 @@ class Lost_Found {
     }
     data['img_ratio'] = this.imgRatio;
     data['tag'] = this.tag;
+    data['category'] = this.category;
     return data;
   }
 }

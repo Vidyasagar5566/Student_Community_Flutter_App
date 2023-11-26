@@ -76,7 +76,7 @@ class _MyAppState extends State<MyApp> {
             );
           }
           if (storage.getItem('token') == null) {
-            return loginpage("");
+            return loginpage("", 'Nit Calicut');
           }
           return get_ueser_widget(0);
         },

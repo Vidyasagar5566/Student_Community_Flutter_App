@@ -387,7 +387,7 @@ class _single_postState extends State<single_post> {
                 : BoxDecoration(),
             child: GestureDetector(
               onDoubleTap: () async {
-                if (widget.app_user.email == "guest@nitc.ac.in") {
+                if (widget.app_user.email!.split('@')[0] == "guest") {
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       duration: Duration(milliseconds: 400),
                       content: Text("guests are not allowed to like..",
@@ -535,7 +535,7 @@ class _single_postState extends State<single_post> {
                 children: [
                   IconButton(
                     onPressed: () async {
-                      if (widget.app_user.email == "guest@nitc.ac.in") {
+                      if (widget.app_user.email!.split('@')[0] == "guest") {
                         ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                                 duration: Duration(milliseconds: 400),

@@ -106,7 +106,7 @@ class _notifications1State extends State<notifications1> {
     String delete_error = "";
     return GestureDetector(
       child: Container(
-          margin: const EdgeInsets.only(top: 3),
+          margin: const EdgeInsets.all(7),
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(boxShadow: const [
             BoxShadow(
@@ -115,7 +115,7 @@ class _notifications1State extends State<notifications1> {
               blurRadius: 6,
               spreadRadius: 0,
             ),
-          ], color: Colors.white, borderRadius: BorderRadius.circular(5)),
+          ], color: Colors.white, borderRadius: BorderRadius.circular(10)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -135,7 +135,7 @@ class _notifications1State extends State<notifications1> {
                       ),
                       Container(
                         padding: EdgeInsets.only(left: 20),
-                        width: (width - 36) / 1.8,
+                        width: (width - 36) / 1.9,
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -143,7 +143,7 @@ class _notifications1State extends State<notifications1> {
                                 children: [
                                   Container(
                                     constraints: BoxConstraints(
-                                        maxWidth: (width - 36) / 2.4),
+                                        maxWidth: (width - 36) / 2.6),
                                     child: Text(
                                       user.username!,
                                       maxLines: 1,
@@ -181,6 +181,16 @@ class _notifications1State extends State<notifications1> {
                                     content: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
+                                        Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              IconButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  icon: Icon(Icons.close))
+                                            ]),
                                         const SizedBox(height: 20),
                                         const Center(
                                             child: Text(
@@ -239,16 +249,31 @@ class _notifications1State extends State<notifications1> {
                 ],
               ),
               const SizedBox(height: 10),
-              SelectableLinkify(
-                onOpen: (url) async {
-                  if (await canLaunch(url.url)) {
-                    await launch(url.url);
-                  } else {
-                    throw 'Could not launch $url';
-                  }
-                },
-                text: utf8convert(notif.description!),
-              )
+              Column(
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width - 150,
+                    child: Text(
+                      utf8convert(notif.title!),
+                      style: TextStyle(fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width - 150,
+                    child: SelectableLinkify(
+                      onOpen: (url) async {
+                        if (await canLaunch(url.url)) {
+                          await launch(url.url);
+                        } else {
+                          throw 'Could not launch $url';
+                        }
+                      },
+                      text: utf8convert(notif.description!),
+                    ),
+                  ),
+                ],
+              ),
             ],
           )),
     );

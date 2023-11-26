@@ -39,26 +39,26 @@ class _AllsportpagewidgetState extends State<Allsportpagewidget> {
           "SPORTS PAGE",
           style: TextStyle(color: Colors.black),
         ),
-        // actions: [
-        //   DropdownButton<String>(
-        //       value: widget.domain,
-        //       underline: Container(),
-        //       elevation: 0,
-        //       items: domains_list.map<DropdownMenuItem<String>>((String value) {
-        //         return DropdownMenuItem<String>(
-        //           value: value,
-        //           child: Text(
-        //             value,
-        //             style: TextStyle(fontSize: 10),
-        //           ),
-        //         );
-        //       }).toList(),
-        //       onChanged: (value) {
-        //         setState(() {
-        //           widget.domain = value!;
-        //         });
-        //       })
-        // ],
+        actions: [
+          DropdownButton<String>(
+              value: widget.domain,
+              underline: Container(),
+              elevation: 0,
+              items: domains_list.map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(
+                    value,
+                    style: TextStyle(fontSize: 10),
+                  ),
+                );
+              }).toList(),
+              onChanged: (value) {
+                setState(() {
+                  widget.domain = value!;
+                });
+              })
+        ],
         backgroundColor: Colors.white70,
       ),
       body: FutureBuilder<List<ALL_SPORTS>>(
@@ -149,7 +149,7 @@ class _Allsportpagewidget1State extends State<Allsportpagewidget1> {
               }));
             },
             onDoubleTap: () async {
-              if (widget.app_user.email == "guest@nitc.ac.in") {
+              if (widget.app_user.email!.split('@')[0] == "guest") {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                     duration: Duration(milliseconds: 400),
                     content: Text("guests are not allowed to like..",
@@ -352,8 +352,9 @@ class _Allsportpagewidget1State extends State<Allsportpagewidget1> {
                                 children: [
                                   IconButton(
                                     onPressed: () async {
-                                      if (widget.app_user.email ==
-                                          "guest@nitc.ac.in") {
+                                      if (widget.app_user.email!
+                                              .split('@')[0] ==
+                                          "guest") {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(const SnackBar(
                                                 duration:

@@ -22,7 +22,6 @@ class login_servers {
         "Content-Type": "application/json",
       });
       var data = json.decode(response.body) as Map;
-      print(data['password']);
       return [data['error'], data['password']];
     } catch (e) {
       return [true, ''];
@@ -51,7 +50,6 @@ class login_servers {
       }
       return true;
     } catch (e) {
-      print(e);
       return true;
     }
   }

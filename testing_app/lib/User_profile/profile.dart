@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
+import '/BuySell/buysell.dart';
+import '/Lost_&_Found/Lost_Found.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '/User_profile/Servers.dart';
 import 'Models.dart';
@@ -9,8 +11,6 @@ import 'Edit_profile.dart';
 import 'dart:convert' show utf8;
 import '/User_Star_Mark/User_Profile_Star_Mark.dart';
 import 'User_posts_category.dart';
-import '/BuySell_LostFound/LostFound_BuySell.dart';
-import '/First_page.dart';
 import '/Threads/Threads.dart';
 
 String utf8convert(String text) {
@@ -633,9 +633,10 @@ class _userProfilePageState extends State<userProfilePage> {
                                 builder: (BuildContext context) {
                               return all_lostwidget1(
                                   widget.app_user,
-                                  "lost/found",
-                                  lst_buy_list,
-                                  'All',
+                                  "lost",
+                                  "All",
+                                  [],
+                                  domains[widget.app_user.domain]!,
                                   widget.profile_user.email!);
                             }));
                           },
@@ -675,11 +676,12 @@ class _userProfilePageState extends State<userProfilePage> {
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (BuildContext context) {
-                              return all_lostwidget1(
+                              return all_buySellwidget1(
                                   widget.app_user,
-                                  "buy/shell",
-                                  lst_buy_list,
-                                  'All',
+                                  "buy",
+                                  "All",
+                                  [],
+                                  domains[widget.app_user.domain]!,
                                   widget.profile_user.email!);
                             }));
                           },
@@ -738,10 +740,9 @@ class _userProfilePageState extends State<userProfilePage> {
                                   appBar: AppBar(
                                     centerTitle: true,
                                     iconTheme:
-                                        IconThemeData(color: Colors.white),
+                                        IconThemeData(color: Colors.black),
                                     title: Text(widget.profile_user.username!,
-                                        style: TextStyle(color: Colors.white)),
-                                    backgroundColor: Colors.indigoAccent[700],
+                                        style: TextStyle(color: Colors.black)),
                                   ),
                                   body: SingleChildScrollView(
                                     child: alertwidget1(

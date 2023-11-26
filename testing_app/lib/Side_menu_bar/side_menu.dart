@@ -90,7 +90,8 @@ class _NavDrawerState extends State<NavDrawer> {
               storage.clear();
 
               Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (BuildContext context) => loginpage("")));
+                  builder: (BuildContext context) =>
+                      loginpage("", 'Nit Calicut')));
             },
           ),
           ListTile(

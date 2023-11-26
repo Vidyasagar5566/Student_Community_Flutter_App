@@ -6,27 +6,27 @@ import 'Servers.dart';
 import '/User_profile/Models.dart';
 import '/Fcm_Notif_Domains/Servers.dart';
 
-List<String> lostCategory = [
-  "cards",
-  "essentials",
+List<String> BuyCtegory = [
+  "rideShares",
   "smartDevices",
   "belongings",
   "clothings",
-  "valuables",
+  "usedCampusItems",
+  "houseSharings",
   "others"
 ];
 
-class lst_found_upload extends StatefulWidget {
+class buy_sell_upload extends StatefulWidget {
   Username app_user;
   String tag;
   String category;
-  lst_found_upload(this.app_user, this.tag, this.category);
+  buy_sell_upload(this.app_user, this.tag, this.category);
 
   @override
-  State<lst_found_upload> createState() => _lst_found_uploadState();
+  State<buy_sell_upload> createState() => _buy_sell_uploadState();
 }
 
-class _lst_found_uploadState extends State<lst_found_upload> {
+class _buy_sell_uploadState extends State<buy_sell_upload> {
   var title;
   var description;
   var image;
@@ -40,7 +40,7 @@ class _lst_found_uploadState extends State<lst_found_upload> {
           ),
           centerTitle: true,
           title: const Text(
-            "Lost/Found",
+            "Buy/Sell",
             style: TextStyle(color: Colors.black),
           ),
           backgroundColor: Colors.white70,
@@ -64,7 +64,7 @@ class _lst_found_uploadState extends State<lst_found_upload> {
                     height: 50,
                   ),
                   const Text(
-                    "Upload Your Lost or Found",
+                    "Upload Your Sharings",
                     style: TextStyle(
                         color: Colors.indigo,
                         fontSize: 20,
@@ -86,7 +86,7 @@ class _lst_found_uploadState extends State<lst_found_upload> {
                                     value: widget.tag,
                                     underline: Container(),
                                     elevation: 0,
-                                    items: ["lost", "found"]
+                                    items: ["buy", "sell"]
                                         .map<DropdownMenuItem<String>>(
                                             (String value) {
                                       return DropdownMenuItem<String>(
@@ -117,9 +117,9 @@ class _lst_found_uploadState extends State<lst_found_upload> {
                                     value: widget.category,
                                     underline: Container(),
                                     elevation: 0,
-                                    items: lostCategory
-                                        .map<DropdownMenuItem<String>>(
-                                            (String value) {
+                                    items: BuyCtegory.map<
+                                            DropdownMenuItem<String>>(
+                                        (String value) {
                                       return DropdownMenuItem<String>(
                                         value: value,
                                         child: Text(
@@ -142,7 +142,7 @@ class _lst_found_uploadState extends State<lst_found_upload> {
                             keyboardType: TextInputType.emailAddress,
                             decoration: const InputDecoration(
                               labelText: 'title',
-                              hintText: 'lost my id card',
+                              hintText: 'i want to sell my bycycle',
                               prefixIcon: Icon(Icons.text_fields),
                               border: OutlineInputBorder(
                                   borderRadius:
@@ -173,7 +173,7 @@ class _lst_found_uploadState extends State<lst_found_upload> {
                             maxLines: 10,
                             decoration: const InputDecoration(
                               labelText: 'Description',
-                              hintText: 'i lost my id before atm circle.....',
+                              hintText: 'i want to sell my bycycle.....',
                               prefixIcon: Icon(Icons.text_fields),
                               border: OutlineInputBorder(
                                   borderRadius:
@@ -243,14 +243,13 @@ class _lst_found_uploadState extends State<lst_found_upload> {
                                           Radius.circular(15.0))),
                                   minWidth: double.infinity,
                                   onPressed: () async {
-                                    if (widget.app_user.email!.split('@')[0] ==
-                                        "guest") {
+                              if (widget.app_user.email!.split('@')[0] == "guest") {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(
                                               duration:
                                                   Duration(milliseconds: 400),
                                               content: Text(
-                                                  "guest are not allowed to share lost/found..",
+                                                  "guest cannot share posts..",
                                                   style: TextStyle(
                                                       color: Colors.white))));
                                     } else {
@@ -263,10 +262,10 @@ class _lst_found_uploadState extends State<lst_found_upload> {
                                                     EdgeInsets.all(15),
                                                 content: Container(
                                                   margin: EdgeInsets.all(10),
-                                                  child: const Column(
+                                                  child: Column(
                                                       mainAxisSize:
                                                           MainAxisSize.min,
-                                                      children: [
+                                                      children: const [
                                                         Text(
                                                             "Please wait while uploading....."),
                                                         SizedBox(height: 10),
@@ -277,17 +276,18 @@ class _lst_found_uploadState extends State<lst_found_upload> {
                                       if (image_ratio == "0") {
                                         image = File("images/background.jpg");
                                       }
-                                      bool error = await lf_servers().post_lst(
-                                          title,
-                                          description,
-                                          image,
-                                          image_ratio,
-                                          widget.tag,
-                                          widget.category);
+                                      bool error = await bs_servers()
+                                          .post_lst(
+                                              title,
+                                              description,
+                                              image,
+                                              image_ratio,
+                                              widget.tag,
+                                              widget.category);
                                       Navigator.pop(context);
                                       if (!error) {
-                                        widget.app_user.lstCount =
-                                            widget.app_user.lstCount! + 1;
+                                        widget.app_user.buyCount =
+                                            widget.app_user.buyCount! + 1;
                                         Navigator.of(context)
                                             .pushAndRemoveUntil(
                                                 MaterialPageRoute(builder:
@@ -297,12 +297,12 @@ class _lst_found_uploadState extends State<lst_found_upload> {
 
                                         await Future.delayed(
                                             Duration(seconds: 2));
-                                        bool res = await servers()
+                                        bool error = await servers()
                                             .send_notifications(
                                                 widget.app_user.email!,
                                                 title + " : " + description,
-                                                0);
-                                        if (res) {
+                                                1);
+                                        if (error) {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(const SnackBar(
                                                   duration: Duration(

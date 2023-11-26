@@ -362,8 +362,8 @@ class _upload_cal_eventState extends State<upload_cal_event> {
                                           Radius.circular(15.0))),
                                   minWidth: double.infinity,
                                   onPressed: () async {
-                                    if (widget.app_user.email ==
-                                            "guest@nitc.ac.in" ||
+                                    if (widget.app_user.email!.split('@')[0] ==
+                                            "guest" ||
                                         !widget.app_user.isAdmin! ||
                                         !widget.app_user.isStudentAdmin!) {
                                       ScaffoldMessenger.of(context)

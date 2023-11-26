@@ -253,8 +253,8 @@ class _upload_alert_cmntState extends State<upload_alert_cmnt> {
                                   minWidth: double.infinity,
                                   onPressed: () async {
                                     Navigator.of(context);
-                                    if (widget.app_user.email ==
-                                        "guest@nitc.ac.in") {
+                                    if (widget.app_user.email!.split('@')[0] ==
+                                        "guest") {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(
                                               duration:

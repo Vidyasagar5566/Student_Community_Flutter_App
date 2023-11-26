@@ -322,8 +322,8 @@ class _upload_eventwidgetState extends State<upload_eventwidget> {
                                           Radius.circular(15.0))),
                                   minWidth: double.infinity,
                                   onPressed: () async {
-                                    if (widget.app_user.email ==
-                                            "guest@nitc.ac.in" ||
+                                    if (widget.app_user.email!.split('@')[0] ==
+                                            "guest" ||
                                         !widget.app_user.isAdmin!) {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(

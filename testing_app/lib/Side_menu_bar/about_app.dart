@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
 import '/User_profile/Models.dart';
 import '/Reports/Servers.dart';
 
@@ -30,16 +31,28 @@ class _about_appState extends State<about_app> {
             child: Column(children: [
               const SizedBox(height: 6),
               const Text(
-                  "Welcome to our InstaBook-app Help Center! We're here to ensure your experience with our app is smooth and enjoyable. If you encounter any issues or have questions while using the app, don't hesitate to reach out to us. We're dedicated to providing you with the assistance you need."),
-              const SizedBox(height: 18),
-              const Text("Email Support:",
-                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15)),
+                  "Welcome to our ESMUS-app Help Center!. If you encounter any issues or have questions while using the app, don't hesitate to reach out to us."),
+              SizedBox(height: 18),
+              const Text("Empower Your University Experience : ",
+                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
               const SizedBox(height: 8),
-              const Text(
-                  "You can always send an email at studentcommunity.iit.nit@gmail.com if you have any problem. Our support team will get back to you as quickly as possible, usually within 24 hours."),
+              const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SelectableLinkify(
+                      text:
+                          '''Unlock a world of opportunities by joining university clubs, sports, and fests through our app! For those seeking admin permissions to make our app the official communication channel within your university'''),
+                  const SizedBox(height: 7),
+                  SelectableLinkify(
+                      text:
+                          "we're here to help. Connect with us via email at studentcommunity.iit.nit@gmail.com or reach out to us by phone at 8310045115. Elevate your university experience with seamless communication, vibrant communities, and official integration"),
+                  const SizedBox(height: 7),
+                  Text("Let's make university life extraordinary together!")
+                ],
+              ),
               SizedBox(height: 18),
               const Text("Report/suggestions:",
-                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15)),
+                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
               const SizedBox(height: 8),
               const Text(
                   "feel free to share your valuable thoughts(Report/suggestions/feedback) to understand more about student requirements."),
@@ -82,7 +95,7 @@ class _about_appState extends State<about_app> {
                                 BorderRadius.all(Radius.circular(15.0))),
                         minWidth: double.infinity,
                         onPressed: () async {
-                          if (widget.app_user.email == "guest@nitc.ac.in") {
+                          if (widget.app_user.email!.split('@')[0] == "guest") {
                             ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                     duration: Duration(milliseconds: 400),

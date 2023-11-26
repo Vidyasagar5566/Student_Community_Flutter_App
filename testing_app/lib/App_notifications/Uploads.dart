@@ -135,11 +135,11 @@ class _upload_notificationState extends State<upload_notification> {
                                           Radius.circular(15.0))),
                                   minWidth: double.infinity,
                                   onPressed: () async {
-                                    if (widget.app_user.email ==
-                                            "guest@nitc.ac.in" ||
+                                    if (widget.app_user.email!.split('@')[0] ==
+                                            "guest" ||
                                         !widget.app_user.isAdmin! ||
                                         !widget.app_user.isStudentAdmin! ||
-                                        widget.app_user.isFaculty!) {
+                                        !widget.app_user.isFaculty!) {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(
                                               duration:
@@ -177,10 +177,7 @@ class _upload_notificationState extends State<upload_notification> {
                                                 notif_years.join(''),
                                                 notif_branchs.join("@"));
                                         Navigator.pop(context);
-                                        setState(() {
-                                          widget.app_user.notifCount =
-                                              widget.app_user.notifCount! + 1;
-                                        });
+
                                         if (!error) {
                                           Navigator.of(context)
                                               .pushAndRemoveUntil(
@@ -190,7 +187,7 @@ class _upload_notificationState extends State<upload_notification> {
                                           }), (Route<dynamic> route) => false);
 
                                           await Future.delayed(
-                                              Duration(seconds: 2));
+                                              Duration(seconds: 1));
                                           bool error = await servers()
                                               .send_announce_notifications(
                                                   widget.app_user.email!,

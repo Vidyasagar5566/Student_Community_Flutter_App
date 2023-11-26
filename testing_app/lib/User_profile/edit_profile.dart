@@ -131,14 +131,13 @@ class _editprofileState extends State<editprofile> {
                               });
                             },
                             validator: (value) {
-                              if (value!.length != 10) {
+                              if (value!.length > 10) {
+                                return 'please enter 10 digit number';
+                              } else {
                                 return value.isEmpty
-                                    ? 'please enter 10 digit number'
+                                    ? 'please enter number'
                                     : null;
                               }
-                              return value.isEmpty
-                                  ? 'please enter number'
-                                  : null;
                             },
                           ),
                         ),
@@ -335,8 +334,8 @@ class _editprofileState extends State<editprofile> {
                                           Radius.circular(15.0))),
                                   minWidth: double.infinity,
                                   onPressed: () async {
-                                    if (widget.app_user.email ==
-                                        "guest@nitc.ac.in") {
+                                    if (widget.app_user.email!.split('@')[0] ==
+                                        "guest") {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(
                                               duration:
@@ -389,7 +388,7 @@ class _editprofileState extends State<editprofile> {
                                             .pushAndRemoveUntil(
                                                 MaterialPageRoute(builder:
                                                     (BuildContext context) {
-                                          return get_ueser_widget(4);
+                                          return get_ueser_widget(2);
                                         }), (Route<dynamic> route) => false);
                                       } else {
                                         ScaffoldMessenger.of(context)

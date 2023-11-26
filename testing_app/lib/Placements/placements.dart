@@ -105,7 +105,7 @@ class _Giving_RatingState extends State<Giving_Rating> {
               const SizedBox(width: 4),
               IconButton(
                   onPressed: () async {
-                    if (widget.app_user.email == "guest@nitc.ac.in") {
+                    if (widget.app_user.email!.split('@')[0] == "guest") {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           duration: Duration(milliseconds: 400),
@@ -154,7 +154,7 @@ class _Giving_RatingState extends State<Giving_Rating> {
   _build_screen(int index) {
     return IconButton(
         onPressed: () async {
-          if (widget.app_user.email == "guest@nitc.ac.in") {
+          if (widget.app_user.email!.split('@')[0] == "guest") {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 duration: Duration(milliseconds: 400),
@@ -364,7 +364,13 @@ class _placementsState extends State<placements> {
       cal_sub_names = plac_names;
       loaded_data = true;
       for (int i = 0; i < cal_sub_names.length; i++) {
-        if (cal_sub_names[i].InternCompany == false) {
+        if (cal_sub_names[i].InternCompany == false &&
+            inter_placement == "Placement") {
+          widget.cal_sub_names.add(cal_sub_names[i]);
+        }
+
+        if (cal_sub_names[i].InternCompany == true &&
+            inter_placement != "Placement") {
           widget.cal_sub_names.add(cal_sub_names[i]);
         }
       }
@@ -477,9 +483,17 @@ class _placementsState extends State<placements> {
                               ),
                               const SizedBox(width: 3),
                               Text(
-                                " (" +
-                                    widget.cal_sub_names.length.toString() +
-                                    ")",
+                                inter_placement == "Placement"
+                                    ? widget.cal_sub_names
+                                        .where((element) =>
+                                            !element.InternCompany!)
+                                        .length
+                                        .toString()
+                                    : widget.cal_sub_names
+                                        .where(
+                                            (element) => element.InternCompany!)
+                                        .length
+                                        .toString(),
                                 style: TextStyle(color: Colors.white),
                               )
                             ],
@@ -489,7 +503,32 @@ class _placementsState extends State<placements> {
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(),
+                        Container(
+                          margin: EdgeInsets.only(left: 10),
+                          child: DropdownButton<String>(
+                              value: widget.domain,
+                              underline: Container(),
+                              elevation: 0,
+                              items: domains_list_ex_all
+                                  .map<DropdownMenuItem<String>>(
+                                      (String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style: TextStyle(fontSize: 10),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: (value) {
+                                setState(() {
+                                  widget.domain = value!;
+                                  loaded_data = false;
+                                  widget.cal_sub_names = [];
+                                });
+                                load_data_fun();
+                              }),
+                        ),
                         Container(
                           margin: EdgeInsets.only(right: 10),
                           child: DropdownButton<String>(
@@ -687,373 +726,394 @@ class _placementsState extends State<placements> {
         : Container(
             padding: const EdgeInsets.all(5),
             margin: const EdgeInsets.all(5),
-            child: ListView.builder(
-                itemCount: widget.cal_sub_names.length,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                padding: const EdgeInsets.only(bottom: 10),
-                itemBuilder: (BuildContext context, int index) {
-                  sub_rating = 0.0;
-                  if (widget.cal_sub_names[index].numRatings != 0) {
-                    sub_rating = (widget.cal_sub_names[index].totRatingsVal! /
-                        widget.cal_sub_names[index].numRatings!);
-                  }
+            child: widget.cal_sub_names.isEmpty
+                ? Container(
+                    margin: const EdgeInsets.only(top: 140),
+                    child: const Center(
+                      child: Text("No data was found",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black)),
+                    ),
+                  )
+                : ListView.builder(
+                    itemCount: widget.cal_sub_names.length,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: const EdgeInsets.only(bottom: 10),
+                    itemBuilder: (BuildContext context, int index) {
+                      sub_rating = 0.0;
+                      if (widget.cal_sub_names[index].numRatings != 0) {
+                        sub_rating =
+                            (widget.cal_sub_names[index].totRatingsVal! /
+                                widget.cal_sub_names[index].numRatings!);
+                      }
 
-                  return GestureDetector(
-                    onTap: () async {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (BuildContext context) => place_years(
-                              widget.app_user,
-                              widget.cal_sub_names[index], [])));
-                    },
-                    child: Container(
-                      width: wid - 16,
-                      decoration: BoxDecoration(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(10)),
-                        gradient: LinearGradient(
-                          colors: [Colors.deepPurple, Colors.purple.shade300],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                        //                                          color: Colors.white70,
-                      ),
-                      margin: const EdgeInsets.all(8),
-                      padding:
-                          const EdgeInsets.only(top: 3, left: 12, bottom: 3),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                constraints:
-                                    BoxConstraints(maxWidth: wid / 1.8),
-                                padding: EdgeInsets.only(left: 10),
-                                child: Text(
-                                  widget.cal_sub_names[index].subName!,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 21,
-                                      color: Colors.white),
-                                ),
-                              ),
-                              !_extand[index]
-                                  ? IconButton(
-                                      onPressed: () async {
-                                        funToLoadAllReviews(index);
-                                      },
-                                      icon: const Icon(
-                                          Icons.keyboard_arrow_down_outlined),
-                                      color: Colors.white,
-                                    )
-                                  : IconButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          _extand[index] = !_extand[index];
-                                          sub_rating = 0;
-                                        });
-                                      },
-                                      icon: const Icon(
-                                        Icons.keyboard_arrow_up_outlined,
-                                        color: Colors.white,
-                                      )),
-                            ],
+                      return GestureDetector(
+                        onTap: () async {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) => place_years(
+                                  widget.app_user,
+                                  widget.cal_sub_names[index], [])));
+                        },
+                        child: Container(
+                          width: wid - 16,
+                          decoration: BoxDecoration(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(10)),
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.deepPurple,
+                                Colors.purple.shade300
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            //                                          color: Colors.white70,
                           ),
-                          _extand[index]
-                              ? Container()
-                              : Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    IconButton(
-                                        onPressed: () {
-                                          Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                  builder: (BuildContext
-                                                          context) =>
-                                                      place_years(
-                                                          widget.app_user,
-                                                          widget.cal_sub_names[
-                                                              index],
-                                                          [])));
-                                        },
-                                        icon: Given_Rating(sub_rating)),
-                                    Container(
-                                      margin: EdgeInsets.only(right: 10),
-                                      child: Text(
-                                          sub_rating.toString().substring(0, 3),
-                                          style:
-                                              TextStyle(color: Colors.white)),
-                                    )
-                                  ],
-                                ),
-                          _extand[index] && widget.app_user.is_placement_admin!
-                              ? Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                      Container(
-                                        child: const Text(
-                                          "Edit name?",
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                      ),
-                                      IconButton(
+                          margin: const EdgeInsets.all(8),
+                          padding: const EdgeInsets.only(
+                              top: 3, left: 12, bottom: 3),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    constraints:
+                                        BoxConstraints(maxWidth: wid / 1.8),
+                                    padding: EdgeInsets.only(left: 10),
+                                    child: Text(
+                                      widget.cal_sub_names[index].subName!,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 21,
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                  !_extand[index]
+                                      ? IconButton(
                                           onPressed: () async {
-                                            sub_name = widget
-                                                .cal_sub_names[index].subName;
-                                            showDialog(
-                                                context: context,
-                                                barrierDismissible: false,
-                                                builder: (context) {
-                                                  return AlertDialog(
-                                                      contentPadding:
-                                                          EdgeInsets.all(15),
-                                                      content: Column(
-                                                          mainAxisSize:
-                                                              MainAxisSize.min,
-                                                          children: [
-                                                            Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
-                                                              children: [
-                                                                Container(),
-                                                                IconButton(
-                                                                    onPressed:
-                                                                        () {
-                                                                      Navigator.pop(
-                                                                          context);
-                                                                    },
-                                                                    icon: const Icon(
-                                                                        Icons
-                                                                            .close))
-                                                              ],
-                                                            ),
-                                                            Container(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .only(
-                                                                      left: 40,
-                                                                      right:
-                                                                          40),
-                                                              child:
-                                                                  TextFormField(
-                                                                initialValue: widget
-                                                                    .cal_sub_names[
-                                                                        index]
-                                                                    .subName,
-                                                                keyboardType:
-                                                                    TextInputType
-                                                                        .emailAddress,
-                                                                decoration: const InputDecoration(
-                                                                    labelText:
-                                                                        'sub_name',
-                                                                    hintText:
-                                                                        'MATHS-II',
-                                                                    prefixIcon:
-                                                                        Icon(Icons
-                                                                            .text_fields),
-                                                                    border: OutlineInputBorder(
-                                                                        borderRadius:
-                                                                            BorderRadius.all(Radius.circular(10)))),
-                                                                onChanged:
-                                                                    (String
-                                                                        value) {
-                                                                  setState(() {
-                                                                    sub_name =
-                                                                        value;
-                                                                    if (value ==
-                                                                        "") {
-                                                                      sub_name =
-                                                                          null;
-                                                                    }
-                                                                  });
-                                                                },
-                                                              ),
-                                                            ),
-                                                            const SizedBox(
-                                                                height: 10),
-                                                            TextButton(
-                                                                onPressed:
-                                                                    () async {
-                                                                  if (sub_name ==
-                                                                      null) {
-                                                                    Navigator.pop(
-                                                                        context);
-                                                                    ScaffoldMessenger.of(
-                                                                            context)
-                                                                        .showSnackBar(
-                                                                      const SnackBar(
-                                                                        duration:
-                                                                            Duration(milliseconds: 400),
-                                                                        content:
-                                                                            Text(
-                                                                          "sub_name cant be null",
-                                                                          style:
-                                                                              TextStyle(color: Colors.white),
-                                                                        ),
-                                                                      ),
-                                                                    );
-                                                                  } else {
-                                                                    Navigator.pop(
-                                                                        context);
-
-                                                                    bool error = await placemeny_servers().edit_cal_sub(
-                                                                        sub_name!,
-                                                                        widget
-                                                                            .cal_sub_names[index]
-                                                                            .id
-                                                                            .toString());
-                                                                    if (!error) {
-                                                                      setState(
-                                                                          () {
-                                                                        widget
-                                                                            .cal_sub_names[index]
-                                                                            .subName = sub_name;
-                                                                      });
-                                                                    } else {
-                                                                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                                                                          duration: Duration(milliseconds: 400),
-                                                                          content: Text(
-                                                                            "error occured please try again",
-                                                                            style:
-                                                                                TextStyle(color: Colors.white),
-                                                                          )));
-                                                                    }
-                                                                  }
-                                                                },
-                                                                child:
-                                                                    const Center(
-                                                                  child: Text(
-                                                                      "update"),
-                                                                ))
-                                                          ]));
-                                                });
+                                            funToLoadAllReviews(index);
+                                          },
+                                          icon: const Icon(Icons
+                                              .keyboard_arrow_down_outlined),
+                                          color: Colors.white,
+                                        )
+                                      : IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              _extand[index] = !_extand[index];
+                                              sub_rating = 0;
+                                            });
                                           },
                                           icon: const Icon(
-                                            Icons.edit,
+                                            Icons.keyboard_arrow_up_outlined,
                                             color: Colors.white,
-                                          ))
-                                    ])
-                              : Container(),
-                          _extand[index]
-                              ? Column(children: [
-                                  Row(
+                                          )),
+                                ],
+                              ),
+                              _extand[index]
+                                  ? Container()
+                                  : Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text(
-                                          "Ratings" +
-                                              "(" +
-                                              widget.cal_sub_names[index]
-                                                  .numRatings
-                                                  .toString() +
-                                              ") : " +
+                                        IconButton(
+                                            onPressed: () {
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: (BuildContext
+                                                              context) =>
+                                                          place_years(
+                                                              widget.app_user,
+                                                              widget.cal_sub_names[
+                                                                  index],
+                                                              [])));
+                                            },
+                                            icon: Given_Rating(sub_rating)),
+                                        Container(
+                                          margin: EdgeInsets.only(right: 10),
+                                          child: Text(
                                               sub_rating
                                                   .toString()
                                                   .substring(0, 3),
-                                          style: const TextStyle(
-                                              color: Colors.white),
-                                        ),
-                                        TextButton(
-                                            onPressed: () async {
-                                              if (_loaded[index]) {
+                                              style: TextStyle(
+                                                  color: Colors.white)),
+                                        )
+                                      ],
+                                    ),
+                              _extand[index] &&
+                                      widget.app_user.is_placement_admin!
+                                  ? Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                          Container(
+                                            child: const Text(
+                                              "Edit name?",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                          IconButton(
+                                              onPressed: () async {
+                                                sub_name = widget
+                                                    .cal_sub_names[index]
+                                                    .subName;
                                                 showDialog(
                                                     context: context,
                                                     barrierDismissible: false,
                                                     builder: (context) {
                                                       return AlertDialog(
-                                                          content:
-                                                              Show_all_sub_ratings(
+                                                          contentPadding:
+                                                              EdgeInsets.all(
+                                                                  15),
+                                                          content: Column(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .min,
+                                                              children: [
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    Container(),
+                                                                    IconButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          Navigator.pop(
+                                                                              context);
+                                                                        },
+                                                                        icon: const Icon(
+                                                                            Icons.close))
+                                                                  ],
+                                                                ),
+                                                                Container(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .only(
+                                                                          left:
+                                                                              40,
+                                                                          right:
+                                                                              40),
+                                                                  child:
+                                                                      TextFormField(
+                                                                    initialValue: widget
+                                                                        .cal_sub_names[
+                                                                            index]
+                                                                        .subName,
+                                                                    keyboardType:
+                                                                        TextInputType
+                                                                            .emailAddress,
+                                                                    decoration: const InputDecoration(
+                                                                        labelText:
+                                                                            'sub_name',
+                                                                        hintText:
+                                                                            'MATHS-II',
+                                                                        prefixIcon:
+                                                                            Icon(Icons
+                                                                                .text_fields),
+                                                                        border: OutlineInputBorder(
+                                                                            borderRadius:
+                                                                                BorderRadius.all(Radius.circular(10)))),
+                                                                    onChanged:
+                                                                        (String
+                                                                            value) {
+                                                                      setState(
+                                                                          () {
+                                                                        sub_name =
+                                                                            value;
+                                                                        if (value ==
+                                                                            "") {
+                                                                          sub_name =
+                                                                              null;
+                                                                        }
+                                                                      });
+                                                                    },
+                                                                  ),
+                                                                ),
+                                                                const SizedBox(
+                                                                    height: 10),
+                                                                TextButton(
+                                                                    onPressed:
+                                                                        () async {
+                                                                      if (sub_name ==
+                                                                          null) {
+                                                                        Navigator.pop(
+                                                                            context);
+                                                                        ScaffoldMessenger.of(context)
+                                                                            .showSnackBar(
+                                                                          const SnackBar(
+                                                                            duration:
+                                                                                Duration(milliseconds: 400),
+                                                                            content:
+                                                                                Text(
+                                                                              "sub_name cant be null",
+                                                                              style: TextStyle(color: Colors.white),
+                                                                            ),
+                                                                          ),
+                                                                        );
+                                                                      } else {
+                                                                        Navigator.pop(
+                                                                            context);
+
+                                                                        bool error = await placemeny_servers().edit_cal_sub(
+                                                                            sub_name!,
+                                                                            widget.cal_sub_names[index].id.toString());
+                                                                        if (!error) {
+                                                                          setState(
+                                                                              () {
+                                                                            widget.cal_sub_names[index].subName =
+                                                                                sub_name;
+                                                                          });
+                                                                        } else {
+                                                                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                                                              duration: Duration(milliseconds: 400),
+                                                                              content: Text(
+                                                                                "error occured please try again",
+                                                                                style: TextStyle(color: Colors.white),
+                                                                              )));
+                                                                        }
+                                                                      }
+                                                                    },
+                                                                    child:
+                                                                        const Center(
+                                                                      child: Text(
+                                                                          "update"),
+                                                                    ))
+                                                              ]));
+                                                    });
+                                              },
+                                              icon: const Icon(
+                                                Icons.edit,
+                                                color: Colors.white,
+                                              ))
+                                        ])
+                                  : Container(),
+                              _extand[index]
+                                  ? Column(children: [
+                                      Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "Ratings" +
+                                                  "(" +
+                                                  widget.cal_sub_names[index]
+                                                      .numRatings
+                                                      .toString() +
+                                                  ") : " +
+                                                  sub_rating
+                                                      .toString()
+                                                      .substring(0, 3),
+                                              style: const TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            TextButton(
+                                                onPressed: () async {
+                                                  if (_loaded[index]) {
+                                                    showDialog(
+                                                        context: context,
+                                                        barrierDismissible:
+                                                            false,
+                                                        builder: (context) {
+                                                          return AlertDialog(
+                                                              content: Show_all_sub_ratings(
                                                                   all_sub_ratings,
                                                                   widget
                                                                       .app_user));
-                                                    });
-                                              } else {
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
-                                                        const SnackBar(
-                                                            duration: Duration(
-                                                                milliseconds:
-                                                                    400),
-                                                            content: Text(
-                                                              "please wait data is loading.",
+                                                        });
+                                                  } else {
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(
+                                                            const SnackBar(
+                                                                duration: Duration(
+                                                                    milliseconds:
+                                                                        400),
+                                                                content: Text(
+                                                                  "please wait data is loading.",
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white),
+                                                                )));
+                                                  }
+                                                },
+                                                child: Given_Rating(sub_rating))
+                                          ]),
+                                      const SizedBox(height: 10),
+                                      _loaded[index]
+                                          ? Column(
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    const Text(
+                                                      "Update your Rating : ",
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          left: 5),
+                                                      child: OutlinedButton(
+                                                          style: OutlinedButton
+                                                              .styleFrom(
+                                                            minimumSize:
+                                                                Size(30, 30),
+                                                            side:
+                                                                const BorderSide(
+                                                                    color: Colors
+                                                                        .white),
+                                                          ),
+                                                          onPressed: () {
+                                                            showDialog(
+                                                                context:
+                                                                    context,
+                                                                barrierDismissible:
+                                                                    false,
+                                                                builder:
+                                                                    (context) {
+                                                                  return AlertDialog(
+                                                                      content: Show_all_sub_ratings(
+                                                                          all_sub_ratings,
+                                                                          widget
+                                                                              .app_user));
+                                                                });
+                                                          },
+                                                          child: const Text(
+                                                              "See All",
                                                               style: TextStyle(
                                                                   color: Colors
-                                                                      .white),
-                                                            )));
-                                              }
-                                            },
-                                            child: Given_Rating(sub_rating))
-                                      ]),
-                                  const SizedBox(height: 10),
-                                  _loaded[index]
-                                      ? Column(
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                const Text(
-                                                  "Update your Rating : ",
-                                                  style: TextStyle(
-                                                      color: Colors.white),
+                                                                      .white))),
+                                                    )
+                                                  ],
                                                 ),
-                                                Container(
-                                                  margin:
-                                                      EdgeInsets.only(left: 5),
-                                                  child: OutlinedButton(
-                                                      style: OutlinedButton
-                                                          .styleFrom(
-                                                        minimumSize:
-                                                            Size(30, 30),
-                                                        side: const BorderSide(
-                                                            color:
-                                                                Colors.white),
-                                                      ),
-                                                      onPressed: () {
-                                                        showDialog(
-                                                            context: context,
-                                                            barrierDismissible:
-                                                                false,
-                                                            builder: (context) {
-                                                              return AlertDialog(
-                                                                  content: Show_all_sub_ratings(
-                                                                      all_sub_ratings,
-                                                                      widget
-                                                                          .app_user));
-                                                            });
-                                                      },
-                                                      child: const Text(
-                                                          "See All",
-                                                          style: TextStyle(
-                                                              color: Colors
-                                                                  .white))),
-                                                )
+                                                const SizedBox(height: 7),
+                                                Giving_Rating(
+                                                    widget.cal_sub_names[index]
+                                                        .id!,
+                                                    widget.app_user)
                                               ],
-                                            ),
-                                            const SizedBox(height: 7),
-                                            Giving_Rating(
-                                                widget.cal_sub_names[index].id!,
-                                                widget.app_user)
-                                          ],
-                                        )
-                                      : const SizedBox(
-                                          height: 20,
-                                          width: 20,
-                                          child: CircularProgressIndicator(
-                                            color: Colors.white,
-                                          )),
-                                ])
-                              : Container()
-                        ],
-                      ),
-                    ),
-                  );
-                }),
+                                            )
+                                          : const SizedBox(
+                                              height: 20,
+                                              width: 20,
+                                              child: CircularProgressIndicator(
+                                                color: Colors.white,
+                                              )),
+                                    ])
+                                  : Container()
+                            ],
+                          ),
+                        ),
+                      );
+                    }),
           );
   }
 }
@@ -1735,7 +1795,7 @@ class _yearFilesState extends State<yearFiles> {
                   ])))),
       floatingActionButton: ElevatedButton.icon(
         onPressed: () async {
-          if (widget.app_user.email == "guest@nitc.ac.in") {
+          if (widget.app_user.email!.split('@')[0] == "guest") {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 duration: Duration(milliseconds: 400),
@@ -1851,7 +1911,7 @@ class _yearFilesState extends State<yearFiles> {
     var wid = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () {
-        if (widget.app_user.email == "guest@nitc.ac.in") {
+        if (widget.app_user.email!.split('@')[0] == "guest") {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               duration: Duration(milliseconds: 400),

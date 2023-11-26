@@ -68,30 +68,30 @@ class _search_barState extends State<search_bar> {
             });
           },
         ),
-        // actions: [
-        //   widget.group_create_edit == ""
-        //       ? DropdownButton<String>(
-        //           value: widget.domain,
-        //           underline: Container(),
-        //           iconEnabledColor: Colors.white,
-        //           elevation: 0,
-        //           items: domains_list
-        //               .map<DropdownMenuItem<String>>((String value) {
-        //             return DropdownMenuItem<String>(
-        //               value: value,
-        //               child: Text(
-        //                 value,
-        //                 style: TextStyle(fontSize: 10),
-        //               ),
-        //             );
-        //           }).toList(),
-        //           onChanged: (value) {
-        //             setState(() {
-        //               widget.domain = value!;
-        //             });
-        //           })
-        //       : Container()
-        // ],
+        actions: [
+          widget.group_create_edit == ""
+              ? DropdownButton<String>(
+                  value: widget.domain,
+                  underline: Container(),
+                  iconEnabledColor: Colors.white,
+                  elevation: 0,
+                  items: domains_list
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(
+                        value,
+                        style: TextStyle(fontSize: 10),
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      widget.domain = value!;
+                    });
+                  })
+              : Container()
+        ],
         backgroundColor: Colors.white70,
       ),
       body: FutureBuilder<List<SmallUsername>>(
@@ -367,7 +367,6 @@ class _user_list_displayState extends State<user_list_display> {
         .where("participants.${widget.app_user.userUuid}", isEqualTo: true)
         .where("participants.${targetuser.userUuid}", isEqualTo: true)
         .get();
-    ;
     for (int i = 0; i < 3; i++) {
       if (snapshot.docs.length > 0) {
         break;
@@ -443,7 +442,7 @@ class _user_list_displayState extends State<user_list_display> {
     var width = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () async {
-        if (widget.app_user.email == "guest@nitc.ac.in") {
+        if (widget.app_user.email!.split('@')[0] == "guest") {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               duration: Duration(milliseconds: 400),
               content: Text("guest cannot chat with others..",
@@ -881,8 +880,8 @@ class _creatingNewGroupState extends State<creatingNewGroup> {
                                           Radius.circular(15.0))),
                                   minWidth: double.infinity,
                                   onPressed: () async {
-                                    if (widget.app_user.email ==
-                                        "guest@nitc.ac.in") {
+                                    if (widget.app_user.email!.split('@')[0] ==
+                                        "guest") {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(
                                               duration:
@@ -1139,8 +1138,8 @@ class _editGroupChatState extends State<editGroupChat> {
                                           Radius.circular(15.0))),
                                   minWidth: double.infinity,
                                   onPressed: () async {
-                                    if (widget.app_user.email ==
-                                        "guest@nitc.ac.in") {
+                                    if (widget.app_user.email!.split('@')[0] ==
+                                        "guest") {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(
                                               duration:

@@ -64,7 +64,7 @@ class _messangerState extends State<messanger> {
                   child: Stack(children: [
                     IconButton(
                       onPressed: () {
-                        if (widget.app_user.email == "guest@nitc.ac.in") {
+                        if (widget.app_user.email!.split('@')[0] == "guest") {
                           ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                   duration: Duration(milliseconds: 400),

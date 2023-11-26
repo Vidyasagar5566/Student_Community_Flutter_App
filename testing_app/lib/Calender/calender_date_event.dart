@@ -297,8 +297,9 @@ class _calender_events_displayState extends State<calender_events_display> {
                                   const SizedBox(height: 10),
                                   TextButton(
                                       onPressed: () async {
-                                        if (widget.app_user.email ==
-                                            "guest@nitc.ac.in") {
+                                        if (widget.app_user.email!
+                                                .split('@')[0] ==
+                                            "guest") {
                                           Navigator.pop(context);
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(
@@ -811,8 +812,11 @@ class _calender_events_displayState extends State<calender_events_display> {
                                                       TextButton(
                                                           onPressed: () async {
                                                             if (widget.app_user
-                                                                    .email ==
-                                                                "guest@nitc.ac.in") {
+                                                                        .email!
+                                                                        .split(
+                                                                            '@')[
+                                                                    0] ==
+                                                                "guest") {
                                                               Navigator.pop(
                                                                   context);
                                                               ScaffoldMessenger

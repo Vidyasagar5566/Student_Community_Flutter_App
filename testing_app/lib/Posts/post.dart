@@ -477,8 +477,9 @@ class _single_postState extends State<single_post> {
                                       child: const Text("Report this post?")),
                                   TextButton(
                                       onPressed: () async {
-                                        if (widget.app_user.email ==
-                                            "guest@nitc.ac.in") {
+                                        if (widget.app_user.email!
+                                                .split('@')[0] ==
+                                            "guest") {
                                           Navigator.pop(context);
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(const SnackBar(
@@ -612,7 +613,7 @@ class _single_postState extends State<single_post> {
                 : BoxDecoration(),
             child: GestureDetector(
               onDoubleTap: () async {
-                if (widget.app_user.email == "guest@nitc.ac.in") {
+                if (widget.app_user.email!.split('@')[0] == "guest") {
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       duration: Duration(milliseconds: 400),
                       content: Text("guests are not allowed to like..",
@@ -754,7 +755,7 @@ class _single_postState extends State<single_post> {
                   const SizedBox(width: 5),
                   IconButton(
                     onPressed: () async {
-                      if (widget.app_user.email == "guest@nitc.ac.in") {
+                      if (widget.app_user.email!.split('@')[0] == "guest") {
                         ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                                 duration: Duration(milliseconds: 400),
@@ -944,15 +945,21 @@ class _commentwidget1State extends State<commentwidget1> {
             width: MediaQuery.of(context).size.width,
             child: SingleChildScrollView(
               reverse: true,
-              child: ListView.builder(
-                  itemCount: widget.pst_cmnt_list.length,
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  padding: EdgeInsets.only(bottom: 10),
-                  itemBuilder: (BuildContext context, int index) {
-                    PST_CMNT pst_cmnt = pst_cmnt_list[index];
-                    return _buildLoadingScreen(pst_cmnt);
-                  }),
+              child: pst_cmnt_list.isEmpty
+                  ? const Center(
+                      child: Text(
+                      "No Comments Yet",
+                      style: TextStyle(color: Colors.white),
+                    ))
+                  : ListView.builder(
+                      itemCount: widget.pst_cmnt_list.length,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      padding: EdgeInsets.only(bottom: 10),
+                      itemBuilder: (BuildContext context, int index) {
+                        PST_CMNT pst_cmnt = pst_cmnt_list[index];
+                        return _buildLoadingScreen(pst_cmnt);
+                      }),
             ),
           ),
           Container(
@@ -1016,8 +1023,8 @@ class _commentwidget1State extends State<commentwidget1> {
                           ? Container(
                               child: IconButton(
                                 onPressed: () async {
-                                  if (widget.app_user.email ==
-                                      "guest@nitc.ac.in") {
+                                  if (widget.app_user.email!.split('@')[0] ==
+                                      "guest") {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         const SnackBar(
                                             duration:

@@ -357,7 +357,7 @@ class _user_list_displayState extends State<user_list_display> {
               });
         } else {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text("You Cannot edit InstaBook Users",
+              content: Text("You Cannot edit ESMUS Users",
                   style: TextStyle(color: Colors.white))));
         }
       },

@@ -883,8 +883,8 @@ class _chatroomState extends State<chatroom> {
                         ? Container(
                             child: IconButton(
                               onPressed: () async {
-                                if (widget.app_user.email ==
-                                    "guest@nitc.ac.in") {
+                                if (widget.app_user.email!.split('@')[0] ==
+                                    "guest") {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                           duration: Duration(milliseconds: 400),

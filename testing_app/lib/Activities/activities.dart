@@ -221,7 +221,7 @@ class _single_eventState extends State<single_event> {
         }));
       },
       onDoubleTap: () async {
-        if (widget.app_user.email == "guest@nitc.ac.in") {
+        if (widget.app_user.email!.split('@')[0] == "guest") {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               duration: Duration(milliseconds: 400),
@@ -355,7 +355,7 @@ class _single_eventState extends State<single_event> {
                   children: [
                     IconButton(
                       onPressed: () async {
-                        if (widget.app_user.email == "guest@nitc.ac.in") {
+                        if (widget.app_user.email!.split('@')[0] == "guest") {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               duration: Duration(milliseconds: 400),
@@ -908,7 +908,7 @@ class _video_displayState extends State<video_display> {
 
   Future<String?> _findLocalPath() async {
     if (platform == TargetPlatform.android) {
-      return "/storage/emulated/0/Download/"; //NITC InstaBook/";
+      return "/storage/emulated/0/Download/"; //NITC ESMUS/";
     } else {
       var directory = await getApplicationDocumentsDirectory();
       return directory.path + "/"; //+ Platform.pathSeparator + 'Download/';
@@ -950,7 +950,7 @@ class _video_displayState extends State<video_display> {
                                       style: TextStyle(color: Colors.white),
                                     )
                                   : const Text(
-                                      'success, check your InstaBook folder in your "on my iphone"',
+                                      'success, check your ESMUS folder in your "on my iphone"',
                                       style: TextStyle(color: Colors.white),
                                     ),
                             ),

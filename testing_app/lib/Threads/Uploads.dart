@@ -306,8 +306,8 @@ class _upload_alertowidgetState extends State<upload_alertowidget> {
                                           Radius.circular(15.0))),
                                   minWidth: double.infinity,
                                   onPressed: () async {
-                                    if (widget.app_user.email ==
-                                        "guest@nitc.ac.in") {
+                                    if (widget.app_user.email!.split('@')[0] ==
+                                        "guest") {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(
                                               duration:
@@ -363,11 +363,11 @@ class _upload_alertowidgetState extends State<upload_alertowidget> {
                                             .pushAndRemoveUntil(
                                                 MaterialPageRoute(builder:
                                                     (BuildContext context) {
-                                          return firstpage(3, widget.app_user);
+                                          return firstpage(1, widget.app_user);
                                         }), (Route<dynamic> route) => false);
 
                                         await Future.delayed(
-                                            Duration(seconds: 2));
+                                            Duration(seconds: 1));
                                         bool error = await servers()
                                             .send_notifications(
                                                 widget.app_user.email!,

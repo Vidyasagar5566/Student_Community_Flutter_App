@@ -103,6 +103,7 @@ class _single_messageState extends State<single_message> {
                           // },
                           // text:
                           message.text!,
+                          
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 16,

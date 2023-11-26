@@ -10,20 +10,7 @@ import '/Activities/Models.dart';
 
 List<String> all_dates = [];
 
-List<String> timetable_list = [
-  "Upcoming Events",
-  "Today Time Table"
-/*  "CS",
-  "EC",
-  "EE",
-  "ME",
-  "CE",
-  "CH",
-  "BT",
-  "EP",
-  "MT",
-  "AR"  */
-];
+List<String> timetable_list = ["Upcoming Events", "Today Time Table"];
 List<Tab> get_tabs() {
   List<Tab> tabs = [];
   for (int i = 0; i < timetable_list.length; i++) {
@@ -120,14 +107,12 @@ class _calenderwidget1State extends State<calenderwidget1> {
 
   @override
   Widget build(BuildContext context) {
-    var wid = MediaQuery.of(context).size.width;
-
     return DefaultTabController(
         length: 10,
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(15),
+              padding: const EdgeInsets.all(5),
               child: Column(
                 children: [
                   TableCalendar(
