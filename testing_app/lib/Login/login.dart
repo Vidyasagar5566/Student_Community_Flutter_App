@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:testing_app/Fcm_Notif_Domains/Servers.dart';
 import '/First_page.dart';
-import '../Circular_designs/cure_clip.dart';
+import '../Circular_designs/Cure_clip.dart';
 import '../Circular_designs/Circular_Indicator.dart';
 //import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'dart:io';
@@ -72,7 +73,8 @@ Future<void> signOutGoogle() async {
 
 class loginpage extends StatefulWidget {
   String error;
-  loginpage(this.error);
+  String domain;
+  loginpage(this.error, this.domain);
 
   @override
   State<loginpage> createState() => _loginpageState();
@@ -236,7 +238,8 @@ class _loginpageState extends State<loginpage> {
                                     MaterialPageRoute(
                                         builder: (BuildContext context) =>
                                             loginpage(
-                                                "Fill all the above details")));
+                                                "Fill all the above details",
+                                                widget.domain)));
                               },
                               color: Colors.green[200],
                               textColor: Colors.white,
@@ -324,79 +327,122 @@ class _loginpageState extends State<loginpage> {
                       showDialog(
                           context: context,
                           builder: (context) {
-                            return AlertDialog(
-                              contentPadding: EdgeInsets.all(25),
-                              content: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(),
-                                      TextButton(
-                                          onPressed: () {
+                            return StatefulBuilder(builder:
+                                (BuildContext context, StateSetter setState) {
+                              return AlertDialog(
+                                contentPadding: EdgeInsets.all(25),
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(),
+                                        TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text("close"))
+                                      ],
+                                    ),
+                                    const SizedBox(height: 20),
+                                    const Center(
+                                        child: Text(
+                                            "1. If you continue as guest, you are not allowed to receive any notifications and updates from this app",
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w400))),
+                                    const SizedBox(height: 20),
+                                    const Center(
+                                        child: Text(
+                                            "2. Also You are not allowed to share any type of posts, and liking any contents",
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w400))),
+                                    const SizedBox(height: 20),
+                                    const Center(
+                                        child: Text(
+                                            "3. Guests are only allowed to read the data inside the app shared by students",
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w400))),
+                                    const SizedBox(height: 30),
+                                    Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          const Text("Institute : ",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w400)),
+                                          DropdownButton<String>(
+                                              value: widget.domain,
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black),
+                                              underline: Container(),
+                                              elevation: 0,
+                                              items: domains_list_ex_all.map<
+                                                      DropdownMenuItem<String>>(
+                                                  (String value) {
+                                                return DropdownMenuItem<String>(
+                                                  value: value,
+                                                  child: Text(
+                                                    value,
+                                                    style:
+                                                        TextStyle(fontSize: 10),
+                                                  ),
+                                                );
+                                              }).toList(),
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  widget.domain = value!;
+                                                });
+                                              })
+                                        ]),
+                                    const SizedBox(height: 1),
+                                    Container(
+                                      margin: const EdgeInsets.all(30),
+                                      decoration: BoxDecoration(
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(10))),
+                                      child: OutlinedButton(
+                                          onPressed: () async {
                                             Navigator.pop(context);
+                                            Navigator.of(context)
+                                                .pushAndRemoveUntil(
+                                                    MaterialPageRoute(builder:
+                                                        (BuildContext context) {
+                                              if (widget.domain != "All") {
+                                                return logincheck1(
+                                                    "guest" +
+                                                        domains1[
+                                                            widget.domain]!,
+                                                    "@Vidyasag5566");
+                                              } else {
+                                                return logincheck1(
+                                                    "guest@nitc.ac.in",
+                                                    "@Vidyasag5566");
+                                              }
+                                            }),
+                                                    (Route<dynamic> route) =>
+                                                        false);
                                           },
-                                          child: Text("close"))
-                                    ],
-                                  ),
-                                  const SizedBox(height: 20),
-                                  const Center(
-                                      child: Text(
-                                          "1. If you continue as guest, you are not allowed to receive any notifications and updates from this app",
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold))),
-                                  const SizedBox(height: 20),
-                                  const Center(
-                                      child: Text(
-                                          "2. Also You are not allowed to share any type of posts, and liking any contents",
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold))),
-                                  const SizedBox(height: 20),
-                                  const Center(
-                                      child: Text(
-                                          "3. Guests are only allowed to read the data inside the app shared by students",
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold))),
-                                  const SizedBox(height: 10),
-                                  Container(
-                                    margin: const EdgeInsets.all(30),
-                                    decoration: BoxDecoration(
-                                        color: Colors.blue[900],
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(10))),
-                                    child: OutlinedButton(
-                                        onPressed: () async {
-                                          Navigator.pop(context);
-                                          Navigator.of(
-                                                  context)
-                                              .pushAndRemoveUntil(
-                                                  MaterialPageRoute(
-                                                      builder: (BuildContext
-                                                              context) =>
-                                                          logincheck1(
-                                                              "guest@nitc.ac.in",
-                                                              "@Vidyasag5566")),
-                                                  (Route<dynamic> route) =>
-                                                      false);
-                                        },
-                                        child: const Center(
-                                            child: Text(
-                                          "Continue as guest?",
-                                          style: TextStyle(color: Colors.white),
-                                        ))),
-                                  ),
-                                  const SizedBox(height: 10),
-                                ],
-                              ),
-                            );
+                                          child: const Center(
+                                              child: Text(
+                                            "Continue as guest?",
+                                            style:
+                                                TextStyle(color: Colors.blue),
+                                          ))),
+                                    ),
+                                    const SizedBox(height: 10),
+                                  ],
+                                ),
+                              );
+                            });
                           });
                     },
                     child: Text("Continue As Guest")),
@@ -437,7 +483,8 @@ class _email_checkState extends State<email_check> {
               return logincheck1(widget.email, result[1]);
             } else {
               return loginpage(
-                  "please login with student email_id/check your connection");
+                  "please login with student email_id/check your connection",
+                  'Nit Calicut');
             }
           }
         }
@@ -475,7 +522,8 @@ class _logincheck1State extends State<logincheck1> {
             if (!error) {
               return get_ueser_widget(0);
             } else {
-              return loginpage("Invalid credidentials/check your connection");
+              return loginpage(
+                  "Invalid credidentials/check your connection", 'Nit Calicut');
             }
           }
         }

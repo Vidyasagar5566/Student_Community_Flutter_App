@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'club_page.dart';
+import 'Club_page.dart';
 import 'Models.dart';
 import '/User_profile/Models.dart';
-import '/Fcm_Notif_Domains/servers.dart';
+import '/Fcm_Notif_Domains/Servers.dart';
 import 'Servers.dart';
 import 'package:flutter/services.dart';
 import 'dart:convert' show utf8;
@@ -149,7 +149,7 @@ class _Allclubpagewidget1State extends State<Allclubpagewidget1> {
               }));
             },
             onDoubleTap: () async {
-              if (widget.app_user.email == "guest@nitc.ac.in") {
+              if (widget.app_user.email!.split('@')[0] == "guest") {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                     duration: Duration(milliseconds: 400),
                     content: Text("guests are not allowed to like..",
@@ -353,8 +353,7 @@ class _Allclubpagewidget1State extends State<Allclubpagewidget1> {
                                 children: [
                                   IconButton(
                                     onPressed: () async {
-                                      if (widget.app_user.email ==
-                                          "guest@nitc.ac.in") {
+                            if (widget.app_user.email!.split('@')[0] == "guest") {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(const SnackBar(
                                                 duration:

@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import '/First_page.dart';
 import '/User_profile/Models.dart';
-import '/Fcm_Notif_Domains/servers.dart';
+import '/Fcm_Notif_Domains/Servers.dart';
 import 'Servers.dart';
 import 'package:video_player/video_player.dart';
 import 'package:intl/intl.dart';
-import '../Circular_designs/cure_clip.dart';
+import '../Circular_designs/Cure_clip.dart';
 
 class upload_eventwidget extends StatefulWidget {
   Username app_user;
@@ -322,8 +322,8 @@ class _upload_eventwidgetState extends State<upload_eventwidget> {
                                           Radius.circular(15.0))),
                                   minWidth: double.infinity,
                                   onPressed: () async {
-                                    if (widget.app_user.email ==
-                                            "guest@nitc.ac.in" ||
+                                    if (widget.app_user.email!.split('@')[0] ==
+                                            "guest" ||
                                         !widget.app_user.isAdmin!) {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(

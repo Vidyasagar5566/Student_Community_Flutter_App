@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '/User_profile/Models.dart';
-import '/Fcm_Notif_Domains/servers.dart';
+import '/Fcm_Notif_Domains/Servers.dart';
 import '/Messanger/Servers.dart';
 import '/First_page.dart';
 import 'Servers.dart';
@@ -308,7 +308,6 @@ class _user_list_displayState extends State<user_list_display> {
                         const SizedBox(height: 10),
                         Container(
                           margin: const EdgeInsets.all(30),
-                          color: Colors.blue[900],
                           child: OutlinedButton(
                               onPressed: () async {
                                 if (search_user.userMark == "" ||
@@ -348,7 +347,7 @@ class _user_list_displayState extends State<user_list_display> {
                               child: const Center(
                                   child: Text(
                                 "Update User",
-                                style: TextStyle(color: Colors.white),
+                                style: TextStyle(color: Colors.blue),
                               ))),
                         )
                       ],
@@ -358,7 +357,7 @@ class _user_list_displayState extends State<user_list_display> {
               });
         } else {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text("You Cannot edit InstaBook Users",
+              content: Text("You Cannot edit ESMUS Users",
                   style: TextStyle(color: Colors.white))));
         }
       },

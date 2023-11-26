@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '/First_page.dart';
 import 'Models.dart';
 import '/User_profile/Models.dart';
@@ -11,7 +13,7 @@ import 'package:dio/dio.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart';
 import '/User_Star_Mark/User_Profile_Star_Mark.dart';
-import '/Fcm_Notif_Domains/servers.dart';
+import '/Fcm_Notif_Domains/Servers.dart';
 
 String utf8convert(String text) {
   List<int> bytes = text.toString().codeUnits;
@@ -31,7 +33,7 @@ class _activitieswidgetState extends State<activitieswidget> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<EVENT_LIST>>(
-      future: activity_servers().get_event_list(widget.domain, 0),
+      future: activity_servers().get_event_list(domains1[widget.domain]!, 0),
       builder: (ctx, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
@@ -219,7 +221,7 @@ class _single_eventState extends State<single_event> {
         }));
       },
       onDoubleTap: () async {
-        if (widget.app_user.email == "guest@nitc.ac.in") {
+        if (widget.app_user.email!.split('@')[0] == "guest") {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               duration: Duration(milliseconds: 400),
@@ -346,14 +348,14 @@ class _single_eventState extends State<single_event> {
                   ),
             const SizedBox(height: 8),
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              smallUserProfileMark(widget.app_user, user),
+              UserProfileMarkAdmin(event, event.username, widget.app_user),
               Container(
                 margin: EdgeInsets.only(right: 20),
                 child: Row(
                   children: [
                     IconButton(
                       onPressed: () async {
-                        if (widget.app_user.email == "guest@nitc.ac.in") {
+                        if (widget.app_user.email!.split('@')[0] == "guest") {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               duration: Duration(milliseconds: 400),
@@ -454,8 +456,8 @@ class _event_photowidgetState extends State<event_photowidget> {
             color: Colors.blue, // <-- SEE HERE
           ),
           centerTitle: true,
-          title: const Text(
-            "NIT CALICUT",
+          title: Text(
+            domains[widget.app_user.domain!]!,
             //"Event name",
             style: TextStyle(color: Colors.black),
           ),
@@ -492,8 +494,15 @@ class _event_photowidgetState extends State<event_photowidget> {
                     color: Colors.white,
                   ),
                   child: //Link
-                      Text(
-                    utf8convert(widget.event.description!),
+                      SelectableLinkify(
+                    onOpen: (url) async {
+                      if (await canLaunch(url.url)) {
+                        await launch(url.url);
+                      } else {
+                        throw 'Could not launch $url';
+                      }
+                    },
+                    text: utf8convert(widget.event.description!),
                     //"Description",
                     //style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18),
                   ),
@@ -628,7 +637,6 @@ class _event_photowidgetState extends State<event_photowidget> {
                                                       margin:
                                                           const EdgeInsets.all(
                                                               30),
-                                                      color: Colors.blue[900],
                                                       child: OutlinedButton(
                                                           onPressed: () async {
                                                             bool error =
@@ -664,7 +672,7 @@ class _event_photowidgetState extends State<event_photowidget> {
                                                             "Delete",
                                                             style: TextStyle(
                                                                 color: Colors
-                                                                    .white),
+                                                                    .blue),
                                                           ))),
                                                     ),
                                                     const SizedBox(height: 10),
@@ -814,10 +822,25 @@ class _event_photowidgetState extends State<event_photowidget> {
                           child: Center(
                             child: update.substring(0, 3) == '&&&'
                                 ? //Link
-                                Text(update.substring(3, update.length))
+                                SelectableLinkify(
+                                    onOpen: (url) async {
+                                      if (await canLaunch(url.url)) {
+                                        await launch(url.url);
+                                      } else {
+                                        throw 'Could not launch $url';
+                                      }
+                                    },
+                                    text: update.substring(3, update.length))
                                 : //Link
-                                Text(
-                                    utf8convert(update),
+                                SelectableLinkify(
+                                    onOpen: (url) async {
+                                      if (await canLaunch(url.url)) {
+                                        await launch(url.url);
+                                      } else {
+                                        throw 'Could not launch $url';
+                                      }
+                                    },
+                                    text: utf8convert(update),
                                   ),
                           ),
                         );
@@ -885,7 +908,7 @@ class _video_displayState extends State<video_display> {
 
   Future<String?> _findLocalPath() async {
     if (platform == TargetPlatform.android) {
-      return "/storage/emulated/0/Download/"; //NITC InstaBook/";
+      return "/storage/emulated/0/Download/"; //NITC ESMUS/";
     } else {
       var directory = await getApplicationDocumentsDirectory();
       return directory.path + "/"; //+ Platform.pathSeparator + 'Download/';
@@ -927,7 +950,7 @@ class _video_displayState extends State<video_display> {
                                       style: TextStyle(color: Colors.white),
                                     )
                                   : const Text(
-                                      'success, check your InstaBook folder in your "on my iphone"',
+                                      'success, check your ESMUS folder in your "on my iphone"',
                                       style: TextStyle(color: Colors.white),
                                     ),
                             ),

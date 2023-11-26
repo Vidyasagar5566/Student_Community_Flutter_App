@@ -4,19 +4,21 @@ import 'dart:convert';
 import 'Models.dart';
 import 'dart:io';
 
-class bs_lf_servers {
+class lf_servers {
   LocalStorage storage = LocalStorage("usertoken");
   String base_url = 'http://StudentCommunity.pythonanywhere.com';
 
 //  LOST AND FOUNDS POST FUNCTIONS
 
-  Future<List<Lost_Found>> get_lst_list(
-      int num_list, String domain, String email) async {
+  Future<List<Lost_Found>> get_lst_list(int num_list, String domain, String tag,
+      String category, String email) async {
     try {
       var token = storage.getItem('token');
       Map<String, String> queryParameters = {
         'num_list': num_list.toString(),
         'domain': domain,
+        "tag": tag,
+        "category": category,
         'email': email
       };
       String queryString = Uri(queryParameters: queryParameters).query;
@@ -40,7 +42,7 @@ class bs_lf_servers {
   }
 
   Future<bool> post_lst(String title, String description, File file,
-      String image_ratio, String tag) async {
+      String image_ratio, String tag, String category) async {
     try {
       var token = storage.getItem('token');
       String finalUrl = "$base_url/lost_found/list1";
@@ -63,7 +65,8 @@ class bs_lf_servers {
           'file': base64file,
           'file_name': fileName,
           'image_ratio': image_ratio,
-          'tag': tag
+          'tag': tag,
+          'category': category
         }),
       );
 
@@ -157,8 +160,10 @@ class bs_lf_servers {
         }),
       );
       var data = json.decode(response.body) as Map;
+      print(data);
       return [data['error'], data['id']];
     } catch (e) {
+      print(e);
       return [true, 0];
     }
   }

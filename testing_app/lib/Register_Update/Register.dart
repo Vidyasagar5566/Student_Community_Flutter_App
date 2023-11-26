@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '/Register_Update/Servers.dart';
 import '/User_profile/Models.dart';
 import '/First_page.dart';
@@ -458,11 +460,55 @@ class _appUpdateState extends State<appUpdate> {
             builder: (BuildContext context) {
               return AlertDialog(
                   content: SingleChildScrollView(
-                      child: Container(
-                child: const Text(
-                  "Please Update The App inorder to ligin",
-                  style: TextStyle(fontWeight: FontWeight.w700),
-                ),
+                      child: Column(
+                children: [
+                  Container(
+                    child: const Text(
+                      "Please Update The App inorder to ligin",
+                      style: TextStyle(fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    child: const Text(
+                      "Playstore visit",
+                      style: TextStyle(fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    child: SelectableLinkify(
+                        onOpen: (url) async {
+                          if (await canLaunch(url.url)) {
+                            await launch(url.url);
+                          } else {
+                            throw 'Could not launch $url';
+                          }
+                        },
+                        text:
+                            "https://play.google.com/store/apps/details?id=com.nitc.InstaBook&pcampaignid=web_share"),
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    child: const Text(
+                      "App Store visit",
+                      style: TextStyle(fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    child: SelectableLinkify(
+                        onOpen: (url) async {
+                          if (await canLaunch(url.url)) {
+                            await launch(url.url);
+                          } else {
+                            throw 'Could not launch $url';
+                          }
+                        },
+                        text:
+                            "https://apps.apple.com/in/app/nitc-instabook/id6455889703"),
+                  )
+                ],
               )));
             }));
     return WillPopScope(

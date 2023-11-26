@@ -1,51 +1,6 @@
 import '/User_profile/Models.dart';
 import 'dart:io';
 
-class ALL_BRANCHES {
-  int? id;
-  String? course;
-  String? branchName;
-  String? semisters;
-  String? postedDate;
-  String? domain;
-  SmallUsername? username;
-
-  ALL_BRANCHES(
-      {this.id,
-      this.course,
-      this.branchName,
-      this.semisters,
-      this.postedDate,
-      this.domain,
-      this.username});
-
-  ALL_BRANCHES.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    course = json['course'];
-    branchName = json['branch_name'];
-    semisters = json['semisters'];
-    postedDate = json['posted_date'];
-    domain = json['domain'];
-    username = json['username'] != null
-        ? new SmallUsername.fromJson(json['username'])
-        : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['course'] = this.course;
-    data['branch_name'] = this.branchName;
-    data['semisters'] = this.semisters;
-    data['posted_date'] = this.postedDate;
-    data['domain'] = this.domain;
-    if (this.username != null) {
-      data['username'] = this.username!.toJson();
-    }
-    return data;
-  }
-}
-
 class CAL_SUB_NAMES {
   int? id;
   String? subName;
@@ -56,6 +11,7 @@ class CAL_SUB_NAMES {
   int? totRatingsVal;
   int? numRatings;
   SmallUsername? username;
+  bool? InternCompany;
 
   CAL_SUB_NAMES(
       {this.id,
@@ -66,7 +22,8 @@ class CAL_SUB_NAMES {
       this.postedDate,
       this.totRatingsVal,
       this.numRatings,
-      this.username});
+      this.username,
+      this.InternCompany});
 
   CAL_SUB_NAMES.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -80,6 +37,7 @@ class CAL_SUB_NAMES {
     username = json['username'] != null
         ? new SmallUsername.fromJson(json['username'])
         : null;
+    InternCompany = json["InternCompany"];
   }
 
   Map<String, dynamic> toJson() {
@@ -95,6 +53,7 @@ class CAL_SUB_NAMES {
     if (this.username != null) {
       data['username'] = this.username!.toJson();
     }
+    data["InternCompany"] = this.InternCompany;
     return data;
   }
 }

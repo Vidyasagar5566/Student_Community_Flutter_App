@@ -1,13 +1,16 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:testing_app/Files_disply_download/pdf_videos_images.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'Models.dart';
 import 'package:testing_app/User_profile/Models.dart';
 
 class single_message extends StatefulWidget {
   Username app_user;
   MessageModel currentmessage;
-  single_message(this.app_user, this.currentmessage);
+  bool groupChatroom;
+  single_message(this.app_user, this.currentmessage, this.groupChatroom);
 
   @override
   State<single_message> createState() => _single_messageState();
@@ -86,12 +89,25 @@ class _single_messageState extends State<single_message> {
                   Row(
                     // mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text(
-                        message.text!,
-                        softWrap: true,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
+                      Container(
+                        constraints: BoxConstraints(
+                          maxWidth: width - 100,
+                        ),
+                        child: SelectableText(
+                          // onOpen: (url) async {
+                          //   if (await canLaunch(url.url)) {
+                          //     await launch(url.url);
+                          //   } else {
+                          //     throw 'Could not launch $url';
+                          //   }
+                          // },
+                          // text:
+                          message.text!,
+                          
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
                         ),
                       ),
                     ],
@@ -121,14 +137,12 @@ class _single_messageState extends State<single_message> {
                                     size: 14,
                                   )
                           ],
-                        )
+                        ),
+                  const SizedBox(height: 4),
                 ],
               ),
             ))
         : Container(
-            constraints: BoxConstraints(
-              maxWidth: width - 80,
-            ),
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(11),
@@ -138,13 +152,40 @@ class _single_messageState extends State<single_message> {
             ),
             margin: const EdgeInsets.all(6),
             padding: const EdgeInsets.all(9),
-            child: Text(
-              message.text!,
-              softWrap: true,
-              style: const TextStyle(
-                color: Colors.black,
-                fontSize: 16,
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  constraints: BoxConstraints(
+                    maxWidth: width - 100,
+                  ),
+                  child: SelectableText(
+                    // onOpen: (url) async {
+                    //   if (await canLaunch(url.url)) {
+                    //     await launch(url.url);
+                    //   } else {
+                    //     throw 'Could not launch $url';
+                    //   }
+                    // },
+                    // text:
+                    message.text!,
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 4),
+                widget.groupChatroom
+                    ? Text(
+                        message.sender!,
+                        softWrap: true,
+                        style: const TextStyle(
+                          fontSize: 8,
+                        ),
+                      )
+                    : Container(),
+              ],
             ));
   }
 
@@ -158,6 +199,10 @@ class _single_messageState extends State<single_message> {
               ? Colors.indigo[900]
               : Colors.grey[400]),
       child: Column(
+        crossAxisAlignment:
+            widget.currentmessage.sender! == widget.app_user.email
+                ? CrossAxisAlignment.end
+                : CrossAxisAlignment.start,
         children: [
           Center(
             child: Container(
@@ -174,11 +219,36 @@ class _single_messageState extends State<single_message> {
                             image: NetworkImage(message.photo!),
                             fit: BoxFit.cover))),
           ),
-          Text(message.text!,
-              style: TextStyle(
-                  color: widget.currentmessage.sender! == widget.app_user.email
-                      ? Colors.white
-                      : Colors.black)),
+          Container(
+            margin: EdgeInsets.all(4),
+            child: SelectableLinkify(
+                onOpen: (url) async {
+                  if (await canLaunch(url.url)) {
+                    await launch(url.url);
+                  } else {
+                    throw 'Could not launch $url';
+                  }
+                },
+                text: message.text!,
+                style: TextStyle(
+                    color:
+                        widget.currentmessage.sender! == widget.app_user.email
+                            ? Colors.white
+                            : Colors.black)),
+          ),
+          const SizedBox(height: 1),
+          widget.groupChatroom && widget.app_user.email != message.sender
+              ? Container(
+                  margin: EdgeInsets.all(4),
+                  child: Text(
+                    message.sender!,
+                    softWrap: true,
+                    style: const TextStyle(
+                      fontSize: 8,
+                    ),
+                  ),
+                )
+              : Container(),
           widget.currentmessage.sender! == widget.app_user.email
               ? Container(
                   child: (!widget.currentmessage.sent!)
@@ -224,6 +294,10 @@ class _single_messageState extends State<single_message> {
               ? Colors.indigo[900]
               : Colors.grey[400]),
       child: Column(
+        crossAxisAlignment:
+            widget.currentmessage.sender! == widget.app_user.email
+                ? CrossAxisAlignment.end
+                : CrossAxisAlignment.start,
         children: [
           Container(
             height: 300,
@@ -255,11 +329,36 @@ class _single_messageState extends State<single_message> {
               ],
             ),
           ),
-          Text(message.text!,
-              style: TextStyle(
-                  color: widget.currentmessage.sender! == widget.app_user.email
-                      ? Colors.white
-                      : Colors.black)),
+          Container(
+            margin: EdgeInsets.all(4),
+            child: SelectableLinkify(
+                onOpen: (url) async {
+                  if (await canLaunch(url.url)) {
+                    await launch(url.url);
+                  } else {
+                    throw 'Could not launch $url';
+                  }
+                },
+                text: message.text!,
+                style: TextStyle(
+                    color:
+                        widget.currentmessage.sender! == widget.app_user.email
+                            ? Colors.white
+                            : Colors.black)),
+          ),
+          const SizedBox(height: 1),
+          widget.groupChatroom && widget.app_user.email != message.sender
+              ? Container(
+                  margin: EdgeInsets.all(4),
+                  child: Text(
+                    message.sender!,
+                    softWrap: true,
+                    style: const TextStyle(
+                      fontSize: 8,
+                    ),
+                  ),
+                )
+              : Container(),
           widget.currentmessage.sender == widget.app_user.email
               ? Container(
                   child: (!widget.currentmessage.sent!)
@@ -316,6 +415,10 @@ class _single_messageState extends State<single_message> {
                   ? Colors.indigo[900]
                   : Colors.grey[400]),
           child: Column(
+            crossAxisAlignment:
+                widget.currentmessage.sender! == widget.app_user.email
+                    ? CrossAxisAlignment.end
+                    : CrossAxisAlignment.start,
             children: [
               Center(
                 child: Container(
@@ -328,12 +431,36 @@ class _single_messageState extends State<single_message> {
                           fit: BoxFit.cover)),
                 ),
               ),
-              Text(message.text!,
-                  style: TextStyle(
-                      color:
-                          widget.currentmessage.sender! == widget.app_user.email
-                              ? Colors.white
-                              : Colors.black)),
+              Container(
+                margin: EdgeInsets.all(4),
+                child: SelectableLinkify(
+                    onOpen: (url) async {
+                      if (await canLaunch(url.url)) {
+                        await launch(url.url);
+                      } else {
+                        throw 'Could not launch $url';
+                      }
+                    },
+                    text: message.text!,
+                    style: TextStyle(
+                        color: widget.currentmessage.sender! ==
+                                widget.app_user.email
+                            ? Colors.white
+                            : Colors.black)),
+              ),
+              const SizedBox(height: 1),
+              widget.groupChatroom && widget.app_user.email != message.sender
+                  ? Container(
+                      margin: EdgeInsets.all(4),
+                      child: Text(
+                        message.sender!,
+                        softWrap: true,
+                        style: const TextStyle(
+                          fontSize: 8,
+                        ),
+                      ),
+                    )
+                  : Container(),
               widget.currentmessage.sender! == widget.app_user.email
                   ? Container(
                       child: (!widget.currentmessage.sent!)

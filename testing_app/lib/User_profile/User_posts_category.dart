@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import '../Posts/post.dart';
+import '../Posts/Post.dart';
 import 'Servers.dart';
 import 'Models.dart';
 import '/Posts/Models.dart';
 import '/Posts/Servers.dart';
-import '/Fcm_Notif_Domains/servers.dart';
-import '/First_page.dart';
+import '/Fcm_Notif_Domains/Servers.dart';
+import '/first_page.dart';
 //import 'package:link_text/link_text.dart';
 import 'package:flutter/services.dart';
 import 'dart:convert' show utf8;
 import 'package:video_player/video_player.dart';
-import '/Files_disply_download/pdf_videos_images.dart';
+import '/Files_disply_download/Pdf_Videos_Images.dart';
 import 'package:get_time_ago/get_time_ago.dart';
 import 'dart:io';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -261,7 +261,6 @@ class _single_postState extends State<single_post> {
                                             const SizedBox(height: 10),
                                             Container(
                                               margin: const EdgeInsets.all(30),
-                                              color: Colors.blue[900],
                                               child: OutlinedButton(
                                                   onPressed: () async {
                                                     Navigator.pop(context);
@@ -309,7 +308,7 @@ class _single_postState extends State<single_post> {
                                                       child: Text(
                                                     "Delete",
                                                     style: TextStyle(
-                                                        color: Colors.white),
+                                                        color: Colors.blue),
                                                   ))),
                                             ),
                                             const SizedBox(height: 10),
@@ -345,13 +344,6 @@ class _single_postState extends State<single_post> {
                                     //style: const TextStyle(fontSize: 14),
                                   ),
                                   const SizedBox(height: 15),
-                                  post.imgRatio == 1
-                                      ? Container(
-                                          height: width,
-                                          width: width,
-                                          child: Image.network(post.img!),
-                                        )
-                                      : Container()
                                 ],
                               ),
                             ),
@@ -394,8 +386,13 @@ class _single_postState extends State<single_post> {
                         scale: 10, image: AssetImage('images/loading.png')))
                 : BoxDecoration(),
             child: GestureDetector(
-              onDoubleTap: () {
-                setState(() async {
+              onDoubleTap: () async {
+                if (widget.app_user.email!.split('@')[0] == "guest") {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      duration: Duration(milliseconds: 400),
+                      content: Text("guests are not allowed to like..",
+                          style: TextStyle(color: Colors.white))));
+                } else {
                   setState(() {
                     post.isLike = !post.isLike!;
                     SystemSound.play(SystemSoundType.click);
@@ -424,7 +421,7 @@ class _single_postState extends State<single_post> {
                       });
                     }
                   }
-                });
+                }
               },
               onTap: () {
                 if (post.imgRatio == 2) {
@@ -538,33 +535,42 @@ class _single_postState extends State<single_post> {
                 children: [
                   IconButton(
                     onPressed: () async {
-                      setState(() {
-                        post.isLike = !post.isLike!;
-                        SystemSound.play(SystemSoundType.click);
-                      });
-                      if (post.isLike!) {
-                        setState(() {
-                          post.likeCount = post.likeCount! + 1;
-                        });
-                        bool error =
-                            await post_servers().post_post_like(post.id!);
-                        if (error) {
-                          setState(() {
-                            post.likeCount = post.likeCount! - 1;
-                            post.isLike = !post.isLike!;
-                          });
-                        }
+                      if (widget.app_user.email!.split('@')[0] == "guest") {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                duration: Duration(milliseconds: 400),
+                                content: Text(
+                                    "guests are not allowed to like..",
+                                    style: TextStyle(color: Colors.white))));
                       } else {
                         setState(() {
-                          post.likeCount = post.likeCount! - 1;
+                          post.isLike = !post.isLike!;
+                          SystemSound.play(SystemSoundType.click);
                         });
-                        bool error =
-                            await post_servers().delete_post_like(post.id!);
-                        if (error) {
+                        if (post.isLike!) {
                           setState(() {
                             post.likeCount = post.likeCount! + 1;
-                            post.isLike = !post.isLike!;
                           });
+                          bool error =
+                              await post_servers().post_post_like(post.id!);
+                          if (error) {
+                            setState(() {
+                              post.likeCount = post.likeCount! - 1;
+                              post.isLike = !post.isLike!;
+                            });
+                          }
+                        } else {
+                          setState(() {
+                            post.likeCount = post.likeCount! - 1;
+                          });
+                          bool error =
+                              await post_servers().delete_post_like(post.id!);
+                          if (error) {
+                            setState(() {
+                              post.likeCount = post.likeCount! + 1;
+                              post.isLike = !post.isLike!;
+                            });
+                          }
                         }
                       }
                     },

@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:testing_app/Fcm_Notif_Domains/Servers.dart';
 import 'Servers.dart';
 import 'Models.dart';
 import '/User_profile/Models.dart';
 import 'package:get_time_ago/get_time_ago.dart';
-import '/Files_disply_download/pdf_videos_images.dart';
+import '/Files_disply_download/Pdf_Videos_Images.dart';
 import '/First_page.dart';
 import 'Upload_opinion.dart';
 import '/User_Star_Mark/User_Profile_Star_Mark.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 //import 'package:link_text/link_text.dart';
 import 'dart:convert' show utf8;
@@ -29,7 +32,7 @@ class _alertwidgetState extends State<alertwidget> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<ALERT_LIST>>(
-      future: threads_servers().get_alert_list(widget.domain, 0),
+      future: threads_servers().get_alert_list(domains1[widget.domain]!, 0),
       builder: (ctx, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
@@ -308,7 +311,6 @@ class _alert_commentwidgetState extends State<alert_commentwidget> {
                                   const SizedBox(height: 10),
                                   Container(
                                     margin: const EdgeInsets.all(30),
-                                    color: Colors.blue[900],
                                     child: OutlinedButton(
                                         onPressed: () async {
                                           bool error = await threads_servers()
@@ -324,8 +326,8 @@ class _alert_commentwidgetState extends State<alert_commentwidget> {
                                                     content: Text(
                                                         "Error occured plz try again",
                                                         style: TextStyle(
-                                                            color: Colors
-                                                                .white))));
+                                                            color:
+                                                                Colors.blue))));
                                           }
                                         },
                                         child: const Center(
@@ -369,7 +371,15 @@ class _alert_commentwidgetState extends State<alert_commentwidget> {
                   : UserProfileMarkAdmin(
                       widget.alert, widget.alert.username, widget.app_user),
               const SizedBox(height: 20),
-              Text(widget.alert.description!,
+              SelectableLinkify(
+                  onOpen: (url) async {
+                    if (await canLaunch(url.url)) {
+                      await launch(url.url);
+                    } else {
+                      throw 'Could not launch $url';
+                    }
+                  },
+                  text: widget.alert.description!,
                   style: const TextStyle(fontSize: 15)),
               const SizedBox(height: 30),
               all_files_display(
@@ -503,7 +513,6 @@ class _lst_cmnt_pageState extends State<lst_cmnt_page> {
                                       const SizedBox(height: 10),
                                       Container(
                                         margin: const EdgeInsets.all(30),
-                                        color: Colors.blue[900],
                                         child: OutlinedButton(
                                             onPressed: () async {
                                               setState(() {
@@ -526,8 +535,8 @@ class _lst_cmnt_pageState extends State<lst_cmnt_page> {
                                             child: const Center(
                                                 child: Text(
                                               "Delete",
-                                              style: TextStyle(
-                                                  color: Colors.white),
+                                              style:
+                                                  TextStyle(color: Colors.blue),
                                             ))),
                                       ),
                                       const SizedBox(height: 10),
@@ -547,8 +556,15 @@ class _lst_cmnt_pageState extends State<lst_cmnt_page> {
             ],
           ),
           const SizedBox(height: 20),
-          Text(
-              alert_cmnt.insertMessage!
+          SelectableLinkify(
+              onOpen: (url) async {
+                if (await canLaunch(url.url)) {
+                  await launch(url.url);
+                } else {
+                  throw 'Could not launch $url';
+                }
+              },
+              text: alert_cmnt.insertMessage!
                   ? alert_cmnt.comment!
                   : utf8convert(alert_cmnt.comment!),
               style: const TextStyle(fontSize: 15)),

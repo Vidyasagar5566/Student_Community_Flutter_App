@@ -6,9 +6,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import 'package:video_player/video_player.dart';
-import '/Files_disply_download/pdf_videos_images.dart';
+import '/Files_disply_download/Pdf_Videos_Images.dart';
 import '/Year_Branch_Selection/Year_Branch_Selection.dart';
-import '/Fcm_Notif_Domains/servers.dart';
+import '/Fcm_Notif_Domains/Servers.dart';
 
 class upload_alert_cmnt extends StatefulWidget {
   Username app_user;
@@ -253,8 +253,8 @@ class _upload_alert_cmntState extends State<upload_alert_cmnt> {
                                   minWidth: double.infinity,
                                   onPressed: () async {
                                     Navigator.of(context);
-                                    if (widget.app_user.email ==
-                                        "guest@nitc.ac.in") {
+                                    if (widget.app_user.email!.split('@')[0] ==
+                                        "guest") {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(
                                               duration:

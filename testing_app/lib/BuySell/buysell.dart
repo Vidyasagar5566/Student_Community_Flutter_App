@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '/First_page.dart';
 import 'Servers.dart';
 import 'Models.dart';
 import '/User_profile/Models.dart';
-import '/Fcm_Notif_Domains/servers.dart';
+import '/Fcm_Notif_Domains/Servers.dart';
 import 'dart:convert' show utf8;
 import 'Uploads.dart';
 import '/Reports/Uploads.dart';
@@ -18,28 +20,43 @@ String utf8convert(String text) {
   return utf8.decode(bytes);
 }
 
-class all_lostwidget1 extends StatefulWidget {
+List<String> BuyCtegory = [
+  "All",
+  "rideShares",
+  "smartDevices",
+  "belongings",
+  "clothings",
+  "usedCampusItems",
+  "houseSharings",
+  "others"
+];
+
+class all_buySellwidget1 extends StatefulWidget {
   Username app_user;
   String tag;
+  String category;
   List<Lost_Found> lst_buy_list;
   String domain;
   String email;
-  all_lostwidget1(
-      this.app_user, this.tag, this.lst_buy_list, this.domain, this.email);
+  all_buySellwidget1(this.app_user, this.tag, this.category, this.lst_buy_list,
+      this.domain, this.email);
 
   @override
-  State<all_lostwidget1> createState() => _all_lostwidget1State();
+  State<all_buySellwidget1> createState() => _all_lostwidget1State();
 }
 
-class _all_lostwidget1State extends State<all_lostwidget1> {
+class _all_lostwidget1State extends State<all_buySellwidget1> {
   bool total_loaded = false;
   void load_data_fun() async {
-    List<Lost_Found> latest_lst_list = await bs_lf_servers().get_lst_list(
-        lst_buy_list.length, domains1[widget.domain]!, widget.email);
+    List<Lost_Found> latest_lst_list = await bs_servers().get_lst_list(
+        widget.lst_buy_list.length,
+        domains1[widget.domain]!,
+        widget.tag,
+        widget.category,
+        widget.email);
     if (latest_lst_list.length != 0) {
-      lst_buy_list += latest_lst_list;
       setState(() {
-        widget.lst_buy_list = lst_buy_list;
+        widget.lst_buy_list += latest_lst_list;
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -57,34 +74,26 @@ class _all_lostwidget1State extends State<all_lostwidget1> {
     load_data_fun();
   }
 
+  var comment;
+  bool sending_cmnt = false;
   @override
   Widget build(BuildContext context) {
-    List<Lost_Found> lst_list1 = [];
-    for (int i = 0; i < widget.lst_buy_list.length; i++) {
-      if (widget.lst_buy_list[i].tag == widget.tag) {
-        lst_list1.add(widget.lst_buy_list[i]);
-      }
-    }
     return Scaffold(
         appBar: AppBar(
           centerTitle: false,
           iconTheme: IconThemeData(color: Colors.black),
-          title: widget.tag == "lost/found"
-              ? const Text(
-                  "Lost And Founds",
-                  style: TextStyle(color: Colors.black),
-                )
-              : const Text(
-                  "Sharings",
-                  style: TextStyle(color: Colors.black),
-                ),
+          title: const Text(
+            "Sharings",
+            style: TextStyle(color: Colors.black, fontSize: 20),
+          ),
           actions: [
-            widget.email == 'All'
-                ? DropdownButton<String>(
-                    value: widget.domain,
+            Row(
+              children: [
+                DropdownButton<String>(
+                    value: widget.tag,
                     underline: Container(),
                     elevation: 0,
-                    items: domains_list
+                    items: ["buy", "sell"]
                         .map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
@@ -96,23 +105,52 @@ class _all_lostwidget1State extends State<all_lostwidget1> {
                     }).toList(),
                     onChanged: (value) {
                       setState(() {
-                        widget.domain = value!;
-                        lst_buy_list = [];
-                        total_loaded = false;
-                        load_data_fun();
+                        widget.tag = value!;
+                        setState(() {
+                          widget.lst_buy_list = [];
+                          total_loaded = false;
+                          load_data_fun();
+                        });
                       });
-                    })
-                : Container()
+                    }),
+                const SizedBox(width: 10),
+                DropdownButton<String>(
+                    value: widget.category,
+                    underline: Container(),
+                    elevation: 0,
+                    items: BuyCtegory.map<DropdownMenuItem<String>>(
+                        (String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(
+                          value,
+                          style: TextStyle(fontSize: 10),
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        widget.category = value!;
+                        setState(() {
+                          widget.lst_buy_list = [];
+                          total_loaded = false;
+                          load_data_fun();
+                        });
+                      });
+                    }),
+              ],
+            )
           ],
           backgroundColor: Colors.white70,
         ),
-        body: !total_loaded && lst_buy_list.length == 0
+        body: !total_loaded && widget.lst_buy_list.length == 0
             ? const Center(
                 child: CircularProgressIndicator(),
               )
-            : lst_buy_list.length != 0
-                ? _listViewItems(widget.app_user, lst_list1, widget.tag)
-                : total_loaded && lst_buy_list.length == 0
+            : widget.lst_buy_list.length != 0
+                ? _listViewItems(
+                    widget.app_user, widget.lst_buy_list, widget.tag)
+                : total_loaded && widget.lst_buy_list.length == 0
                     ? Container(
                         margin: const EdgeInsets.all(30),
                         padding: const EdgeInsets.all(30),
@@ -121,20 +159,14 @@ class _all_lostwidget1State extends State<all_lostwidget1> {
                             "No Data Was Found",
                           ),
                         ))
-                    : _listViewItems(widget.app_user, lst_list1, widget.tag),
+                    : _listViewItems(
+                        widget.app_user, widget.lst_buy_list, widget.tag),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            if (widget.tag == "lost/found") {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (BuildContext context) {
-                return lst_found_upload(widget.app_user);
-              }));
-            } else {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (BuildContext context) {
-                return buy_sell_upload(widget.app_user);
-              }));
-            }
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (BuildContext context) {
+              return buy_sell_upload(widget.app_user, 'buy', 'belongings');
+            }));
           },
           tooltip: 'wann share',
           child: Icon(
@@ -147,7 +179,6 @@ class _all_lostwidget1State extends State<all_lostwidget1> {
 
   Widget _listViewItems(
       Username app_user, List<Lost_Found> lst_list, String tag) {
-    var height = MediaQuery.of(context).size.height;
     return lst_list.isEmpty
         ? Container(
             margin: EdgeInsets.only(top: 100),
@@ -200,7 +231,7 @@ class _all_lostwidget1State extends State<all_lostwidget1> {
       onTap: () {
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (BuildContext context) {
-          return lost_photowidget(lst, lst.description!, lst.img!, lst.title!,
+          return buy_photowidget(lst, lst.description!, lst.img!, lst.title!,
               user, widget.app_user, lst_list);
         }));
       },
@@ -229,27 +260,174 @@ class _all_lostwidget1State extends State<all_lostwidget1> {
                           width: (width - 36) / 4,
                           height: 30,
                           child: OutlinedButton(
-                              onPressed: () {
+                            onPressed: () {
+                              if (widget.app_user.email ==
+                                  lst.username!.email) {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (BuildContext context) {
                                   return lst_commentwidget(
                                       lst, widget.app_user);
                                 }));
-                              },
-                              style: ButtonStyle(
-                                  backgroundColor:
-                                      const MaterialStatePropertyAll<Color>(
-                                          Colors.blue),
-                                  shape: MaterialStateProperty.all<
-                                          RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ))),
-                              child: const Text(
-                                "Reply",
-                                style: TextStyle(color: Colors.white),
-                                textAlign: TextAlign.center,
-                              )))
+                              } else {
+                                showDialog(
+                                    context: context,
+                                    barrierDismissible: false,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                          contentPadding: EdgeInsets.all(15),
+                                          content: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Container(),
+                                                    IconButton(
+                                                        onPressed: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        icon: const Icon(
+                                                            Icons.close))
+                                                  ],
+                                                ),
+                                                Container(
+                                                  padding: EdgeInsets.only(
+                                                      left: 40, right: 40),
+                                                  child: TextField(
+                                                    keyboardType: TextInputType
+                                                        .emailAddress,
+                                                    decoration: const InputDecoration(
+                                                        labelText:
+                                                            "Write Your Text",
+                                                        hintText:
+                                                            "i want to sell/buy this",
+                                                        prefixIcon: Icon(
+                                                            Icons.text_fields),
+                                                        border: OutlineInputBorder(
+                                                            borderRadius:
+                                                                BorderRadius.all(
+                                                                    Radius.circular(
+                                                                        10)))),
+                                                    onChanged: (String value) {
+                                                      setState(() {
+                                                        comment = value;
+                                                        if (comment == "") {
+                                                          comment = null;
+                                                        }
+                                                      });
+                                                    },
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 10),
+                                                OutlinedButton(
+                                                    onPressed: () async {
+                                                      if (comment == null) {
+                                                        Navigator.pop(context);
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                          const SnackBar(
+                                                            duration: Duration(
+                                                                milliseconds:
+                                                                    400),
+                                                            content: Text(
+                                                              "name cant be null",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white),
+                                                            ),
+                                                          ),
+                                                        );
+                                                      } else {
+                                                        Navigator.pop(context);
+                                                        setState(() {
+                                                          sending_cmnt = true;
+                                                        });
+                                                        List<dynamic> error =
+                                                            await bs_servers()
+                                                                .post_lst_cmnt(
+                                                                    comment,
+                                                                    lst.id!);
+                                                        if (!error[0]) {
+                                                          setState(() {
+                                                            sending_cmnt =
+                                                                false;
+                                                          });
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(
+                                                                  const SnackBar(
+                                                                      duration: Duration(
+                                                                          milliseconds:
+                                                                              400),
+                                                                      content:
+                                                                          Text(
+                                                                        "Request was sent successfully",
+                                                                        style: TextStyle(
+                                                                            color:
+                                                                                Colors.white),
+                                                                      )));
+                                                        } else {
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(
+                                                                  const SnackBar(
+                                                                      duration: Duration(
+                                                                          milliseconds:
+                                                                              400),
+                                                                      content:
+                                                                          Text(
+                                                                        "error occured please try again",
+                                                                        style: TextStyle(
+                                                                            color:
+                                                                                Colors.white),
+                                                                      )));
+                                                        }
+                                                      }
+                                                    },
+                                                    child: const Text("Request",
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.blue)))
+                                              ]));
+                                    });
+                              }
+                            },
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    const MaterialStatePropertyAll<Color>(
+                                        Colors.blue),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ))),
+                            child: widget.app_user.email == lst.username!.email
+                                ? const Text(
+                                    "open?",
+                                    style: TextStyle(color: Colors.white),
+                                    textAlign: TextAlign.center,
+                                  )
+                                : sending_cmnt == false
+                                    ? (widget.tag == "buy"
+                                        ? const Text(
+                                            "sell?",
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                            textAlign: TextAlign.center,
+                                          )
+                                        : const Text(
+                                            "buy?",
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                            textAlign: TextAlign.center,
+                                          ))
+                                    : const CircularProgressIndicator(
+                                        color: Colors.white),
+                          ))
                     ],
                   ),
                   const SizedBox(height: 20),
@@ -259,8 +437,6 @@ class _all_lostwidget1State extends State<all_lostwidget1> {
                         padding: const EdgeInsets.all(4),
                         child: Text(
                           utf8convert(lst.description!),
-                          //'''My black crocs kept outside my room(6A 38) are missing from todays afternoon.if anyone took it by mistake please keep them back. the picture is attached down.''',
-                          //lst_list.description
                           style: const TextStyle(
                             fontSize: 13, //color: Colors.white
                           ),
@@ -297,11 +473,11 @@ class _all_lostwidget1State extends State<all_lostwidget1> {
   @override
   void dispose() {
     super.dispose();
-    lst_buy_list = [];
+    widget.lst_buy_list = [];
   }
 }
 
-class lost_photowidget extends StatefulWidget {
+class buy_photowidget extends StatefulWidget {
   Lost_Found lst;
   String description;
   String img;
@@ -309,15 +485,15 @@ class lost_photowidget extends StatefulWidget {
   SmallUsername user;
   Username app_user;
   List<Lost_Found> lst_list;
-  lost_photowidget(this.lst, this.description, this.img, this.title, this.user,
+  buy_photowidget(this.lst, this.description, this.img, this.title, this.user,
       this.app_user, this.lst_list);
 //  const lost_photowidget({super.key});
 
   @override
-  State<lost_photowidget> createState() => _lost_photowidgetState();
+  State<buy_photowidget> createState() => _lost_photowidgetState();
 }
 
-class _lost_photowidgetState extends State<lost_photowidget> {
+class _lost_photowidgetState extends State<buy_photowidget> {
   @override
   Widget build(BuildContext context) {
     final SmallUsername lst_user = widget.user;
@@ -328,15 +504,10 @@ class _lost_photowidgetState extends State<lost_photowidget> {
         leading: const BackButton(
           color: Colors.blue, // <-- SEE HERE
         ),
-        title: widget.lst.tag! == "lost/found"
-            ? Text(
-                widget.lst.tag!,
-                style: TextStyle(color: Colors.black),
-              )
-            : const Text(
-                "Buy/Sell",
-                style: TextStyle(color: Colors.black),
-              ),
+        title: const Text(
+          "Buy/Sell",
+          style: TextStyle(color: Colors.black),
+        ),
         actions: [
           lst_user.email == app_user.email
               ? Center(
@@ -373,10 +544,9 @@ class _lost_photowidgetState extends State<lost_photowidget> {
                                   const SizedBox(height: 10),
                                   Container(
                                     margin: const EdgeInsets.all(30),
-                                    color: Colors.blue[900],
                                     child: OutlinedButton(
                                         onPressed: () async {
-                                          bool error = await bs_lf_servers()
+                                          bool error = await bs_servers()
                                               .delete_lst(widget.lst.id!);
                                           if (!error) {
                                             Navigator.pop(context);
@@ -394,7 +564,7 @@ class _lost_photowidgetState extends State<lost_photowidget> {
                                         child: const Center(
                                             child: Text(
                                           "Delete",
-                                          style: TextStyle(color: Colors.white),
+                                          style: TextStyle(color: Colors.blue),
                                         ))),
                                   ),
                                 ],
@@ -447,8 +617,9 @@ class _lost_photowidgetState extends State<lost_photowidget> {
                                       child: const Text("Report this post?")),
                                   TextButton(
                                       onPressed: () async {
-                                        if (widget.app_user.email ==
-                                            "guest@nitc.ac.in") {
+                                        if (widget.app_user.email!
+                                                .split('@')[0] ==
+                                            "guest") {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(const SnackBar(
                                                   duration: Duration(
@@ -481,7 +652,7 @@ class _lost_photowidgetState extends State<lost_photowidget> {
                                                           ]),
                                                     ));
                                               });
-                                          bool error = await bs_lf_servers()
+                                          bool error = await bs_servers()
                                               .hide_lst(widget.lst.id!);
                                           Navigator.pop(context);
                                           if (!error) {
@@ -580,7 +751,15 @@ class _lost_photowidgetState extends State<lost_photowidget> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(20)),
                   child: //Link
-                      Text(utf8convert(widget.description),
+                      SelectableLinkify(
+                          onOpen: (url) async {
+                            if (await canLaunch(url.url)) {
+                              await launch(url.url);
+                            } else {
+                              throw 'Could not launch $url';
+                            }
+                          },
+                          text: utf8convert(widget.description),
                           //'''My black crocs kept outside my room(6A 38) are missing from todays afternoon.if anyone took it by mistake please keep them back. the picture is attached down.''',
                           style: const TextStyle(
                             fontSize: 18,
@@ -657,7 +836,7 @@ class _lst_commentwidgetState extends State<lst_commentwidget> {
           backgroundColor: Colors.white70,
         ),
         body: FutureBuilder<List<LST_CMNT>>(
-          future: bs_lf_servers().get_lst_cmnt_list(widget.lst.id!),
+          future: bs_servers().get_lst_cmnt_list(widget.lst.id!),
           builder: (ctx, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               if (snapshot.hasError) {
@@ -701,6 +880,7 @@ class _lst_cmnt_pageState extends State<lst_cmnt_page> {
   Widget build(BuildContext context) {
     List<LST_CMNT> lst_cmnt_list = widget.lst_cmnt_list;
     var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -711,155 +891,162 @@ class _lst_cmnt_pageState extends State<lst_cmnt_page> {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             )),
-            height: MediaQuery.of(context).size.height - 200,
-            width: MediaQuery.of(context).size.width,
+            height: height - 110,
+            width: width,
             child: SingleChildScrollView(
               reverse: true,
-              child: ListView.builder(
-                  itemCount: widget.lst_cmnt_list.length,
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  padding: EdgeInsets.only(bottom: 10),
-                  itemBuilder: (BuildContext context, int index) {
-                    LST_CMNT lst_cmnt = lst_cmnt_list[index];
+              child: lst_cmnt_list.isEmpty
+                  ? Container(
+                      margin: EdgeInsets.only(top: 100),
+                      child: const Center(
+                          child: Text(
+                        "No Comments Yet",
+                        style: TextStyle(color: Colors.white),
+                      )))
+                  : ListView.builder(
+                      itemCount: widget.lst_cmnt_list.length,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      padding: EdgeInsets.only(bottom: 10),
+                      itemBuilder: (BuildContext context, int index) {
+                        LST_CMNT lst_cmnt = lst_cmnt_list[index];
 
-                    return _buildLoadingScreen(lst_cmnt);
-                  }),
+                        return _buildLoadingScreen(lst_cmnt);
+                      }),
             ),
           ),
-          Container(
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-              colors: [Colors.deepPurple, Colors.purple.shade300],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            )),
-            child: Container(
-              height: 80,
-              decoration: BoxDecoration(
-                  color: Colors.grey[400],
-                  borderRadius: BorderRadius.circular(20)),
-              padding: const EdgeInsets.only(right: 12),
-              margin: const EdgeInsets.all(20),
-              width: width,
-              child: Row(
-                //mainAxisSize: MainAxisSize.max,
-                children: [
-                  SizedBox(
-                    width: width * 0.70,
-                    child: TextFormField(
-                      style: const TextStyle(color: Colors.black),
-                      keyboardType: TextInputType.multiline,
-                      minLines: 1, //Normal textInputField will be displayed
-                      maxLines: 2,
-                      autofocus: true,
-                      decoration: const InputDecoration(
-                        labelText: 'comment',
-                        hintText: 'add comment',
-                        prefixIcon: Icon(Icons.text_fields),
-                        border: InputBorder.none,
-                      ),
-                      onChanged: (String value) {
-                        setState(() {
-                          comment = value;
-                          if (comment == "") {
-                            comment = null;
-                          }
-                        });
-                      },
-                      validator: (value) {
-                        return value!.isEmpty ? 'please enter email' : null;
-                      },
-                    ),
-                  ),
-                  const SizedBox(width: 2),
-                  (comment == null && sending_cmnt == false)
-                      ? Container(
-                          child: IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.double_arrow,
-                            size: 30,
-                            color: Colors.grey,
-                          ),
-                        ))
-                      : (comment != null)
-                          ? Container(
-                              child: IconButton(
-                                onPressed: () async {
-                                  if (widget.app_user.email ==
-                                      "guest@nitc.ac.in") {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(
-                                            duration: const Duration(
-                                                milliseconds: 500),
-                                            content: Text(
-                                                "guest cannot share comments..",
-                                                style: TextStyle(
-                                                    color: Colors.white))));
-                                  } else {
-                                    LST_CMNT a = LST_CMNT();
-                                    String curr_comment = comment;
-                                    a.username = user_min(widget.app_user);
-                                    a.comment = curr_comment;
-                                    a.lstCmntId = widget.lst.id;
-                                    a.postedDate = "";
-                                    a.messageSent = false;
-                                    a.insertMessage = true;
-                                    lst_cmnt_list.add(a);
-                                    setState(() {
-                                      comment = null;
-                                      sending_cmnt = true;
-                                    });
-                                    List<dynamic> error = await bs_lf_servers()
-                                        .post_lst_cmnt(
-                                            curr_comment, widget.lst.id!);
-                                    setState(() {
-                                      sending_cmnt = false;
-                                    });
+          // Container(
+          //   decoration: BoxDecoration(
+          //       gradient: LinearGradient(
+          //     colors: [Colors.deepPurple, Colors.purple.shade300],
+          //     begin: Alignment.topLeft,
+          //     end: Alignment.bottomRight,
+          //   )),
+          //   child: Container(
+          //     height: 80,
+          //     decoration: BoxDecoration(
+          //         color: Colors.grey[400],
+          //         borderRadius: BorderRadius.circular(20)),
+          //     padding: const EdgeInsets.only(right: 12),
+          //     margin: const EdgeInsets.all(20),
+          //     width: width,
+          //     child: Row(
+          //       //mainAxisSize: MainAxisSize.max,
+          //       children: [
+          //         SizedBox(
+          //           width: width * 0.70,
+          //           child: TextFormField(
+          //             style: const TextStyle(color: Colors.black),
+          //             keyboardType: TextInputType.multiline,
+          //             minLines: 1, //Normal textInputField will be displayed
+          //             maxLines: 2,
+          //             autofocus: true,
+          //             decoration: const InputDecoration(
+          //               labelText: 'comment',
+          //               hintText: 'add comment',
+          //               prefixIcon: Icon(Icons.text_fields),
+          //               border: InputBorder.none,
+          //             ),
+          //             onChanged: (String value) {
+          //               setState(() {
+          //                 comment = value;
+          //                 if (comment == "") {
+          //                   comment = null;
+          //                 }
+          //               });
+          //             },
+          //             validator: (value) {
+          //               return value!.isEmpty ? 'please enter email' : null;
+          //             },
+          //           ),
+          //         ),
+          //         const SizedBox(width: 2),
+          //         (comment == null && sending_cmnt == false)
+          //             ? Container(
+          //                 child: IconButton(
+          //                 onPressed: () {},
+          //                 icon: const Icon(
+          //                   Icons.double_arrow,
+          //                   size: 30,
+          //                   color: Colors.grey,
+          //                 ),
+          //               ))
+          //             : (comment != null)
+          //                 ? Container(
+          //                     child: IconButton(
+          //                       onPressed: () async {
+          //                        if (widget.app_user.email!.split('@')[0] == "guest") {
+          //                           ScaffoldMessenger.of(context).showSnackBar(
+          //                               const SnackBar(
+          //                                   duration: const Duration(
+          //                                       milliseconds: 500),
+          //                                   content: Text(
+          //                                       "guest cannot share comments..",
+          //                                       style: TextStyle(
+          //                                           color: Colors.white))));
+          //                         } else {
+          //                           LST_CMNT a = LST_CMNT();
+          //                           String curr_comment = comment;
+          //                           a.username = user_min(widget.app_user);
+          //                           a.comment = curr_comment;
+          //                           a.lstCmntId = widget.lst.id;
+          //                           a.postedDate = "";
+          //                           a.messageSent = false;
+          //                           a.insertMessage = true;
+          //                           lst_cmnt_list.add(a);
+          //                           setState(() {
+          //                             comment = null;
+          //                             sending_cmnt = true;
+          //                           });
+          //                           List<dynamic> error = await bs_lf_servers()
+          //                               .post_lst_cmnt(
+          //                                   curr_comment, widget.lst.id!);
+          //                           setState(() {
+          //                             sending_cmnt = false;
+          //                           });
 
-                                    if (!error[0]) {
-                                      setState(() {
-                                        sending_cmnt = false;
-                                        a.id = error[1];
-                                        a.messageSent = true;
-                                      });
-                                      await Future.delayed(
-                                          Duration(seconds: 2));
+          //                           if (!error[0]) {
+          //                             setState(() {
+          //                               sending_cmnt = false;
+          //                               a.id = error[1];
+          //                               a.messageSent = true;
+          //                             });
+          //                             await Future.delayed(
+          //                                 Duration(seconds: 2));
 
-                                      bool error1 = await servers()
-                                          .send_notifications(
-                                              widget.app_user.email!,
-                                              " Commented on " +
-                                                  " : " +
-                                                  widget.lst.title! +
-                                                  " : " +
-                                                  comment,
-                                              6);
-                                      if (error1) {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(const SnackBar(
-                                                duration: const Duration(
-                                                    milliseconds: 500),
-                                                content: Text(
-                                                    "Failed to send notifications",
-                                                    style: TextStyle(
-                                                        color: Colors.white))));
-                                      }
-                                    } else {
-                                      lst_cmnt_list.remove(a);
-                                    }
-                                  }
-                                },
-                                icon: const Icon(Icons.double_arrow,
-                                    size: 38, color: Colors.blue),
-                              ),
-                            )
-                          : Container()
-                ],
-              ),
-            ),
-          ),
+          //                             bool error1 = await servers()
+          //                                 .send_notifications(
+          //                                     widget.app_user.email!,
+          //                                     " Commented on " +
+          //                                         " : " +
+          //                                         widget.lst.title! +
+          //                                         " : " +
+          //                                         comment,
+          //                                     6);
+          //                             if (error1) {
+          //                               ScaffoldMessenger.of(context)
+          //                                   .showSnackBar(const SnackBar(
+          //                                       duration: const Duration(
+          //                                           milliseconds: 500),
+          //                                       content: Text(
+          //                                           "Failed to send notifications",
+          //                                           style: TextStyle(
+          //                                               color: Colors.white))));
+          //                             }
+          //                           } else {
+          //                             lst_cmnt_list.remove(a);
+          //                           }
+          //                         }
+          //                       },
+          //                       icon: const Icon(Icons.double_arrow,
+          //                           size: 38, color: Colors.blue),
+          //                     ),
+          //                   )
+          //                 : Container()
+          //       ],
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );
@@ -935,7 +1122,6 @@ class _lst_cmnt_pageState extends State<lst_cmnt_page> {
                                           const SizedBox(height: 10),
                                           Container(
                                             margin: const EdgeInsets.all(30),
-                                            color: Colors.blue[900],
                                             child: OutlinedButton(
                                                 onPressed: () async {
                                                   setState(() {
@@ -944,7 +1130,7 @@ class _lst_cmnt_pageState extends State<lst_cmnt_page> {
                                                     Navigator.pop(context);
                                                   });
                                                   bool error =
-                                                      await bs_lf_servers()
+                                                      await bs_servers()
                                                           .delete_lst_cmnt(
                                                               lst_cmnt.id!,
                                                               widget.lst.id!);
@@ -959,7 +1145,7 @@ class _lst_cmnt_pageState extends State<lst_cmnt_page> {
                                                     child: Text(
                                                   "Delete",
                                                   style: TextStyle(
-                                                      color: Colors.white),
+                                                      color: Colors.blue),
                                                 ))),
                                           ),
                                           const SizedBox(height: 10),

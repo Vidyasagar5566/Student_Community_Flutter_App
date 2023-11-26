@@ -6,10 +6,10 @@ import 'Servers.dart';
 import '/User_profile/Models.dart';
 import 'package:video_player/video_player.dart';
 import 'package:file_picker/file_picker.dart';
-import '../Files_disply_download/pdf_videos_images.dart';
+import '../Files_disply_download/Pdf_Videos_Images.dart';
 import '/Year_Branch_Selection/Year_Branch_Selection.dart';
-import '../Circular_designs/cure_clip.dart';
-import '/Fcm_Notif_Domains/servers.dart';
+import '../Circular_designs/Cure_clip.dart';
+import '/Fcm_Notif_Domains/Servers.dart';
 
 class upload_alertowidget extends StatefulWidget {
   Username app_user;
@@ -306,8 +306,8 @@ class _upload_alertowidgetState extends State<upload_alertowidget> {
                                           Radius.circular(15.0))),
                                   minWidth: double.infinity,
                                   onPressed: () async {
-                                    if (widget.app_user.email ==
-                                        "guest@nitc.ac.in") {
+                                    if (widget.app_user.email!.split('@')[0] ==
+                                        "guest") {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(
                                               duration:
@@ -363,11 +363,11 @@ class _upload_alertowidgetState extends State<upload_alertowidget> {
                                             .pushAndRemoveUntil(
                                                 MaterialPageRoute(builder:
                                                     (BuildContext context) {
-                                          return firstpage(3, widget.app_user);
+                                          return firstpage(1, widget.app_user);
                                         }), (Route<dynamic> route) => false);
 
                                         await Future.delayed(
-                                            Duration(seconds: 2));
+                                            Duration(seconds: 1));
                                         bool error = await servers()
                                             .send_notifications(
                                                 widget.app_user.email!,

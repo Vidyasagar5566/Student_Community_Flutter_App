@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import '/All_clubs/Servers.dart';
 import '/User_profile/Models.dart';
-import '/Fcm_Notif_Domains/servers.dart';
+import '/Fcm_Notif_Domains/Servers.dart';
 import '/First_page.dart';
 import '/User_Star_Mark/User_Profile_Star_Mark.dart';
-import 'club_page.dart';
+import 'Club_page.dart';
 
 class club_search_bar extends StatefulWidget {
   Username app_user;
@@ -238,7 +238,6 @@ class _user_list_displayState extends State<user_list_display> {
                     const SizedBox(height: 10),
                     Container(
                       margin: const EdgeInsets.all(30),
-                      color: Colors.blue[900],
                       child: OutlinedButton(
                           onPressed: () async {
                             bool error = await all_clubs_servers()
@@ -247,7 +246,7 @@ class _user_list_displayState extends State<user_list_display> {
                             if (error) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                    duration:  Duration(milliseconds: 500),
+                                      duration: Duration(milliseconds: 500),
                                       content: Text(
                                           "Failed to transfer the head, try again",
                                           style:
@@ -263,7 +262,7 @@ class _user_list_displayState extends State<user_list_display> {
                           child: const Center(
                               child: Text(
                             "Transfer",
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(color: Colors.blue),
                           ))),
                     )
                   ],
@@ -399,14 +398,12 @@ class _user_list_displayState extends State<user_list_display> {
                     const SizedBox(height: 10),
                     Container(
                       margin: const EdgeInsets.all(30),
-                      color: Colors.blue[900],
                       child: OutlinedButton(
                           onPressed: () async {
                             if (new_club_name == null) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                    
-                                    duration:  Duration(milliseconds: 500),
+                                      duration: Duration(milliseconds: 500),
                                       content: Text("Club name cant be null",
                                           style:
                                               TextStyle(color: Colors.white))));
@@ -417,7 +414,6 @@ class _user_list_displayState extends State<user_list_display> {
                               if (error) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
-                                      
                                         duration: Duration(milliseconds: 500),
                                         content: Text(
                                             "Failed to transfer the head, try again",
@@ -435,7 +431,7 @@ class _user_list_displayState extends State<user_list_display> {
                           child: const Center(
                               child: Text(
                             "Create Club",
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(color: Colors.blue),
                           ))),
                     )
                   ],

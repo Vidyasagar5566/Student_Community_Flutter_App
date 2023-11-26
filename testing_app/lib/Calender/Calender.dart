@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'calender_date_event.dart';
+import 'package:testing_app/Fcm_Notif_Domains/Servers.dart';
+import 'Calender_Date_Event.dart';
 import 'Servers.dart';
 import 'Models.dart';
 import '/User_profile/Models.dart';
@@ -9,20 +10,7 @@ import '/Activities/Models.dart';
 
 List<String> all_dates = [];
 
-List<String> timetable_list = [
-  "Upcoming Events",
-  "Today Time Table"
-/*  "CS",
-  "EC",
-  "EE",
-  "ME",
-  "CE",
-  "CH",
-  "BT",
-  "EP",
-  "MT",
-  "AR"  */
-];
+List<String> timetable_list = ["Upcoming Events", "Today Time Table"];
 List<Tab> get_tabs() {
   List<Tab> tabs = [];
   for (int i = 0; i < timetable_list.length; i++) {
@@ -63,7 +51,7 @@ class calender extends StatefulWidget {
 class _calenderState extends State<calender> {
   Widget build(BuildContext context) {
     return FutureBuilder<List<String>>(
-      future: calendar_servers().get_cal_list(widget.domain),
+      future: calendar_servers().get_cal_list(domains1[widget.domain]!),
       builder: (ctx, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
@@ -119,14 +107,12 @@ class _calenderwidget1State extends State<calenderwidget1> {
 
   @override
   Widget build(BuildContext context) {
-    var wid = MediaQuery.of(context).size.width;
-
     return DefaultTabController(
         length: 10,
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(15),
+              padding: const EdgeInsets.all(5),
               child: Column(
                 children: [
                   TableCalendar(

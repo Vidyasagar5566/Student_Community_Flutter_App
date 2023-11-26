@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '/SAC/Uploads.dart';
-import '/Threads/threads.dart';
+import '/Threads/Threads.dart';
 import 'Servers.dart';
 import '/User_profile/Models.dart';
-import '/Fcm_Notif_Domains/servers.dart';
+import '/Fcm_Notif_Domains/Servers.dart';
 import 'Models.dart';
 import '/Reports/Uploads.dart';
 import 'Search_bar.dart';
 import '/User_Star_Mark/User_Profile_Star_Mark.dart';
 import '/User_profile/Servers.dart';
 import '/User_profile/User_posts_category.dart';
-import '/Activities/activities.dart';
+import '/Activities/Activities.dart';
 
 class sacpagewidget extends StatefulWidget {
   Username app_user;
@@ -86,7 +88,7 @@ class _sacpagewidgetState extends State<sacpagewidget> {
                       widget.app_user, 0, widget.app_user.domain!, true);
                 }));
               },
-              tooltip: 'create club',
+              tooltip: 'create sac',
               elevation: 4.0,
               child: const Icon(
                 Icons.add,
@@ -219,7 +221,7 @@ class _sacpagewidgetState extends State<sacpagewidget> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   const Text(
-                                    'Only for club admin',
+                                    'Only for sac admin',
                                     style: TextStyle(color: Colors.white),
                                   ),
                                   TextButton(
@@ -279,27 +281,37 @@ class _sacpagewidgetState extends State<sacpagewidget> {
                     const SizedBox(
                       height: 4,
                     ),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.call_outlined,
-                          size: 29,
-                          color: Colors.grey[300],
-                        ),
-                        const SizedBox(
-                          width: 24,
-                        ),
-                        Center(
-                          child: Text(
-                            sac_mem.phoneNum!,
-                            //'+91 000 000 000',
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
+                    GestureDetector(
+                      onTap: () async {
+                        final call = Uri.parse('tel:+91 ' + sac_mem.phoneNum!);
+                        if (await canLaunchUrl(call)) {
+                          launchUrl(call);
+                        } else {
+                          throw 'Could not launch $call';
+                        }
+                      },
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.call_outlined,
+                            size: 29,
+                            color: Colors.grey[300],
+                          ),
+                          const SizedBox(
+                            width: 24,
+                          ),
+                          Center(
+                            child: Text(
+                              sac_mem.phoneNum!,
+                              //'+91 000 000 000',
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     const SizedBox(
                       height: 6,
@@ -313,8 +325,15 @@ class _sacpagewidgetState extends State<sacpagewidget> {
                     ),
                     Container(
                       margin: EdgeInsets.all(8),
-                      child: Text(
-                        sac_mem.description!,
+                      child: SelectableLinkify(
+                        onOpen: (url) async {
+                          if (await canLaunch(url.url)) {
+                            await launch(url.url);
+                          } else {
+                            throw 'Could not launch $url';
+                          }
+                        },
+                        text: sac_mem.description!,
                         //"The Academic Secretary is responsible for the administration of the University's academic business and for the oversight of University academic policy. University academic business and policy (academic affairs) is controlled by Academic Council. Academic Council is the primary internal body responsible for academic affairs and derives",
                         style: TextStyle(fontSize: 14),
                       ),
@@ -354,7 +373,7 @@ class _sacProfilePageState extends State<sacProfilePage> {
           child: widget.curr_index == 0
               ? SingleChildScrollView(
                   child: user_postswidget(
-                      '', widget.app_user, 'club', widget.sac.id!),
+                      '', widget.app_user, 'sac', widget.sac.id!),
                 )
               : widget.curr_index == 1
                   ? SingleChildScrollView(

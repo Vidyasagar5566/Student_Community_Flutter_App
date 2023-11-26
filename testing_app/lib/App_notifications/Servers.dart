@@ -3,7 +3,6 @@ import 'package:localstorage/localstorage.dart';
 import 'dart:convert';
 import 'Models.dart';
 
-
 class app_notif_servers {
   LocalStorage storage = LocalStorage("usertoken");
   String base_url = 'http://StudentCommunity.pythonanywhere.com';
@@ -25,8 +24,10 @@ class app_notif_servers {
         Notifications notif = Notifications.fromJson(element);
         temp.add(notif);
       });
+      print(temp.length);
       return temp;
     } catch (e) {
+      print(e);
       List<Notifications> temp = [];
       return temp;
     }

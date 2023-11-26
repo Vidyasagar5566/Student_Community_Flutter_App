@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:testing_app/Fcm_Notif_Domains/Servers.dart';
 import 'dart:io';
-import '../Circular_designs/cure_clip.dart';
+import '../Circular_designs/Cure_clip.dart';
 import 'Servers.dart';
 import 'Models.dart';
 import '/User_profile/Models.dart';
@@ -25,20 +26,20 @@ class _Given_RatingState extends State<Given_Rating> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         widget.sub_rating.floor() >= 1
-            ? const Icon(Icons.favorite, color: Colors.white)
-            : const Icon(Icons.favorite_border, color: Colors.white),
+            ? const Icon(Icons.star, color: Colors.white)
+            : const Icon(Icons.star_border, color: Colors.white),
         widget.sub_rating.floor() >= 2
-            ? const Icon(Icons.favorite, color: Colors.white)
-            : const Icon(Icons.favorite_border, color: Colors.white),
+            ? const Icon(Icons.star, color: Colors.white)
+            : const Icon(Icons.star_border, color: Colors.white),
         widget.sub_rating.floor() >= 3
-            ? const Icon(Icons.favorite, color: Colors.white)
-            : const Icon(Icons.favorite_border, color: Colors.white),
+            ? const Icon(Icons.star, color: Colors.white)
+            : const Icon(Icons.star_border, color: Colors.white),
         widget.sub_rating.floor() >= 4
-            ? const Icon(Icons.favorite, color: Colors.white)
-            : const Icon(Icons.favorite_border, color: Colors.white),
+            ? const Icon(Icons.star, color: Colors.white)
+            : const Icon(Icons.star_border, color: Colors.white),
         widget.sub_rating.floor() >= 5
-            ? const Icon(Icons.favorite, color: Colors.white)
-            : const Icon(Icons.favorite_border, color: Colors.white),
+            ? const Icon(Icons.star, color: Colors.white)
+            : const Icon(Icons.star_border, color: Colors.white),
       ],
     );
   }
@@ -56,25 +57,109 @@ class Giving_Rating extends StatefulWidget {
 class _Giving_RatingState extends State<Giving_Rating> {
   @override
   Widget build(BuildContext context) {
-    print(selected_rating.rating);
-    return Row(children: [
-      _build_screen(1),
-      _build_screen(2),
-      _build_screen(3),
-      _build_screen(4),
-      _build_screen(5),
-    ]);
+    return Container(
+      width: MediaQuery.of(context).size.width - 20,
+      child: Column(
+        children: [
+          Row(children: [
+            _build_screen(1),
+            _build_screen(2),
+            _build_screen(3),
+            _build_screen(4),
+            _build_screen(5),
+          ]),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              SizedBox(
+                width: 240,
+                child: TextFormField(
+                  keyboardType: TextInputType.emailAddress,
+                  initialValue: selected_rating.description,
+                  style: TextStyle(color: Colors.white),
+                  minLines: 2,
+                  cursorColor: Colors.white,
+                  maxLines: 3,
+                  decoration: const InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.white),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.white),
+                    ),
+                    counterStyle: TextStyle(color: Colors.white),
+                    labelText: "Experience",
+                    labelStyle: TextStyle(color: Colors.white),
+                    hintStyle: TextStyle(color: Colors.white),
+                    hintText: "Good Working Environment",
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                  ),
+                  onChanged: (String value) {
+                    setState(() {
+                      selected_rating.description = value;
+                    });
+                  },
+                ),
+              ),
+              const SizedBox(width: 4),
+              IconButton(
+                  onPressed: () async {
+                    if (widget.app_user.email!.split('@')[0] == "guest") {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          duration: Duration(milliseconds: 400),
+                          content: Text(
+                            "Guests are not allowed.",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      );
+                    } else {
+                      List<dynamic> error = await placemeny_servers()
+                          .post_sub_rating(
+                              selected_rating.rating!,
+                              selected_rating.description!,
+                              widget.sub_id.toString());
+                      if (!error[0]) {
+                        selected_rating.id = error[1];
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                                content: Text(
+                          "Thanks for your feedback, we will update the details soon.",
+                          style: TextStyle(color: Colors.white),
+                        )));
+                      } else {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                                content: Text(
+                          "error occured please try again",
+                          style: TextStyle(color: Colors.white),
+                        )));
+                      }
+                    }
+                  },
+                  icon: Icon(Icons.cloud_upload, color: Colors.white)
+                  // Text("Update Review",
+                  //     style: TextStyle(color: Colors.white)),
+                  ),
+            ],
+          ),
+          const SizedBox(height: 10),
+        ],
+      ),
+    );
   }
 
   _build_screen(int index) {
     return IconButton(
         onPressed: () async {
-          if (widget.app_user.email == "guest@nitc.ac.in") {
+          if (widget.app_user.email!.split('@')[0] == "guest") {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 duration: Duration(milliseconds: 400),
                 content: Text(
-                  "Guests are not allowed open files",
+                  "Guests are not allowed",
                   style: TextStyle(color: Colors.white),
                 ),
               ),
@@ -84,29 +169,29 @@ class _Giving_RatingState extends State<Giving_Rating> {
               selected_rating.rating = index;
             });
             List<dynamic> error = await placemeny_servers().post_sub_rating(
-                selected_rating.rating!, widget.sub_id.toString());
+                selected_rating.rating!,
+                selected_rating.description!,
+                widget.sub_id.toString());
             print(error);
             if (!error[0]) {
               selected_rating.id = error[1];
               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  duration: Duration(milliseconds: 400),
                   content: Text(
-                    "Thanks for your feedback, we will update the details soon.",
-                    style: TextStyle(color: Colors.white),
-                  )));
+                "Thanks for your feedback, we will update the details soon.",
+                style: TextStyle(color: Colors.white),
+              )));
             } else {
               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  duration: Duration(milliseconds: 400),
                   content: Text(
-                    "error occured please try again",
-                    style: TextStyle(color: Colors.white),
-                  )));
+                "error occured please try again",
+                style: TextStyle(color: Colors.white),
+              )));
             }
           }
         },
         icon: selected_rating.rating! >= index
-            ? const Icon(Icons.favorite, color: Colors.white)
-            : const Icon(Icons.favorite_border, color: Colors.white));
+            ? const Icon(Icons.star, color: Colors.white)
+            : const Icon(Icons.star_border, color: Colors.white));
   }
 }
 
@@ -122,6 +207,7 @@ class Show_all_sub_ratings extends StatefulWidget {
 class _Show_all_sub_ratingsState extends State<Show_all_sub_ratings> {
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
     return SingleChildScrollView(
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -142,6 +228,7 @@ class _Show_all_sub_ratingsState extends State<Show_all_sub_ratings> {
                 padding: const EdgeInsets.only(bottom: 10),
                 itemBuilder: (BuildContext context, int index) {
                   return Container(
+                    width: width - 80,
                     margin: const EdgeInsets.all(4),
                     padding: EdgeInsets.all(14),
                     decoration: BoxDecoration(
@@ -153,7 +240,6 @@ class _Show_all_sub_ratingsState extends State<Show_all_sub_ratings> {
                         )),
                     child: Column(mainAxisSize: MainAxisSize.min, children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             widget.all_sub_ratings[index].username!.email!,
@@ -201,10 +287,13 @@ class _Show_all_sub_ratingsState extends State<Show_all_sub_ratings> {
                           const Text("Review: ",
                               style: TextStyle(color: Colors.white)),
                           const SizedBox(width: 10),
-                          Text(
-                            widget.all_sub_ratings[index].description!,
-                            maxLines: 10,
-                            style: const TextStyle(color: Colors.white),
+                          Container(
+                            width: 160,
+                            child: Text(
+                              widget.all_sub_ratings[index].description!,
+                              maxLines: 10,
+                              style: const TextStyle(color: Colors.white),
+                            ),
                           )
                         ],
                       )
@@ -218,10 +307,39 @@ class _Show_all_sub_ratingsState extends State<Show_all_sub_ratings> {
   }
 }
 
+bool InternCompany = false;
+
+class private_switch extends StatefulWidget {
+  private_switch();
+
+  @override
+  State<private_switch> createState() => _private_switchState();
+}
+
+class _private_switchState extends State<private_switch> {
+  @override
+  Widget build(BuildContext context) {
+    return SwitchListTile(
+      title: const Text(
+        "InternCompany?",
+        style: TextStyle(fontWeight: FontWeight.w200),
+      ),
+      activeColor: Colors.blue,
+      value: InternCompany,
+      onChanged: (bool value) {
+        setState(() {
+          InternCompany = !InternCompany;
+        });
+      },
+    );
+  }
+}
+
 class placements extends StatefulWidget {
   Username app_user;
   List<CAL_SUB_NAMES> cal_sub_names;
-  placements(this.app_user, this.cal_sub_names);
+  String domain;
+  placements(this.app_user, this.cal_sub_names, this.domain);
 
   @override
   State<placements> createState() => _placementsState();
@@ -241,10 +359,21 @@ class _placementsState extends State<placements> {
 
   void load_data_fun() async {
     List<CAL_SUB_NAMES> plac_names = await placemeny_servers()
-        .get_sub_place_list("CPC", '@nitc.ac.in', 'B.Tech');
+        .get_sub_place_list("CPC", domains1[widget.domain]!, 'B.Tech');
     setState(() {
+      cal_sub_names = plac_names;
       loaded_data = true;
-      widget.cal_sub_names = plac_names;
+      for (int i = 0; i < cal_sub_names.length; i++) {
+        if (cal_sub_names[i].InternCompany == false &&
+            inter_placement == "Placement") {
+          widget.cal_sub_names.add(cal_sub_names[i]);
+        }
+
+        if (cal_sub_names[i].InternCompany == true &&
+            inter_placement != "Placement") {
+          widget.cal_sub_names.add(cal_sub_names[i]);
+        }
+      }
     });
   }
 
@@ -253,209 +382,341 @@ class _placementsState extends State<placements> {
     load_data_fun();
   }
 
+  String inter_placement = "Placement";
+
   @override
   Widget build(BuildContext context) {
     for (int i = 0; i < widget.cal_sub_names.length; i++) {
       _extand.add(false);
       _loaded.add(false);
     }
-    var wid = MediaQuery.of(context).size.width;
     return Scaffold(
-        body: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            //color: Colors.pink[100],
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("images/background.jpg"),
-                  fit: BoxFit.cover),
-            ),
-            margin: const EdgeInsets.only(bottom: 20),
-            child: SingleChildScrollView(
-              child: Column(
-                  //mainAxisAlignment: MainAxisAlignment.center,
-                  //crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        ClipPath(
-                            clipper: profile_Clipper(),
-                            child: Container(
-                              height: 250,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                colors: [
-                                  Colors.deepPurple,
-                                  Colors.purple.shade300
-                                ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              )),
-                            )),
-                        Positioned(
-                            left: 25,
-                            top: 75,
-                            child: Row(
-                              children: [
-                                IconButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  icon: const Icon(
-                                    Icons.arrow_back_ios_new_outlined,
-                                    color: Colors.white,
-                                    size: 30,
-                                  ),
-                                ),
-                                const SizedBox(width: 20),
-                                SizedBox(
-                                    width: wid / 1.7,
-                                    child: Text(
-                                      "Placements : " +
-                                          widget.cal_sub_names.length
-                                              .toString(),
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 25,
-                                          fontWeight: FontWeight.w700),
-                                    )),
+      body: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          //color: Colors.pink[100],
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("images/background.jpg"), fit: BoxFit.cover),
+          ),
+          margin: const EdgeInsets.only(bottom: 20),
+          child: SingleChildScrollView(
+            child: Column(
+                //mainAxisAlignment: MainAxisAlignment.center,
+                //crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      ClipPath(
+                          clipper: profile_Clipper(),
+                          child: Container(
+                            height: 230,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                              colors: [
+                                Colors.deepPurple,
+                                Colors.purple.shade300
                               ],
-                            ))
-                      ],
-                    ),
-                    build_screen()
-                  ]),
-            )),
-        floatingActionButton: widget.app_user.isInstabook!
-            ? ElevatedButton.icon(
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (context) {
-                        return AlertDialog(
-                            contentPadding: EdgeInsets.all(15),
-                            content: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(),
-                                      IconButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          icon: const Icon(Icons.close))
-                                    ],
-                                  ),
-                                  Container(
-                                    padding:
-                                        EdgeInsets.only(left: 40, right: 40),
-                                    child: TextField(
-                                      keyboardType: TextInputType.emailAddress,
-                                      decoration: const InputDecoration(
-                                          labelText: "Company name",
-                                          hintText: "TCS",
-                                          prefixIcon: Icon(Icons.text_fields),
-                                          border: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(10)))),
-                                      onChanged: (String value) {
-                                        setState(() {
-                                          sub_name = value;
-                                          if (value == "") {
-                                            sub_name = null;
-                                          }
-                                        });
-                                      },
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            )),
+                          )),
+                      Positioned(
+                          left: 20,
+                          top: 75,
+                          child: Row(
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                icon: const Icon(
+                                  Icons.arrow_back_ios_new_outlined,
+                                  color: Colors.white,
+                                  size: 30,
+                                ),
+                              ),
+                              const SizedBox(width: 20),
+                              SizedBox(
+                                width: 200,
+                                child: TextFormField(
+                                  cursorColor: Colors.white,
+                                  keyboardType: TextInputType.emailAddress,
+                                  style: TextStyle(color: Colors.white),
+                                  decoration: const InputDecoration(
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.white),
                                     ),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.white),
+                                    ),
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10))),
+                                    hintText: "Search Company Name",
+                                    hintStyle: TextStyle(color: Colors.white),
                                   ),
-                                  const SizedBox(height: 10),
-                                  TextButton(
-                                      onPressed: () async {
-                                        if (!widget.app_user.isAdmin!) {
-                                          Navigator.pop(context);
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            const SnackBar(
+                                  onChanged: (String value) {
+                                    setState(() {
+                                      if (inter_placement == "Placement") {
+                                        widget.cal_sub_names = cal_sub_names
+                                            .where((element) =>
+                                                element.subName!
+                                                    .contains(value) &&
+                                                !element.InternCompany!)
+                                            .toList();
+                                      } else {
+                                        widget.cal_sub_names = cal_sub_names
+                                            .where((element) =>
+                                                element.subName!
+                                                    .contains(value) &&
+                                                element.InternCompany!)
+                                            .toList();
+                                      }
+                                    });
+                                  },
+                                ),
+                              ),
+                              const SizedBox(width: 3),
+                              Text(
+                                inter_placement == "Placement"
+                                    ? widget.cal_sub_names
+                                        .where((element) =>
+                                            !element.InternCompany!)
+                                        .length
+                                        .toString()
+                                    : widget.cal_sub_names
+                                        .where(
+                                            (element) => element.InternCompany!)
+                                        .length
+                                        .toString(),
+                                style: TextStyle(color: Colors.white),
+                              )
+                            ],
+                          ))
+                    ],
+                  ),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(left: 10),
+                          child: DropdownButton<String>(
+                              value: widget.domain,
+                              underline: Container(),
+                              elevation: 0,
+                              items: domains_list_ex_all
+                                  .map<DropdownMenuItem<String>>(
+                                      (String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style: TextStyle(fontSize: 10),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: (value) {
+                                setState(() {
+                                  widget.domain = value!;
+                                  loaded_data = false;
+                                  widget.cal_sub_names = [];
+                                });
+                                load_data_fun();
+                              }),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(right: 10),
+                          child: DropdownButton<String>(
+                              value: inter_placement,
+                              underline: Container(),
+                              elevation: 0,
+                              items: [
+                                'Placement',
+                                "Intern"
+                              ].map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style: TextStyle(fontSize: 10),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: (value) {
+                                setState(() {
+                                  inter_placement = value!;
+                                  widget.cal_sub_names = [];
+                                  for (int i = 0;
+                                      i < cal_sub_names.length;
+                                      i++) {
+                                    if (inter_placement == "Placement" &&
+                                        cal_sub_names[i].InternCompany ==
+                                            false) {
+                                      widget.cal_sub_names
+                                          .add(cal_sub_names[i]);
+                                    } else if (inter_placement == "Intern" &&
+                                        cal_sub_names[i].InternCompany ==
+                                            true) {
+                                      widget.cal_sub_names
+                                          .add(cal_sub_names[i]);
+                                    }
+                                  }
+                                });
+                              }),
+                        )
+                      ]),
+                  build_screen()
+                ]),
+          )),
+      floatingActionButton: widget.app_user.is_placement_admin!
+          ? ElevatedButton.icon(
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (context) {
+                      return AlertDialog(
+                          contentPadding: EdgeInsets.all(15),
+                          content:
+                              Column(mainAxisSize: MainAxisSize.min, children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(),
+                                IconButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    icon: const Icon(Icons.close))
+                              ],
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(left: 40, right: 40),
+                              child: TextField(
+                                keyboardType: TextInputType.emailAddress,
+                                decoration: const InputDecoration(
+                                    labelText: "Company name",
+                                    hintText: "TCS",
+                                    prefixIcon: Icon(Icons.text_fields),
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)))),
+                                onChanged: (String value) {
+                                  setState(() {
+                                    sub_name = value;
+                                    if (value == "") {
+                                      sub_name = null;
+                                    }
+                                  });
+                                },
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            private_switch(),
+                            const SizedBox(height: 10),
+                            TextButton(
+                                onPressed: () async {
+                                  if (sub_name == null) {
+                                    Navigator.pop(context);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        duration: Duration(milliseconds: 400),
+                                        content: Text(
+                                          " name cant be null",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ),
+                                    );
+                                  } else {
+                                    Navigator.pop(context);
+                                    List<dynamic> error =
+                                        await placemeny_servers().post_cal_sub(
+                                            sub_name, 'CPC', InternCompany);
+                                    if (!error[0]) {
+                                      var new_sub_name = CAL_SUB_NAMES();
+                                      new_sub_name.id = error[1];
+                                      new_sub_name.subId = 'CPC';
+                                      new_sub_name.subName = sub_name;
+                                      new_sub_name.username =
+                                          user_min(widget.app_user);
+                                      new_sub_name.totRatingsVal = 0;
+                                      new_sub_name.numRatings = 0;
+                                      new_sub_name.InternCompany =
+                                          InternCompany;
+                                      setState(() {
+                                        widget.cal_sub_names.add(new_sub_name);
+                                      });
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
                                               duration:
                                                   Duration(milliseconds: 400),
                                               content: Text(
-                                                "Guests/Students are not allowed",
+                                                "error occured please try again",
                                                 style: TextStyle(
                                                     color: Colors.white),
-                                              ),
-                                            ),
-                                          );
-                                        } else {
-                                          if (sub_name == null) {
-                                            Navigator.pop(context);
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                              const SnackBar(
-                                                duration:
-                                                    Duration(milliseconds: 400),
-                                                content: Text(
-                                                  "sub name cant be null",
-                                                  style: TextStyle(
-                                                      color: Colors.white),
-                                                ),
-                                              ),
-                                            );
-                                          } else {
-                                            Navigator.pop(context);
+                                              )));
+                                    }
+                                  }
+                                },
+                                child: const Center(child: Text("Add")))
+                          ]));
+                    });
+              },
+              label: const Text("Add new company",
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold)),
+              icon: const Icon(Icons.edit, color: Colors.white),
+              style: ElevatedButton.styleFrom(primary: Colors.deepPurple),
+            )
+          : Container(),
+    );
+  }
 
-                                            List<dynamic> error =
-                                                await placemeny_servers()
-                                                    .post_cal_sub(
-                                                        sub_name, 'CPC');
-                                            if (!error[0]) {
-                                              var new_sub_name =
-                                                  CAL_SUB_NAMES();
-                                              new_sub_name.id = error[1];
-                                              new_sub_name.subId = 'CPC';
-                                              new_sub_name.subName = sub_name;
-                                              new_sub_name.username =
-                                                  user_min(widget.app_user);
-                                              new_sub_name.totRatingsVal = 0;
-                                              new_sub_name.numRatings = 0;
-                                              setState(() {
-                                                cal_sub_names.add(new_sub_name);
-                                                widget.cal_sub_names
-                                                    .add(new_sub_name);
-                                              });
-                                            } else {
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(const SnackBar(
-                                                      duration: Duration(
-                                                          milliseconds: 400),
-                                                      content: Text(
-                                                        "error occured please try again",
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white),
-                                                      )));
-                                            }
-                                          }
-                                        }
-                                      },
-                                      child: const Center(child: Text("Add")))
-                                ]));
-                      });
-                },
-                label: const Text("Add new company",
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold)),
-                icon: const Icon(Icons.edit, color: Colors.white),
-                style: ElevatedButton.styleFrom(primary: Colors.deepPurple),
-              )
-            : Container());
+  funToLoadAllReviews(int index) async {
+    for (int i = 0; i < widget.cal_sub_names.length; i++) {
+      setState(() {
+        _extand[i] = false;
+      });
+    }
+    setState(() {
+      _extand[index] = !_extand[index];
+      _loaded[index] = false;
+    });
+    List<RATINGS> sub_ratings1 = await placemeny_servers()
+        .get_sub_ratings_list(widget.cal_sub_names[index].id.toString());
+
+    setState(() {
+      all_sub_ratings = sub_ratings1;
+    });
+    bool found = false;
+    for (int i = 0; i < all_sub_ratings.length; i++) {
+      if (all_sub_ratings[i].username!.email == widget.app_user.email) {
+        found = true;
+        setState(() {
+          selected_rating = all_sub_ratings[i];
+        });
+
+        break;
+      }
+    }
+    if (!found) {
+      selected_rating.rating = 0;
+      selected_rating.id = -1;
+      selected_rating.description = "";
+      selected_rating.username = user_min(widget.app_user);
+      setState(() {
+        all_sub_ratings.add(selected_rating);
+      });
+    }
+    setState(() {
+      _loaded[index] = true;
+    });
   }
 
   build_screen() {
@@ -465,416 +726,395 @@ class _placementsState extends State<placements> {
         : Container(
             padding: const EdgeInsets.all(5),
             margin: const EdgeInsets.all(5),
-            child: ListView.builder(
-                itemCount: widget.cal_sub_names.length,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                padding: const EdgeInsets.only(bottom: 10),
-                itemBuilder: (BuildContext context, int index) {
-                  sub_rating = 0.0;
-                  if (widget.cal_sub_names[index].numRatings != 0) {
-                    sub_rating = (widget.cal_sub_names[index].totRatingsVal! /
-                        widget.cal_sub_names[index].numRatings!);
-                  }
+            child: widget.cal_sub_names.isEmpty
+                ? Container(
+                    margin: const EdgeInsets.only(top: 140),
+                    child: const Center(
+                      child: Text("No data was found",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black)),
+                    ),
+                  )
+                : ListView.builder(
+                    itemCount: widget.cal_sub_names.length,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: const EdgeInsets.only(bottom: 10),
+                    itemBuilder: (BuildContext context, int index) {
+                      sub_rating = 0.0;
+                      if (widget.cal_sub_names[index].numRatings != 0) {
+                        sub_rating =
+                            (widget.cal_sub_names[index].totRatingsVal! /
+                                widget.cal_sub_names[index].numRatings!);
+                      }
 
-                  return GestureDetector(
-                    onTap: () async {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (BuildContext context) => place_years(
-                              widget.app_user,
-                              widget.cal_sub_names[index], [])));
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(10)),
-                        gradient: LinearGradient(
-                          colors: [Colors.deepPurple, Colors.purple.shade300],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                        //                                          color: Colors.white70,
-                      ),
-                      margin: const EdgeInsets.all(8),
-                      padding:
-                          const EdgeInsets.only(top: 3, left: 12, bottom: 3),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                constraints:
-                                    BoxConstraints(maxWidth: wid / 1.8),
-                                padding: EdgeInsets.only(left: 10),
-                                child: Text(
-                                  widget.cal_sub_names[index].subName!,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 21,
-                                      color: Colors.white),
-                                ),
-                              ),
-                              !_extand[index]
-                                  ? IconButton(
-                                      onPressed: () async {
-                                        for (int i = 0;
-                                            i < widget.cal_sub_names.length;
-                                            i++) {
-                                          setState(() {
-                                            _extand[i] = false;
-                                          });
-                                        }
-                                        setState(() {
-                                          _extand[index] = !_extand[index];
-                                          _loaded[index] = false;
-                                        });
-                                        List<RATINGS> sub_ratings1 =
-                                            await placemeny_servers()
-                                                .get_sub_ratings_list(widget
-                                                    .cal_sub_names[index].id
-                                                    .toString());
-
-                                        setState(() {
-                                          all_sub_ratings = sub_ratings1;
-                                        });
-                                        bool found = false;
-                                        for (int i = 0;
-                                            i < all_sub_ratings.length;
-                                            i++) {
-                                          if (all_sub_ratings[i]
-                                                  .username!
-                                                  .email ==
-                                              widget.app_user.email) {
-                                            found = true;
-                                            setState(() {
-                                              selected_rating =
-                                                  all_sub_ratings[i];
-                                            });
-
-                                            break;
-                                          }
-                                        }
-                                        if (!found) {
-                                          selected_rating.rating = 0;
-                                          selected_rating.id = -1;
-                                          selected_rating.description = "";
-                                          selected_rating.username =
-                                              user_min(widget.app_user);
-                                          setState(() {
-                                            all_sub_ratings
-                                                .add(selected_rating);
-                                          });
-                                        }
-                                        setState(() {
-                                          _loaded[index] = true;
-                                        });
-                                      },
-                                      icon: const Icon(
-                                          Icons.keyboard_arrow_down_outlined),
-                                      color: Colors.white,
-                                    )
-                                  : IconButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          _extand[index] = !_extand[index];
-                                          sub_rating = 0;
-                                        });
-                                      },
-                                      icon: const Icon(
-                                        Icons.keyboard_arrow_up_outlined,
-                                        color: Colors.white,
-                                      )),
-                            ],
+                      return GestureDetector(
+                        onTap: () async {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) => place_years(
+                                  widget.app_user,
+                                  widget.cal_sub_names[index], [])));
+                        },
+                        child: Container(
+                          width: wid - 16,
+                          decoration: BoxDecoration(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(10)),
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.deepPurple,
+                                Colors.purple.shade300
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            //                                          color: Colors.white70,
                           ),
-                          _extand[index]
-                              ? Container()
-                              : Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    IconButton(
-                                        onPressed: () {
-                                          Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                  builder: (BuildContext
-                                                          context) =>
-                                                      place_years(
-                                                          widget.app_user,
-                                                          widget.cal_sub_names[
-                                                              index],
-                                                          [])));
-                                        },
-                                        icon: Given_Rating(sub_rating)),
-                                    Container()
-                                  ],
-                                ),
-                          _extand[index] && widget.app_user.isAdmin!
-                              ? Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                      Container(
-                                        child: const Text(
-                                          "Edit name?",
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                      ),
-                                      IconButton(
+                          margin: const EdgeInsets.all(8),
+                          padding: const EdgeInsets.only(
+                              top: 3, left: 12, bottom: 3),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    constraints:
+                                        BoxConstraints(maxWidth: wid / 1.8),
+                                    padding: EdgeInsets.only(left: 10),
+                                    child: Text(
+                                      widget.cal_sub_names[index].subName!,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 21,
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                  !_extand[index]
+                                      ? IconButton(
                                           onPressed: () async {
-                                            sub_name = widget
-                                                .cal_sub_names[index].subName;
-                                            showDialog(
-                                                context: context,
-                                                barrierDismissible: false,
-                                                builder: (context) {
-                                                  return AlertDialog(
-                                                      contentPadding:
-                                                          EdgeInsets.all(15),
-                                                      content: Column(
-                                                          mainAxisSize:
-                                                              MainAxisSize.min,
-                                                          children: [
-                                                            Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
-                                                              children: [
-                                                                Container(),
-                                                                IconButton(
-                                                                    onPressed:
-                                                                        () {
-                                                                      Navigator.pop(
-                                                                          context);
-                                                                    },
-                                                                    icon: const Icon(
-                                                                        Icons
-                                                                            .close))
-                                                              ],
-                                                            ),
-                                                            Container(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .only(
-                                                                      left: 40,
-                                                                      right:
-                                                                          40),
-                                                              child:
-                                                                  TextFormField(
-                                                                initialValue: widget
-                                                                    .cal_sub_names[
-                                                                        index]
-                                                                    .subName,
-                                                                keyboardType:
-                                                                    TextInputType
-                                                                        .emailAddress,
-                                                                decoration: const InputDecoration(
-                                                                    labelText:
-                                                                        'sub_name',
-                                                                    hintText:
-                                                                        'MATHS-II',
-                                                                    prefixIcon:
-                                                                        Icon(Icons
-                                                                            .text_fields),
-                                                                    border: OutlineInputBorder(
-                                                                        borderRadius:
-                                                                            BorderRadius.all(Radius.circular(10)))),
-                                                                onChanged:
-                                                                    (String
-                                                                        value) {
-                                                                  setState(() {
-                                                                    sub_name =
-                                                                        value;
-                                                                    if (value ==
-                                                                        "") {
-                                                                      sub_name =
-                                                                          null;
-                                                                    }
-                                                                  });
-                                                                },
-                                                              ),
-                                                            ),
-                                                            const SizedBox(
-                                                                height: 10),
-                                                            TextButton(
-                                                                onPressed:
-                                                                    () async {
-                                                                  if (sub_name ==
-                                                                      null) {
-                                                                    Navigator.pop(
-                                                                        context);
-                                                                    ScaffoldMessenger.of(
-                                                                            context)
-                                                                        .showSnackBar(
-                                                                      const SnackBar(
-                                                                        duration:
-                                                                            Duration(milliseconds: 400),
-                                                                        content:
-                                                                            Text(
-                                                                          "sub_name cant be null",
-                                                                          style:
-                                                                              TextStyle(color: Colors.white),
-                                                                        ),
-                                                                      ),
-                                                                    );
-                                                                  } else {
-                                                                    Navigator.pop(
-                                                                        context);
-
-                                                                    bool error = await placemeny_servers().edit_cal_sub(
-                                                                        sub_name!,
-                                                                        widget
-                                                                            .cal_sub_names[index]
-                                                                            .id
-                                                                            .toString());
-                                                                    if (!error) {
-                                                                      setState(
-                                                                          () {
-                                                                        widget
-                                                                            .cal_sub_names[index]
-                                                                            .subName = sub_name;
-                                                                      });
-                                                                    } else {
-                                                                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                                                                          duration: Duration(milliseconds: 400),
-                                                                          content: Text(
-                                                                            "error occured please try again",
-                                                                            style:
-                                                                                TextStyle(color: Colors.white),
-                                                                          )));
-                                                                    }
-                                                                  }
-                                                                },
-                                                                child:
-                                                                    const Center(
-                                                                  child: Text(
-                                                                      "update"),
-                                                                ))
-                                                          ]));
-                                                });
+                                            funToLoadAllReviews(index);
+                                          },
+                                          icon: const Icon(Icons
+                                              .keyboard_arrow_down_outlined),
+                                          color: Colors.white,
+                                        )
+                                      : IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              _extand[index] = !_extand[index];
+                                              sub_rating = 0;
+                                            });
                                           },
                                           icon: const Icon(
-                                            Icons.edit,
+                                            Icons.keyboard_arrow_up_outlined,
                                             color: Colors.white,
-                                          ))
-                                    ])
-                              : Container(),
-                          _extand[index]
-                              ? Column(children: [
-                                  Row(
+                                          )),
+                                ],
+                              ),
+                              _extand[index]
+                                  ? Container()
+                                  : Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text(
-                                          "Rating: " +
+                                        IconButton(
+                                            onPressed: () {
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: (BuildContext
+                                                              context) =>
+                                                          place_years(
+                                                              widget.app_user,
+                                                              widget.cal_sub_names[
+                                                                  index],
+                                                              [])));
+                                            },
+                                            icon: Given_Rating(sub_rating)),
+                                        Container(
+                                          margin: EdgeInsets.only(right: 10),
+                                          child: Text(
                                               sub_rating
                                                   .toString()
                                                   .substring(0, 3),
-                                          style: const TextStyle(
-                                              color: Colors.white),
-                                        ),
-                                        TextButton(
-                                            onPressed: () async {
-                                              if (_loaded[index]) {
+                                              style: TextStyle(
+                                                  color: Colors.white)),
+                                        )
+                                      ],
+                                    ),
+                              _extand[index] &&
+                                      widget.app_user.is_placement_admin!
+                                  ? Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                          Container(
+                                            child: const Text(
+                                              "Edit name?",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                          IconButton(
+                                              onPressed: () async {
+                                                sub_name = widget
+                                                    .cal_sub_names[index]
+                                                    .subName;
                                                 showDialog(
                                                     context: context,
                                                     barrierDismissible: false,
                                                     builder: (context) {
                                                       return AlertDialog(
-                                                          content:
-                                                              Show_all_sub_ratings(
+                                                          contentPadding:
+                                                              EdgeInsets.all(
+                                                                  15),
+                                                          content: Column(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .min,
+                                                              children: [
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    Container(),
+                                                                    IconButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          Navigator.pop(
+                                                                              context);
+                                                                        },
+                                                                        icon: const Icon(
+                                                                            Icons.close))
+                                                                  ],
+                                                                ),
+                                                                Container(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .only(
+                                                                          left:
+                                                                              40,
+                                                                          right:
+                                                                              40),
+                                                                  child:
+                                                                      TextFormField(
+                                                                    initialValue: widget
+                                                                        .cal_sub_names[
+                                                                            index]
+                                                                        .subName,
+                                                                    keyboardType:
+                                                                        TextInputType
+                                                                            .emailAddress,
+                                                                    decoration: const InputDecoration(
+                                                                        labelText:
+                                                                            'sub_name',
+                                                                        hintText:
+                                                                            'MATHS-II',
+                                                                        prefixIcon:
+                                                                            Icon(Icons
+                                                                                .text_fields),
+                                                                        border: OutlineInputBorder(
+                                                                            borderRadius:
+                                                                                BorderRadius.all(Radius.circular(10)))),
+                                                                    onChanged:
+                                                                        (String
+                                                                            value) {
+                                                                      setState(
+                                                                          () {
+                                                                        sub_name =
+                                                                            value;
+                                                                        if (value ==
+                                                                            "") {
+                                                                          sub_name =
+                                                                              null;
+                                                                        }
+                                                                      });
+                                                                    },
+                                                                  ),
+                                                                ),
+                                                                const SizedBox(
+                                                                    height: 10),
+                                                                TextButton(
+                                                                    onPressed:
+                                                                        () async {
+                                                                      if (sub_name ==
+                                                                          null) {
+                                                                        Navigator.pop(
+                                                                            context);
+                                                                        ScaffoldMessenger.of(context)
+                                                                            .showSnackBar(
+                                                                          const SnackBar(
+                                                                            duration:
+                                                                                Duration(milliseconds: 400),
+                                                                            content:
+                                                                                Text(
+                                                                              "sub_name cant be null",
+                                                                              style: TextStyle(color: Colors.white),
+                                                                            ),
+                                                                          ),
+                                                                        );
+                                                                      } else {
+                                                                        Navigator.pop(
+                                                                            context);
+
+                                                                        bool error = await placemeny_servers().edit_cal_sub(
+                                                                            sub_name!,
+                                                                            widget.cal_sub_names[index].id.toString());
+                                                                        if (!error) {
+                                                                          setState(
+                                                                              () {
+                                                                            widget.cal_sub_names[index].subName =
+                                                                                sub_name;
+                                                                          });
+                                                                        } else {
+                                                                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                                                              duration: Duration(milliseconds: 400),
+                                                                              content: Text(
+                                                                                "error occured please try again",
+                                                                                style: TextStyle(color: Colors.white),
+                                                                              )));
+                                                                        }
+                                                                      }
+                                                                    },
+                                                                    child:
+                                                                        const Center(
+                                                                      child: Text(
+                                                                          "update"),
+                                                                    ))
+                                                              ]));
+                                                    });
+                                              },
+                                              icon: const Icon(
+                                                Icons.edit,
+                                                color: Colors.white,
+                                              ))
+                                        ])
+                                  : Container(),
+                              _extand[index]
+                                  ? Column(children: [
+                                      Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "Ratings" +
+                                                  "(" +
+                                                  widget.cal_sub_names[index]
+                                                      .numRatings
+                                                      .toString() +
+                                                  ") : " +
+                                                  sub_rating
+                                                      .toString()
+                                                      .substring(0, 3),
+                                              style: const TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            TextButton(
+                                                onPressed: () async {
+                                                  if (_loaded[index]) {
+                                                    showDialog(
+                                                        context: context,
+                                                        barrierDismissible:
+                                                            false,
+                                                        builder: (context) {
+                                                          return AlertDialog(
+                                                              content: Show_all_sub_ratings(
                                                                   all_sub_ratings,
                                                                   widget
                                                                       .app_user));
-                                                    });
-                                              } else {
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
-                                                        const SnackBar(
-                                                            duration: Duration(
-                                                                milliseconds:
-                                                                    400),
-                                                            content: Text(
-                                                              "please wait data is loading.",
+                                                        });
+                                                  } else {
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(
+                                                            const SnackBar(
+                                                                duration: Duration(
+                                                                    milliseconds:
+                                                                        400),
+                                                                content: Text(
+                                                                  "please wait data is loading.",
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white),
+                                                                )));
+                                                  }
+                                                },
+                                                child: Given_Rating(sub_rating))
+                                          ]),
+                                      const SizedBox(height: 10),
+                                      _loaded[index]
+                                          ? Column(
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    const Text(
+                                                      "Update your Rating : ",
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          left: 5),
+                                                      child: OutlinedButton(
+                                                          style: OutlinedButton
+                                                              .styleFrom(
+                                                            minimumSize:
+                                                                Size(30, 30),
+                                                            side:
+                                                                const BorderSide(
+                                                                    color: Colors
+                                                                        .white),
+                                                          ),
+                                                          onPressed: () {
+                                                            showDialog(
+                                                                context:
+                                                                    context,
+                                                                barrierDismissible:
+                                                                    false,
+                                                                builder:
+                                                                    (context) {
+                                                                  return AlertDialog(
+                                                                      content: Show_all_sub_ratings(
+                                                                          all_sub_ratings,
+                                                                          widget
+                                                                              .app_user));
+                                                                });
+                                                          },
+                                                          child: const Text(
+                                                              "See All",
                                                               style: TextStyle(
                                                                   color: Colors
-                                                                      .white),
-                                                            )));
-                                              }
-                                            },
-                                            child: Given_Rating(sub_rating))
-                                      ]),
-                                  const SizedBox(height: 10),
-                                  _loaded[index]
-                                      ? Column(
-                                          children: [
-                                            const Text(
-                                              "Update your Rating : ",
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                            const SizedBox(height: 7),
-                                            Giving_Rating(
-                                                widget.cal_sub_names[index].id!,
-                                                widget.app_user)
-                                          ],
-                                        )
-                                      : const SizedBox(
-                                          height: 20,
-                                          width: 20,
-                                          child: CircularProgressIndicator(
-                                            color: Colors.white,
-                                          )),
-                                ])
-                              : Container()
-                        ],
-                      ),
-                    ),
-                  );
-                }),
+                                                                      .white))),
+                                                    )
+                                                  ],
+                                                ),
+                                                const SizedBox(height: 7),
+                                                Giving_Rating(
+                                                    widget.cal_sub_names[index]
+                                                        .id!,
+                                                    widget.app_user)
+                                              ],
+                                            )
+                                          : const SizedBox(
+                                              height: 20,
+                                              width: 20,
+                                              child: CircularProgressIndicator(
+                                                color: Colors.white,
+                                              )),
+                                    ])
+                                  : Container()
+                            ],
+                          ),
+                        ),
+                      );
+                    }),
           );
-  }
-}
-
-bool _lights = false;
-
-class private_switch extends StatefulWidget {
-  Username app_user;
-  private_switch(this.app_user);
-
-  @override
-  State<private_switch> createState() => _private_switchState();
-}
-
-class _private_switchState extends State<private_switch> {
-  @override
-  Widget build(BuildContext context) {
-    return SwitchListTile(
-      title: const Text(
-        "Make Private?",
-        style: TextStyle(fontWeight: FontWeight.w200),
-      ),
-      activeColor: Colors.blue,
-      value: _lights,
-      onChanged: (bool value) {
-        if (widget.app_user.isAdmin!) {
-          setState(() {
-            _lights = !_lights;
-          });
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              duration: Duration(milliseconds: 400),
-              content: Text(
-                "Students cannot create private sub topics",
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-          );
-        }
-      },
-      secondary: const Icon(Icons.lightbulb_outline),
-    );
   }
 }
 
@@ -980,136 +1220,147 @@ class _place_yearsState extends State<place_years> {
                       ),
                       build_screen()
                     ])))),
-        floatingActionButton: ElevatedButton.icon(
-          onPressed: () {
-            showDialog(
-                context: context,
-                barrierDismissible: false,
-                builder: (context) {
-                  return AlertDialog(
-                      contentPadding: EdgeInsets.all(15),
-                      content:
-                          Column(mainAxisSize: MainAxisSize.min, children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(),
-                            IconButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                icon: const Icon(Icons.close))
-                          ],
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(left: 40, right: 40),
-                          child: TextField(
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: const InputDecoration(
-                                labelText: 'year',
-                                hintText: '2019',
-                                prefixIcon: Icon(Icons.text_fields),
-                                border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10)))),
-                            onChanged: (String value) {
-                              setState(() {
-                                year_name = value;
-                                if (value == "") {
-                                  year_name = null;
-                                }
-                              });
-                            },
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        private_switch(widget.app_user),
-                        const SizedBox(height: 10),
-                        TextButton(
-                            onPressed: () async {
-                              widget.cal_sub_name.allYears = "";
-                              if (!widget.app_user.isInstabook!) {
-                                Navigator.pop(context);
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    duration: Duration(milliseconds: 400),
-                                    content: Text(
-                                      "Guests/Students are not allowed",
-                                      style: TextStyle(color: Colors.white),
+        floatingActionButton: widget.app_user.is_placement_admin!
+            ? ElevatedButton.icon(
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (context) {
+                        return AlertDialog(
+                            contentPadding: EdgeInsets.all(15),
+                            content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(),
+                                      IconButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          icon: const Icon(Icons.close))
+                                    ],
+                                  ),
+                                  Container(
+                                    padding:
+                                        EdgeInsets.only(left: 40, right: 40),
+                                    child: TextField(
+                                      keyboardType: TextInputType.emailAddress,
+                                      decoration: const InputDecoration(
+                                          labelText: 'year',
+                                          hintText: '2019',
+                                          prefixIcon: Icon(Icons.text_fields),
+                                          border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(10)))),
+                                      onChanged: (String value) {
+                                        setState(() {
+                                          year_name = value;
+                                          if (value == "") {
+                                            year_name = null;
+                                          }
+                                        });
+                                      },
                                     ),
                                   ),
-                                );
-                              } else {
-                                if (year_name == null) {
-                                  Navigator.pop(context);
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      duration: Duration(milliseconds: 400),
-                                      content: Text(
-                                        " year cant be null",
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    ),
-                                  );
-                                } else if (widget.cal_sub_name.allYears!
-                                    .contains(year_name)) {
-                                  Navigator.pop(context);
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      duration: Duration(milliseconds: 400),
-                                      content: Text(
-                                        " sub_task was already present. plese check it out.",
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    ),
-                                  );
-                                } else {
-                                  Navigator.pop(context);
+                                  const SizedBox(height: 10),
+                                  const SizedBox(height: 10),
+                                  TextButton(
+                                      onPressed: () async {
+                                        widget.cal_sub_name.allYears = "";
 
-                                  List<dynamic> error =
-                                      await placemeny_servers()
-                                          .add_cal_sub_year(
-                                              widget.cal_sub_name.id.toString(),
-                                              year_name,
-                                              _lights);
+                                        if (year_name == null) {
+                                          Navigator.pop(context);
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                              duration:
+                                                  Duration(milliseconds: 400),
+                                              content: Text(
+                                                " year cant be null",
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                            ),
+                                          );
+                                        } else if (widget.cal_sub_name.allYears!
+                                            .contains(year_name)) {
+                                          Navigator.pop(context);
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                              duration:
+                                                  Duration(milliseconds: 400),
+                                              content: Text(
+                                                " sub_task was already present. plese check it out.",
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                            ),
+                                          );
+                                        } else {
+                                          Navigator.pop(context);
 
-                                  if (!error[0]) {
-                                    CAL_SUB_YEARS new_sub_year =
-                                        CAL_SUB_YEARS();
-                                    new_sub_year.id = error[1];
-                                    new_sub_year.yearName = year_name;
-                                    new_sub_year.private = _lights;
-                                    new_sub_year.username =
-                                        user_min(widget.app_user);
-                                    setState(() {
-                                      sub_years.add(new_sub_year);
-                                    });
-                                  } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        duration: Duration(milliseconds: 400),
-                                        content: Text(
-                                          "error occured please try again",
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                      ),
-                                    );
-                                  }
-                                }
-                              }
-                            },
-                            child: const Center(
-                              child: Text("Add"),
-                            ))
-                      ]));
-                });
-          },
-          label: const Text("Add new year",
-              style:
-                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-          icon: const Icon(Icons.edit, color: Colors.white),
-          style: ElevatedButton.styleFrom(primary: Colors.deepPurple),
-        ));
+                                          List<dynamic> error =
+                                              await placemeny_servers()
+                                                  .add_cal_sub_year(
+                                                      widget.cal_sub_name.id
+                                                          .toString(),
+                                                      year_name,
+                                                      false);
+
+                                          if (!error[0]) {
+                                            CAL_SUB_YEARS new_sub_year =
+                                                CAL_SUB_YEARS();
+                                            new_sub_year.id = error[1];
+                                            new_sub_year.yearName = year_name;
+                                            new_sub_year.private = false;
+                                            new_sub_year.username =
+                                                user_min(widget.app_user);
+                                            setState(() {
+                                              sub_years.add(new_sub_year);
+                                            });
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(const SnackBar(
+                                                    duration: Duration(
+                                                        milliseconds: 400),
+                                                    content: Text(
+                                                      "Added Successfully",
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    )));
+                                          } else {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                duration:
+                                                    Duration(milliseconds: 400),
+                                                content: Text(
+                                                  "error occured please try again",
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                        }
+                                      },
+                                      child: const Center(
+                                        child: Text("Add"),
+                                      ))
+                                ]));
+                      });
+                },
+                label: const Text("Add new year",
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold)),
+                icon: const Icon(Icons.edit, color: Colors.white),
+                style: ElevatedButton.styleFrom(primary: Colors.deepPurple),
+              )
+            : Container());
   }
 
   build_screen() {
@@ -1188,105 +1439,98 @@ class _place_yearsState extends State<place_years> {
                                     ),
                                     IconButton(
                                       onPressed: () {
-                                        _lights = sub_years[index].private!;
-                                        year_name = sub_years[index].yearName;
-                                        showDialog(
-                                            context: context,
-                                            barrierDismissible: false,
-                                            builder: (context) {
-                                              return AlertDialog(
-                                                  contentPadding:
-                                                      EdgeInsets.all(15),
-                                                  content: Column(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      children: [
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            Container(),
-                                                            IconButton(
-                                                                onPressed: () {
-                                                                  Navigator.pop(
-                                                                      context);
-                                                                },
-                                                                icon: const Icon(
-                                                                    Icons
-                                                                        .close))
-                                                          ],
-                                                        ),
-                                                        Container(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .only(
-                                                                  left: 40,
-                                                                  right: 40),
-                                                          child: TextFormField(
-                                                            initialValue:
-                                                                sub_years[index]
-                                                                    .yearName,
-                                                            keyboardType:
-                                                                TextInputType
-                                                                    .emailAddress,
-                                                            decoration: const InputDecoration(
-                                                                labelText:
-                                                                    'Year_Name',
-                                                                hintText:
-                                                                    '2019',
-                                                                prefixIcon:
-                                                                    Icon(Icons
-                                                                        .text_fields),
-                                                                border: OutlineInputBorder(
-                                                                    borderRadius:
-                                                                        BorderRadius.all(
-                                                                            Radius.circular(10)))),
-                                                            onChanged:
-                                                                (String value) {
-                                                              setState(() {
-                                                                year_name =
-                                                                    value;
-                                                                if (value ==
-                                                                    "") {
-                                                                  year_name =
-                                                                      null;
-                                                                }
-                                                              });
-                                                            },
+                                        if (!widget
+                                            .app_user.is_placement_admin!) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                              duration:
+                                                  Duration(milliseconds: 400),
+                                              content: Text(
+                                                "Students are not allowed",
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                            ),
+                                          );
+                                        } else {
+                                          year_name = sub_years[index].yearName;
+                                          showDialog(
+                                              context: context,
+                                              barrierDismissible: false,
+                                              builder: (context) {
+                                                return AlertDialog(
+                                                    contentPadding:
+                                                        EdgeInsets.all(15),
+                                                    content: Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: [
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Container(),
+                                                              IconButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  },
+                                                                  icon: const Icon(
+                                                                      Icons
+                                                                          .close))
+                                                            ],
                                                           ),
-                                                        ),
-                                                        const SizedBox(
-                                                            height: 10),
-                                                        private_switch(
-                                                            widget.app_user),
-                                                        const SizedBox(
-                                                            height: 10),
-                                                        TextButton(
-                                                            onPressed:
-                                                                () async {
-                                                              if (!widget
-                                                                  .app_user
-                                                                  .isAdmin!) {
-                                                                Navigator.pop(
-                                                                    context);
-                                                                ScaffoldMessenger.of(
-                                                                        context)
-                                                                    .showSnackBar(
-                                                                  const SnackBar(
-                                                                    duration: Duration(
-                                                                        milliseconds:
-                                                                            400),
-                                                                    content:
-                                                                        Text(
-                                                                      "Students are not allowed",
-                                                                      style: TextStyle(
-                                                                          color:
-                                                                              Colors.white),
-                                                                    ),
-                                                                  ),
-                                                                );
-                                                              } else {
+                                                          Container(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .only(
+                                                                    left: 40,
+                                                                    right: 40),
+                                                            child:
+                                                                TextFormField(
+                                                              initialValue:
+                                                                  sub_years[
+                                                                          index]
+                                                                      .yearName,
+                                                              keyboardType:
+                                                                  TextInputType
+                                                                      .emailAddress,
+                                                              decoration: const InputDecoration(
+                                                                  labelText:
+                                                                      'Year_Name',
+                                                                  hintText:
+                                                                      '2019',
+                                                                  prefixIcon:
+                                                                      Icon(Icons
+                                                                          .text_fields),
+                                                                  border: OutlineInputBorder(
+                                                                      borderRadius:
+                                                                          BorderRadius.all(
+                                                                              Radius.circular(10)))),
+                                                              onChanged: (String
+                                                                  value) {
+                                                                setState(() {
+                                                                  year_name =
+                                                                      value;
+                                                                  if (value ==
+                                                                      "") {
+                                                                    year_name =
+                                                                        null;
+                                                                  }
+                                                                });
+                                                              },
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                              height: 10),
+                                                          const SizedBox(
+                                                              height: 10),
+                                                          TextButton(
+                                                              onPressed:
+                                                                  () async {
                                                                 if (year_name ==
                                                                     null) {
                                                                   Navigator.pop(
@@ -1317,7 +1561,7 @@ class _place_yearsState extends State<place_years> {
                                                                               index]
                                                                           .id
                                                                           .toString(),
-                                                                      _lights);
+                                                                      false);
                                                                   if (!error) {
                                                                     setState(
                                                                         () {
@@ -1326,7 +1570,7 @@ class _place_yearsState extends State<place_years> {
                                                                           year_name;
                                                                       sub_years[index]
                                                                               .private =
-                                                                          _lights;
+                                                                          false;
                                                                     });
                                                                   } else {
                                                                     ScaffoldMessenger.of(
@@ -1340,14 +1584,15 @@ class _place_yearsState extends State<place_years> {
                                                                     )));
                                                                   }
                                                                 }
-                                                              }
-                                                            },
-                                                            child: const Center(
-                                                              child: Text(
-                                                                  "update"),
-                                                            ))
-                                                      ]));
-                                            });
+                                                              },
+                                                              child:
+                                                                  const Center(
+                                                                child: Text(
+                                                                    "update"),
+                                                              ))
+                                                        ]));
+                                              });
+                                        }
                                       },
                                       icon: const Icon(Icons.edit),
                                       color: Colors.white,
@@ -1418,6 +1663,12 @@ class _yearFilesState extends State<yearFiles> {
         new_file.id = error[1];
         new_file.uploaded = true;
       });
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          duration: Duration(milliseconds: 400),
+          content: Text(
+            "Added Successfully",
+            style: TextStyle(color: Colors.white),
+          )));
     } else {
       setState(() {
         widget.cal_sub_files.remove(new_file);
@@ -1544,7 +1795,7 @@ class _yearFilesState extends State<yearFiles> {
                   ])))),
       floatingActionButton: ElevatedButton.icon(
         onPressed: () async {
-          if (widget.app_user.email == "guest@nitc.ac.in") {
+          if (widget.app_user.email!.split('@')[0] == "guest") {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 duration: Duration(milliseconds: 400),
@@ -1660,12 +1911,12 @@ class _yearFilesState extends State<yearFiles> {
     var wid = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () {
-        if (widget.app_user.email == "guest@nitc.ac.in") {
+        if (widget.app_user.email!.split('@')[0] == "guest") {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               duration: Duration(milliseconds: 400),
               content: Text(
-                "Guests are not allowed open files",
+                "Guests are not allowed",
                 style: TextStyle(color: Colors.white),
               ),
             ),

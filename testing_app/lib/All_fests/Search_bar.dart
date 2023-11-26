@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '/User_profile/Models.dart';
-import '/Fcm_Notif_Domains/servers.dart';
+import '/Fcm_Notif_Domains/Servers.dart';
 import '/First_page.dart';
 import 'Servers.dart';
 import '/User_Star_Mark/User_Profile_Star_Mark.dart';
@@ -124,7 +124,7 @@ class _user_list_displayState extends State<user_list_display> {
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        duration: Duration(milliseconds: 400),
+          duration: Duration(milliseconds: 400),
           content: Text("all the feed was shown..",
               style: TextStyle(color: Colors.white))));
     }
@@ -235,7 +235,6 @@ class _user_list_displayState extends State<user_list_display> {
                     const SizedBox(height: 10),
                     Container(
                       margin: const EdgeInsets.all(30),
-                      color: Colors.blue[900],
                       child: OutlinedButton(
                           onPressed: () async {
                             bool error = await all_fests_servers()
@@ -244,7 +243,7 @@ class _user_list_displayState extends State<user_list_display> {
                             if (error) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                    duration: Duration(milliseconds: 400),
+                                      duration: Duration(milliseconds: 400),
                                       content: Text(
                                           "Failed to transfer the head, try again",
                                           style:
@@ -260,7 +259,7 @@ class _user_list_displayState extends State<user_list_display> {
                           child: const Center(
                               child: Text(
                             "Transfer",
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(color: Colors.blue),
                           ))),
                     )
                   ],
@@ -377,7 +376,7 @@ class _user_list_displayState extends State<user_list_display> {
                         keyboardType: TextInputType.emailAddress,
                         decoration: const InputDecoration(
                           labelText: 'new_fest_name',
-                          hintText: 'dnd fest/AI fest',
+                          hintText: 'ragam fest/tathva fest',
                           prefixIcon: Icon(Icons.text_fields),
                           border: OutlineInputBorder(
                               borderRadius:
@@ -396,13 +395,12 @@ class _user_list_displayState extends State<user_list_display> {
                     const SizedBox(height: 10),
                     Container(
                       margin: const EdgeInsets.all(30),
-                      color: Colors.blue[900],
                       child: OutlinedButton(
                           onPressed: () async {
                             if (new_fest_name == null) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                    duration: Duration(milliseconds: 400),
+                                      duration: Duration(milliseconds: 400),
                                       content: Text("fest name cant be null",
                                           style:
                                               TextStyle(color: Colors.white))));
@@ -413,7 +411,7 @@ class _user_list_displayState extends State<user_list_display> {
                               if (error) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
-                                      duration: Duration(milliseconds: 400),
+                                        duration: Duration(milliseconds: 400),
                                         content: Text(
                                             "Failed to transfer the head, try again",
                                             style: TextStyle(
@@ -430,7 +428,7 @@ class _user_list_displayState extends State<user_list_display> {
                           child: const Center(
                               child: Text(
                             "Create fest",
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(color: Colors.blue),
                           ))),
                     )
                   ],

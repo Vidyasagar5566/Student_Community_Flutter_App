@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
 import 'Models.dart';
 import '/User_profile/Models.dart';
 import '/User_profile/Servers.dart';
 import 'Servers.dart';
-//import 'package:link_text/link_text.dart';
 import '/User_Star_Mark/User_Profile_Star_Mark.dart';
 import 'dart:convert' show utf8;
 import '/User_profile/User_posts_category.dart';
-import '/Threads/threads.dart';
-import '/Activities/activities.dart';
+import '/Threads/Threads.dart';
+import '/Activities/Activities.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 Map<String, dynamic> team_mems = {};
@@ -36,7 +36,7 @@ List<Tab> tabs = [
     margin: EdgeInsets.all(6),
     child: const Text(
       textAlign: TextAlign.center,
-      "Club Mems",
+      "Club mems",
       style: TextStyle(color: Colors.black),
     ),
   )),
@@ -45,7 +45,7 @@ List<Tab> tabs = [
       width: 85,
       margin: EdgeInsets.all(6),
       child: const Text(
-        "Media Files",
+        "Media files",
         textAlign: TextAlign.center,
         style: TextStyle(color: Colors.black),
       ),
@@ -170,8 +170,15 @@ class _clubpagewidgetState extends State<clubpagewidget> {
                           height: 30,
                         ),
                         //Link
-                        Text(
-                          utf8convert(widget.club.description!),
+                        SelectableLinkify(
+                          onOpen: (url) async {
+                            if (await canLaunch(url.url)) {
+                              await launch(url.url);
+                            } else {
+                              throw 'Could not launch $url';
+                            }
+                          },
+                          text: utf8convert(widget.club.description!),
                         ),
                       ],
                     ),
@@ -532,7 +539,7 @@ class _club_members1State extends State<club_members1> {
     var width = MediaQuery.of(context).size.width;
     return Container(
         margin: EdgeInsets.all(2),
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.all(10),
         decoration: BoxDecoration(boxShadow: const [
           BoxShadow(
             color: Colors.grey, // Shadow color
@@ -550,7 +557,7 @@ class _club_members1State extends State<club_members1> {
                 Row(
                   children: [UserProfileMark(widget.app_user, club_mem)],
                 ),
-                Icon(Icons.more_horiz)
+                // Icon(Icons.more_horiz)
               ],
             ),
             const SizedBox(

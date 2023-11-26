@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import '/Fcm_Notif_Domains/Servers.dart';
 import '/First_page.dart';
 import 'Servers.dart';
 import '/User_profile/Models.dart';
@@ -45,6 +46,7 @@ class _upload_cal_eventState extends State<upload_cal_event> {
     });
   }
 
+  String all_university = 'All';
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -59,6 +61,27 @@ class _upload_cal_eventState extends State<upload_cal_event> {
             "Cal-Events",
             style: TextStyle(color: Colors.black),
           ),
+          actions: [
+            DropdownButton<String>(
+                value: all_university,
+                underline: Container(),
+                elevation: 0,
+                items: ['All', domains[widget.app_user.domain]!]
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(
+                      value,
+                      style: TextStyle(fontSize: 10),
+                    ),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    all_university = value!;
+                  });
+                })
+          ],
           backgroundColor: Colors.white70,
         ),
         body: SingleChildScrollView(
@@ -339,8 +362,8 @@ class _upload_cal_eventState extends State<upload_cal_event> {
                                           Radius.circular(15.0))),
                                   minWidth: double.infinity,
                                   onPressed: () async {
-                                    if (widget.app_user.email ==
-                                            "guest@nitc.ac.in" ||
+                                    if (widget.app_user.email!.split('@')[0] ==
+                                            "guest" ||
                                         !widget.app_user.isAdmin! ||
                                         !widget.app_user.isStudentAdmin!) {
                                       ScaffoldMessenger.of(context)
@@ -385,6 +408,7 @@ class _upload_cal_eventState extends State<upload_cal_event> {
                                                   file_type,
                                                   notif_branchs.join('@'),
                                                   notif_years.join(''),
+                                                  all_university,
                                                   formattedDate +
                                                       'T' +
                                                       formattedTime);

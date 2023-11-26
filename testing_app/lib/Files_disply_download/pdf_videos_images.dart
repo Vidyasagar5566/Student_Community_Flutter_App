@@ -137,7 +137,7 @@ class _pdfviewer1State extends State<pdfviewer1> {
                                         style: TextStyle(color: Colors.white),
                                       )
                                     : const Text(
-                                        'success, check your InstaBook folder in your "on my iphone"',
+                                        'success, check your ESMUS folder in your "on my iphone"',
                                         style: TextStyle(color: Colors.white),
                                       ),
                               ),
@@ -582,7 +582,7 @@ class _video_display3State extends State<video_display3> {
 
   Future<String?> _findLocalPath() async {
     if (platform == TargetPlatform.android) {
-      return "/storage/emulated/0/Download/"; //NITC InstaBook/";
+      return "/storage/emulated/0/Download/"; //NITC ESMUS/";
     } else {
       var directory = await getApplicationDocumentsDirectory();
       return directory.path + "/"; //+ Platform.pathSeparator + 'Download/';
@@ -626,7 +626,7 @@ class _video_display3State extends State<video_display3> {
                                       style: TextStyle(color: Colors.white),
                                     )
                                   : const Text(
-                                      'success, check your InstaBook folder in your "on my iphone"',
+                                      'success, check your ESMUS folder in your "on my iphone"',
                                       style: TextStyle(color: Colors.white),
                                     ),
                             ),

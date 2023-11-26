@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'fest_page.dart';
+import 'Fest_page.dart';
 import 'Models.dart';
 import '/User_profile/Models.dart';
-import '/Fcm_Notif_Domains/servers.dart';
+import '/Fcm_Notif_Domains/Servers.dart';
 import 'Servers.dart';
 import 'package:flutter/services.dart';
 import 'dart:convert' show utf8;
@@ -149,7 +149,7 @@ class _Allfestspagewidget1State extends State<Allfestspagewidget1> {
               }));
             },
             onDoubleTap: () async {
-              if (widget.app_user.email == "guest@nitc.ac.in") {
+              if (widget.app_user.email!.split('@')[0] == "guest") {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                     duration: Duration(milliseconds: 400),
                     content: Text("guests are not allowed to like..",
@@ -350,8 +350,7 @@ class _Allfestspagewidget1State extends State<Allfestspagewidget1> {
                                 children: [
                                   IconButton(
                                     onPressed: () async {
-                                      if (widget.app_user.email ==
-                                          "guest@nitc.ac.in") {
+                                     if (widget.app_user.email!.split('@')[0] == "guest") {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(const SnackBar(
                                                 duration:

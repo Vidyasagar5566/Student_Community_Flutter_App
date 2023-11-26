@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '/First_page.dart';
-import '../Login/login.dart';
+import '../Login/Login.dart';
 
 class crclr_ind extends StatefulWidget {
   const crclr_ind({super.key});
@@ -84,7 +84,7 @@ class _crclr_ind_appbarState extends State<crclr_ind_appbar> {
       appBar: AppBar(
           centerTitle: true,
           title: const Text(
-            "InstaBook",
+            "ESMUS",
             style: TextStyle(color: Colors.black),
           ),
           backgroundColor: Colors.white //indigoAccent[700],
@@ -128,7 +128,7 @@ class _crclr_ind_errorState extends State<crclr_ind_error> {
           centerTitle: true,
           iconTheme: IconThemeData(color: Colors.blue),
           title: const Text(
-            "InstaBook",
+            "ESMUS",
             style: TextStyle(color: Colors.black),
           ),
           backgroundColor: Colors.white //indigoAccent[700],
@@ -170,7 +170,7 @@ class _crclr_ind_errorState extends State<crclr_ind_error> {
             TextButton(
                 onPressed: () {
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (BuildContext context) => loginpage("")));
+                      builder: (BuildContext context) => loginpage("",'Nit Calicut')));
                 },
                 child: const Text(
                   "Return to login page",
@@ -198,7 +198,7 @@ class _check_connect_errorState extends State<check_connect_error> {
       appBar: AppBar(
           centerTitle: true,
           title: const Text(
-            "InstaBook",
+            "ESMUS",
             style: TextStyle(color: Colors.black),
           ),
           backgroundColor: Colors.white //indigoAccent[700],
@@ -240,7 +240,7 @@ class _networl_errorState extends State<networl_error> {
         appBar: AppBar(
             centerTitle: true,
             title: const Text(
-              "InstaBook",
+              "ESMUS",
               style: TextStyle(color: Colors.black),
             ),
             backgroundColor: Colors.white //indigoAccent[700],

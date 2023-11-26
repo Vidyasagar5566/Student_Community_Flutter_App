@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:testing_app/User_Star_Mark/Edit_User_star_mark.dart';
-import '/Side_menu_bar/settings.dart';
+import '/Side_menu_bar/Settings.dart';
 import '/User_profile/Models.dart';
-import '/User_profile/edit_profile.dart';
-import 'about_app.dart';
+import '/User_profile/Edit_profile.dart';
+import 'About_app.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import '../Login/login.dart';
+import '../Login/Login.dart';
 
 class NavDrawer extends StatefulWidget {
   Username app_user;
@@ -90,7 +90,8 @@ class _NavDrawerState extends State<NavDrawer> {
               storage.clear();
 
               Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (BuildContext context) => loginpage("")));
+                  builder: (BuildContext context) =>
+                      loginpage("", 'Nit Calicut')));
             },
           ),
           ListTile(

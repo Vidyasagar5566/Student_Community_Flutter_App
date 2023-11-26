@@ -6,8 +6,8 @@ import 'package:localstorage/localstorage.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 //import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:timezone/data/latest.dart' as tz;
-import 'App_notifications/remainder_nitifications.dart';
-import 'Login/login.dart';
+import 'App_notifications/Remainder_nitifications.dart';
+import 'Login/Login.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(message) async {
   await Firebase.initializeApp();
@@ -21,8 +21,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
-    //options: DefaultFirebaseOptions.currentPlatform,
-  );
+      //options: DefaultFirebaseOptions.currentPlatform,
+      );
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -76,7 +76,7 @@ class _MyAppState extends State<MyApp> {
             );
           }
           if (storage.getItem('token') == null) {
-            return loginpage("");
+            return loginpage("", 'Nit Calicut');
           }
           return get_ueser_widget(0);
         },

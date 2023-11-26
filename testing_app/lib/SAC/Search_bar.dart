@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'Servers.dart';
 import '/User_profile/Models.dart';
-import '/Fcm_Notif_Domains/servers.dart';
+import '/Fcm_Notif_Domains/Servers.dart';
 import '/First_page.dart';
 import '/User_Star_Mark/User_Profile_Star_Mark.dart';
 
@@ -118,7 +118,8 @@ class _user_list_displayState extends State<user_list_display> {
         widget.all_search_users = all_search_users;
       });
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(duration: Duration(milliseconds: 400),
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          duration: Duration(milliseconds: 400),
           content: Text("all the feed was shown..",
               style: TextStyle(color: Colors.white))));
     }
@@ -215,7 +216,7 @@ class _user_list_displayState extends State<user_list_display> {
                     const SizedBox(height: 20),
                     const Center(
                         child: Text(
-                            "Are you sure? All the club access will transfer to this user.",
+                            "Are you sure? All the sac access will transfer to this user.",
                             style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.black,
@@ -223,14 +224,14 @@ class _user_list_displayState extends State<user_list_display> {
                     const SizedBox(height: 10),
                     Container(
                       margin: const EdgeInsets.all(30),
-                      color: Colors.blue[900],
                       child: OutlinedButton(
                           onPressed: () async {
                             bool error = await sac_servers().change_sac_head(
                                 widget.sac_id, search_user.email!);
                             if (error) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(duration: Duration(milliseconds: 400),
+                                  const SnackBar(
+                                      duration: Duration(milliseconds: 400),
                                       content: Text(
                                           "Failed to transfer the head, try again",
                                           style:
@@ -246,7 +247,7 @@ class _user_list_displayState extends State<user_list_display> {
                           child: const Center(
                               child: Text(
                             "Transfer",
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(color: Colors.blue),
                           ))),
                     )
                   ],
@@ -362,8 +363,8 @@ class _user_list_displayState extends State<user_list_display> {
                       child: TextField(
                         keyboardType: TextInputType.emailAddress,
                         decoration: const InputDecoration(
-                          labelText: 'new_club_name',
-                          hintText: 'dnd club/AI club',
+                          labelText: 'new_sac_name',
+                          hintText: 'TAS/HAS',
                           prefixIcon: Icon(Icons.text_fields),
                           border: OutlineInputBorder(
                               borderRadius:
@@ -382,13 +383,13 @@ class _user_list_displayState extends State<user_list_display> {
                     const SizedBox(height: 10),
                     Container(
                       margin: const EdgeInsets.all(30),
-                      color: Colors.blue[900],
                       child: OutlinedButton(
                           onPressed: () async {
                             if (new_sac_role == null) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(duration: Duration(milliseconds: 400),
-                                      content: Text("Club name cant be null",
+                                  const SnackBar(
+                                      duration: Duration(milliseconds: 400),
+                                      content: Text("sac name cant be null",
                                           style:
                                               TextStyle(color: Colors.white))));
                             } else {
@@ -396,7 +397,8 @@ class _user_list_displayState extends State<user_list_display> {
                                   .create_sac(search_user.email!, new_sac_role);
                               if (error) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(duration: Duration(milliseconds: 400),
+                                    const SnackBar(
+                                        duration: Duration(milliseconds: 400),
                                         content: Text(
                                             "Failed to transfer the head, try again",
                                             style: TextStyle(
@@ -412,8 +414,8 @@ class _user_list_displayState extends State<user_list_display> {
                           },
                           child: const Center(
                               child: Text(
-                            "Create Club",
-                            style: TextStyle(color: Colors.white),
+                            "Create sac",
+                            style: TextStyle(color: Colors.blue),
                           ))),
                     )
                   ],

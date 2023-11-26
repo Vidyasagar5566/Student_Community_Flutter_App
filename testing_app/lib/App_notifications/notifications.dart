@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'Servers.dart';
 import 'Models.dart';
 import '/User_profile/Models.dart';
 //import 'package:link_text/link_text.dart';
 import 'dart:convert' show utf8;
-import '/Fcm_Notif_Domains/servers.dart';
+import '/Fcm_Notif_Domains/Servers.dart';
 import '/User_Star_Mark/User_Profile_Star_Mark.dart';
 
 String utf8convert(String text) {
@@ -104,17 +106,16 @@ class _notifications1State extends State<notifications1> {
     String delete_error = "";
     return GestureDetector(
       child: Container(
-          margin: const EdgeInsets.only(top: 3),
+          margin: const EdgeInsets.all(7),
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(boxShadow: const [
             BoxShadow(
-              color: Colors.grey, 
-              offset:
-                  Offset(0, 2), 
-              blurRadius: 6, 
-              spreadRadius: 0, 
+              color: Colors.grey,
+              offset: Offset(0, 2),
+              blurRadius: 6,
+              spreadRadius: 0,
             ),
-          ], color: Colors.white, borderRadius: BorderRadius.circular(5)),
+          ], color: Colors.white, borderRadius: BorderRadius.circular(10)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -134,7 +135,7 @@ class _notifications1State extends State<notifications1> {
                       ),
                       Container(
                         padding: EdgeInsets.only(left: 20),
-                        width: (width - 36) / 1.8,
+                        width: (width - 36) / 1.9,
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -142,7 +143,7 @@ class _notifications1State extends State<notifications1> {
                                 children: [
                                   Container(
                                     constraints: BoxConstraints(
-                                        maxWidth: (width - 36) / 2.4),
+                                        maxWidth: (width - 36) / 2.6),
                                     child: Text(
                                       user.username!,
                                       maxLines: 1,
@@ -180,6 +181,16 @@ class _notifications1State extends State<notifications1> {
                                     content: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
+                                        Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              IconButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  icon: Icon(Icons.close))
+                                            ]),
                                         const SizedBox(height: 20),
                                         const Center(
                                             child: Text(
@@ -192,7 +203,6 @@ class _notifications1State extends State<notifications1> {
                                         const SizedBox(height: 10),
                                         Container(
                                           margin: const EdgeInsets.all(30),
-                                          color: Colors.blue[900],
                                           child: OutlinedButton(
                                               onPressed: () async {
                                                 bool error =
@@ -215,7 +225,7 @@ class _notifications1State extends State<notifications1> {
                                                   child: Text(
                                                 "Delete",
                                                 style: TextStyle(
-                                                    color: Colors.white),
+                                                    color: Colors.blue),
                                               ))),
                                         ),
                                         const SizedBox(height: 10),
@@ -239,9 +249,31 @@ class _notifications1State extends State<notifications1> {
                 ],
               ),
               const SizedBox(height: 10),
-              Text(
-                utf8convert(notif.description!),
-              )
+              Column(
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width - 150,
+                    child: Text(
+                      utf8convert(notif.title!),
+                      style: TextStyle(fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width - 150,
+                    child: SelectableLinkify(
+                      onOpen: (url) async {
+                        if (await canLaunch(url.url)) {
+                          await launch(url.url);
+                        } else {
+                          throw 'Could not launch $url';
+                        }
+                      },
+                      text: utf8convert(notif.description!),
+                    ),
+                  ),
+                ],
+              ),
             ],
           )),
     );

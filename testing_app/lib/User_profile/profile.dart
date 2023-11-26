@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
+import '/BuySell/buysell.dart';
+import '/Lost_&_Found/Lost_Found.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '/User_profile/Servers.dart';
 import 'Models.dart';
-import '/Fcm_Notif_Domains/servers.dart';
-import 'edit_profile.dart';
+import '/Fcm_Notif_Domains/Servers.dart';
+import 'Edit_profile.dart';
 //import 'package:link_text/link_text.dart';
 import 'dart:convert' show utf8;
 import '/User_Star_Mark/User_Profile_Star_Mark.dart';
 import 'User_posts_category.dart';
-import '/BuySell_LostFound/lostfound_buysell.dart';
-import '/First_page.dart';
-import '/Threads/threads.dart';
+import '/Threads/Threads.dart';
 
 String utf8convert(String text) {
   List<int> bytes = text.toString().codeUnits;
@@ -139,8 +141,16 @@ class _userProfilePageState extends State<userProfilePage> {
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18)),
                                 Center(
-                                  child: Text(
-                                      utf8convert(widget.profile_user.bio!),
+                                  child: SelectableLinkify(
+                                      onOpen: (url) async {
+                                        if (await canLaunch(url.url)) {
+                                          await launch(url.url);
+                                        } else {
+                                          throw 'Could not launch $url';
+                                        }
+                                      },
+                                      text:
+                                          utf8convert(widget.profile_user.bio!),
                                       style: const TextStyle(fontSize: 15)),
                                 ),
                                 const SizedBox(height: 10),
@@ -179,13 +189,24 @@ class _userProfilePageState extends State<userProfilePage> {
                                       constraints: BoxConstraints(
                                         maxWidth: width / 2,
                                       ),
-                                      child: Text(widget.profile_user.phnNum!,
-                                          maxLines: 2,
-                                          softWrap: false,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                              color: Colors.blue,
-                                              fontWeight: FontWeight.w500)),
+                                      child: GestureDetector(
+                                        onTap: () async {
+                                          final call = Uri.parse('tel:+91 ' +
+                                              widget.profile_user.phnNum!);
+                                          if (await canLaunchUrl(call)) {
+                                            launchUrl(call);
+                                          } else {
+                                            throw 'Could not launch $call';
+                                          }
+                                        },
+                                        child: Text(widget.profile_user.phnNum!,
+                                            maxLines: 2,
+                                            softWrap: false,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(
+                                                color: Colors.blue,
+                                                fontWeight: FontWeight.w500)),
+                                      ),
                                     )
                                   ],
                                 ),
@@ -612,9 +633,10 @@ class _userProfilePageState extends State<userProfilePage> {
                                 builder: (BuildContext context) {
                               return all_lostwidget1(
                                   widget.app_user,
-                                  "lost/found",
-                                  lst_buy_list,
-                                  'All',
+                                  "lost",
+                                  "All",
+                                  [],
+                                  domains[widget.app_user.domain]!,
                                   widget.profile_user.email!);
                             }));
                           },
@@ -654,11 +676,12 @@ class _userProfilePageState extends State<userProfilePage> {
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (BuildContext context) {
-                              return all_lostwidget1(
+                              return all_buySellwidget1(
                                   widget.app_user,
-                                  "buy/shell",
-                                  lst_buy_list,
-                                  'All',
+                                  "buy",
+                                  "All",
+                                  [],
+                                  domains[widget.app_user.domain]!,
                                   widget.profile_user.email!);
                             }));
                           },
@@ -717,10 +740,9 @@ class _userProfilePageState extends State<userProfilePage> {
                                   appBar: AppBar(
                                     centerTitle: true,
                                     iconTheme:
-                                        IconThemeData(color: Colors.white),
+                                        IconThemeData(color: Colors.black),
                                     title: Text(widget.profile_user.username!,
-                                        style: TextStyle(color: Colors.white)),
-                                    backgroundColor: Colors.indigoAccent[700],
+                                        style: TextStyle(color: Colors.black)),
                                   ),
                                   body: SingleChildScrollView(
                                     child: alertwidget1(

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import '../Circular_designs/cure_clip.dart';
+import '../Circular_designs/Cure_clip.dart';
 import 'Servers.dart';
 import 'Models.dart';
 import '/User_profile/Models.dart';
 import 'dart:convert' show utf8;
 import 'Years_Of_Subjects.dart';
-import '/Fcm_Notif_Domains/servers.dart';
+import '/Fcm_Notif_Domains/Servers.dart';
 
 String utf8convert(String text) {
   List<int> bytes = text.toString().codeUnits;
@@ -85,25 +85,25 @@ class _branchAndSemsState extends State<branchAndSems> {
                     widget.course = value!;
                   });
                 }),
-            DropdownButton<String>(
-                value: widget.domain,
-                underline: Container(),
-                elevation: 0,
-                items: domains_list_new
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(
-                      value,
-                      style: TextStyle(fontSize: 10),
-                    ),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    widget.domain = value!;
-                  });
-                }),
+            // DropdownButton<String>(
+            //     value: widget.domain,
+            //     underline: Container(),
+            //     elevation: 0,
+            //     items: domains_list_new
+            //         .map<DropdownMenuItem<String>>((String value) {
+            //       return DropdownMenuItem<String>(
+            //         value: value,
+            //         child: Text(
+            //           value,
+            //           style: TextStyle(fontSize: 10),
+            //         ),
+            //       );
+            //     }).toList(),
+            //     onChanged: (value) {
+            //       setState(() {
+            //         widget.domain = value!;
+            //       });
+            //     }),
           ],
           backgroundColor: Colors.white70,
         ),
@@ -233,7 +233,8 @@ class _branch_displayState extends State<branch_display> {
                                               (index * 2 + 1).toString(),
                                           all_sems[index * 2],
                                           domains1[widget.domain]!,
-                                          widget.course)));
+                                          widget.course,
+                                          widget.branch)));
                             },
                             child: Container(
                                 width: wid / 2.8,
@@ -275,7 +276,8 @@ class _branch_displayState extends State<branch_display> {
                                                             .toString(),
                                                     all_sems[index * 2 + 1],
                                                     domains1[widget.domain]!,
-                                                    widget.course)));
+                                                    widget.course,
+                                                    widget.branch)));
                                   },
                                   child: Container(
                                       width: wid / 2.8,
@@ -319,8 +321,9 @@ class cal_subjects extends StatefulWidget {
   String cal_year;
   String domain;
   String course;
+  String branch;
   cal_subjects(this.app_user, this.subject_names, this.sub_ids, this.cal_year,
-      this.domain, this.course);
+      this.domain, this.course, this.branch);
 
   @override
   State<cal_subjects> createState() => _cal_subjectsState();
@@ -428,113 +431,114 @@ class _cal_subjectsState extends State<cal_subjects> {
                   ]),
             )),
       ),
-      floatingActionButton: ElevatedButton.icon(
-        onPressed: () {
-          showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (context) {
-                return AlertDialog(
-                    contentPadding: EdgeInsets.all(15),
-                    content: Column(mainAxisSize: MainAxisSize.min, children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(),
-                          IconButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              icon: const Icon(Icons.close))
-                        ],
-                      ),
-                      Container(
-                        padding: EdgeInsets.only(left: 40, right: 40),
-                        child: TextField(
-                          keyboardType: TextInputType.emailAddress,
-                          decoration: const InputDecoration(
-                              labelText: "sub_name",
-                              hintText: 'MATHS-II',
-                              prefixIcon: Icon(Icons.text_fields),
-                              border: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10)))),
-                          onChanged: (String value) {
-                            setState(() {
-                              sub_name = value;
-                              if (value == "") {
-                                sub_name = null;
-                              }
-                            });
-                          },
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      TextButton(
-                          onPressed: () async {
-                            if (!widget.app_user.isStudentAdmin!) {
-                              Navigator.pop(context);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  duration: Duration(milliseconds: 400),
-                                  content: Text(
-                                    "Students are not allowed",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                ),
-                              );
-                            } else {
-                              if (sub_name == null) {
-                                Navigator.pop(context);
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    duration: Duration(milliseconds: 400),
-                                    content: Text(
-                                      "sub name cant be null",
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ),
-                                );
-                              } else {
-                                Navigator.pop(context);
-
-                                List<dynamic> error = await notes_servers()
-                                    .post_cal_sub(sub_name, widget.sub_ids);
-                                if (!error[0]) {
-                                  var new_sub_name = CAL_SUB_NAMES();
-                                  new_sub_name.id = error[1];
-                                  new_sub_name.subId = widget.sub_ids;
-                                  new_sub_name.subName = sub_name;
-                                  new_sub_name.username =
-                                      user_min(widget.app_user);
-                                  new_sub_name.totRatingsVal = 0;
-                                  new_sub_name.numRatings = 0;
+      floatingActionButton: widget.app_user.isStudentAdmin! &&
+              widget.app_user.branch == widget.branch
+          ? ElevatedButton.icon(
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (context) {
+                      return AlertDialog(
+                          contentPadding: EdgeInsets.all(15),
+                          content:
+                              Column(mainAxisSize: MainAxisSize.min, children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(),
+                                IconButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    icon: const Icon(Icons.close))
+                              ],
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(left: 40, right: 40),
+                              child: TextField(
+                                keyboardType: TextInputType.emailAddress,
+                                decoration: const InputDecoration(
+                                    labelText: "sub_name",
+                                    hintText: 'MATHS-II',
+                                    prefixIcon: Icon(Icons.text_fields),
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)))),
+                                onChanged: (String value) {
                                   setState(() {
-                                    subject_names.add(new_sub_name);
-                                    widget.subject_names.add(new_sub_name);
+                                    sub_name = value;
+                                    if (value == "") {
+                                      sub_name = null;
+                                    }
                                   });
-                                } else {
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(const SnackBar(
-                                          duration: Duration(milliseconds: 400),
-                                          content: Text(
-                                            "error occured please try again",
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          )));
-                                }
-                              }
-                            }
-                          },
-                          child: const Center(child: Text("Add")))
-                    ]));
-              });
-        },
-        label: const Text("Add new subject",
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-        icon: const Icon(Icons.edit, color: Colors.white),
-        style: ElevatedButton.styleFrom(primary: Colors.deepPurple),
-      ),
+                                },
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            TextButton(
+                                onPressed: () async {
+                                  if (sub_name == null) {
+                                    Navigator.pop(context);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        duration: Duration(milliseconds: 400),
+                                        content: Text(
+                                          "sub name cant be null",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ),
+                                    );
+                                  } else {
+                                    Navigator.pop(context);
+
+                                    List<dynamic> error = await notes_servers()
+                                        .post_cal_sub(sub_name, widget.sub_ids);
+                                    if (!error[0]) {
+                                      var new_sub_name = CAL_SUB_NAMES();
+                                      new_sub_name.id = error[1];
+                                      new_sub_name.subId = widget.sub_ids;
+                                      new_sub_name.subName = sub_name;
+                                      new_sub_name.username =
+                                          user_min(widget.app_user);
+                                      new_sub_name.totRatingsVal = 0;
+                                      new_sub_name.numRatings = 0;
+                                      setState(() {
+                                        widget.subject_names.add(new_sub_name);
+                                      });
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                              duration:
+                                                  Duration(milliseconds: 400),
+                                              content: Text(
+                                                "error occured please try again",
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              )));
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                              duration:
+                                                  Duration(milliseconds: 400),
+                                              content: Text(
+                                                "error occured please try again",
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              )));
+                                    }
+                                  }
+                                },
+                                child: const Center(child: Text("Add")))
+                          ]));
+                    });
+              },
+              label: const Text("Add new subject",
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold)),
+              icon: const Icon(Icons.edit, color: Colors.white),
+              style: ElevatedButton.styleFrom(primary: Colors.deepPurple),
+            )
+          : Container(),
     );
   }
 
@@ -572,8 +576,11 @@ class _cal_subjectsState extends State<cal_subjects> {
                               onTap: () async {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (BuildContext context) =>
-                                        cal_sub_years(widget.app_user,
-                                            widget.subject_names[index], [])));
+                                        cal_sub_years(
+                                            widget.app_user,
+                                            widget.subject_names[index],
+                                            [],
+                                            widget.branch)));
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -614,68 +621,39 @@ class _cal_subjectsState extends State<cal_subjects> {
                                         !_extand[index]
                                             ? IconButton(
                                                 onPressed: () async {
-                                                  for (int i = 0;
-                                                      i <
-                                                          widget.subject_names
-                                                              .length;
-                                                      i++) {
+                                                  if (widget.app_user
+                                                          .isStudentAdmin! &&
+                                                      widget.app_user.branch ==
+                                                          widget.branch) {
+                                                    for (int i = 0;
+                                                        i <
+                                                            widget.subject_names
+                                                                .length;
+                                                        i++) {
+                                                      setState(() {
+                                                        _extand[i] = false;
+                                                      });
+                                                    }
                                                     setState(() {
-                                                      _extand[i] = false;
+                                                      _extand[index] =
+                                                          !_extand[index];
+                                                      _loaded[index] = false;
                                                     });
+                                                  } else {
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(
+                                                            const SnackBar(
+                                                                duration: Duration(
+                                                                    milliseconds:
+                                                                        400),
+                                                                content: Text(
+                                                                  "Students not allowed",
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white),
+                                                                )));
                                                   }
-                                                  setState(() {
-                                                    _extand[index] =
-                                                        !_extand[index];
-                                                    _loaded[index] = false;
-                                                  });
-                                                  /*                if (widget.cal_year ==
-                                                  "Placements") {
-                                                List<RATINGS> sub_ratings1 =
-                                                    await notes_servers()
-                                                        .get_sub_ratings_list(
-                                                            widget
-                                                                .subject_names[
-                                                                    index]
-                                                                .id
-                                                                .toString());
-
-                                                setState(() {
-                                                  all_sub_ratings =
-                                                      sub_ratings1;
-                                                });
-                                                bool found = false;
-                                                for (int i = 0;
-                                                    i < all_sub_ratings.length;
-                                                    i++) {
-                                                  if (all_sub_ratings[i]
-                                                          .username!
-                                                          .email ==
-                                                      widget.app_user.email) {
-                                                    found = true;
-                                                    setState(() {
-                                                      selected_rating =
-                                                          all_sub_ratings[i];
-                                                    });
-
-                                                    break;
-                                                  }
-                                                }
-                                                if (!found) {
-                                                  selected_rating.rating = 0;
-                                                  selected_rating.id = -1;
-                                                  selected_rating.description =
-                                                      "";
-                                                  selected_rating.username =
-                                                      user_min(widget.app_user);
-                                                  setState(() {
-                                                    all_sub_ratings
-                                                        .add(selected_rating);
-                                                  });
-                                                }
-                                                setState(() {
-                                                  _loaded[index] = true;
-                                                });
-                                               }   */
                                                 },
                                                 icon: const Icon(Icons
                                                     .keyboard_arrow_down_outlined),
@@ -696,28 +674,6 @@ class _cal_subjectsState extends State<cal_subjects> {
                                                 )),
                                       ],
                                     ),
-                                    /*                   !_extand[index] && widget.cal_year == "Placements"
-                              ? Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    IconButton(
-                                        onPressed: () {
-                                          Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                  builder: (BuildContext
-                                                          context) =>
-                                                      cal_sub_years(
-                                                          widget.app_user,
-                                                          widget.cal_sub_names[
-                                                              index],
-                                                          [])));
-                                        },
-                                        icon: Given_Rating(sub_rating)),
-                                    Container()
-                                  ],
-                                )
-                              : Container(),    */
                                     _extand[index]
                                         ? Row(
                                             mainAxisAlignment:
@@ -854,70 +810,6 @@ class _cal_subjectsState extends State<cal_subjects> {
                                                     ))
                                               ])
                                         : Container(),
-                                    /*                 _extand[index] && widget.cal_year == "Placements"
-                              ? Column(children: [
-                                  Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "Rating: " +
-                                              sub_rating
-                                                  .toString()
-                                                  .substring(0, 3),
-                                          style: const TextStyle(
-                                              color: Colors.white),
-                                        ),
-                                        TextButton(
-                                            onPressed: () async {
-                                              if (_loaded[index]) {
-                                                showDialog(
-                                                    context: context,
-                                                    barrierDismissible: false,
-                                                    builder: (context) {
-                                                      return AlertDialog(
-                                                          content:
-                                                              Show_all_sub_ratings(
-                                                                  all_sub_ratings,
-                                                                  widget
-                                                                      .app_user));
-                                                    });
-                                              } else {
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
-                                                        const SnackBar(
-                                                            content: Text(
-                                                  "please wait data is loading.",
-                                                  style: TextStyle(
-                                                      color: Colors.white),
-                                                )));
-                                              }
-                                            },
-                                            child: Given_Rating(sub_rating))
-                                      ]),
-                                  const SizedBox(height: 10),
-                                  _loaded[index]
-                                      ? Column(
-                                          children: [
-                                            const Text(
-                                              "Update your Rating : ",
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                            const SizedBox(height: 7),
-                                            Giving_Rating(
-                                                widget.cal_sub_names[index].id!,
-                                                widget.app_user)
-                                          ],
-                                        )
-                                      : const SizedBox(
-                                          height: 20,
-                                          width: 20,
-                                          child: CircularProgressIndicator(
-                                            color: Colors.white,
-                                          )),
-                                ])
-                              : Container(),  */
                                   ],
                                 ),
                               ),
