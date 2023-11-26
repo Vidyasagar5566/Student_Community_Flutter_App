@@ -363,7 +363,7 @@ class _upload_alertowidgetState extends State<upload_alertowidget> {
                                             .pushAndRemoveUntil(
                                                 MaterialPageRoute(builder:
                                                     (BuildContext context) {
-                                          return firstpage(1, widget.app_user);
+                                          return firstpage(3, widget.app_user);
                                         }), (Route<dynamic> route) => false);
 
                                         await Future.delayed(
