@@ -148,4 +148,32 @@ class dating_servers {
       return temp;
     }
   }
+
+  // USER MESSAGES NOTIFICATION
+
+  Future<bool> user_messages_notif(
+      String chattinguser_email, String message) async {
+    try {
+      var token = storage.getItem('token');
+      Map<String, String> queryParameters = {
+        'chattinguser_email': chattinguser_email,
+        'message': message
+      };
+      String queryString = Uri(queryParameters: queryParameters).query;
+      String finalUrl = "$base_url/user_messanger?$queryString";
+      var url = Uri.parse(finalUrl);
+      http.Response response = await http.delete(
+        url,
+        headers: {
+          'Authorization': 'token $token',
+          "Content-Type": "application/json",
+        },
+      );
+      var data = json.decode(response.body) as Map;
+
+      return data['error'];
+    } catch (e) {
+      return true;
+    }
+  }
 }

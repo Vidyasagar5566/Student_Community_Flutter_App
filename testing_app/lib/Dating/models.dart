@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import '/User_profile/Models.dart';
 
 class DatingUser {
@@ -10,7 +12,7 @@ class DatingUser {
   int? connections;
   String? domain;
   String? postedDate;
-  Username? username;
+  SmallUsername? username;
 
   DatingUser(
       {this.id,
@@ -35,7 +37,7 @@ class DatingUser {
     domain = json['domain'];
     postedDate = json['posted_date'];
     username = json['username'] != null
-        ? new Username.fromJson(json['username'])
+        ? new SmallUsername.fromJson(json['username'])
         : null;
   }
 
