@@ -504,31 +504,31 @@ class _placementsState extends State<placements> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
-                          margin: EdgeInsets.only(left: 10),
-                          child: DropdownButton<String>(
-                              value: widget.domain,
-                              underline: Container(),
-                              elevation: 0,
-                              items: domains_list_ex_all
-                                  .map<DropdownMenuItem<String>>(
-                                      (String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(
-                                    value,
-                                    style: TextStyle(fontSize: 10),
-                                  ),
-                                );
-                              }).toList(),
-                              onChanged: (value) {
-                                setState(() {
-                                  widget.domain = value!;
-                                  loaded_data = false;
-                                  widget.cal_sub_names = [];
-                                });
-                                load_data_fun();
-                              }),
-                        ),
+                            // margin: EdgeInsets.only(left: 10),
+                            // child: DropdownButton<String>(
+                            //     value: widget.domain,
+                            //     underline: Container(),
+                            //     elevation: 0,
+                            //     items: domains_list_ex_all
+                            //         .map<DropdownMenuItem<String>>(
+                            //             (String value) {
+                            //       return DropdownMenuItem<String>(
+                            //         value: value,
+                            //         child: Text(
+                            //           value,
+                            //           style: TextStyle(fontSize: 10),
+                            //         ),
+                            //       );
+                            //     }).toList(),
+                            //     onChanged: (value) {
+                            //       setState(() {
+                            //         widget.domain = value!;
+                            //         loaded_data = false;
+                            //         widget.cal_sub_names = [];
+                            //       });
+                            //       load_data_fun();
+                            //     }),
+                            ),
                         Container(
                           margin: EdgeInsets.only(right: 10),
                           child: DropdownButton<String>(

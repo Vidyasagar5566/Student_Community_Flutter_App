@@ -11,10 +11,12 @@ class dating_servers {
 
 //  Dating FUNCTIONS
 
-  Future<List<DatingUser>> get_dating_user_list() async {
+  Future<List<DatingUser>> get_dating_user_list(String domain) async {
     try {
       var token = storage.getItem('token');
-      String finalUrl = "$base_url/datingUser";
+      Map<String, String> queryParameters = {'domain': domain};
+      String queryString = Uri(queryParameters: queryParameters).query;
+      String finalUrl = "$base_url/datingUser?$queryString";
       var url = Uri.parse(finalUrl);
       http.Response response = await http.get(url, headers: {
         'Authorization': 'token $token',

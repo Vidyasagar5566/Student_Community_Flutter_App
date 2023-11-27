@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '/Dating/dating.dart';
 import '/Login/login.dart';
 import '/Lost_&_Found/Lost_Found.dart';
 import 'Lost_&_Found/Upload.dart';
@@ -329,8 +330,8 @@ class _firstpageState extends State<firstpage> {
                   : Container(
                       color: Colors.white,
                       child: userProfilePage(widget.app_user, widget.app_user)),
-          floatingActionButton: widget.curr_index == 1
-              ? Container()
+          floatingActionButton:
+              // widget.curr_index == 1 ?
               // ElevatedButton.icon(
               //     onPressed: () async {
               //       showDialog(
@@ -372,174 +373,165 @@ class _firstpageState extends State<firstpage> {
               //             color: Colors.white, fontWeight: FontWeight.bold)),
               //     style: ElevatedButton.styleFrom(primary: Colors.grey),
               //   )
-              : FloatingActionButton(
-                  onPressed: () {
-                    if (widget.curr_index == 2) {
-                      //3) {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (BuildContext context) {
-                        return threadCategory(widget.app_user);
-                      }));
-                      // } else if (widget.curr_index == 2) {
-                      //   Navigator.of(context).push(
-                      //       MaterialPageRoute(builder: (BuildContext context) {
-                      //     return eventCategory(widget.app_user);
-                      //   }));
-                    } else {
-                      showModalBottomSheet(
-                          shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(25))),
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Container(
-                              height: 300,
-                              margin: EdgeInsets.all(10),
-                              padding: EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                  color: Colors.white70,
-                                  borderRadius: BorderRadius.circular(20)),
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  children: [
-                                    const Center(
-                                        child: Text("Add",
+              // :
+              FloatingActionButton(
+            onPressed: () {
+              if (widget.curr_index == 1) {
+                //3) {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (BuildContext context) {
+                  return threadCategory(widget.app_user);
+                }));
+                // } else if (widget.curr_index == 2) {
+                //   Navigator.of(context).push(
+                //       MaterialPageRoute(builder: (BuildContext context) {
+                //     return eventCategory(widget.app_user);
+                //   }));
+              } else {
+                showModalBottomSheet(
+                    shape: const RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(25))),
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Container(
+                        height: 300,
+                        margin: EdgeInsets.all(10),
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            color: Colors.white70,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              const Center(
+                                  child: Text("Add",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 20))),
+                              const Divider(
+                                color: Colors.grey,
+                                height: 25,
+                                thickness: 2,
+                                indent: 5,
+                                endIndent: 5,
+                              ),
+                              GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) {
+                                      return lst_found_upload(widget.app_user,
+                                          'lost', 'belongings');
+                                    }));
+                                  },
+                                  child: Container(
+                                      margin: EdgeInsets.all(7),
+                                      padding: EdgeInsets.all(2),
+                                      child: const Row(children: [
+                                        Icon(Icons.preview, size: 30),
+                                        SizedBox(width: 50),
+                                        Text("Lost or Found",
                                             style: TextStyle(
                                                 fontWeight: FontWeight.w600,
-                                                fontSize: 20))),
-                                    const Divider(
-                                      color: Colors.grey,
-                                      height: 25,
-                                      thickness: 2,
-                                      indent: 5,
-                                      endIndent: 5,
-                                    ),
-                                    GestureDetector(
-                                        onTap: () {
-                                          Navigator.of(context).push(
-                                              MaterialPageRoute(builder:
-                                                  (BuildContext context) {
-                                            return lst_found_upload(
-                                                widget.app_user,
-                                                'lost',
-                                                'belongings');
-                                          }));
-                                        },
-                                        child: Container(
-                                            margin: EdgeInsets.all(7),
-                                            padding: EdgeInsets.all(2),
-                                            child: const Row(children: [
-                                              Icon(Icons.preview, size: 30),
-                                              SizedBox(width: 50),
-                                              Text("Lost or Found",
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 15))
-                                            ]))),
-                                    GestureDetector(
-                                        onTap: () {
-                                          Navigator.of(context).push(
-                                              MaterialPageRoute(builder:
-                                                  (BuildContext context) {
-                                            return buy_sell_upload(
-                                                widget.app_user,
-                                                'buy',
-                                                'belongings');
-                                          }));
-                                        },
-                                        child: Container(
-                                            margin: EdgeInsets.all(7),
-                                            padding: EdgeInsets.all(2),
-                                            child: const Row(children: [
-                                              Icon(Icons.offline_share,
-                                                  size: 30),
-                                              SizedBox(width: 50),
-                                              Text("Sharings (Buy/Sell)",
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 15))
-                                            ]))),
-                                    GestureDetector(
-                                        onTap: () {
-                                          Navigator.of(context).push(
-                                              MaterialPageRoute(builder:
-                                                  (BuildContext context) {
-                                            return postCategory(
-                                                widget.app_user);
-                                          }));
-                                        },
-                                        child: Container(
-                                            margin: EdgeInsets.all(7),
-                                            padding: EdgeInsets.all(2),
-                                            child: const Row(children: [
-                                              Icon(Icons.post_add, size: 30),
-                                              SizedBox(width: 50),
-                                              Text("Add post",
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 15))
-                                            ]))),
-                                    GestureDetector(
-                                        onTap: () {
-                                          Navigator.of(context).push(
-                                              MaterialPageRoute(builder:
-                                                  (BuildContext context) {
-                                            return upload_notification(
-                                                widget.app_user);
-                                          }));
-                                        },
-                                        child: Container(
-                                            margin: EdgeInsets.all(7),
-                                            padding: EdgeInsets.all(2),
-                                            child: const Row(children: [
-                                              Icon(Icons.announcement_outlined,
-                                                  size: 30),
-                                              SizedBox(width: 50),
-                                              Text("Announcement ",
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 15))
-                                            ]))),
-                                    // GestureDetector(
-                                    //     onTap: () {
-                                    //       Navigator.of(context).push(
-                                    //           MaterialPageRoute(builder:
-                                    //               (BuildContext context) {
-                                    //         return upload_cal_event(
-                                    //             widget.app_user);
-                                    //       }));
-                                    //     },
-                                    //     child: Container(
-                                    //         margin: EdgeInsets.all(7),
-                                    //         padding: EdgeInsets.all(2),
-                                    //         child: const Row(children: [
-                                    //           Icon(Icons.event_available,
-                                    //               size: 30),
-                                    //           SizedBox(width: 50),
-                                    //           Text(" Calendar Events ",
-                                    //               style: TextStyle(
-                                    //                   fontWeight:
-                                    //                       FontWeight.w600,
-                                    //                   fontSize: 15))
-                                    //         ])))
-                                  ],
-                                ),
-                              ),
-                            );
-                          });
-                    }
-                  },
-                  tooltip: 'wann share',
-                  child: Icon(
-                    Icons.add,
-                    color: Colors.blueAccent,
-                  ),
-                  elevation: 4.0,
-                ),
+                                                fontSize: 15))
+                                      ]))),
+                              GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) {
+                                      return buy_sell_upload(
+                                          widget.app_user, 'buy', 'belongings');
+                                    }));
+                                  },
+                                  child: Container(
+                                      margin: EdgeInsets.all(7),
+                                      padding: EdgeInsets.all(2),
+                                      child: const Row(children: [
+                                        Icon(Icons.offline_share, size: 30),
+                                        SizedBox(width: 50),
+                                        Text("Sharings (Buy/Sell)",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 15))
+                                      ]))),
+                              GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) {
+                                      return postCategory(widget.app_user);
+                                    }));
+                                  },
+                                  child: Container(
+                                      margin: EdgeInsets.all(7),
+                                      padding: EdgeInsets.all(2),
+                                      child: const Row(children: [
+                                        Icon(Icons.post_add, size: 30),
+                                        SizedBox(width: 50),
+                                        Text("Add post",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 15))
+                                      ]))),
+                              GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) {
+                                      return upload_notification(
+                                          widget.app_user);
+                                    }));
+                                  },
+                                  child: Container(
+                                      margin: EdgeInsets.all(7),
+                                      padding: EdgeInsets.all(2),
+                                      child: const Row(children: [
+                                        Icon(Icons.announcement_outlined,
+                                            size: 30),
+                                        SizedBox(width: 50),
+                                        Text("Announcement ",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 15))
+                                      ]))),
+                              // GestureDetector(
+                              //     onTap: () {
+                              //       Navigator.of(context).push(
+                              //           MaterialPageRoute(builder:
+                              //               (BuildContext context) {
+                              //         return upload_cal_event(
+                              //             widget.app_user);
+                              //       }));
+                              //     },
+                              //     child: Container(
+                              //         margin: EdgeInsets.all(7),
+                              //         padding: EdgeInsets.all(2),
+                              //         child: const Row(children: [
+                              //           Icon(Icons.event_available,
+                              //               size: 30),
+                              //           SizedBox(width: 50),
+                              //           Text(" Calendar Events ",
+                              //               style: TextStyle(
+                              //                   fontWeight:
+                              //                       FontWeight.w600,
+                              //                   fontSize: 15))
+                              //         ])))
+                            ],
+                          ),
+                        ),
+                      );
+                    });
+              }
+            },
+            tooltip: 'wann share',
+            child: Icon(
+              Icons.add,
+              color: Colors.blueAccent,
+            ),
+            elevation: 4.0,
+          ),
 
           //floatingActionButtonLocation: FloatingActionButtonLocation.,
 
@@ -830,7 +822,13 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
               // ]),
               Column(children: [
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (BuildContext context) {
+                      return datingUser(
+                          domain: 'All', app_user: widget.app_user);
+                    }));
+                  },
                   child: Column(
                     children: [
                       Container(
