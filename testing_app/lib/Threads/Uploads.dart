@@ -349,6 +349,7 @@ class _upload_alertowidgetState extends State<upload_alertowidget> {
                                               file_type,
                                               notif_years.join(''),
                                               notif_branchs.join("@"),
+                                              notif_courses.join('@'),
                                               all_university,
                                               widget.alert_category,
                                               widget.id);

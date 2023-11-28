@@ -5,7 +5,7 @@ import '/Register_Update/Servers.dart';
 import '/User_profile/Models.dart';
 import '/First_page.dart';
 
-List<String> courses = ["B.Tech", "M.Tech", "PG", "Phd", "MBA"];
+List<String> courses = ["B.Tech", "M.Tech", "PG", "Phd", "MBA", "Other"];
 List<String> branches = [
   "CS",
   "EC",

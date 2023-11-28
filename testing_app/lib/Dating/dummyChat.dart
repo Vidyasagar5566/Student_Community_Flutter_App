@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:testing_app/Dating/models.dart';
 import 'servers.dart';
 import '/Messanger/Single_message.dart';
 import '/Files_disply_download/pdf_videos_images.dart';
@@ -17,13 +18,13 @@ import '/Messanger/Models.dart';
 var uuid = Uuid();
 
 class DummychatRoomStream extends StatefulWidget {
-  final SmallUsername targetuser;
+  final DatingUser dating_user;
   final ChatRoomModel chatRoom;
   final Username app_user;
 
   const DummychatRoomStream(
       {Key? key,
-      required this.targetuser,
+      required this.dating_user,
       required this.chatRoom,
       required this.app_user})
       : super(key: key);
@@ -40,18 +41,15 @@ class _DummychatRoomStreamState extends State<DummychatRoomStream> {
         appBar: AppBar(
           title: Row(
             children: [
-              widget.targetuser.fileType == '1'
-                  ? CircleAvatar(
-                      backgroundImage:
-                          NetworkImage(widget.targetuser.profilePic!))
-                  : const CircleAvatar(
-                      backgroundImage: AssetImage("images/profile.jpg")),
+              CircleAvatar(
+                  backgroundImage:
+                      NetworkImage(widget.dating_user.dummyProfile!)),
               const SizedBox(
                 width: 20,
               ),
               Container(
                   width: 140,
-                  child: Text(widget.targetuser.username.toString(),
+                  child: Text(widget.dating_user.dummyName.toString(),
                       overflow: TextOverflow.ellipsis))
             ],
           ),
@@ -177,7 +175,8 @@ class _DummychatRoomStreamState extends State<DummychatRoomStream> {
                   }
 
                   return chatroom(
-                    targetuser_uuids: [widget.targetuser.userUuid!],
+                    datingUser_uuid:
+                        widget.dating_user.username!.userUuid.toString(),
                     chatRoom: widget.chatRoom,
                     app_user: widget.app_user,
                     all_messages: widget
@@ -201,13 +200,13 @@ class _DummychatRoomStreamState extends State<DummychatRoomStream> {
 }
 
 class chatroom extends StatefulWidget {
-  final List<String> targetuser_uuids;
+  final String datingUser_uuid;
   final ChatRoomModel chatRoom;
   final Username app_user;
   List<MessageModel> all_messages;
   chatroom(
       {Key? key,
-      required this.targetuser_uuids,
+      required this.datingUser_uuid,
       required this.chatRoom,
       required this.app_user,
       required this.all_messages})
@@ -323,13 +322,7 @@ class _chatroomState extends State<chatroom> {
         }
       }
 
-      if (widget.targetuser_uuids.length == 1) {
-        dating_servers()
-            .user_messages_notif(widget.targetuser_uuids.join("#"), msg);
-      } else {
-        dating_servers().user_messages_notif(widget.targetuser_uuids.join("#"),
-            msg + " : From " + widget.chatRoom.group_name!);
-      }
+      dating_servers().user_messages_notif(widget.datingUser_uuid, msg);
     }
   }
 
@@ -352,12 +345,8 @@ class _chatroomState extends State<chatroom> {
                             reverse: true,
                             itemCount: widget.all_messages.length,
                             itemBuilder: (context, index) {
-                              bool groupChatroom =
-                                  widget.targetuser_uuids.length == 1
-                                      ? false
-                                      : true;
                               return single_message(widget.app_user,
-                                  widget.all_messages[index], groupChatroom);
+                                  widget.all_messages[index], false);
                             },
                           ))),
             Container(

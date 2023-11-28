@@ -49,6 +49,7 @@ class threads_servers {
       int file_type,
       String allow_years,
       String allow_branchs,
+      String allow_courses,
       String all_university,
       String category,
       String category_id) async {
@@ -79,6 +80,7 @@ class threads_servers {
             'file_type': file_type,
             'allow_years': allow_years,
             'allow_branchs': allow_branchs,
+            'allow_courses': allow_courses,
             'is_all_university': is_all_university,
             'category': category,
             'category_id': category_id

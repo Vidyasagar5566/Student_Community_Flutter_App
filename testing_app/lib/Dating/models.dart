@@ -13,6 +13,7 @@ class DatingUser {
   String? domain;
   String? postedDate;
   SmallUsername? username;
+  int? numChats;
 
   DatingUser(
       {this.id,
@@ -24,7 +25,8 @@ class DatingUser {
       this.connections,
       this.domain,
       this.postedDate,
-      this.username});
+      this.username,
+      this.numChats});
 
   DatingUser.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -39,6 +41,7 @@ class DatingUser {
     username = json['username'] != null
         ? new SmallUsername.fromJson(json['username'])
         : null;
+    numChats = json['numChats'];
   }
 
   Map<String, dynamic> toJson() {
@@ -55,6 +58,7 @@ class DatingUser {
     if (this.username != null) {
       data['username'] = this.username!.toJson();
     }
+    data['numChats'] = this.numChats;
     return data;
   }
 }

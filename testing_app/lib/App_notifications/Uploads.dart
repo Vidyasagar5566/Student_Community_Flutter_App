@@ -175,7 +175,8 @@ class _upload_notificationState extends State<upload_notification> {
                                                 title,
                                                 description,
                                                 notif_years.join(''),
-                                                notif_branchs.join("@"));
+                                                notif_branchs.join("@"),
+                                                notif_courses.join('@'));
                                         Navigator.pop(context);
 
                                         if (!error) {

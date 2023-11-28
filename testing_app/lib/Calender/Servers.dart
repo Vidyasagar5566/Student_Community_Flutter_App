@@ -78,6 +78,7 @@ class calendar_servers {
       String file_type,
       String branch,
       String year,
+      String course,
       String all_university,
       String event_date) async {
     try {
@@ -108,6 +109,7 @@ class calendar_servers {
             'file_type': file_type,
             'branch': branch,
             'year': year,
+            'course': course,
             'all_universities': is_all_university,
             'event_date': event_date
           }));
@@ -149,6 +151,7 @@ class calendar_servers {
       String file_type,
       String branch,
       String year,
+      String course,
       String event_date) async {
     try {
       print(event_date);
@@ -176,6 +179,7 @@ class calendar_servers {
             'file_type': file_type,
             'branch': branch,
             'year': year,
+            'course': course,
             'event_date': event_date
           }));
       var data = json.decode(response.body) as Map;

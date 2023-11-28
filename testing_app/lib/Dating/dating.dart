@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import '/Dating/datingProfiles.dart';
 import '/Dating/dummyChat.dart';
 import '/Fcm_Notif_Domains/servers.dart';
 import '/Messanger/Models.dart';
@@ -23,6 +24,7 @@ class _datingUserState extends State<datingUser> {
   var dummyProfile;
   var dummyName;
   var dummyBio;
+  DatingUser app_user_dating_profile = DatingUser();
   String dummyDomain = "Nit Calicut";
   bool adding_profile = false;
   @override
@@ -33,14 +35,23 @@ class _datingUserState extends State<datingUser> {
         centerTitle: false,
         actions: [
           widget.app_user.dating_profile!
-              ? Container(
-                  margin: EdgeInsets.only(right: 10),
-                  child: widget.app_user.fileType == '1'
-                      ? CircleAvatar(
-                          backgroundImage:
-                              NetworkImage(widget.app_user.profilePic!))
-                      : const CircleAvatar(
-                          backgroundImage: AssetImage("images/profile.jpg")))
+              ? GestureDetector(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return datingProfiles(widget.app_user);
+                    }));
+                  },
+                  child: Container(
+                      margin: EdgeInsets.only(right: 10),
+                      child: widget.app_user.fileType == '1'
+                          ? CircleAvatar(
+                              backgroundImage:
+                                  NetworkImage(widget.app_user.profilePic!))
+                          : const CircleAvatar(
+                              backgroundImage:
+                                  AssetImage("images/profile.jpg"))),
+                )
               : Container()
         ],
       ),
@@ -80,238 +91,258 @@ class _datingUserState extends State<datingUser> {
           );
         },
       ),
-      floatingActionButton: widget.app_user.dating_profile!
-          ? Container()
-          : ElevatedButton.icon(
-              onPressed: () async {
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return StatefulBuilder(builder:
-                          (BuildContext context, StateSetter setState) {
-                        return AlertDialog(
-                            contentPadding: EdgeInsets.all(15),
-                            content: Container(
-                              margin: EdgeInsets.all(10),
-                              child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Container(),
-                                          GestureDetector(
-                                            onTap: () {
-                                              Navigator.pop(context);
-                                            },
-                                            child: Icon(Icons.close),
-                                          )
-                                        ]),
-                                    GestureDetector(
-                                      onTap: () async {
-                                        if (Platform.isAndroid) {
-                                          final ImagePicker _picker =
-                                              ImagePicker();
-                                          final XFile? image1 =
-                                              await _picker.pickImage(
-                                                  source: ImageSource.gallery,
-                                                  imageQuality: 35);
-                                          setState(() {
-                                            dummyProfile = File(image1!.path);
-                                          });
-                                        } else {
-                                          final ImagePicker _picker =
-                                              ImagePicker();
-                                          final XFile? image1 =
-                                              await _picker.pickImage(
-                                                  source: ImageSource.gallery,
-                                                  imageQuality: 5);
-                                          setState(() {
-                                            dummyProfile = File(image1!.path);
-                                          });
-                                        }
-                                      },
-                                      child: Stack(
-                                        children: [
-                                          Container(
-                                            margin: EdgeInsets.all(10),
-                                            height: 150,
-                                            width: 150,
-                                            decoration: dummyProfile == null
-                                                ? BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    image: const DecorationImage(
-                                                        image: AssetImage(
-                                                            'images/profile.jpg'),
-                                                        fit: BoxFit.cover))
-                                                : BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10)),
-                                            child: dummyProfile != null
-                                                ? Image.file(dummyProfile)
-                                                : Container(),
-                                          ),
-                                          const Positioned(
-                                              left: 125,
-                                              top: 125,
-                                              child: Icon(Icons.add_a_photo,
-                                                  size: 30, color: Colors.blue))
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(height: 5),
-                                    Container(
-                                      padding:
-                                          EdgeInsets.only(left: 10, right: 10),
-                                      child: TextFormField(
-                                        initialValue: dummyName,
-                                        keyboardType:
-                                            TextInputType.emailAddress,
-                                        decoration: const InputDecoration(
-                                          labelText: 'name',
-                                          hintText: 'Rathika',
-                                          prefixIcon: Icon(Icons.text_fields),
-                                          border: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(10))),
+      floatingActionButton: ElevatedButton.icon(
+        onPressed: () async {
+          showDialog(
+              context: context,
+              builder: (context) {
+                return StatefulBuilder(
+                    builder: (BuildContext context, StateSetter setState) {
+                  return AlertDialog(
+                      contentPadding: EdgeInsets.all(15),
+                      content: Container(
+                        margin: EdgeInsets.all(10),
+                        child:
+                            Column(mainAxisSize: MainAxisSize.min, children: [
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Icon(Icons.close),
+                                )
+                              ]),
+                          GestureDetector(
+                            onTap: () async {
+                              if (Platform.isAndroid) {
+                                final ImagePicker _picker = ImagePicker();
+                                final XFile? image1 = await _picker.pickImage(
+                                    source: ImageSource.gallery,
+                                    imageQuality: 35);
+                                setState(() {
+                                  dummyProfile = File(image1!.path);
+                                });
+                              } else {
+                                final ImagePicker _picker = ImagePicker();
+                                final XFile? image1 = await _picker.pickImage(
+                                    source: ImageSource.gallery,
+                                    imageQuality: 5);
+                                setState(() {
+                                  dummyProfile = File(image1!.path);
+                                });
+                              }
+                            },
+                            child: Stack(
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.all(10),
+                                  height: 150,
+                                  width: 150,
+                                  decoration: dummyProfile == null
+                                      ? BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          image: const DecorationImage(
+                                              image: AssetImage(
+                                                  'images/profile.jpg'),
+                                              fit: BoxFit.cover))
+                                      : BoxDecoration(),
+                                  child: dummyProfile != null
+                                      ? Image.file(dummyProfile)
+                                      : Container(),
+                                ),
+                                const Positioned(
+                                    left: 125,
+                                    top: 125,
+                                    child: Icon(Icons.add_a_photo,
+                                        size: 30, color: Colors.blue))
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 5),
+                          Container(
+                            padding: EdgeInsets.only(left: 10, right: 10),
+                            child: TextFormField(
+                              initialValue: dummyName,
+                              keyboardType: TextInputType.emailAddress,
+                              decoration: const InputDecoration(
+                                labelText: 'name',
+                                hintText: 'Rathika',
+                                prefixIcon: Icon(Icons.text_fields),
+                                border: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10))),
+                              ),
+                              onChanged: (String value) {
+                                setState(() {
+                                  dummyName = value;
+                                });
+                              },
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Container(
+                            padding: EdgeInsets.only(left: 10, right: 10),
+                            child: TextFormField(
+                              initialValue: dummyBio,
+                              keyboardType: TextInputType.multiline,
+                              minLines:
+                                  2, //Normal textInputField will be displayed
+                              maxLines: 5,
+                              decoration: const InputDecoration(
+                                labelText: 'Bio',
+                                hintText:
+                                    'i want to chat with funny guys who can.....',
+                                prefixIcon: Icon(Icons.text_fields),
+                                border: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10))),
+                              ),
+                              onChanged: (String value) {
+                                setState(() {
+                                  dummyBio = value;
+                                });
+                              },
+                            ),
+                          ),
+                          const SizedBox(height: 5),
+                          Container(
+                            padding: EdgeInsets.only(left: 10, right: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("University"),
+                                DropdownButton<String>(
+                                    value: dummyDomain,
+                                    underline: Container(),
+                                    elevation: 0,
+                                    items: domains_list_ex_all
+                                        .map<DropdownMenuItem<String>>(
+                                            (String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(
+                                          value,
+                                          style: TextStyle(fontSize: 10),
                                         ),
-                                        onChanged: (String value) {
-                                          setState(() {
-                                            dummyName = value;
-                                          });
-                                        },
-                                      ),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Container(
-                                      padding:
-                                          EdgeInsets.only(left: 10, right: 10),
-                                      child: TextFormField(
-                                        initialValue: dummyBio,
-                                        keyboardType: TextInputType.multiline,
-                                        minLines:
-                                            2, //Normal textInputField will be displayed
-                                        maxLines: 5,
-                                        decoration: const InputDecoration(
-                                          labelText: 'Bio',
-                                          hintText:
-                                              'i want to chat with funny guys who can.....',
-                                          prefixIcon: Icon(Icons.text_fields),
-                                          border: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(10))),
-                                        ),
-                                        onChanged: (String value) {
-                                          setState(() {
-                                            dummyBio = value;
-                                          });
-                                        },
-                                      ),
-                                    ),
-                                    const SizedBox(height: 5),
-                                    Container(
-                                      padding:
-                                          EdgeInsets.only(left: 10, right: 10),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text("University"),
-                                          DropdownButton<String>(
-                                              value: dummyDomain,
-                                              underline: Container(),
-                                              elevation: 0,
-                                              items: domains_list_ex_all.map<
-                                                      DropdownMenuItem<String>>(
-                                                  (String value) {
-                                                return DropdownMenuItem<String>(
-                                                  value: value,
-                                                  child: Text(
-                                                    value,
-                                                    style:
-                                                        TextStyle(fontSize: 10),
-                                                  ),
-                                                );
-                                              }).toList(),
-                                              onChanged: (value) {
-                                                setState(() {
-                                                  dummyDomain = value!;
-                                                });
-                                              }),
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(height: 20),
-                                    Container(
-                                      width: 200,
-                                      height: 50,
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(22)),
-                                          gradient: LinearGradient(
-                                            colors: [
-                                              Colors.pink.shade300,
-                                              Colors.pink,
-                                              Colors.orange.shade700
-                                            ],
-                                            begin: Alignment.topLeft,
-                                            end: Alignment.bottomRight,
-                                          )),
-                                      child: OutlinedButton(
-                                          onPressed: () async {
-                                            setState(() {
-                                              adding_profile = true;
-                                            });
-                                            bool error = await dating_servers()
-                                                .post_dating_user(
-                                                    dummyName,
-                                                    dummyBio,
-                                                    dummyProfile,
-                                                    domains1[dummyDomain]!);
-                                            Navigator.pop(context);
-                                            setState(() {
-                                              adding_profile = false;
-                                            });
-                                            if (error) {
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(const SnackBar(
-                                                      duration: Duration(
-                                                          milliseconds: 400),
-                                                      content: Text(
-                                                          "Error occured try again",
-                                                          style: TextStyle(
-                                                              color: Colors
-                                                                  .white))));
-                                            }
-                                          },
-                                          child: !adding_profile
-                                              ? const Text(
-                                                  "Join",
+                                      );
+                                    }).toList(),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        dummyDomain = value!;
+                                      });
+                                    }),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          Container(
+                            width: 200,
+                            height: 50,
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(22)),
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Colors.pink.shade300,
+                                    Colors.pink,
+                                    Colors.orange.shade700
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                )),
+                            child: OutlinedButton(
+                                onPressed: () async {
+                                  if (dummyName != null &&
+                                      dummyBio != null &&
+                                      dummyProfile != null) {
+                                    setState(() {
+                                      adding_profile = true;
+                                    });
+                                    bool error = await dating_servers()
+                                        .post_dating_user(
+                                            dummyName,
+                                            dummyBio,
+                                            dummyProfile,
+                                            domains1[dummyDomain]!);
+
+                                    Navigator.pop(context);
+                                    setState(() {
+                                      adding_profile = false;
+                                    });
+                                    if (error) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                              duration:
+                                                  Duration(milliseconds: 400),
+                                              content: Text(
+                                                  "Error occured try again",
                                                   style: TextStyle(
-                                                      color: Colors.white),
-                                                )
-                                              : const SizedBox(
-                                                  height: 12,
-                                                  width: 12,
-                                                  child:
-                                                      CircularProgressIndicator())),
-                                    )
-                                  ]),
-                            ));
-                      });
-                    });
-              },
-              icon: const Icon(Icons.edit, color: Colors.white),
-              label: const Text("Join",
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold)),
-              style: ElevatedButton.styleFrom(primary: Colors.grey),
-            ),
+                                                      color: Colors.white))));
+                                    } else {
+                                      setState(() {
+                                        widget.app_user.dating_profile = true;
+                                      });
+                                      delete_firebase_chatrooms();
+                                    }
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                            duration:
+                                                Duration(milliseconds: 400),
+                                            content: Text(
+                                                "Cant be empty anything",
+                                                style: TextStyle(
+                                                    color: Colors.white))));
+                                  }
+                                },
+                                child: !adding_profile
+                                    ? const Text(
+                                        "Add",
+                                        style: TextStyle(color: Colors.white),
+                                      )
+                                    : const SizedBox(
+                                        height: 12,
+                                        width: 12,
+                                        child: CircularProgressIndicator())),
+                          )
+                        ]),
+                      ));
+                });
+              });
+        },
+        icon: const Icon(Icons.edit, color: Colors.white),
+        label: !widget.app_user.dating_profile!
+            ? const Text("Create yours",
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold))
+            : const Text("Add yours",
+                style: TextStyle(
+                    color: Colors.white, fontWeight: FontWeight.bold)),
+        style: ElevatedButton.styleFrom(primary: Colors.grey),
+      ),
     );
+  }
+
+  Future delete_firebase_chatrooms() async {
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection("dummyChatrooms")
+        .where("group", isEqualTo: false)
+        .where("participants.${widget.app_user.userUuid}", isEqualTo: true)
+        .get();
+
+    for (int i = 0; i < snapshot.docs.length; i++) {
+      var docData = snapshot.docs[i].data();
+      ChatRoomModel existingchatroom =
+          ChatRoomModel.FromMap(docData as Map<String, dynamic>);
+      await FirebaseFirestore.instance
+          .collection("dummyChatrooms")
+          .doc(existingchatroom.chatroomid)
+          .delete();
+    }
   }
 }
 
@@ -445,14 +476,26 @@ class _datingUser1State extends State<datingUser1> {
                       duration: Duration(milliseconds: 400),
                       content: Text("guest cannot chat with others..",
                           style: TextStyle(color: Colors.white))));
+                } else if (!widget.app_user.dating_profile!) {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      duration: Duration(milliseconds: 400),
+                      content: Text("Create Your profile to open chat.",
+                          style: TextStyle(color: Colors.white))));
+                } else if (widget.app_user.email ==
+                    dating_user.username!.email) {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      duration: Duration(milliseconds: 400),
+                      content: Text("You can't chat with yourself.",
+                          style: TextStyle(color: Colors.white))));
                 } else {
-                  ChatRoomModel? chatroomModel =
-                      await getChatRoomModel(dating_user.username!);
+                  ChatRoomModel? chatroomModel = await getChatRoomModel(
+                      dating_user.username!, dating_user);
+
                   if (chatroomModel != null) {
                     Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (context) {
                       return DummychatRoomStream(
-                          targetuser: dating_user.username!,
+                          dating_user: dating_user!,
                           chatRoom: chatroomModel,
                           app_user: widget.app_user);
                     }));
@@ -461,15 +504,23 @@ class _datingUser1State extends State<datingUser1> {
               },
               child: Container(
                 padding: EdgeInsets.only(left: 25, right: 25),
-                child: const Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      "Get Contacter",
+                    const Text(
+                      "Open NewChat",
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
-                    Icon(Icons.send_to_mobile_outlined,
-                        color: Colors.white, size: 25)
+                    Row(
+                      children: [
+                        const Icon(Icons.send_to_mobile_outlined,
+                            color: Colors.white, size: 25),
+                        Text(
+                          "(" + dating_user.numChats.toString() + ")",
+                          style: const TextStyle(color: Colors.white),
+                        )
+                      ],
+                    ),
                   ],
                 ),
               )),
@@ -478,7 +529,8 @@ class _datingUser1State extends State<datingUser1> {
     );
   }
 
-  Future<ChatRoomModel?> getChatRoomModel(SmallUsername targetuser) async {
+  Future<ChatRoomModel?> getChatRoomModel(
+      SmallUsername targetuser, DatingUser dating_user) async {
     ChatRoomModel? chatroom1;
     List<List<bool>> all_poss = [
       [true, false],
@@ -529,6 +581,10 @@ class _datingUser1State extends State<datingUser1> {
           .doc(newchatroom.chatroomid)
           .set(newchatroom.toMap());
       chatroom1 = newchatroom;
+      setState(() {
+        dating_user.numChats = dating_user.numChats! + 1;
+      });
+      dating_servers().inc_dating_user_chat(dating_user.username!.email!);
     }
     return chatroom1;
   }
