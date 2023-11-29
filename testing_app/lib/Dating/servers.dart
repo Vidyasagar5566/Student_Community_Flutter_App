@@ -89,12 +89,10 @@ class dating_servers {
     }
   }
 
-  Future<bool> delete_dating_user(int datingUserId) async {
+  Future<bool> delete_dating_user() async {
     try {
       var token = storage.getItem('token');
-      Map<String, String> queryParameters = {'id': datingUserId.toString()};
-      String queryString = Uri(queryParameters: queryParameters).query;
-      String finalUrl = "$base_url/datingUser?$queryString";
+      String finalUrl = "$base_url/datingUser";
       var url = Uri.parse(finalUrl);
       http.Response response = await http.delete(url, headers: {
         'Authorization': 'token $token',
@@ -161,6 +159,34 @@ class dating_servers {
 
       return data['error'];
     } catch (e) {
+      return true;
+    }
+  }
+
+// DATING USER REACTIONS
+
+  Future<bool> dating_user_post_reaction(
+      String dating_user_email, int Reaction) async {
+    try {
+      var token = storage.getItem('token');
+      String finalUrl = "$base_url/datingUserReaction";
+      var url = Uri.parse(finalUrl);
+
+      http.Response response = await http.post(
+        url,
+        headers: {
+          'Authorization': 'token $token',
+          "Content-Type": "application/json",
+        },
+        body: jsonEncode(
+            {'dating_user_email': dating_user_email, 'Reaction': Reaction}),
+      );
+
+      var data = json.decode(response.body) as Map;
+      print(data);
+      return data['error'];
+    } catch (e) {
+      print(e);
       return true;
     }
   }

@@ -1,6 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get_time_ago/get_time_ago.dart';
+import '/Files_disply_download/pdf_videos_images.dart';
+import '/First_page.dart';
 import '/Dating/dummyChat.dart';
 import '/Dating/models.dart';
 import '/Fcm_Notif_Domains/servers.dart';
@@ -31,15 +34,86 @@ class _datingProfilesState extends State<datingProfiles> {
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.black),
+        centerTitle: false,
         title: Text(
           widget.app_user.username!,
           style: TextStyle(color: Colors.black),
         ),
+        actions: [
+          widget.app_user.dating_profile!
+              ? IconButton(
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            contentPadding: EdgeInsets.all(15),
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(),
+                                    IconButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        icon: const Icon(Icons.close))
+                                  ],
+                                ),
+                                const SizedBox(height: 20),
+                                const Center(
+                                    child: Text(
+                                        "Do you want to Delete this Profile?",
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold))),
+                                const SizedBox(height: 10),
+                                const Center(
+                                    child: Text(
+                                        "This will erase all tracking's till now including chattings and reactions and you can start with new profile,",
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold))),
+                                Container(
+                                  margin: const EdgeInsets.all(30),
+                                  child: OutlinedButton(
+                                      onPressed: () async {
+                                        dating_servers().delete_dating_user();
+                                        delete_firebase_chatrooms();
+                                        Navigator.of(context)
+                                            .pushAndRemoveUntil(
+                                                MaterialPageRoute(builder:
+                                                    (BuildContext context) {
+                                          return get_ueser_widget(0);
+                                        }), (Route<dynamic> route) => false);
+                                      },
+                                      child: const Text(
+                                        "Remove",
+                                        style: TextStyle(color: Colors.blue),
+                                      )),
+                                )
+                              ],
+                            ),
+                          );
+                        });
+                  },
+                  icon: const Icon(
+                    Icons.auto_delete_outlined,
+                    color: Colors.blue,
+                  ))
+              : Container()
+        ],
         backgroundColor: Colors.white70,
       ),
       body: StreamBuilder(
           stream: FirebaseFirestore.instance
               .collection("dummyChatrooms")
+              // .orderBy("lastmessagetime", descending: true)
               .where("group", isEqualTo: false)
               .where("participants.${widget.app_user.userUuid}",
                   isEqualTo: true)
@@ -88,6 +162,24 @@ class _datingProfilesState extends State<datingProfiles> {
             }
           }),
     );
+  }
+
+  Future delete_firebase_chatrooms() async {
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection("dummyChatrooms")
+        .where("group", isEqualTo: false)
+        .where("participants.${widget.app_user.userUuid}", isEqualTo: true)
+        .get();
+
+    for (int i = 0; i < snapshot.docs.length; i++) {
+      var docData = snapshot.docs[i].data();
+      ChatRoomModel existingchatroom =
+          ChatRoomModel.FromMap(docData as Map<String, dynamic>);
+      await FirebaseFirestore.instance
+          .collection("dummyChatrooms")
+          .doc(existingchatroom.chatroomid)
+          .delete();
+    }
   }
 }
 
@@ -170,7 +262,7 @@ class _Personmessanger1State extends State<Personmessanger1> {
                     child: const Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          "Messages",
+                          "Messages(may not to be true identities)",
                           style: TextStyle(
                               fontWeight: FontWeight.w600, fontSize: 15),
                         ))),
@@ -226,9 +318,20 @@ class _Personmessanger1State extends State<Personmessanger1> {
                         children: [
                           Container(
                               width: 48, //post.profile_pic
-                              child: CircleAvatar(
-                                  backgroundImage:
-                                      NetworkImage(dating_user.dummyProfile!))),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (BuildContext context) {
+                                    return image_display(
+                                        false,
+                                        File('images/icon.png'),
+                                        dating_user.dummyProfile!);
+                                  }));
+                                },
+                                child: CircleAvatar(
+                                    backgroundImage: NetworkImage(
+                                        dating_user.dummyProfile!)),
+                              )),
                           Container(
                             padding: EdgeInsets.only(left: 20),
                             width: (width - 36) / 1.8,
@@ -270,6 +373,7 @@ class _Personmessanger1State extends State<Personmessanger1> {
                   const SizedBox(
                     height: 10,
                   ),
+                  Text(utf8convert(dating_user.dummyBio!)),
                   Row(
                     children: [
                       Text("Message : "),

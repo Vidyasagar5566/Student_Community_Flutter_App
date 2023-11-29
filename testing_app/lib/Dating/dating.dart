@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import '/Dating/datingProfiles.dart';
 import '/Dating/dummyChat.dart';
 import '/Fcm_Notif_Domains/servers.dart';
@@ -10,6 +12,12 @@ import '/Files_disply_download/pdf_videos_images.dart';
 import '/User_profile/Models.dart';
 import 'models.dart';
 import 'servers.dart';
+import 'dart:convert' show utf8;
+
+String utf8convert(String text) {
+  List<int> bytes = text.toString().codeUnits;
+  return utf8.decode(bytes);
+}
 
 class datingUser extends StatefulWidget {
   String domain;
@@ -24,6 +32,7 @@ class _datingUserState extends State<datingUser> {
   var dummyProfile;
   var dummyName;
   var dummyBio;
+  bool del_old_profile_chats = false;
   DatingUser app_user_dating_profile = DatingUser();
   String dummyDomain = "Nit Calicut";
   bool adding_profile = false;
@@ -34,25 +43,24 @@ class _datingUserState extends State<datingUser> {
         title: const Text("Connect"),
         centerTitle: false,
         actions: [
-          widget.app_user.dating_profile!
-              ? GestureDetector(
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return datingProfiles(widget.app_user);
-                    }));
-                  },
-                  child: Container(
-                      margin: EdgeInsets.only(right: 10),
-                      child: widget.app_user.fileType == '1'
-                          ? CircleAvatar(
-                              backgroundImage:
-                                  NetworkImage(widget.app_user.profilePic!))
-                          : const CircleAvatar(
-                              backgroundImage:
-                                  AssetImage("images/profile.jpg"))),
-                )
-              : Container()
+          // widget.app_user.dating_profile!
+          //     ?
+          GestureDetector(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return datingProfiles(widget.app_user);
+              }));
+            },
+            child: Container(
+                margin: EdgeInsets.only(right: 10),
+                child: widget.app_user.fileType == '1'
+                    ? CircleAvatar(
+                        backgroundImage:
+                            NetworkImage(widget.app_user.profilePic!))
+                    : const CircleAvatar(
+                        backgroundImage: AssetImage("images/profile.jpg"))),
+          )
+          // : Container()
         ],
       ),
       body: FutureBuilder<List<DatingUser>>(
@@ -238,6 +246,23 @@ class _datingUserState extends State<datingUser> {
                               ],
                             ),
                           ),
+                          const SizedBox(height: 10),
+                          widget.app_user.dating_profile!
+                              ? Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                      Text("Delete old profile chats?"),
+                                      Checkbox(
+                                        value: del_old_profile_chats,
+                                        onChanged: (bool? value) {
+                                          setState(() {
+                                            del_old_profile_chats = value!;
+                                          });
+                                        },
+                                      )
+                                    ])
+                              : Container(),
                           const SizedBox(height: 20),
                           Container(
                             width: 200,
@@ -286,7 +311,18 @@ class _datingUserState extends State<datingUser> {
                                       setState(() {
                                         widget.app_user.dating_profile = true;
                                       });
-                                      delete_firebase_chatrooms();
+                                      if (del_old_profile_chats) {
+                                        delete_firebase_chatrooms();
+                                      }
+                                      Navigator.pop(context);
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                              duration:
+                                                  Duration(milliseconds: 1000),
+                                              content: Text(
+                                                  "Updated successfully",
+                                                  style: TextStyle(
+                                                      color: Colors.white))));
                                     }
                                   } else {
                                     ScaffoldMessenger.of(context).showSnackBar(
@@ -319,7 +355,7 @@ class _datingUserState extends State<datingUser> {
             ? const Text("Create yours",
                 style:
                     TextStyle(color: Colors.white, fontWeight: FontWeight.bold))
-            : const Text("Add yours",
+            : const Text("Update",
                 style: TextStyle(
                     color: Colors.white, fontWeight: FontWeight.bold)),
         style: ElevatedButton.styleFrom(primary: Colors.grey),
@@ -366,6 +402,7 @@ class _datingUser1State extends State<datingUser1> {
         physics: PageScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
           DatingUser dating_user = widget.dating_list[index];
+
           return build_loading_screen(dating_user);
         });
   }
@@ -375,6 +412,74 @@ class _datingUser1State extends State<datingUser1> {
 
     return Column(
       children: [
+        Row(children: [
+          Container(),
+          SizedBox(width: width / 1.15),
+          GestureDetector(
+              onTap: () {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        contentPadding: EdgeInsets.all(15),
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(),
+                                IconButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    icon: const Icon(Icons.close))
+                              ],
+                            ),
+                            const SizedBox(height: 20),
+                            const Center(
+                                child: SelectableText(
+                                    "• This platform is designed for users to share their interests and connect with others anonymously",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold))),
+                            const SizedBox(height: 10),
+                            const Center(
+                                child: SelectableText(
+                                    "• Maintain a single profile by updating daily tasks or engaging in fun chats.",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold))),
+                            const SizedBox(height: 10),
+                            const Center(
+                                child: SelectableText(
+                                    "• Delete old tracking profile at any time to start fresh",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold))),
+                            const SizedBox(height: 10),
+                            const Center(
+                                child: SelectableText(
+                                    "• Abusive behavior is strictly prohibited(Students can contact us through helpCenter)",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold))),
+                          ],
+                        ),
+                      );
+                    });
+              },
+              child: Icon(Icons.integration_instructions,
+                  color: Colors.pinkAccent)),
+        ]),
         Container(
           width: width,
           padding: EdgeInsets.only(left: 10, right: 10),
@@ -392,8 +497,10 @@ class _datingUser1State extends State<datingUser1> {
         Container(
           padding: EdgeInsets.only(left: 10, right: 10),
           width: width,
-          child: Text(dating_user.dummyBio!,
+          child: Text(utf8convert(dating_user.dummyBio!),
               maxLines: 2,
+              softWrap: false,
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(fontWeight: FontWeight.w200, fontSize: 20)),
         ),
         const SizedBox(height: 4),
@@ -425,35 +532,7 @@ class _datingUser1State extends State<datingUser1> {
           ),
         ),
         const SizedBox(height: 2),
-        const Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-          Stack(
-            children: [
-              Text('🔥', style: TextStyle(fontSize: 20)),
-              Positioned(
-                  left: 10,
-                  top: 10,
-                  child: Text("24", style: TextStyle(fontSize: 7)))
-            ],
-          ),
-          Stack(
-            children: [
-              Text('🩷', style: TextStyle(fontSize: 30)),
-              Positioned(
-                  left: 10,
-                  top: 10,
-                  child: Text("24", style: TextStyle(fontSize: 7)))
-            ],
-          ),
-          Stack(
-            children: [
-              Text('🥺', style: TextStyle(fontSize: 20)),
-              Positioned(
-                  left: 10,
-                  top: 10,
-                  child: Text("24", style: TextStyle(fontSize: 7)))
-            ],
-          ),
-        ]),
+        datingUserReactions(dating_user),
         const SizedBox(height: 20),
         Container(
           height: 50,
@@ -507,9 +586,18 @@ class _datingUser1State extends State<datingUser1> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      "Open NewChat",
-                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    const Row(
+                      children: [
+                        Text(
+                          "Say Hello",
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                        ),
+                        const SizedBox(width: 5),
+                        Text(
+                          '👋',
+                          style: TextStyle(fontSize: 26, color: Colors.white),
+                        )
+                      ],
                     ),
                     Row(
                       children: [
@@ -565,7 +653,7 @@ class _datingUser1State extends State<datingUser1> {
     } else {
       ChatRoomModel newchatroom = ChatRoomModel(
         chatroomid: uuid.v1(),
-        lastmessage: "",
+        lastmessage: 'Helloo 👋',
         lastmessagetype: 0,
         lastmessageseen: false,
         lastmessagetime: DateTime.now(),
@@ -585,7 +673,129 @@ class _datingUser1State extends State<datingUser1> {
         dating_user.numChats = dating_user.numChats! + 1;
       });
       dating_servers().inc_dating_user_chat(dating_user.username!.email!);
+      MessageModel newmessage = MessageModel(
+          messageid: uuid.v1(),
+          seen: false,
+          createdon: DateTime.now(),
+          sender: widget.app_user.email,
+          text: 'Helloo 👋',
+          photo: "",
+          type: 0);
+      FirebaseFirestore.instance
+          .collection("dummyChatrooms")
+          .doc(chatroom1.chatroomid)
+          .collection("messages")
+          .doc(newmessage.messageid)
+          .set(newmessage.toMap());
     }
     return chatroom1;
+  }
+
+  Widget datingUserReactions(DatingUser dating_user) {
+    var width = MediaQuery.of(context).size.width;
+    return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          GestureDetector(
+            onTap: () {
+              if (dating_user.username!.email == widget.app_user.email) {
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    duration: Duration(milliseconds: 400),
+                    content: Text("You can't react to yourself.",
+                        style: TextStyle(color: Colors.white))));
+              } else {
+                if (dating_user.is_reaction == 2) {
+                  setState(() {
+                    dating_user.Reactions2_count =
+                        dating_user.Reactions2_count! - 1;
+                    dating_user.Reactions1_count =
+                        dating_user.Reactions1_count! + 1;
+                    dating_user.is_reaction = 1;
+                  });
+
+                  dating_servers().dating_user_post_reaction(
+                      dating_user.username!.email!, 1);
+                } else if (dating_user.is_reaction == 0) {
+                  setState(() {
+                    dating_user.Reactions1_count =
+                        dating_user.Reactions1_count! + 1;
+                    dating_user.is_reaction = 1;
+                  });
+
+                  dating_servers().dating_user_post_reaction(
+                      dating_user.username!.email!, 1);
+                }
+              }
+            },
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('🔥', style: TextStyle(fontSize: 30)),
+                SizedBox(width: 4),
+                Column(
+                  children: [
+                    Text("(" + dating_user.Reactions1_count.toString() + ")",
+                        style: const TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.bold)),
+                    dating_user.is_reaction == 1
+                        ? const Text("🔥", style: TextStyle(fontSize: 11))
+                        : Container(),
+                  ],
+                )
+              ],
+            ),
+          ),
+          SizedBox(width: width / 1.6),
+          GestureDetector(
+            onTap: () {
+              if (dating_user.username!.email == widget.app_user.email) {
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    duration: Duration(milliseconds: 400),
+                    content: Text("You can't react to yourself.",
+                        style: TextStyle(color: Colors.white))));
+              } else {
+                if (dating_user.is_reaction == 1) {
+                  setState(() {
+                    dating_user.Reactions1_count =
+                        dating_user.Reactions1_count! - 1;
+                    dating_user.Reactions2_count =
+                        dating_user.Reactions2_count! + 1;
+                    dating_user.is_reaction = 2;
+                  });
+
+                  dating_servers().dating_user_post_reaction(
+                      dating_user.username!.email!, 2);
+                } else if (dating_user.is_reaction == 0) {
+                  setState(() {
+                    dating_user.Reactions2_count =
+                        dating_user.Reactions2_count! + 1;
+                    dating_user.is_reaction = 2;
+                  });
+
+                  dating_servers().dating_user_post_reaction(
+                      dating_user.username!.email!, 2);
+                }
+              }
+            },
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('😂', style: TextStyle(fontSize: 30)),
+                SizedBox(width: 4),
+                Column(
+                  children: [
+                    Text("(" + dating_user.Reactions2_count.toString() + ")",
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.bold)),
+                    dating_user.is_reaction == 2
+                        ? const Text("😂", style: TextStyle(fontSize: 11))
+                        : Container(),
+                  ],
+                )
+              ],
+            ),
+          ),
+        ]);
   }
 }

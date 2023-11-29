@@ -95,6 +95,7 @@ class _messangerState extends State<messanger> {
                   .collection("chatrooms")
                   .where("group", isEqualTo: false)
                   .where("participants.${app_user.userUuid}", isEqualTo: true)
+                  // .orderBy("lastmessagetime", descending: true)
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.active) {
