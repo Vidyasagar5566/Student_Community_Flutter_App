@@ -35,7 +35,7 @@ class all_buySellwidget1 extends StatefulWidget {
   Username app_user;
   String tag;
   String category;
-  List<Lost_Found> lst_buy_list;
+  List<Buy_Sell> lst_buy_list;
   String domain;
   String email;
   all_buySellwidget1(this.app_user, this.tag, this.category, this.lst_buy_list,
@@ -48,7 +48,7 @@ class all_buySellwidget1 extends StatefulWidget {
 class _all_lostwidget1State extends State<all_buySellwidget1> {
   bool total_loaded = false;
   void load_data_fun() async {
-    List<Lost_Found> latest_lst_list = await bs_servers().get_lst_list(
+    List<Buy_Sell> latest_lst_list = await bs_servers().get_lst_list(
         widget.lst_buy_list.length,
         domains1[widget.domain]!,
         widget.tag,
@@ -93,7 +93,7 @@ class _all_lostwidget1State extends State<all_buySellwidget1> {
                     value: widget.tag,
                     underline: Container(),
                     elevation: 0,
-                    items: ["buy", "sell"]
+                    items: ["All", "buy", "sell"]
                         .map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
@@ -178,7 +178,7 @@ class _all_lostwidget1State extends State<all_buySellwidget1> {
   }
 
   Widget _listViewItems(
-      Username app_user, List<Lost_Found> lst_list, String tag) {
+      Username app_user, List<Buy_Sell> lst_list, String tag) {
     return lst_list.isEmpty
         ? Container(
             margin: EdgeInsets.only(top: 100),
@@ -212,7 +212,7 @@ class _all_lostwidget1State extends State<all_buySellwidget1> {
                     shrinkWrap: true,
                     padding: EdgeInsets.zero,
                     itemBuilder: (BuildContext context, int index) {
-                      Lost_Found lst = lst_list[index];
+                      Buy_Sell lst = lst_list[index];
                       var _convertedTimestamp = DateTime.parse(
                           lst.postedDate!); // Converting into [DateTime] object
                       String lst_posted_date =
@@ -223,8 +223,8 @@ class _all_lostwidget1State extends State<all_buySellwidget1> {
           );
   }
 
-  Widget _buildLoadingScreen(Lost_Found lst, int index, String lst_posted_date,
-      List<Lost_Found> lst_list) {
+  Widget _buildLoadingScreen(Buy_Sell lst, int index, String lst_posted_date,
+      List<Buy_Sell> lst_list) {
     var width = MediaQuery.of(context).size.width;
     SmallUsername user = lst.username!;
     return GestureDetector(
@@ -412,7 +412,7 @@ class _all_lostwidget1State extends State<all_buySellwidget1> {
                                     textAlign: TextAlign.center,
                                   )
                                 : sending_cmnt == false
-                                    ? (widget.tag == "buy"
+                                    ? (lst.tag == "buy"
                                         ? const Text(
                                             "sell?",
                                             style:
@@ -478,13 +478,13 @@ class _all_lostwidget1State extends State<all_buySellwidget1> {
 }
 
 class buy_photowidget extends StatefulWidget {
-  Lost_Found lst;
+  Buy_Sell lst;
   String description;
   String img;
   String title;
   SmallUsername user;
   Username app_user;
-  List<Lost_Found> lst_list;
+  List<Buy_Sell> lst_list;
   buy_photowidget(this.lst, this.description, this.img, this.title, this.user,
       this.app_user, this.lst_list);
 //  const lost_photowidget({super.key});
@@ -813,7 +813,7 @@ class _lost_photowidgetState extends State<buy_photowidget> {
 }
 
 class lst_commentwidget extends StatefulWidget {
-  Lost_Found lst;
+  Buy_Sell lst;
   Username app_user;
   lst_commentwidget(this.lst, this.app_user);
 
@@ -835,7 +835,7 @@ class _lst_commentwidgetState extends State<lst_commentwidget> {
           ),
           backgroundColor: Colors.white70,
         ),
-        body: FutureBuilder<List<LST_CMNT>>(
+        body: FutureBuilder<List<BS_CMNT>>(
           future: bs_servers().get_lst_cmnt_list(widget.lst.id!),
           builder: (ctx, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
@@ -847,7 +847,7 @@ class _lst_commentwidgetState extends State<lst_commentwidget> {
                   ),
                 );
               } else if (snapshot.hasData) {
-                List<LST_CMNT> lst_cmnt_list = snapshot.data;
+                List<BS_CMNT> lst_cmnt_list = snapshot.data;
                 return lst_cmnt_page(
                     lst_cmnt_list, widget.app_user, widget.lst);
               }
@@ -864,9 +864,9 @@ class _lst_commentwidgetState extends State<lst_commentwidget> {
 }
 
 class lst_cmnt_page extends StatefulWidget {
-  List<LST_CMNT> lst_cmnt_list;
+  List<BS_CMNT> lst_cmnt_list;
   Username app_user;
-  Lost_Found lst;
+  Buy_Sell lst;
   lst_cmnt_page(this.lst_cmnt_list, this.app_user, this.lst);
 
   @override
@@ -878,7 +878,7 @@ class _lst_cmnt_pageState extends State<lst_cmnt_page> {
   bool sending_cmnt = false;
   @override
   Widget build(BuildContext context) {
-    List<LST_CMNT> lst_cmnt_list = widget.lst_cmnt_list;
+    List<BS_CMNT> lst_cmnt_list = widget.lst_cmnt_list;
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     return SingleChildScrollView(
@@ -909,7 +909,7 @@ class _lst_cmnt_pageState extends State<lst_cmnt_page> {
                       physics: NeverScrollableScrollPhysics(),
                       padding: EdgeInsets.only(bottom: 10),
                       itemBuilder: (BuildContext context, int index) {
-                        LST_CMNT lst_cmnt = lst_cmnt_list[index];
+                        BS_CMNT lst_cmnt = lst_cmnt_list[index];
 
                         return _buildLoadingScreen(lst_cmnt);
                       }),
@@ -1053,7 +1053,7 @@ class _lst_cmnt_pageState extends State<lst_cmnt_page> {
   }
 
   Widget _buildLoadingScreen(
-    LST_CMNT lst_cmnt,
+    BS_CMNT lst_cmnt,
   ) {
     String delete_error = "";
     SmallUsername user = lst_cmnt.username!;

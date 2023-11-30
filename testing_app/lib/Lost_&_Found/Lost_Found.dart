@@ -96,7 +96,7 @@ class _all_lostwidget1State extends State<all_lostwidget1> {
                     value: widget.tag,
                     underline: Container(),
                     elevation: 0,
-                    items: ["lost", "found"]
+                    items: ["All", "lost", "found"]
                         .map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
@@ -417,7 +417,7 @@ class _all_lostwidget1State extends State<all_lostwidget1> {
                                     textAlign: TextAlign.center,
                                   )
                                 : sending_cmnt[index] == false
-                                    ? (widget.tag == "lost"
+                                    ? (lst.tag == "lost"
                                         ? const Text(
                                             "found?",
                                             style:

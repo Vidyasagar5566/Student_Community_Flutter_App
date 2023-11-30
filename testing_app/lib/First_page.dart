@@ -747,7 +747,7 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
                   onTap: () {
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (BuildContext context) {
-                      return all_buySellwidget1(widget.app_user, "buy", "All",
+                      return all_buySellwidget1(widget.app_user, "All", "All",
                           [], domains[widget.app_user.domain]!, '');
                     }));
                   },
@@ -771,7 +771,7 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
                   onTap: () {
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (BuildContext context) {
-                      return all_lostwidget1(widget.app_user, "lost", "All", [],
+                      return all_lostwidget1(widget.app_user, "All", "All", [],
                           domains[widget.app_user.domain]!, '');
                     }));
                   },
