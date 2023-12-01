@@ -573,10 +573,10 @@ class _firstpageState extends State<firstpage> {
             onTap: (int index) {
               setState(() {
                 domain = 'All';
-                if (index == 1) {
-                  today = DateTime.now();
-                  domain = domains[widget.app_user.domain]!;
-                }
+                // if (index == 1) {
+                //   today = DateTime.now();
+                //   domain = domains[widget.app_user.domain]!;
+                // }
                 widget.curr_index = index;
                 // }
               });
@@ -745,6 +745,9 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
               Column(children: [
                 GestureDetector(
                   onTap: () {
+                    print(widget.app_user.domain);
+                    print(domains[widget.app_user.domain]!);
+                    print(domains1[domains[widget.app_user.domain]!]);
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (BuildContext context) {
                       return all_buySellwidget1(widget.app_user, "All", "All",

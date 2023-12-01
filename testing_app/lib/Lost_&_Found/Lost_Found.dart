@@ -232,13 +232,6 @@ class _all_lostwidget1State extends State<all_lostwidget1> {
     var width = MediaQuery.of(context).size.width;
     SmallUsername user = lst.username!;
     return GestureDetector(
-      onTap: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (BuildContext context) {
-          return lost_photowidget(lst, lst.description!, lst.img!, lst.title!,
-              user, widget.app_user, lst_list);
-        }));
-      },
       child: Column(
         children: [
           Container(
@@ -439,41 +432,340 @@ class _all_lostwidget1State extends State<all_lostwidget1> {
                           ))
                     ],
                   ),
-                  const SizedBox(height: 20),
-                  Column(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(4),
-                        child: Text(
-                          utf8convert(lst.description!),
-                          //'''My black crocs kept outside my room(6A 38) are missing from todays afternoon.if anyone took it by mistake please keep them back. the picture is attached down.''',
-                          //lst_list.description
-                          style: const TextStyle(
-                            fontSize: 13, //color: Colors.white
-                          ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
+                  const SizedBox(height: 10),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          children: [
+                            SizedBox(
+                                width: (width - 20) / 3,
+                                child: Text(lst.title!,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis)),
+                            const SizedBox(height: 5),
+                            GestureDetector(
+                              onTap: () {
+                                if (lst.imgRatio == 1.0) {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (BuildContext context) {
+                                    return image_display(
+                                        false,
+                                        File('images/lost-and-found.gif'),
+                                        lst.img!);
+                                  }));
+                                }
+                              },
+                              child: Container(
+                                decoration: lst.imgRatio == 1
+                                    ? BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        image: const DecorationImage(
+                                            scale: 10,
+                                            image: AssetImage(
+                                                'images/loading.png')))
+                                    : BoxDecoration(),
+                                child: Container(
+                                  width: (width - 20) / 3,
+                                  height: (width - 20) / 3,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    image: lst.imgRatio == 0
+                                        ? const DecorationImage(
+                                            image: AssetImage(
+                                                'images/lost-and-found.gif'),
+                                            fit: BoxFit.cover)
+                                        : DecorationImage(
+                                            image: NetworkImage(lst.img!),
+                                            fit: BoxFit.cover),
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
                         ),
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        "${user.email!}  (Tap to see)",
-                        //"contact to "  + (lst_list.username.email).toString(),
-                        style: const TextStyle(
-                          fontSize: 10, //color: Colors.white
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        lst_posted_date,
-                        style: const TextStyle(
-                          fontSize: 10, //color: Colors.white
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ),
+                        GestureDetector(
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Column(children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Container(),
+                                              IconButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  icon: const Icon(Icons.close))
+                                            ],
+                                          ),
+                                          const SizedBox(height: 20),
+                                          Container(
+                                            padding: const EdgeInsets.all(4),
+                                            width: (width - 20) / 2,
+                                            child: Text(
+                                              utf8convert(lst.description!),
+                                              style: const TextStyle(
+                                                fontSize:
+                                                    13, //color: Colors.white
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            padding: const EdgeInsets.all(4),
+                                            width: (width - 20) / 2,
+                                            child: Text(
+                                              user.email!,
+                                              style: const TextStyle(
+                                                fontSize:
+                                                    10, //color: Colors.white
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            padding: const EdgeInsets.all(4),
+                                            width: (width - 20) / 2,
+                                            child: Text(
+                                              lst_posted_date,
+                                              style: const TextStyle(
+                                                fontSize:
+                                                    10, //color: Colors.white
+                                              ),
+                                            ),
+                                          ),
+                                          TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).push(
+                                                    MaterialPageRoute(builder:
+                                                        (BuildContext context) {
+                                                  return report_upload(
+                                                      widget.app_user,
+                                                      "lost/found" +
+                                                          " with id :" +
+                                                          lst.id.toString(),
+                                                      lst.username!.email!);
+                                                }));
+                                              },
+                                              child: const Text(
+                                                  "Report this post?")),
+                                          TextButton(
+                                              onPressed: () async {
+                                                if (widget.app_user.email!
+                                                        .split('@')[0] ==
+                                                    "guest") {
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(const SnackBar(
+                                                          duration: Duration(
+                                                              milliseconds:
+                                                                  500),
+                                                          content: Text(
+                                                              "guest cannot hide contents..",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white))));
+                                                } else {
+                                                  showDialog(
+                                                      context: context,
+                                                      barrierDismissible: false,
+                                                      builder: (context) {
+                                                        return AlertDialog(
+                                                            contentPadding:
+                                                                EdgeInsets.all(
+                                                                    15),
+                                                            content: Container(
+                                                              margin: EdgeInsets
+                                                                  .all(10),
+                                                              child: const Column(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .min,
+                                                                  children: [
+                                                                    Text(
+                                                                        "Please wait while updating....."),
+                                                                    SizedBox(
+                                                                        height:
+                                                                            10),
+                                                                    CircularProgressIndicator()
+                                                                  ]),
+                                                            ));
+                                                      });
+                                                  bool error =
+                                                      await lf_servers()
+                                                          .hide_lst(lst.id!);
+                                                  Navigator.pop(context);
+                                                  if (!error) {
+                                                    Navigator.of(context)
+                                                        .pushAndRemoveUntil(
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (BuildContext
+                                                                        context) {
+                                                      return firstpage(
+                                                          0, widget.app_user);
+                                                    }),
+                                                            (Route<dynamic>
+                                                                    route) =>
+                                                                false);
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(
+                                                            const SnackBar(
+                                                      duration: const Duration(
+                                                          milliseconds: 500),
+                                                      content: Text(
+                                                          'We will remove These type of posts in your feed,',
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .white)),
+                                                    ));
+                                                  } else {
+                                                    Navigator.pop(context);
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(
+                                                      const SnackBar(
+                                                        duration:
+                                                            const Duration(
+                                                                milliseconds:
+                                                                    500),
+                                                        content: Column(
+                                                          children: [
+                                                            Text(
+                                                              'error occured try again',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    );
+                                                  }
+                                                }
+                                              },
+                                              child: const Text(
+                                                  "Hide this type of content?")),
+                                          TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).push(
+                                                    MaterialPageRoute(builder:
+                                                        (BuildContext context) {
+                                                  return report_upload(
+                                                      widget.app_user,
+                                                      "User: " +
+                                                          lst.username!.email
+                                                              .toString(),
+                                                      lst.username!.email!);
+                                                }));
+                                              },
+                                              child: Text("Report This User?")),
+                                          const SizedBox(height: 20),
+                                          widget.app_user.email ==
+                                                  lst.username!.email
+                                              ? Column(
+                                                  children: [
+                                                    const Center(
+                                                        child: Text(
+                                                            "Do you want to delete this?",
+                                                            style: TextStyle(
+                                                                fontSize: 14,
+                                                                color: Colors
+                                                                    .black,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold))),
+                                                    const SizedBox(height: 10),
+                                                    Container(
+                                                      margin:
+                                                          const EdgeInsets.all(
+                                                              30),
+                                                      child: OutlinedButton(
+                                                          onPressed: () async {
+                                                            bool error =
+                                                                await lf_servers()
+                                                                    .delete_lst(
+                                                                        lst.id!);
+                                                            if (!error) {
+                                                              Navigator.pop(
+                                                                  context);
+                                                              Navigator.of(context).pushAndRemoveUntil(
+                                                                  MaterialPageRoute(builder:
+                                                                      (BuildContext
+                                                                          context) {
+                                                                return firstpage(
+                                                                    0,
+                                                                    widget
+                                                                        .app_user);
+                                                              }),
+                                                                  (Route<dynamic>
+                                                                          route) =>
+                                                                      false);
+                                                            }
+                                                          },
+                                                          child: const Center(
+                                                              child: Text(
+                                                            "Delete",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .blue),
+                                                          ))),
+                                                    ),
+                                                  ],
+                                                )
+                                              : Container()
+                                        ])
+                                      ],
+                                    ),
+                                  );
+                                });
+                          },
+                          child: Column(children: [
+                            Container(
+                              padding: const EdgeInsets.all(4),
+                              width: (width - 20) / 2,
+                              child: Text(
+                                utf8convert(lst.description!),
+                                style: const TextStyle(
+                                  fontSize: 13, //color: Colors.white
+                                ),
+                                maxLines: 6,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.all(4),
+                              width: (width - 20) / 2,
+                              child: Text(
+                                user.email!,
+                                style: const TextStyle(
+                                  fontSize: 10, //color: Colors.white
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.all(4),
+                              width: (width - 20) / 2,
+                              child: Text(
+                                lst_posted_date,
+                                style: const TextStyle(
+                                  fontSize: 10, //color: Colors.white
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                              ),
+                            ),
+                          ]),
+                        )
+                      ]),
                 ],
               ))
         ],
@@ -485,341 +777,6 @@ class _all_lostwidget1State extends State<all_lostwidget1> {
   void dispose() {
     super.dispose();
     widget.lst_buy_list = [];
-  }
-}
-
-class lost_photowidget extends StatefulWidget {
-  Lost_Found lst;
-  String description;
-  String img;
-  String title;
-  SmallUsername user;
-  Username app_user;
-  List<Lost_Found> lst_list;
-  lost_photowidget(this.lst, this.description, this.img, this.title, this.user,
-      this.app_user, this.lst_list);
-//  const lost_photowidget({super.key});
-
-  @override
-  State<lost_photowidget> createState() => _lost_photowidgetState();
-}
-
-class _lost_photowidgetState extends State<lost_photowidget> {
-  @override
-  Widget build(BuildContext context) {
-    final SmallUsername lst_user = widget.user;
-    final Username app_user = widget.app_user;
-    var width = MediaQuery.of(context).size.width;
-    return Scaffold(
-      appBar: AppBar(
-        leading: const BackButton(
-          color: Colors.blue, // <-- SEE HERE
-        ),
-        title: Text(
-          widget.lst.tag!,
-          style: TextStyle(color: Colors.black),
-        ),
-        actions: [
-          lst_user.email == app_user.email
-              ? Center(
-                  child: IconButton(
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              contentPadding: EdgeInsets.all(15),
-                              content: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(),
-                                      IconButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          icon: const Icon(Icons.close))
-                                    ],
-                                  ),
-                                  const SizedBox(height: 20),
-                                  const Center(
-                                      child: Text(
-                                          "Are you sure do you want to delete this?",
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold))),
-                                  const SizedBox(height: 10),
-                                  Container(
-                                    margin: const EdgeInsets.all(30),
-                                    child: OutlinedButton(
-                                        onPressed: () async {
-                                          bool error = await lf_servers()
-                                              .delete_lst(widget.lst.id!);
-                                          if (!error) {
-                                            Navigator.pop(context);
-                                            Navigator.of(context)
-                                                .pushAndRemoveUntil(
-                                                    MaterialPageRoute(builder:
-                                                        (BuildContext context) {
-                                              return firstpage(
-                                                  0, widget.app_user);
-                                            }),
-                                                    (Route<dynamic> route) =>
-                                                        false);
-                                          }
-                                        },
-                                        child: const Center(
-                                            child: Text(
-                                          "Delete",
-                                          style: TextStyle(color: Colors.blue),
-                                        ))),
-                                  ),
-                                ],
-                              ),
-                            );
-                          });
-                    },
-                    icon: const Icon(
-                      Icons.delete,
-                      size: 31,
-                      color: Colors.blue,
-                    ),
-                  ),
-                )
-              : Center(
-                  child: IconButton(
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              contentPadding: EdgeInsets.all(15),
-                              content: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(),
-                                        IconButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            icon: Icon(Icons.close))
-                                      ]),
-                                  TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(builder:
-                                                (BuildContext context) {
-                                          return report_upload(
-                                              widget.app_user,
-                                              "lost/found" +
-                                                  " with id :" +
-                                                  widget.lst.id.toString(),
-                                              widget.lst.username!.email!);
-                                        }));
-                                      },
-                                      child: const Text("Report this post?")),
-                                  TextButton(
-                                      onPressed: () async {
-                                        if (widget.app_user.email!
-                                                .split('@')[0] ==
-                                            "guest") {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(const SnackBar(
-                                                  duration: Duration(
-                                                      milliseconds: 500),
-                                                  content: Text(
-                                                      "guest cannot hide contents..",
-                                                      style: TextStyle(
-                                                          color:
-                                                              Colors.white))));
-                                        } else {
-                                          showDialog(
-                                              context: context,
-                                              barrierDismissible: false,
-                                              builder: (context) {
-                                                return AlertDialog(
-                                                    contentPadding:
-                                                        EdgeInsets.all(15),
-                                                    content: Container(
-                                                      margin:
-                                                          EdgeInsets.all(10),
-                                                      child: const Column(
-                                                          mainAxisSize:
-                                                              MainAxisSize.min,
-                                                          children: [
-                                                            Text(
-                                                                "Please wait while updating....."),
-                                                            SizedBox(
-                                                                height: 10),
-                                                            CircularProgressIndicator()
-                                                          ]),
-                                                    ));
-                                              });
-                                          bool error = await lf_servers()
-                                              .hide_lst(widget.lst.id!);
-                                          Navigator.pop(context);
-                                          if (!error) {
-                                            Navigator.of(context)
-                                                .pushAndRemoveUntil(
-                                                    MaterialPageRoute(builder:
-                                                        (BuildContext context) {
-                                              return firstpage(
-                                                  0, widget.app_user);
-                                            }),
-                                                    (Route<dynamic> route) =>
-                                                        false);
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(const SnackBar(
-                                              duration: const Duration(
-                                                  milliseconds: 500),
-                                              content: Text(
-                                                  'We will remove These type of posts in your feed,',
-                                                  style: TextStyle(
-                                                      color: Colors.white)),
-                                            ));
-                                          } else {
-                                            Navigator.pop(context);
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                              const SnackBar(
-                                                duration: const Duration(
-                                                    milliseconds: 500),
-                                                content: Column(
-                                                  children: [
-                                                    Text(
-                                                      'error occured try again',
-                                                      style: TextStyle(
-                                                          color: Colors.white),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            );
-                                          }
-                                        }
-                                      },
-                                      child: const Text(
-                                          "Hide this type of content?")),
-                                  TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(builder:
-                                                (BuildContext context) {
-                                          return report_upload(
-                                              widget.app_user,
-                                              "User: " +
-                                                  widget.lst.username!.email
-                                                      .toString(),
-                                              widget.lst.username!.email!);
-                                        }));
-                                      },
-                                      child: Text("Report This User?"))
-                                ],
-                              ),
-                            );
-                          });
-                    },
-                    icon: const Icon(
-                      Icons.report,
-                      size: 31,
-                      color: Colors.blue,
-                    ),
-                  ),
-                )
-        ],
-        backgroundColor: Colors.white70,
-      ),
-      body: Container(
-          decoration: const BoxDecoration(color: Colors.indigo),
-          height: MediaQuery.of(context).size.height,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Container(
-                  margin: const EdgeInsets.all(30),
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Text(utf8convert(widget.title),
-                      //'''My black crocs kept outside my room(6A 38) are missing from todays afternoon.if anyone took it by mistake please keep them back. the picture is attached down.''',
-                      style: const TextStyle(
-                        fontSize: 18,
-                      )),
-                ),
-                Container(
-                  margin: const EdgeInsets.all(30),
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20)),
-                  child: //Link
-                      SelectableLinkify(
-                          onOpen: (url) async {
-                            if (await canLaunch(url.url)) {
-                              await launch(url.url);
-                            } else {
-                              throw 'Could not launch $url';
-                            }
-                          },
-                          text: utf8convert(widget.description),
-                          //'''My black crocs kept outside my room(6A 38) are missing from todays afternoon.if anyone took it by mistake please keep them back. the picture is attached down.''',
-                          style: const TextStyle(
-                            fontSize: 18,
-                          )),
-                ),
-                const SizedBox(height: 10),
-                widget.lst.imgRatio == 1
-                    ? const Text(
-                        "Image : ",
-                        style: TextStyle(color: Colors.white, fontSize: 18),
-                      )
-                    : Container(),
-                const SizedBox(height: 10),
-                Container(
-                    margin: EdgeInsets.all(10),
-                    decoration: widget.lst.imgRatio == 1
-                        ? BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: Colors.white)
-                        : BoxDecoration(),
-                    child: Column(
-                      children: [
-                        widget.lst.imgRatio == 1
-                            ? GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (BuildContext context) {
-                                    return image_display(false,
-                                        File('images/icon.png'), widget.img);
-                                  }));
-                                },
-                                child: Center(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(20)),
-                                    height: width,
-                                    width: width,
-                                    child: Image.network(widget.img),
-                                  ),
-                                ),
-                              )
-                            : Container(),
-                      ],
-                    )),
-              ],
-            ),
-          )),
-    );
   }
 }
 
