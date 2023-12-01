@@ -591,20 +591,10 @@ class _single_postState extends State<single_post> {
             endIndent: 5,
           ),
           const SizedBox(
-            height: 7,
-          ),
-          Container(
-            margin: EdgeInsets.only(left: 5),
-            child: Text(
-              utf8convert(post.description!),
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
-              maxLines: post.imgRatio == 0 ? 12 : 4,
-            ),
-          ),
-          const SizedBox(
             height: 5,
           ),
           Container(
+            margin: EdgeInsets.only(left: 15, right: 5),
             decoration: post.imgRatio == 1
                 ? BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
@@ -676,7 +666,7 @@ class _single_postState extends State<single_post> {
                   : post.imgRatio == 1
                       ? Center(
                           child: Container(
-                            height: width,
+                            height: width / 1.5,
                             width: width,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
@@ -745,13 +735,46 @@ class _single_postState extends State<single_post> {
             ),
           ),
           const SizedBox(
+            height: 7,
+          ),
+          Container(
+            margin: EdgeInsets.only(left: 10),
+            child: Text(
+              utf8convert(post.description!),
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+              maxLines: post.imgRatio == 0 ? 12 : 4,
+            ),
+          ),
+          const SizedBox(
             height: 5,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              Container(
+                  padding: EdgeInsets.only(left: 10),
+                  child: Text(widget.post_posted_date,
+                      style: const TextStyle(
+                          fontSize: 14,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500))),
               Row(
                 children: [
+                  IconButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          return commentwidget(post, widget.app_user);
+                        }));
+                      },
+                      icon: const FaIcon(FontAwesomeIcons.comment, size: 28)),
+                  Text(
+                    post.commentCount.toString(),
+                    style: const TextStyle(
+                      fontSize: 16,
+                      //color: Colors.white70
+                    ),
+                  ),
                   const SizedBox(width: 5),
                   IconButton(
                     onPressed: () async {
@@ -796,14 +819,14 @@ class _single_postState extends State<single_post> {
                     },
                     icon: post.isLike!
                         ? const FaIcon(
-                            FontAwesomeIcons.solidThumbsUp,
-                            size: 25,
-                            color: Colors.blue,
+                            FontAwesomeIcons.heartCirclePlus,
+                            size: 28,
+                            color: Colors.green,
                           )
                         : const FaIcon(
-                            FontAwesomeIcons.thumbsUp,
-                            size: 25,
-                            color: Colors.blue,
+                            FontAwesomeIcons.heart,
+                            size: 28,
+                            color: Colors.green,
                           ),
                   ),
                   Text(
@@ -811,49 +834,10 @@ class _single_postState extends State<single_post> {
                     style: const TextStyle(fontSize: 16),
                   ),
                   const SizedBox(
-                    width: 7,
+                    width: 25,
                   ),
-                  IconButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (BuildContext context) {
-                          return commentwidget(post, widget.app_user);
-                        }));
-                      },
-                      icon: const FaIcon(FontAwesomeIcons.comment, size: 25)),
-                  Text(
-                    post.commentCount.toString(),
-                    style: const TextStyle(
-                      fontSize: 16,
-                      //color: Colors.white70
-                    ),
-                  ),
-                  IconButton(
-                      onPressed: () {},
-                      icon: const FaIcon(FontAwesomeIcons.share, size: 23)),
                 ],
               ),
-              // ElevatedButton.icon(
-              //   onPressed: () {},
-              //   icon: FaIcon(Icons.report_problem_rounded),
-              //   label: Text('Report?'),
-              // ),
-              // Container(
-              //   margin: const EdgeInsets.only(right: 20),
-              //   child: Transform.rotate(
-              //     angle: 0,
-              //     child: IconButton(
-              //       onPressed: () {
-              //         //Share.share(
-              //         //    'hey! check out this new app https://play.google.com/store/search?q=pub%3ADivTag&c=apps');
-              //       },
-              //       icon: const Icon(
-              //         Icons.send,
-              //         size: 24,
-              //       ),
-              //     ),
-              //   ),
-              // )
             ],
           ),
         ],

@@ -726,44 +726,55 @@ class _all_lostwidget1State extends State<all_lostwidget1> {
                                   );
                                 });
                           },
-                          child: Column(children: [
-                            Container(
-                              padding: const EdgeInsets.all(4),
-                              width: (width - 20) / 2,
-                              child: Text(
-                                utf8convert(lst.description!),
-                                style: const TextStyle(
-                                  fontSize: 13, //color: Colors.white
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(children: [
+                                  const Text("Category : ",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold)),
+                                  Text(lst.category!,
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1)
+                                ]),
+                                const SizedBox(height: 3),
+                                Container(
+                                  padding: const EdgeInsets.all(4),
+                                  width: (width - 20) / 2,
+                                  child: Text(
+                                    utf8convert(lst.description!),
+                                    style: const TextStyle(
+                                      fontSize: 13, //color: Colors.white
+                                    ),
+                                    maxLines: 6,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
-                                maxLines: 6,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            Container(
-                              padding: const EdgeInsets.all(4),
-                              width: (width - 20) / 2,
-                              child: Text(
-                                user.email!,
-                                style: const TextStyle(
-                                  fontSize: 10, //color: Colors.white
+                                Container(
+                                  padding: const EdgeInsets.all(4),
+                                  width: (width - 20) / 2,
+                                  child: Text(
+                                    user.email!,
+                                    style: const TextStyle(
+                                      fontSize: 10, //color: Colors.white
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                  ),
                                 ),
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                              ),
-                            ),
-                            Container(
-                              padding: const EdgeInsets.all(4),
-                              width: (width - 20) / 2,
-                              child: Text(
-                                lst_posted_date,
-                                style: const TextStyle(
-                                  fontSize: 10, //color: Colors.white
+                                Container(
+                                  padding: const EdgeInsets.all(4),
+                                  width: (width - 20) / 2,
+                                  child: Text(
+                                    lst_posted_date,
+                                    style: const TextStyle(
+                                      fontSize: 10, //color: Colors.white
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                  ),
                                 ),
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                              ),
-                            ),
-                          ]),
+                              ]),
                         )
                       ]),
                 ],

@@ -727,11 +727,16 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
                   child: Column(
                     children: [
                       Container(
-                          width: div, //post.profile_pic
-                          child: const CircleAvatar(
-                              radius: 24,
-                              backgroundImage:
-                                  AssetImage("images/placement.jpeg"))),
+                        width: div, //post.profile_pic
+                        // child: const CircleAvatar(
+                        //   radius: 27,
+                        //   backgroundColor: Colors.orangeAccent,
+                        child: const CircleAvatar(
+                            radius: 26,
+                            backgroundImage:
+                                AssetImage("images/placement.jpeg")),
+                        // )
+                      ),
                       const SizedBox(height: 3),
                       const Center(
                         child: Text("Placements",
@@ -745,9 +750,6 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
               Column(children: [
                 GestureDetector(
                   onTap: () {
-                    print(widget.app_user.domain);
-                    print(domains[widget.app_user.domain]!);
-                    print(domains1[domains[widget.app_user.domain]!]);
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (BuildContext context) {
                       return all_buySellwidget1(widget.app_user, "All", "All",
@@ -758,8 +760,13 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
                     children: [
                       Container(
                         width: div, //post.profile_pic
+                        // child: const CircleAvatar(
+                        //   radius: 23,
+                        //   backgroundColor: Colors.orangeAccent,
                         child: const CircleAvatar(
+                            radius: 22,
                             backgroundImage: AssetImage("images/buysell.png")),
+                        // ),
                       ),
                       const SizedBox(height: 10),
                       const Text("Sharings",
@@ -782,9 +789,14 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
                     children: [
                       Container(
                         width: div, //post.profile_pic
+                        // child: const CircleAvatar(
+                        //   radius: 23,
+                        //   backgroundColor: Colors.orangeAccent,
                         child: const CircleAvatar(
+                            radius: 22,
                             backgroundImage:
                                 AssetImage("images/lostfound.jpeg")),
+                        // ),
                       ),
                       const SizedBox(height: 10),
                       const Center(
@@ -836,9 +848,13 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
                     children: [
                       Container(
                         width: div, //post.profile_pic
+                        // child: const CircleAvatar(
+                        //   radius: 24,
+                        //   backgroundColor: Colors.orangeAccent,
                         child: const CircleAvatar(
-                            radius: 21,
+                            radius: 23,
                             backgroundImage: AssetImage("images/dating.jpg")),
+                        // ),
                       ),
                       const SizedBox(height: 8),
                       const Text("Connect",

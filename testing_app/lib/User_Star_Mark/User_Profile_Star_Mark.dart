@@ -233,7 +233,7 @@ class _UserProfileMarkState extends State<UserProfileMark> {
       child: Row(
         children: [
           Container(
-            width: 48, //post.profile_pic
+            width: 50, //post.profile_pic
             child: user.fileType == '1'
                 ? CircleAvatar(backgroundImage: NetworkImage(user.profilePic!))
                 : const CircleAvatar(
@@ -431,7 +431,7 @@ class _UserProfileMarkAdminState extends State<UserProfileMarkAdmin> {
       child: Row(
         children: [
           Container(
-              width: 48, //post.profile_pic
+              width: 50, //post.profile_pic
               child:
                   CircleAvatar(backgroundImage: NetworkImage(category.logo!))),
           Container(

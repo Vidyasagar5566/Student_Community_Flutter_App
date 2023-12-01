@@ -287,42 +287,54 @@ class _datingUserState extends State<datingUser> {
                                     setState(() {
                                       adding_profile = true;
                                     });
-                                    bool error = await dating_servers()
-                                        .post_dating_user(
-                                            dummyName,
-                                            dummyBio,
-                                            dummyProfile,
-                                            domains1[dummyDomain]!);
-
-                                    Navigator.pop(context);
-                                    setState(() {
-                                      adding_profile = false;
-                                    });
-                                    if (error) {
+                                    if (widget.app_user.email!.split('@')[0] ==
+                                        "guest") {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(
                                               duration:
                                                   Duration(milliseconds: 400),
                                               content: Text(
-                                                  "Error occured try again",
+                                                  "Guest's are not allowed",
                                                   style: TextStyle(
                                                       color: Colors.white))));
                                     } else {
-                                      setState(() {
-                                        widget.app_user.dating_profile = true;
-                                      });
-                                      if (del_old_profile_chats) {
-                                        delete_firebase_chatrooms();
-                                      }
+                                      bool error = await dating_servers()
+                                          .post_dating_user(
+                                              dummyName,
+                                              dummyBio,
+                                              dummyProfile,
+                                              domains1[dummyDomain]!);
+
                                       Navigator.pop(context);
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(const SnackBar(
-                                              duration:
-                                                  Duration(milliseconds: 1000),
-                                              content: Text(
-                                                  "Updated successfully",
-                                                  style: TextStyle(
-                                                      color: Colors.white))));
+                                      setState(() {
+                                        adding_profile = false;
+                                      });
+                                      if (error) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
+                                                duration:
+                                                    Duration(milliseconds: 400),
+                                                content: Text(
+                                                    "Error occured try again",
+                                                    style: TextStyle(
+                                                        color: Colors.white))));
+                                      } else {
+                                        setState(() {
+                                          widget.app_user.dating_profile = true;
+                                        });
+                                        if (del_old_profile_chats) {
+                                          delete_firebase_chatrooms();
+                                        }
+                                        Navigator.pop(context);
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
+                                                duration: Duration(
+                                                    milliseconds: 1000),
+                                                content: Text(
+                                                    "Updated successfully",
+                                                    style: TextStyle(
+                                                        color: Colors.white))));
+                                      }
                                     }
                                   } else {
                                     ScaffoldMessenger.of(context).showSnackBar(
@@ -498,10 +510,10 @@ class _datingUser1State extends State<datingUser1> {
           padding: EdgeInsets.only(left: 10, right: 10),
           width: width,
           child: Text(utf8convert(dating_user.dummyBio!),
-              maxLines: 2,
+              maxLines: 3,
               softWrap: false,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontWeight: FontWeight.w200, fontSize: 20)),
+              style: TextStyle(fontWeight: FontWeight.w200, fontSize: 16)),
         ),
         const SizedBox(height: 4),
         Center(
@@ -520,7 +532,7 @@ class _datingUser1State extends State<datingUser1> {
               },
               child: Container(
                 margin: EdgeInsets.all(10),
-                height: width,
+                height: width - 80,
                 width: width - 20,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
@@ -699,32 +711,39 @@ class _datingUser1State extends State<datingUser1> {
         children: [
           GestureDetector(
             onTap: () {
-              if (dating_user.username!.email == widget.app_user.email) {
+              if (widget.app_user.email!.split('@')[0] == "guest") {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                     duration: Duration(milliseconds: 400),
-                    content: Text("You can't react to yourself.",
+                    content: Text("Guest's are not allowed",
                         style: TextStyle(color: Colors.white))));
               } else {
-                if (dating_user.is_reaction == 2) {
-                  setState(() {
-                    dating_user.Reactions2_count =
-                        dating_user.Reactions2_count! - 1;
-                    dating_user.Reactions1_count =
-                        dating_user.Reactions1_count! + 1;
-                    dating_user.is_reaction = 1;
-                  });
+                if (dating_user.username!.email == widget.app_user.email) {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      duration: Duration(milliseconds: 400),
+                      content: Text("You can't react to yourself.",
+                          style: TextStyle(color: Colors.white))));
+                } else {
+                  if (dating_user.is_reaction == 2) {
+                    setState(() {
+                      dating_user.Reactions2_count =
+                          dating_user.Reactions2_count! - 1;
+                      dating_user.Reactions1_count =
+                          dating_user.Reactions1_count! + 1;
+                      dating_user.is_reaction = 1;
+                    });
 
-                  dating_servers().dating_user_post_reaction(
-                      dating_user.username!.email!, 1);
-                } else if (dating_user.is_reaction == 0) {
-                  setState(() {
-                    dating_user.Reactions1_count =
-                        dating_user.Reactions1_count! + 1;
-                    dating_user.is_reaction = 1;
-                  });
+                    dating_servers().dating_user_post_reaction(
+                        dating_user.username!.email!, 1);
+                  } else if (dating_user.is_reaction == 0) {
+                    setState(() {
+                      dating_user.Reactions1_count =
+                          dating_user.Reactions1_count! + 1;
+                      dating_user.is_reaction = 1;
+                    });
 
-                  dating_servers().dating_user_post_reaction(
-                      dating_user.username!.email!, 1);
+                    dating_servers().dating_user_post_reaction(
+                        dating_user.username!.email!, 1);
+                  }
                 }
               }
             },
@@ -749,32 +768,39 @@ class _datingUser1State extends State<datingUser1> {
           SizedBox(width: width / 1.6),
           GestureDetector(
             onTap: () {
-              if (dating_user.username!.email == widget.app_user.email) {
+              if (widget.app_user.email!.split('@')[0] == "guest") {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                     duration: Duration(milliseconds: 400),
-                    content: Text("You can't react to yourself.",
+                    content: Text("Guest's are not allowed",
                         style: TextStyle(color: Colors.white))));
               } else {
-                if (dating_user.is_reaction == 1) {
-                  setState(() {
-                    dating_user.Reactions1_count =
-                        dating_user.Reactions1_count! - 1;
-                    dating_user.Reactions2_count =
-                        dating_user.Reactions2_count! + 1;
-                    dating_user.is_reaction = 2;
-                  });
+                if (dating_user.username!.email == widget.app_user.email) {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      duration: Duration(milliseconds: 400),
+                      content: Text("You can't react to yourself.",
+                          style: TextStyle(color: Colors.white))));
+                } else {
+                  if (dating_user.is_reaction == 1) {
+                    setState(() {
+                      dating_user.Reactions1_count =
+                          dating_user.Reactions1_count! - 1;
+                      dating_user.Reactions2_count =
+                          dating_user.Reactions2_count! + 1;
+                      dating_user.is_reaction = 2;
+                    });
 
-                  dating_servers().dating_user_post_reaction(
-                      dating_user.username!.email!, 2);
-                } else if (dating_user.is_reaction == 0) {
-                  setState(() {
-                    dating_user.Reactions2_count =
-                        dating_user.Reactions2_count! + 1;
-                    dating_user.is_reaction = 2;
-                  });
+                    dating_servers().dating_user_post_reaction(
+                        dating_user.username!.email!, 2);
+                  } else if (dating_user.is_reaction == 0) {
+                    setState(() {
+                      dating_user.Reactions2_count =
+                          dating_user.Reactions2_count! + 1;
+                      dating_user.is_reaction = 2;
+                    });
 
-                  dating_servers().dating_user_post_reaction(
-                      dating_user.username!.email!, 2);
+                    dating_servers().dating_user_post_reaction(
+                        dating_user.username!.email!, 2);
+                  }
                 }
               }
             },
