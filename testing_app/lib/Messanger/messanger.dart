@@ -32,10 +32,30 @@ class _messangerState extends State<messanger> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: false,
         iconTheme: IconThemeData(color: Colors.black),
-        title: Text(
-          widget.app_user.username!,
-          style: TextStyle(color: Colors.black),
+        title: Row(
+          children: [
+            widget.app_user.fileType == '1'
+                ? CircleAvatar(
+                    radius: 16,
+                    backgroundColor: Colors.white,
+                    child: CircleAvatar(
+                        radius: 15,
+                        backgroundImage:
+                            NetworkImage(widget.app_user.profilePic!)))
+                : const CircleAvatar(
+                    radius: 16,
+                    backgroundColor: Colors.white,
+                    child: CircleAvatar(
+                        radius: 15,
+                        backgroundImage: AssetImage("images/profile.jpg"))),
+            const SizedBox(width: 10),
+            Text(
+              widget.app_user.username!,
+              style: TextStyle(color: Colors.black),
+            ),
+          ],
         ),
         actions: [
           widget.bottom_navbar_index == 0
@@ -348,11 +368,19 @@ class _Personmessanger1State extends State<Personmessanger1> {
                             width: 48, //post.profile_pic
                             child: message_user.fileType == '1'
                                 ? CircleAvatar(
-                                    backgroundImage:
-                                        NetworkImage(message_user.profilePic!))
+                                    radius: 21,
+                                    backgroundColor: Colors.blue,
+                                    child: CircleAvatar(
+                                        backgroundImage: NetworkImage(
+                                            message_user.profilePic!)),
+                                  )
                                 : const CircleAvatar(
-                                    backgroundImage:
-                                        AssetImage("images/profile.jpg")),
+                                    radius: 22,
+                                    backgroundColor: Colors.white,
+                                    child: CircleAvatar(
+                                        backgroundImage:
+                                            AssetImage("images/profile.jpg")),
+                                  ),
                           ),
                           Container(
                             padding: EdgeInsets.only(left: 20),

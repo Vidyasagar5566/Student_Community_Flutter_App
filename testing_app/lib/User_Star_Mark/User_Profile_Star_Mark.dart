@@ -235,9 +235,16 @@ class _UserProfileMarkState extends State<UserProfileMark> {
           Container(
             width: 50, //post.profile_pic
             child: user.fileType == '1'
-                ? CircleAvatar(backgroundImage: NetworkImage(user.profilePic!))
+                ? CircleAvatar(
+                    radius: 21,
+                    backgroundColor: Colors.white,
+                    child: CircleAvatar(
+                        backgroundImage: NetworkImage(user.profilePic!)))
                 : const CircleAvatar(
-                    backgroundImage: AssetImage("images/profile.jpg")),
+                    radius: 21,
+                    backgroundColor: Colors.white,
+                    child: CircleAvatar(
+                        backgroundImage: AssetImage("images/profile.jpg"))),
           ),
           Container(
             padding: EdgeInsets.only(left: 20),

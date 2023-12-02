@@ -52,7 +52,7 @@ class _upload_alertowidgetState extends State<upload_alertowidget> {
           ),
           centerTitle: true,
           title: const Text(
-            "Alerts",
+            "Threads",
             style: TextStyle(color: Colors.black),
           ),
           actions: [
@@ -97,7 +97,7 @@ class _upload_alertowidgetState extends State<upload_alertowidget> {
                     height: 50,
                   ),
                   const Text(
-                    "Upload Your alert",
+                    "Release New Thread",
                     style: TextStyle(
                         color: Colors.indigo,
                         fontSize: 20,

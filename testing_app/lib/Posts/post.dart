@@ -738,7 +738,7 @@ class _single_postState extends State<single_post> {
             height: 7,
           ),
           Container(
-            margin: EdgeInsets.only(left: 10),
+            margin: EdgeInsets.only(left: 30),
             child: Text(
               utf8convert(post.description!),
               style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),

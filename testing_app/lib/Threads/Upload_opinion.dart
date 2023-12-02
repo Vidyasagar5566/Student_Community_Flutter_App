@@ -48,7 +48,7 @@ class _upload_alert_cmntState extends State<upload_alert_cmnt> {
           ),
           centerTitle: true,
           title: const Text(
-            "Alert Opinions",
+            "Opinions",
             style: TextStyle(color: Colors.black),
           ),
           backgroundColor: Colors.white70,

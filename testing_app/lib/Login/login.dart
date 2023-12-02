@@ -147,7 +147,7 @@ class _loginpageState extends State<loginpage> {
                       child: TextFormField(
                         keyboardType: TextInputType.emailAddress,
                         decoration: const InputDecoration(
-                          labelText: 'email',
+                          labelText: 'Admin Email ',
                           hintText: 'enter email',
                           prefixIcon: Icon(Icons.email),
                           border: OutlineInputBorder(
@@ -316,7 +316,7 @@ class _loginpageState extends State<loginpage> {
                           FontAwesomeIcons.google,
                           color: Colors.red,
                         ),
-                        label: Text("Sign In With Google")),
+                        label: Text("Sign In With Student Email")),
                   ),
                 ],
               ),

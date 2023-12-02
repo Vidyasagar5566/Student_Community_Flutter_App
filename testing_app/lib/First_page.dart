@@ -268,6 +268,7 @@ class _firstpageState extends State<firstpage> {
                   backgroundColor: Colors.white,
                 ),
           drawer: NavDrawer(widget.app_user),
+
           body: widget.curr_index == 0
               ? SingleChildScrollView(
                   child: Container(

@@ -267,7 +267,7 @@ class _upload_postwidgetState extends State<upload_postwidget> {
                           color: Colors.blue,
                         ),
                         const SizedBox(height: 10),
-                        (description != null && image != null)
+                        (description != null)
                             ? Container(
                                 padding: EdgeInsets.only(left: 40, right: 40),
                                 margin: EdgeInsets.only(top: 40),

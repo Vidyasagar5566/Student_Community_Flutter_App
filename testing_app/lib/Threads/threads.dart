@@ -202,8 +202,9 @@ class _alertwidget1State extends State<alertwidget1> {
                   ],
                 ),
               ),
-              const SizedBox(height: 8),
-              SizedBox(
+              const SizedBox(height: 10),
+              Container(
+                margin: EdgeInsets.only(left: 70),
                 width: wid - 50,
                 child: Text(
                   alert.title!,
@@ -217,7 +218,8 @@ class _alertwidget1State extends State<alertwidget1> {
                 ),
               ),
               const SizedBox(height: 5),
-              SizedBox(
+              Container(
+                margin: EdgeInsets.only(left: 70),
                 width: wid - 50,
                 child: Text(
                   alert.description!,

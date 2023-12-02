@@ -1,7 +1,9 @@
 import 'dart:io';
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:get_time_ago/get_time_ago.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import '/Dating/datingProfiles.dart';
@@ -421,6 +423,9 @@ class _datingUser1State extends State<datingUser1> {
 
   Widget build_loading_screen(DatingUser dating_user) {
     var width = MediaQuery.of(context).size.width;
+    var _convertedTimestamp = DateTime.parse(
+        dating_user.postedDate!); // Converting into [DateTime] object
+    String dating_user_posted_date = GetTimeAgo.parse(_convertedTimestamp);
 
     return Column(
       children: [
@@ -478,7 +483,7 @@ class _datingUser1State extends State<datingUser1> {
                             const SizedBox(height: 10),
                             const Center(
                                 child: SelectableText(
-                                    "• Abusive behavior is strictly prohibited(Students can contact us through helpCenter)",
+                                    "• Students can contact us through helpCenter for any of the problem with this connect.",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         fontSize: 14,
@@ -625,6 +630,8 @@ class _datingUser1State extends State<datingUser1> {
                 ),
               )),
         ),
+        const SizedBox(height: 40),
+        Text(dating_user_posted_date)
       ],
     );
   }
