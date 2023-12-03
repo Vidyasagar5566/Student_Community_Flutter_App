@@ -633,7 +633,7 @@ class _userProfilePageState extends State<userProfilePage> {
                                 builder: (BuildContext context) {
                               return all_lostwidget1(
                                   widget.app_user,
-                                  "lost",
+                                  "All",
                                   "All",
                                   [],
                                   domains[widget.app_user.domain]!,
@@ -678,7 +678,7 @@ class _userProfilePageState extends State<userProfilePage> {
                                 builder: (BuildContext context) {
                               return all_buySellwidget1(
                                   widget.app_user,
-                                  "buy",
+                                  "All",
                                   "All",
                                   [],
                                   domains[widget.app_user.domain]!,

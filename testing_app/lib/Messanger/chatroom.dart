@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
@@ -459,74 +460,60 @@ class _chatroomState extends State<chatroom> {
   int file_type = 0;
 
   void sendMessage() async {
-    if (!widget.chatRoom.participants!.values.elementAt(0) ||
-        !widget.chatRoom.participants!.values.elementAt(1)) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          duration: Duration(milliseconds: 400),
-          content: Text("You cannot send message to this user..",
-              style: TextStyle(color: Colors.white))));
+    String target_uuid;
+    if (widget.targetuser_uuids[0] == widget.app_user.userUuid) {
+      target_uuid = widget.targetuser_uuids[1];
     } else {
-      String msg = messagecontroller.text.trim();
-      messagecontroller.clear();
-      int type = file_type;
-      setState(() {
-        file_type = 0;
-      });
-      if (imagefile != null) {
-        File temp_img_file = imagefile!;
-        setState(() {
-          imagefile = null;
-        });
-        MessageModel newmessage = MessageModel(
-            messageid: uuid.v1(),
-            seen: false,
-            createdon: DateTime.now(),
-            sender: app_user.email,
-            text: msg,
-            photo: '',
-            type: type,
-            sent: false,
-            offline_file: temp_img_file,
-            insert: true);
-        setState(() {
-          widget.all_messages.insert(0, newmessage);
-        });
-        String uid = uuid.v1();
-        UploadTask uploadtask = FirebaseStorage.instance
-            .ref("photo_messages")
-            .child(uid.toString())
-            .putFile(temp_img_file);
-        TaskSnapshot snapshot = await uploadtask;
-        String imageurl = await snapshot.ref.getDownloadURL();
-        setState(() {
-          newmessage.photo = imageurl;
-        });
+      target_uuid = widget.targetuser_uuids[0];
+    }
+
+    Stream<QuerySnapshot<Map<String, dynamic>>> chatroomsnapshot =
         await FirebaseFirestore.instance
             .collection("chatrooms")
-            .doc(widget.chatRoom.chatroomid)
-            .collection("messages")
-            .doc(newmessage.messageid)
-            .set(newmessage.toMap());
-        widget.chatRoom.lastmessage = msg;
-        widget.chatRoom.lastmessagetype = type;
-        widget.chatRoom.lastmessageseen = false;
-        widget.chatRoom.lastmessagetime = DateTime.now();
-        widget.chatRoom.lastmessagesender = app_user.email;
-        await FirebaseFirestore.instance
-            .collection("chatrooms")
-            .doc(widget.chatRoom.chatroomid)
-            .set(widget.chatRoom.toMap());
-      } else {
-        if (msg != "") {
+            .where("group", isEqualTo: false)
+            .where("participants.${app_user.userUuid}", isEqualTo: true)
+            .where("participants.${target_uuid}", isEqualTo: true)
+            .snapshots();
+
+    chatroomsnapshot.elementAt(0).then((value) async {
+      if (value.docs[0]['participants'][target_uuid] == true &&
+          value.docs[0]['participants'][app_user.userUuid] == true) {
+        String msg = messagecontroller.text.trim();
+        messagecontroller.clear();
+        int type = file_type;
+        setState(() {
+          file_type = 0;
+        });
+        if (imagefile != null) {
+          File temp_img_file = imagefile!;
+          setState(() {
+            imagefile = null;
+          });
           MessageModel newmessage = MessageModel(
               messageid: uuid.v1(),
               seen: false,
               createdon: DateTime.now(),
               sender: app_user.email,
               text: msg,
-              photo: "",
-              type: 0);
-          FirebaseFirestore.instance
+              photo: '',
+              type: type,
+              sent: false,
+              offline_file: temp_img_file,
+              insert: true);
+          setState(() {
+            widget.all_messages.insert(0, newmessage);
+          });
+          String uid = uuid.v1();
+          UploadTask uploadtask = FirebaseStorage.instance
+              .ref("photo_messages")
+              .child(uid.toString())
+              .putFile(temp_img_file);
+          TaskSnapshot snapshot = await uploadtask;
+          String imageurl = await snapshot.ref.getDownloadURL();
+          setState(() {
+            newmessage.photo = imageurl;
+          });
+          await FirebaseFirestore.instance
               .collection("chatrooms")
               .doc(widget.chatRoom.chatroomid)
               .collection("messages")
@@ -537,22 +524,57 @@ class _chatroomState extends State<chatroom> {
           widget.chatRoom.lastmessageseen = false;
           widget.chatRoom.lastmessagetime = DateTime.now();
           widget.chatRoom.lastmessagesender = app_user.email;
-          FirebaseFirestore.instance
+          await FirebaseFirestore.instance
               .collection("chatrooms")
               .doc(widget.chatRoom.chatroomid)
               .set(widget.chatRoom.toMap());
+        } else {
+          if (msg != "") {
+            MessageModel newmessage = MessageModel(
+                messageid: uuid.v1(),
+                seen: false,
+                createdon: DateTime.now(),
+                sender: app_user.email,
+                text: msg,
+                photo: "",
+                type: 0);
+            FirebaseFirestore.instance
+                .collection("chatrooms")
+                .doc(widget.chatRoom.chatroomid)
+                .collection("messages")
+                .doc(newmessage.messageid)
+                .set(newmessage.toMap());
+            widget.chatRoom.lastmessage = msg;
+            widget.chatRoom.lastmessagetype = type;
+            widget.chatRoom.lastmessageseen = false;
+            widget.chatRoom.lastmessagetime = DateTime.now();
+            widget.chatRoom.lastmessagesender = app_user.email;
+            FirebaseFirestore.instance
+                .collection("chatrooms")
+                .doc(widget.chatRoom.chatroomid)
+                .set(widget.chatRoom.toMap());
+          }
         }
-      }
 
-      if (widget.targetuser_uuids.length == 1) {
-        messanger_servers()
-            .user_messages_notif(widget.targetuser_uuids.join("#"), msg);
+        if (widget.targetuser_uuids.length == 1) {
+          messanger_servers()
+              .user_messages_notif(widget.targetuser_uuids.join("#"), msg);
+        } else {
+          messanger_servers().user_messages_notif(
+              widget.targetuser_uuids.join("#"),
+              msg + " : From " + widget.chatRoom.group_name!);
+        }
       } else {
-        messanger_servers().user_messages_notif(
-            widget.targetuser_uuids.join("#"),
-            msg + " : From " + widget.chatRoom.group_name!);
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            duration: Duration(milliseconds: 400),
+            content: Text("You cannot send message to this user..",
+                style: TextStyle(color: Colors.white))));
       }
-    }
+    });
+
+    // if (!widget.chatRoom.participants!.values.elementAt(0) ||
+    //     !widget.chatRoom.participants!.values.elementAt(1)) {
+    // } else {}
   }
 
   @override

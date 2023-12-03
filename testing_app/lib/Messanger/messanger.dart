@@ -30,6 +30,7 @@ class _messangerState extends State<messanger> {
   List<dynamic> messages = [];
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
@@ -51,9 +52,14 @@ class _messangerState extends State<messanger> {
                         radius: 15,
                         backgroundImage: AssetImage("images/profile.jpg"))),
             const SizedBox(width: 10),
-            Text(
-              widget.app_user.username!,
-              style: TextStyle(color: Colors.black),
+            Container(
+              width: width - 200,
+              child: Text(
+                widget.app_user.username!,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(color: Colors.black),
+              ),
             ),
           ],
         ),
@@ -200,30 +206,30 @@ class _messangerState extends State<messanger> {
                   );
                 }
               }),
-      bottomNavigationBar: BottomNavigationBar(
-        fixedColor: Colors.blue,
-        backgroundColor: Colors.white70,
-        type: BottomNavigationBarType.fixed,
-        items: const [
-          BottomNavigationBarItem(
-              label: "Persons",
-              icon: Icon(
-                Icons.person_2_outlined,
-              )),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   fixedColor: Colors.blue,
+      //   backgroundColor: Colors.white70,
+      //   type: BottomNavigationBarType.fixed,
+      //   items: const [
+      //     BottomNavigationBarItem(
+      //         label: "Persons",
+      //         icon: Icon(
+      //           Icons.person_2_outlined,
+      //         )),
 
-          BottomNavigationBarItem(
-              label: "Communities",
-              icon: Icon(
-                Icons.group_add_outlined,
-              )), // */
-        ],
-        currentIndex: widget.bottom_navbar_index,
-        onTap: (int index) {
-          setState(() {
-            widget.bottom_navbar_index = index;
-          });
-        },
-      ),
+      //     BottomNavigationBarItem(
+      //         label: "Communities",
+      //         icon: Icon(
+      //           Icons.group_add_outlined,
+      //         )), // */
+      //   ],
+      //   currentIndex: widget.bottom_navbar_index,
+      //   onTap: (int index) {
+      //     setState(() {
+      //       widget.bottom_navbar_index = index;
+      //     });
+      //   },
+      // ),
     );
   }
 }

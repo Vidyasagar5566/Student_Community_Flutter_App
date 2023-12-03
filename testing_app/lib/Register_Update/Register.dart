@@ -5,7 +5,15 @@ import '/Register_Update/Servers.dart';
 import '/User_profile/Models.dart';
 import '/First_page.dart';
 
-List<String> courses = ["B.Tech", "M.Tech", "PG", "Phd", "MBA", "Other"];
+List<String> courses = [
+  "B.Tech",
+  "M.Tech",
+  "PG",
+  "Phd",
+  "MBA",
+  "Other",
+  "B.Arch",
+];
 List<String> branches = [
   "CS",
   "EC",
@@ -22,7 +30,7 @@ List<String> branches = [
 ];
 List<int> years = [1, 2, 3, 4];
 List<int> years1 = [1, 2];
-List<int> years2 = [1, 2, 3, 4, 5, 6, 7, 8];
+List<int> years2 = [1, 2, 3, 4, 5];
 
 class LoginRegister extends StatefulWidget {
   Username app_user;
@@ -173,17 +181,13 @@ class _LoginRegisterState extends State<LoginRegister> {
                                                   elevation: 0,
                                                   items: (course == "B.Tech"
                                                           ? years
-                                                          : course == "M.Tech"
+                                                          : course == "M.Tech" ||
+                                                                  course ==
+                                                                      "PG" ||
+                                                                  course ==
+                                                                      "MBA"
                                                               ? years1
-                                                              : course == "PG"
-                                                                  ? years1
-                                                                  : course ==
-                                                                          "Phd"
-                                                                      ? years2
-                                                                      : course ==
-                                                                              "MBA"
-                                                                          ? years1
-                                                                          : years2)
+                                                              : years2)
                                                       .map<
                                                               DropdownMenuItem<
                                                                   int>>(

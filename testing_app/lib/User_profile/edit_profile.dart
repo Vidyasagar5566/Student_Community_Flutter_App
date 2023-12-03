@@ -127,7 +127,11 @@ class _editprofileState extends State<editprofile> {
                             ),
                             onChanged: (String value) {
                               setState(() {
-                                widget.app_user.phnNum = value;
+                                if (value.length == 10) {
+                                  widget.app_user.phnNum = value;
+                                } else {
+                                  widget.app_user.phnNum = "";
+                                }
                               });
                             },
                             validator: (value) {
@@ -395,9 +399,9 @@ class _editprofileState extends State<editprofile> {
                                             .showSnackBar(
                                           const SnackBar(
                                             duration:
-                                                Duration(milliseconds: 400),
+                                                Duration(milliseconds: 2000),
                                             content: Text(
-                                              "Failed",
+                                              "Failed/May be the username was already taken/check your connection",
                                               style: TextStyle(
                                                   color: Colors.white),
                                             ),
@@ -428,9 +432,9 @@ class _editprofileState extends State<editprofile> {
                                   onPressed: () {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
-                                        duration: Duration(milliseconds: 400),
+                                        duration: Duration(milliseconds: 1500),
                                         content: Text(
-                                          "Username and phone number cant be null",
+                                          "Username cant be null and phone number must be exactly 10 digits",
                                           style: TextStyle(color: Colors.white),
                                         ),
                                       ),

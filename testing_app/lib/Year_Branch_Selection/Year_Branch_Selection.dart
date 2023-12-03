@@ -5,6 +5,7 @@ List<bool> _lights1 = [
   true,
   true,
   true,
+  true,
 ];
 List<bool> _lights2 = [
   true,
@@ -18,10 +19,11 @@ List<bool> _lights2 = [
   true,
   true,
   true,
-  true
+  true,
 ];
 
 List<bool> _lights3 = [
+  true,
   true,
   true,
   true,
@@ -34,7 +36,8 @@ Map<int, String> years = {
   0: "1st year",
   1: "2nd year",
   2: "3rd year",
-  3: "4rth year"
+  3: "4rth year",
+  4: "5th year"
 };
 Map<int, String> branchs = {
   0: "CS",
@@ -56,13 +59,14 @@ Map<int, String> courses = {
   2: "PG",
   3: "Phd",
   4: "MBA",
-  5: "Other"
+  5: "Other",
+  6: "B.Arch"
 };
 
-List<String> notif_years = "1,1,1,1".split(",");
+List<String> notif_years = "1,1,1,1,1".split(",");
 List<String> notif_branchs =
     "CS,EC,EE,ME,CE,CH,BT,AR,MT,EP,PE,Other".split(',');
-List<String> notif_courses = "B.Tech,M.Tech,PG,Phd,MBA,Other".split(",");
+List<String> notif_courses = "B.Tech,M.Tech,PG,Phd,MBA,Other,B.Arch".split(",");
 
 class switch1 extends StatefulWidget {
   int index1;
@@ -91,6 +95,7 @@ class _switch1State extends State<switch1> {
             notif_years[widget.index1] = "1";
           }
         });
+        print(notif_years);
       },
       secondary: const Icon(Icons.lightbulb_outline),
     );
@@ -119,9 +124,9 @@ class _switch2State extends State<switch2> {
       onChanged: (bool value) async {
         setState(() {
           _lights2[index2] = !_lights2[index2];
-          try {
+          if (notif_branchs.contains(branchs[index2])) {
             notif_branchs.remove(branchs[index2]);
-          } catch (e) {
+          } else {
             notif_branchs.add(branchs[index2]!);
           }
         });
@@ -153,9 +158,9 @@ class _switch3State extends State<switch3> {
       onChanged: (bool value) async {
         setState(() {
           _lights3[index3] = !_lights3[index3];
-          try {
+          if (notif_courses.contains(courses[index3])) {
             notif_courses.remove(courses[index3]);
-          } catch (e) {
+          } else {
             notif_courses.add(courses[index3]!);
           }
         });
@@ -214,7 +219,10 @@ class _select_branch_yearState extends State<select_branch_year> {
                                   child: switch1(2)),
                               Container(
                                   padding: EdgeInsets.all(15),
-                                  child: switch1(3))
+                                  child: switch1(3)),
+                              Container(
+                                  padding: EdgeInsets.all(15),
+                                  child: switch1(4))
                             ],
                           )));
                     });
@@ -330,7 +338,10 @@ class _select_branch_yearState extends State<select_branch_year> {
                                   child: switch3(4)),
                               Container(
                                   padding: EdgeInsets.all(15),
-                                  child: switch3(5))
+                                  child: switch3(5)),
+                              Container(
+                                  padding: EdgeInsets.all(15),
+                                  child: switch3(6))
                             ],
                           )));
                     });

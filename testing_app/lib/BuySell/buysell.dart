@@ -684,20 +684,12 @@ class _all_lostwidget1State extends State<all_buySellwidget1> {
                                                                     .delete_lst(
                                                                         lst.id!);
                                                             if (!error) {
+                                                              setState(() {
+                                                                lst_list.remove(
+                                                                    lst);
+                                                              });
                                                               Navigator.pop(
                                                                   context);
-                                                              Navigator.of(context).pushAndRemoveUntil(
-                                                                  MaterialPageRoute(builder:
-                                                                      (BuildContext
-                                                                          context) {
-                                                                return firstpage(
-                                                                    0,
-                                                                    widget
-                                                                        .app_user);
-                                                              }),
-                                                                  (Route<dynamic>
-                                                                          route) =>
-                                                                      false);
                                                             }
                                                           },
                                                           child: const Center(

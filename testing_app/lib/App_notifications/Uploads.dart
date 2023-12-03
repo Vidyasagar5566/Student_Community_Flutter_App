@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '/First_page.dart';
 import '/User_profile/Models.dart';
-import '/Fcm_Notif_Domains/Servers.dart';
+import '/Fcm_Notif_Domains/servers.dart';
 import 'Servers.dart';
 import '/Year_Branch_Selection/Year_Branch_Selection.dart';
 
@@ -195,7 +195,8 @@ class _upload_notificationState extends State<upload_notification> {
                                                 title + " : " + description,
                                                 7,
                                                 notif_years.join(''),
-                                                notif_branchs.join("@"));
+                                                notif_branchs.join("@"),
+                                                notif_courses.join('@'));
                                         if (error) {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(const SnackBar(
