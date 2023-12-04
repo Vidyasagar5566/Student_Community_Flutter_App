@@ -183,10 +183,9 @@ class dating_servers {
       );
 
       var data = json.decode(response.body) as Map;
-      print(data);
+
       return data['error'];
     } catch (e) {
-      print(e);
       return true;
     }
   }

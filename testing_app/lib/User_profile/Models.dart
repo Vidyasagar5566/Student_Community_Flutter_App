@@ -315,6 +315,8 @@ SmallUsername user_min(Username app_user) {
   min_user.phnNum = app_user.phnNum;
   min_user.isAdmin = app_user.isAdmin;
   min_user.isStudentAdmin = app_user.isStudentAdmin;
+  min_user.userMark = app_user.userMark;
+  min_user.starMark = app_user.starMark;
   return min_user;
 }
 

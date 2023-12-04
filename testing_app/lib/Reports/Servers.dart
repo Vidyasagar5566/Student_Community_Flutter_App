@@ -38,7 +38,7 @@ class report_servers {
         "Content-Type": "application/json",
       });
       var data = json.decode(response.body) as Map;
-      print(data['error']);
+
       return data['error'];
     } catch (e) {
       return true;

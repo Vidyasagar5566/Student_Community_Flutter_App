@@ -95,7 +95,6 @@ class _switch1State extends State<switch1> {
             notif_years[widget.index1] = "1";
           }
         });
-        print(notif_years);
       },
       secondary: const Icon(Icons.lightbulb_outline),
     );

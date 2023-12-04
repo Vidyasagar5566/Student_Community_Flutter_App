@@ -122,54 +122,7 @@ class _notifications1State extends State<notifications1> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: [
-                      Container(
-                        width: 48, //post.profile_pic
-                        child: user.fileType == '1'
-                            ? CircleAvatar(
-                                backgroundImage: NetworkImage(user.profilePic!))
-                            : const CircleAvatar(
-                                backgroundImage:
-                                    AssetImage("images/profile.jpg")),
-                      ),
-                      Container(
-                        padding: EdgeInsets.only(left: 20),
-                        width: (width - 36) / 1.9,
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Container(
-                                    constraints: BoxConstraints(
-                                        maxWidth: (width - 36) / 2.6),
-                                    child: Text(
-                                      user.username!,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  userMarkNotation(user.starMark!)
-                                ],
-                              ),
-                              Text(
-                                domains[user.domain!]! +
-                                    " (" +
-                                    user.userMark! +
-                                    ")",
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                              ),
-                            ]),
-                      ),
-                    ],
-                  ),
+                  UserProfileMark(widget.app_user, notif.username!),
                   user.username == widget.app_user.username
                       ? IconButton(
                           onPressed: () {

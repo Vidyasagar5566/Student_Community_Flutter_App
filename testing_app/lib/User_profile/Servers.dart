@@ -53,7 +53,7 @@ class user_profile_servers {
             'batch': batch
           }));
       var data = json.decode(response.body) as Map;
-      print(data['error']);
+
       return data['error'];
     } catch (e) {
       return true;
@@ -218,7 +218,6 @@ class user_profile_servers {
       }
       return {[]: []};
     } catch (e) {
-      print(e);
       return {[]: []};
     }
   }

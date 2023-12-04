@@ -20,7 +20,7 @@ class threads_servers {
         'domain': domain,
         'num_list': num_list.toString()
       };
-      print(num_list);
+
       String queryString = Uri(queryParameters: queryParameters).query;
       String finalUrl = "$base_url/alert/list1?$queryString";
       var url = Uri.parse(finalUrl);
@@ -29,7 +29,7 @@ class threads_servers {
         "Content-Type": "application/json",
       });
       var data = json.decode(response.body) as List;
-      print(data);
+
       List<ALERT_LIST> temp = [];
       data.forEach((element) {
         ALERT_LIST post = ALERT_LIST.fromJson(element);

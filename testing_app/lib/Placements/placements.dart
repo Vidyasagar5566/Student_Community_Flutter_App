@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:testing_app/Fcm_Notif_Domains/Servers.dart';
+import 'package:testing_app/Login/Servers.dart';
+import 'package:testing_app/User_Star_Mark/User_Profile_Star_Mark.dart';
+import 'package:testing_app/User_profile/profile.dart';
 import 'dart:io';
 import '../Circular_designs/Cure_clip.dart';
 import 'Servers.dart';
@@ -172,7 +175,7 @@ class _Giving_RatingState extends State<Giving_Rating> {
                 selected_rating.rating!,
                 selected_rating.description!,
                 widget.sub_id.toString());
-            print(error);
+
             if (!error[0]) {
               selected_rating.id = error[1];
               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -307,21 +310,28 @@ class _Show_all_sub_ratingsState extends State<Show_all_sub_ratings> {
   }
 }
 
-bool InternCompany = false;
+bool InternCompany = true;
+bool PlacementCompany = true;
 
 class private_switch extends StatefulWidget {
-  private_switch();
+  bool value;
+  private_switch(this.value);
 
   @override
   State<private_switch> createState() => _private_switchState();
 }
 
 class _private_switchState extends State<private_switch> {
+  void initState() {
+    super.initState();
+    InternCompany = widget.value;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SwitchListTile(
       title: const Text(
-        "InternCompany?",
+        "InternCompany",
         style: TextStyle(fontWeight: FontWeight.w200),
       ),
       activeColor: Colors.blue,
@@ -329,6 +339,38 @@ class _private_switchState extends State<private_switch> {
       onChanged: (bool value) {
         setState(() {
           InternCompany = !InternCompany;
+        });
+      },
+    );
+  }
+}
+
+class private_switch1 extends StatefulWidget {
+  bool value;
+  private_switch1(this.value);
+
+  @override
+  State<private_switch1> createState() => _private_switch1State();
+}
+
+class _private_switch1State extends State<private_switch1> {
+  void initState() {
+    super.initState();
+    PlacementCompany = widget.value;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SwitchListTile(
+      title: const Text(
+        "PlacementCompany",
+        style: TextStyle(fontWeight: FontWeight.w200),
+      ),
+      activeColor: Colors.blue,
+      value: PlacementCompany,
+      onChanged: (bool value) {
+        setState(() {
+          PlacementCompany = !PlacementCompany;
         });
       },
     );
@@ -363,16 +405,13 @@ class _placementsState extends State<placements> {
     setState(() {
       cal_sub_names = plac_names;
       loaded_data = true;
-      for (int i = 0; i < cal_sub_names.length; i++) {
-        if (cal_sub_names[i].InternCompany == false &&
-            inter_placement == "Placement") {
-          widget.cal_sub_names.add(cal_sub_names[i]);
-        }
-
-        if (cal_sub_names[i].InternCompany == true &&
-            inter_placement != "Placement") {
-          widget.cal_sub_names.add(cal_sub_names[i]);
-        }
+      if (inter_placement == "Placement") {
+        widget.cal_sub_names = cal_sub_names
+            .where((element) => element.PlacementCompany!)
+            .toList();
+      } else {
+        widget.cal_sub_names =
+            cal_sub_names.where((element) => element.InternCompany!).toList();
       }
     });
   }
@@ -390,291 +429,308 @@ class _placementsState extends State<placements> {
       _extand.add(false);
       _loaded.add(false);
     }
-    return Scaffold(
-      body: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          //color: Colors.pink[100],
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("images/background.jpg"), fit: BoxFit.cover),
-          ),
-          margin: const EdgeInsets.only(bottom: 20),
-          child: SingleChildScrollView(
-            child: Column(
-                //mainAxisAlignment: MainAxisAlignment.center,
-                //crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      ClipPath(
-                          clipper: profile_Clipper(),
-                          child: Container(
-                            height: 230,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                              colors: [
-                                Colors.deepPurple,
-                                Colors.purple.shade300
-                              ],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            )),
-                          )),
-                      Positioned(
-                          left: 20,
-                          top: 75,
-                          child: Row(
-                            children: [
-                              IconButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                icon: const Icon(
-                                  Icons.arrow_back_ios_new_outlined,
-                                  color: Colors.white,
-                                  size: 30,
-                                ),
-                              ),
-                              const SizedBox(width: 20),
-                              SizedBox(
-                                width: 200,
-                                child: TextFormField(
-                                  cursorColor: Colors.white,
-                                  keyboardType: TextInputType.emailAddress,
-                                  style: TextStyle(color: Colors.white),
-                                  decoration: const InputDecoration(
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Colors.white),
-                                    ),
-                                    focusedBorder: UnderlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Colors.white),
-                                    ),
-                                    border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10))),
-                                    hintText: "Search Company Name",
-                                    hintStyle: TextStyle(color: Colors.white),
-                                  ),
-                                  onChanged: (String value) {
-                                    setState(() {
-                                      if (inter_placement == "Placement") {
-                                        widget.cal_sub_names = cal_sub_names
-                                            .where((element) =>
-                                                element.subName!
-                                                    .contains(value) &&
-                                                !element.InternCompany!)
-                                            .toList();
-                                      } else {
-                                        widget.cal_sub_names = cal_sub_names
-                                            .where((element) =>
-                                                element.subName!
-                                                    .contains(value) &&
-                                                element.InternCompany!)
-                                            .toList();
-                                      }
-                                    });
-                                  },
-                                ),
-                              ),
-                              const SizedBox(width: 3),
-                              Text(
-                                inter_placement == "Placement"
-                                    ? widget.cal_sub_names
-                                        .where((element) =>
-                                            !element.InternCompany!)
-                                        .length
-                                        .toString()
-                                    : widget.cal_sub_names
-                                        .where(
-                                            (element) => element.InternCompany!)
-                                        .length
-                                        .toString(),
-                                style: TextStyle(color: Colors.white),
-                              )
-                            ],
-                          ))
-                    ],
-                  ),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return RefreshIndicator(
+      displacement: 150,
+      //backgroundColor: Colors.yellow,
+      color: Colors.blue,
+      strokeWidth: 2,
+      triggerMode: RefreshIndicatorTriggerMode.onEdge,
+      onRefresh: () async {
+        await Future.delayed(Duration(milliseconds: 400));
+        setState(() {
+          loaded_data = false;
+          cal_sub_names = [];
+        });
+        load_data_fun();
+      },
+
+      child: Scaffold(
+        body: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            //color: Colors.pink[100],
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage("images/background.jpg"),
+                  fit: BoxFit.cover),
+            ),
+            margin: const EdgeInsets.only(bottom: 20),
+            child: SingleChildScrollView(
+              child: Column(
+                  //mainAxisAlignment: MainAxisAlignment.center,
+                  //crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Stack(
+                      alignment: Alignment.center,
                       children: [
-                        Container(
-                            // margin: EdgeInsets.only(left: 10),
-                            // child: DropdownButton<String>(
-                            //     value: widget.domain,
-                            //     underline: Container(),
-                            //     elevation: 0,
-                            //     items: domains_list_ex_all
-                            //         .map<DropdownMenuItem<String>>(
-                            //             (String value) {
-                            //       return DropdownMenuItem<String>(
-                            //         value: value,
-                            //         child: Text(
-                            //           value,
-                            //           style: TextStyle(fontSize: 10),
-                            //         ),
-                            //       );
-                            //     }).toList(),
-                            //     onChanged: (value) {
-                            //       setState(() {
-                            //         widget.domain = value!;
-                            //         loaded_data = false;
-                            //         widget.cal_sub_names = [];
-                            //       });
-                            //       load_data_fun();
-                            //     }),
-                            ),
-                        Container(
-                          margin: EdgeInsets.only(right: 10),
-                          child: DropdownButton<String>(
-                              value: inter_placement,
-                              underline: Container(),
-                              elevation: 0,
-                              items: [
-                                'Placement',
-                                "Intern"
-                              ].map<DropdownMenuItem<String>>((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(
-                                    value,
-                                    style: TextStyle(fontSize: 10),
-                                  ),
-                                );
-                              }).toList(),
-                              onChanged: (value) {
-                                setState(() {
-                                  inter_placement = value!;
-                                  widget.cal_sub_names = [];
-                                  for (int i = 0;
-                                      i < cal_sub_names.length;
-                                      i++) {
-                                    if (inter_placement == "Placement" &&
-                                        cal_sub_names[i].InternCompany ==
-                                            false) {
-                                      widget.cal_sub_names
-                                          .add(cal_sub_names[i]);
-                                    } else if (inter_placement == "Intern" &&
-                                        cal_sub_names[i].InternCompany ==
-                                            true) {
-                                      widget.cal_sub_names
-                                          .add(cal_sub_names[i]);
-                                    }
-                                  }
-                                });
-                              }),
-                        )
-                      ]),
-                  build_screen()
-                ]),
-          )),
-      floatingActionButton: widget.app_user.is_placement_admin!
-          ? ElevatedButton.icon(
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (context) {
-                      return AlertDialog(
-                          contentPadding: EdgeInsets.all(15),
-                          content:
-                              Column(mainAxisSize: MainAxisSize.min, children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        ClipPath(
+                            clipper: profile_Clipper(),
+                            child: Container(
+                              height: 230,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                colors: [
+                                  Colors.deepPurple,
+                                  Colors.purple.shade300
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              )),
+                            )),
+                        Positioned(
+                            left: 20,
+                            top: 75,
+                            child: Row(
                               children: [
-                                Container(),
                                 IconButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  icon: const Icon(
+                                    Icons.arrow_back_ios_new_outlined,
+                                    color: Colors.white,
+                                    size: 30,
+                                  ),
+                                ),
+                                const SizedBox(width: 20),
+                                SizedBox(
+                                  width: 200,
+                                  child: TextFormField(
+                                    cursorColor: Colors.white,
+                                    keyboardType: TextInputType.emailAddress,
+                                    style: TextStyle(color: Colors.white),
+                                    decoration: const InputDecoration(
+                                      enabledBorder: UnderlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.white),
+                                      ),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.white),
+                                      ),
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10))),
+                                      hintText: "Search Company Name",
+                                      hintStyle: TextStyle(color: Colors.white),
+                                    ),
+                                    onChanged: (String value) {
+                                      setState(() {
+                                        if (inter_placement == "Placement") {
+                                          widget.cal_sub_names = cal_sub_names
+                                              .where((element) =>
+                                                  element.subName!
+                                                      .contains(value) &&
+                                                  element.PlacementCompany!)
+                                              .toList();
+                                        } else {
+                                          widget.cal_sub_names = cal_sub_names
+                                              .where((element) =>
+                                                  element.subName!
+                                                      .contains(value) &&
+                                                  element.InternCompany!)
+                                              .toList();
+                                        }
+                                      });
                                     },
-                                    icon: const Icon(Icons.close))
+                                  ),
+                                ),
+                                const SizedBox(width: 3),
+                                Text(
+                                  widget.cal_sub_names.length.toString(),
+                                  style: TextStyle(color: Colors.white),
+                                )
                               ],
-                            ),
-                            Container(
-                              padding: EdgeInsets.only(left: 40, right: 40),
-                              child: TextField(
-                                keyboardType: TextInputType.emailAddress,
-                                decoration: const InputDecoration(
-                                    labelText: "Company name",
-                                    hintText: "TCS",
-                                    prefixIcon: Icon(Icons.text_fields),
-                                    border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10)))),
-                                onChanged: (String value) {
+                            ))
+                      ],
+                    ),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                              // margin: EdgeInsets.only(left: 10),
+                              // child: DropdownButton<String>(
+                              //     value: widget.domain,
+                              //     underline: Container(),
+                              //     elevation: 0,
+                              //     items: domains_list_ex_all
+                              //         .map<DropdownMenuItem<String>>(
+                              //             (String value) {
+                              //       return DropdownMenuItem<String>(
+                              //         value: value,
+                              //         child: Text(
+                              //           value,
+                              //           style: TextStyle(fontSize: 10),
+                              //         ),
+                              //       );
+                              //     }).toList(),
+                              //     onChanged: (value) {
+                              //       setState(() {
+                              //         widget.domain = value!;
+                              //         loaded_data = false;
+                              //         widget.cal_sub_names = [];
+                              //       });
+                              //       load_data_fun();
+                              //     }),
+                              ),
+                          Container(
+                            margin: EdgeInsets.only(right: 10),
+                            child: DropdownButton<String>(
+                                value: inter_placement,
+                                underline: Container(),
+                                elevation: 0,
+                                items: [
+                                  'Placement',
+                                  "Intern"
+                                ].map<DropdownMenuItem<String>>((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(
+                                      value,
+                                      style: TextStyle(fontSize: 10),
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (value) {
                                   setState(() {
-                                    sub_name = value;
-                                    if (value == "") {
-                                      sub_name = null;
+                                    inter_placement = value!;
+                                    if (inter_placement == "Placement") {
+                                      widget.cal_sub_names = cal_sub_names
+                                          .where((element) =>
+                                              element.PlacementCompany!)
+                                          .toList();
+                                    } else if (inter_placement == "Intern") {
+                                      widget.cal_sub_names = cal_sub_names
+                                          .where((element) =>
+                                              element.InternCompany!)
+                                          .toList();
                                     }
                                   });
-                                },
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            private_switch(),
-                            const SizedBox(height: 10),
-                            TextButton(
-                                onPressed: () async {
-                                  if (sub_name == null) {
-                                    Navigator.pop(context);
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        duration: Duration(milliseconds: 400),
-                                        content: Text(
-                                          " name cant be null",
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                      ),
-                                    );
-                                  } else {
-                                    Navigator.pop(context);
-                                    List<dynamic> error =
-                                        await placemeny_servers().post_cal_sub(
-                                            sub_name, 'CPC', InternCompany);
-                                    if (!error[0]) {
-                                      var new_sub_name = CAL_SUB_NAMES();
-                                      new_sub_name.id = error[1];
-                                      new_sub_name.subId = 'CPC';
-                                      new_sub_name.subName = sub_name;
-                                      new_sub_name.username =
-                                          user_min(widget.app_user);
-                                      new_sub_name.totRatingsVal = 0;
-                                      new_sub_name.numRatings = 0;
-                                      new_sub_name.InternCompany =
-                                          InternCompany;
-                                      setState(() {
-                                        widget.cal_sub_names.add(new_sub_name);
-                                      });
-                                    } else {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(const SnackBar(
+                                }),
+                          )
+                        ]),
+                    build_screen()
+                  ]),
+            )),
+        floatingActionButton: widget.app_user.is_placement_admin!
+            ? ElevatedButton.icon(
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (context) {
+                        return AlertDialog(
+                            contentPadding: EdgeInsets.all(15),
+                            content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(),
+                                      IconButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          icon: const Icon(Icons.close))
+                                    ],
+                                  ),
+                                  Container(
+                                    padding:
+                                        EdgeInsets.only(left: 40, right: 40),
+                                    child: TextField(
+                                      keyboardType: TextInputType.emailAddress,
+                                      decoration: const InputDecoration(
+                                          labelText: "Company name",
+                                          hintText: "TCS",
+                                          prefixIcon: Icon(Icons.text_fields),
+                                          border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(10)))),
+                                      onChanged: (String value) {
+                                        setState(() {
+                                          sub_name = value;
+                                          if (value == "") {
+                                            sub_name = null;
+                                          }
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  private_switch(true),
+                                  const SizedBox(height: 10),
+                                  private_switch1(true),
+                                  const SizedBox(height: 10),
+                                  TextButton(
+                                      onPressed: () async {
+                                        if (sub_name == null) {
+                                          Navigator.pop(context);
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
                                               duration:
                                                   Duration(milliseconds: 400),
                                               content: Text(
-                                                "error occured please try again",
+                                                " name cant be null",
                                                 style: TextStyle(
                                                     color: Colors.white),
-                                              )));
-                                    }
-                                  }
-                                },
-                                child: const Center(child: Text("Add")))
-                          ]));
-                    });
-              },
-              label: const Text("Add new company",
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold)),
-              icon: const Icon(Icons.edit, color: Colors.white),
-              style: ElevatedButton.styleFrom(primary: Colors.deepPurple),
-            )
-          : Container(),
+                                              ),
+                                            ),
+                                          );
+                                        } else {
+                                          Navigator.pop(context);
+                                          List<dynamic> error =
+                                              await placemeny_servers()
+                                                  .post_cal_sub(
+                                                      sub_name,
+                                                      'CPC',
+                                                      InternCompany,
+                                                      PlacementCompany);
+                                          if (!error[0]) {
+                                            var new_sub_name = CAL_SUB_NAMES();
+                                            new_sub_name.id = error[1];
+                                            new_sub_name.subId = 'CPC';
+                                            new_sub_name.subName = sub_name;
+                                            new_sub_name.username =
+                                                user_min(widget.app_user);
+                                            new_sub_name.totRatingsVal = 0;
+                                            new_sub_name.numRatings = 0;
+                                            new_sub_name.InternCompany =
+                                                InternCompany;
+                                            new_sub_name.PlacementCompany =
+                                                PlacementCompany;
+                                            setState(() {
+                                              widget.cal_sub_names
+                                                  .add(new_sub_name);
+                                            });
+                                          } else {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(const SnackBar(
+                                                    duration: Duration(
+                                                        milliseconds: 400),
+                                                    content: Text(
+                                                      "error occured please try again",
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    )));
+                                          }
+                                        }
+                                      },
+                                      child: const Center(child: Text("Add")))
+                                ]));
+                      });
+                },
+                label: const Text("Add new company",
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold)),
+                icon: const Icon(Icons.edit, color: Colors.white),
+                style: ElevatedButton.styleFrom(primary: Colors.deepPurple),
+              )
+            : Container(),
+      ),
     );
   }
 
@@ -754,7 +810,9 @@ class _placementsState extends State<placements> {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (BuildContext context) => place_years(
                                   widget.app_user,
-                                  widget.cal_sub_names[index], [])));
+                                  widget.cal_sub_names[index],
+                                  [],
+                                  inter_placement)));
                         },
                         child: Container(
                           width: wid - 16,
@@ -773,7 +831,7 @@ class _placementsState extends State<placements> {
                           ),
                           margin: const EdgeInsets.all(8),
                           padding: const EdgeInsets.only(
-                              top: 3, left: 12, bottom: 3),
+                              top: 5, left: 12, bottom: 5),
                           child: Column(
                             children: [
                               Row(
@@ -948,6 +1006,20 @@ class _placementsState extends State<placements> {
                                                                   const SizedBox(
                                                                       height:
                                                                           10),
+                                                                  private_switch(widget
+                                                                      .cal_sub_names[
+                                                                          index]
+                                                                      .InternCompany!),
+                                                                  const SizedBox(
+                                                                      height:
+                                                                          10),
+                                                                  private_switch1(widget
+                                                                      .cal_sub_names[
+                                                                          index]
+                                                                      .PlacementCompany!),
+                                                                  const SizedBox(
+                                                                      height:
+                                                                          10),
                                                                   TextButton(
                                                                       onPressed:
                                                                           () async {
@@ -971,10 +1043,14 @@ class _placementsState extends State<placements> {
 
                                                                           bool error = await placemeny_servers().edit_cal_sub(
                                                                               sub_name!,
-                                                                              widget.cal_sub_names[index].id.toString());
+                                                                              widget.cal_sub_names[index].id.toString(),
+                                                                              InternCompany,
+                                                                              PlacementCompany);
                                                                           if (!error) {
                                                                             setState(() {
                                                                               widget.cal_sub_names[index].subName = sub_name;
+                                                                              widget.cal_sub_names[index].InternCompany = InternCompany;
+                                                                              widget.cal_sub_names[index].PlacementCompany = PlacementCompany;
                                                                             });
                                                                           } else {
                                                                             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -1144,7 +1220,9 @@ class place_years extends StatefulWidget {
   Username app_user;
   CAL_SUB_NAMES cal_sub_name;
   List<CAL_SUB_YEARS> cal_sub_years_list;
-  place_years(this.app_user, this.cal_sub_name, this.cal_sub_years_list);
+  String inter_placement;
+  place_years(this.app_user, this.cal_sub_name, this.cal_sub_years_list,
+      this.inter_placement);
 
   @override
   State<place_years> createState() => _place_yearsState();
@@ -1157,7 +1235,8 @@ class _place_yearsState extends State<place_years> {
 
   void load_data_fun() async {
     List<CAL_SUB_YEARS> sub_years1 = await placemeny_servers()
-        .get_sub_years_list(widget.cal_sub_name.id.toString());
+        .get_sub_years_list(
+            widget.cal_sub_name.id.toString(), widget.inter_placement);
     setState(() {
       sub_years = sub_years1;
       sub_years.sort((a, b) => a.yearName!.compareTo(b.yearName!));
@@ -1333,7 +1412,8 @@ class _place_yearsState extends State<place_years> {
                                                       widget.cal_sub_name.id
                                                           .toString(),
                                                       year_name,
-                                                      false);
+                                                      false,
+                                                      widget.inter_placement);
 
                                           if (!error[0]) {
                                             CAL_SUB_YEARS new_sub_year =
@@ -1343,6 +1423,8 @@ class _place_yearsState extends State<place_years> {
                                             new_sub_year.private = false;
                                             new_sub_year.username =
                                                 user_min(widget.app_user);
+                                            new_sub_year.InternCompany =
+                                                InternCompany;
                                             setState(() {
                                               sub_years.add(new_sub_year);
                                             });
@@ -1454,7 +1536,7 @@ class _place_yearsState extends State<place_years> {
                                       constraints:
                                           BoxConstraints(maxWidth: wid / 2),
                                       child: Text(
-                                        sub_years[index].yearName!,
+                                        sub_years[index].yearName! + " batch",
                                         style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             color: Colors.white),
@@ -1949,7 +2031,6 @@ class _yearFilesState extends State<yearFiles> {
           );
         } else {
           if (widget.cal_sub_files[index].fileType == "1") {
-            print(widget.cal_sub_files[index].qnAnsFile);
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (BuildContext context) => image_display(
                     widget.cal_sub_files[index].insert,
@@ -1984,15 +2065,18 @@ class _yearFilesState extends State<yearFiles> {
           ),
           //                                          color: Colors.white70,
         ),
-        margin: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
+        margin: const EdgeInsets.only(left: 10, right: 20, top: 10, bottom: 10),
         padding: const EdgeInsets.only(top: 7, left: 20, bottom: 7),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              child: Text(widget.cal_sub_files[index].username!.email!,
-                  style: const TextStyle(color: Colors.white),
-                  textAlign: TextAlign.left),
-            ),
+            Place_UserProfileMark(
+                widget.app_user, widget.cal_sub_files[index].username!),
+            // Container(
+            //   child: Text(widget.cal_sub_files[index].username!.email!,
+            //       style: const TextStyle(color: Colors.white),
+            //       textAlign: TextAlign.left),
+            // ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -2231,6 +2315,109 @@ class _yearFilesState extends State<yearFiles> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class Place_UserProfileMark extends StatefulWidget {
+  Username app_user;
+  SmallUsername profile_user;
+  Place_UserProfileMark(this.app_user, this.profile_user);
+
+  @override
+  State<Place_UserProfileMark> createState() => _UserProfileMarkState();
+}
+
+class _UserProfileMarkState extends State<Place_UserProfileMark> {
+  @override
+  Widget build(BuildContext context) {
+    SmallUsername user = widget.profile_user;
+    var width = MediaQuery.of(context).size.width;
+    return GestureDetector(
+      onTap: () async {
+        if (widget.app_user.email != widget.profile_user.email) {
+          showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) {
+                return AlertDialog(
+                    contentPadding: EdgeInsets.all(15),
+                    content: Container(
+                      margin: EdgeInsets.all(10),
+                      child: const Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text("Please wait while loading....."),
+                            SizedBox(height: 10),
+                            CircularProgressIndicator()
+                          ]),
+                    ));
+              });
+          Username all_profile_user =
+              await login_servers().get_user(widget.profile_user.email!);
+          Navigator.pop(context);
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (BuildContext context) {
+            return Scaffold(
+                body: userProfilePage(widget.app_user, all_profile_user));
+          }));
+        }
+      },
+      child: Row(
+        children: [
+          Container(
+            width: 50, //post.profile_pic
+            child: user.fileType == '1'
+                ? CircleAvatar(
+                    radius: 21,
+                    backgroundColor: Colors.white,
+                    child: CircleAvatar(
+                        backgroundImage: NetworkImage(user.profilePic!)))
+                : const CircleAvatar(
+                    radius: 21,
+                    backgroundColor: Colors.white,
+                    child: CircleAvatar(
+                        backgroundImage: AssetImage("images/profile.jpg"))),
+          ),
+          Container(
+            padding: EdgeInsets.only(left: 20),
+            width: (width - 36) / 1.8,
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Row(
+                children: [
+                  Container(
+                    constraints: BoxConstraints(maxWidth: (width - 36) / 2.4),
+                    child: Text(
+                      user.username!,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                          color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(width: 9),
+                  CircleAvatar(
+                      radius: 9,
+                      backgroundColor: Colors.white,
+                      child: userMarkNotation(user.starMark!))
+                ],
+              ),
+              Container(
+                padding: EdgeInsets.only(left: 10),
+                child: Text(
+                  "(" + user.userMark! + ")",
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ]),
+          ),
+        ],
       ),
     );
   }

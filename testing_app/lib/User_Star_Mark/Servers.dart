@@ -27,7 +27,6 @@ class user_star_mark_servers {
 
       return data['error'];
     } catch (e) {
-      print(e);
       return true;
     }
   }

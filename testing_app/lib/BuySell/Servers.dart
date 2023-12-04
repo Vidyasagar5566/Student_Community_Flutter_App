@@ -34,10 +34,8 @@ class bs_servers {
         Buy_Sell post = Buy_Sell.fromJson(element);
         temp.add(post);
       });
-      print(data);
       return temp;
     } catch (e) {
-      print(e);
       List<Buy_Sell> temp = [];
       return Future.value(temp);
     }

@@ -75,9 +75,12 @@ class _all_lostwidget1State extends State<all_buySellwidget1> {
   }
 
   var comment;
-  bool sending_cmnt = false;
+  List<bool> sending_cmnt = [];
   @override
   Widget build(BuildContext context) {
+    for (int i = 0; i < widget.lst_buy_list.length; i++) {
+      sending_cmnt.add(false);
+    }
     return Scaffold(
         appBar: AppBar(
           centerTitle: false,
@@ -261,7 +264,7 @@ class _all_lostwidget1State extends State<all_buySellwidget1> {
                                   return lst_commentwidget(
                                       lst, widget.app_user);
                                 }));
-                              } else {
+                              } else if (sending_cmnt[index] == false) {
                                 showDialog(
                                     context: context,
                                     barrierDismissible: false,
@@ -337,7 +340,8 @@ class _all_lostwidget1State extends State<all_buySellwidget1> {
                                                       } else {
                                                         Navigator.pop(context);
                                                         setState(() {
-                                                          sending_cmnt = true;
+                                                          sending_cmnt[index] =
+                                                              true;
                                                         });
                                                         List<dynamic> error =
                                                             await bs_servers()
@@ -346,8 +350,8 @@ class _all_lostwidget1State extends State<all_buySellwidget1> {
                                                                     lst.id!);
                                                         if (!error[0]) {
                                                           setState(() {
-                                                            sending_cmnt =
-                                                                false;
+                                                            sending_cmnt[
+                                                                index] = false;
                                                           });
                                                           ScaffoldMessenger.of(
                                                                   context)
@@ -404,7 +408,7 @@ class _all_lostwidget1State extends State<all_buySellwidget1> {
                                     style: TextStyle(color: Colors.white),
                                     textAlign: TextAlign.center,
                                   )
-                                : sending_cmnt == false
+                                : sending_cmnt[index] == false
                                     ? (lst.tag == "buy"
                                         ? const Text(
                                             "sell?",
@@ -418,8 +422,12 @@ class _all_lostwidget1State extends State<all_buySellwidget1> {
                                                 TextStyle(color: Colors.white),
                                             textAlign: TextAlign.center,
                                           ))
-                                    : const CircularProgressIndicator(
-                                        color: Colors.white),
+                                    : const SizedBox(
+                                        height: 13,
+                                        width: 13,
+                                        child: CircularProgressIndicator(
+                                            color: Colors.white),
+                                      ),
                           ))
                     ],
                   ),

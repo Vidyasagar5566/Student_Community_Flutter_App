@@ -27,7 +27,6 @@ class register_servers {
 
       return data['error'];
     } catch (e) {
-      print(e);
       return true;
     }
   }
