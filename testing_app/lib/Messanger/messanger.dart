@@ -390,7 +390,7 @@ class _Personmessanger1State extends State<Personmessanger1> {
                           ),
                           Container(
                             padding: EdgeInsets.only(left: 20),
-                            width: (width - 36) / 1.8,
+                            width: (width - 36) / 1.7,
                             child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [

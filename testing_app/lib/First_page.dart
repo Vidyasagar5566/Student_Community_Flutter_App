@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '/Dating/dating.dart';
@@ -78,10 +80,19 @@ class _get_ueser_widgetState extends State<get_ueser_widget> {
 
             if (!app_user.isDetails!) {
               return LoginRegister(app_user);
-            } else if (app_user.updateMark != "instabook3") {
-              return appUpdate();
-            } else {
-              return firstpage(widget.curr_index, app_user);
+            }
+            if (Platform.isAndroid) {
+              if (app_user.updateMark != "instabook4") {
+                return appUpdate();
+              } else {
+                return firstpage(widget.curr_index, app_user);
+              }
+            } else if (Platform.isIOS) {
+              if (app_user.updateMark != "instabook4") {
+                return appUpdate();
+              } else {
+                return firstpage(widget.curr_index, app_user);
+              }
             }
           }
         }

@@ -338,6 +338,24 @@ class _all_lostwidget1State extends State<all_lostwidget1> {
                                                             ),
                                                           ),
                                                         );
+                                                      } else if (widget
+                                                              .app_user.email!
+                                                              .split('@')[0] ==
+                                                          "guest") {
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                                const SnackBar(
+                                                                    duration: Duration(
+                                                                        milliseconds:
+                                                                            400),
+                                                                    content:
+                                                                        Text(
+                                                                      "Guests are not allowed.",
+                                                                      style: TextStyle(
+                                                                          color:
+                                                                              Colors.white),
+                                                                    )));
                                                       } else {
                                                         Navigator.pop(context);
                                                         setState(() {

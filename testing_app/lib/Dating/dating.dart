@@ -427,212 +427,215 @@ class _datingUser1State extends State<datingUser1> {
         dating_user.postedDate!); // Converting into [DateTime] object
     String dating_user_posted_date = GetTimeAgo.parse(_convertedTimestamp);
 
-    return Column(
-      children: [
-        Row(children: [
-          Container(),
-          SizedBox(width: width / 1.15),
-          GestureDetector(
-              onTap: () {
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        contentPadding: EdgeInsets.all(15),
-                        content: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(),
-                                IconButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    icon: const Icon(Icons.close))
-                              ],
-                            ),
-                            const SizedBox(height: 20),
-                            const Center(
-                                child: SelectableText(
-                                    "• This platform is designed for users to share their interests and connect with others anonymously",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold))),
-                            const SizedBox(height: 10),
-                            const Center(
-                                child: SelectableText(
-                                    "• Maintain a single profile by updating daily tasks or engaging in fun chats.",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold))),
-                            const SizedBox(height: 10),
-                            const Center(
-                                child: SelectableText(
-                                    "• Delete old tracking profile at any time to start fresh",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold))),
-                            const SizedBox(height: 10),
-                            const Center(
-                                child: SelectableText(
-                                    "• Students can contact us through helpCenter for any of the problem with this connect.",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold))),
-                          ],
-                        ),
-                      );
-                    });
-              },
-              child: Icon(Icons.integration_instructions,
-                  color: Colors.pinkAccent)),
-        ]),
-        Container(
-          width: width,
-          padding: EdgeInsets.only(left: 10, right: 10),
-          child: Text(dating_user.dummyName!,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28)),
-        ),
-        const SizedBox(height: 4),
-        Container(
-          width: width,
-          padding: EdgeInsets.only(left: 10, right: 10),
-          child: Text(domains[dating_user.dummyDomain]!,
-              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
-        ),
-        const SizedBox(height: 4),
-        Container(
-          padding: EdgeInsets.only(left: 10, right: 10),
-          width: width,
-          child: Text(utf8convert(dating_user.dummyBio!),
-              maxLines: 3,
-              softWrap: false,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontWeight: FontWeight.w200, fontSize: 16)),
-        ),
-        const SizedBox(height: 4),
-        Center(
-          child: Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                image: const DecorationImage(
-                    scale: 10, image: AssetImage('images/loading.png'))),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return image_display(false, File('images/icon.png'),
-                      dating_user.dummyProfile!);
-                }));
-              },
-              child: Container(
-                margin: EdgeInsets.all(10),
-                height: width - 80,
-                width: width - 20,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    image: DecorationImage(
-                        image: NetworkImage(dating_user.dummyProfile!),
-                        fit: BoxFit.cover)),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Row(children: [
+            Container(),
+            SizedBox(width: width / 1.15),
+            GestureDetector(
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          contentPadding: EdgeInsets.all(15),
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(),
+                                  IconButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      icon: const Icon(Icons.close))
+                                ],
+                              ),
+                              const SizedBox(height: 20),
+                              const Center(
+                                  child: SelectableText(
+                                      "• This platform is designed for users to share their interests and connect with others anonymously",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold))),
+                              const SizedBox(height: 10),
+                              const Center(
+                                  child: SelectableText(
+                                      "• Maintain a single profile by updating daily tasks or engaging in fun chats.",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold))),
+                              const SizedBox(height: 10),
+                              const Center(
+                                  child: SelectableText(
+                                      "• Delete old tracking profile at any time to start fresh",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold))),
+                              const SizedBox(height: 10),
+                              const Center(
+                                  child: SelectableText(
+                                      "• Students can contact us through helpCenter for any of the problem with this connect.",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold))),
+                            ],
+                          ),
+                        );
+                      });
+                },
+                child: Icon(Icons.integration_instructions,
+                    color: Colors.pinkAccent)),
+          ]),
+          Container(
+            width: width,
+            padding: EdgeInsets.only(left: 10, right: 10),
+            child: Text(dating_user.dummyName!,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28)),
+          ),
+          const SizedBox(height: 4),
+          Container(
+            width: width,
+            padding: EdgeInsets.only(left: 10, right: 10),
+            child: Text(domains[dating_user.dummyDomain]!,
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
+          ),
+          const SizedBox(height: 4),
+          Container(
+            padding: EdgeInsets.only(left: 10, right: 10),
+            width: width,
+            child: Text(utf8convert(dating_user.dummyBio!),
+                maxLines: 3,
+                softWrap: false,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontWeight: FontWeight.w200, fontSize: 16)),
+          ),
+          const SizedBox(height: 4),
+          Center(
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  image: const DecorationImage(
+                      scale: 10, image: AssetImage('images/loading.png'))),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (BuildContext context) {
+                    return image_display(false, File('images/icon.png'),
+                        dating_user.dummyProfile!);
+                  }));
+                },
+                child: Container(
+                  margin: EdgeInsets.all(10),
+                  height: width - 80,
+                  width: width - 20,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      image: DecorationImage(
+                          image: NetworkImage(dating_user.dummyProfile!),
+                          fit: BoxFit.cover)),
+                ),
               ),
             ),
           ),
-        ),
-        const SizedBox(height: 2),
-        datingUserReactions(dating_user),
-        const SizedBox(height: 20),
-        Container(
-          height: 50,
-          width: width - 70.0,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(22)),
-              gradient: LinearGradient(
-                colors: [
-                  Colors.pink.shade300,
-                  Colors.pink,
-                  Colors.orange.shade700
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              )),
-          child: OutlinedButton(
-              onPressed: () async {
-                if (widget.app_user.email!.split('@')[0] == "guest") {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      duration: Duration(milliseconds: 400),
-                      content: Text("guest cannot chat with others..",
-                          style: TextStyle(color: Colors.white))));
-                } else if (!widget.app_user.dating_profile!) {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      duration: Duration(milliseconds: 400),
-                      content: Text("Create Your profile to open chat.",
-                          style: TextStyle(color: Colors.white))));
-                } else if (widget.app_user.email ==
-                    dating_user.username!.email) {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      duration: Duration(milliseconds: 400),
-                      content: Text("You can't chat with yourself.",
-                          style: TextStyle(color: Colors.white))));
-                } else {
-                  ChatRoomModel? chatroomModel = await getChatRoomModel(
-                      dating_user.username!, dating_user);
-
-                  if (chatroomModel != null) {
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) {
-                      return DummychatRoomStream(
-                          dating_user: dating_user!,
-                          chatRoom: chatroomModel,
-                          app_user: widget.app_user);
-                    }));
-                  }
-                }
-              },
-              child: Container(
-                padding: EdgeInsets.only(left: 25, right: 25),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Row(
-                      children: [
-                        Text(
-                          "Say Hello",
-                          style: TextStyle(color: Colors.white, fontSize: 20),
-                        ),
-                        const SizedBox(width: 5),
-                        Text(
-                          '👋',
-                          style: TextStyle(fontSize: 26, color: Colors.white),
-                        )
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        const Icon(Icons.send_to_mobile_outlined,
-                            color: Colors.white, size: 25),
-                        Text(
-                          "(" + dating_user.numChats.toString() + ")",
-                          style: const TextStyle(color: Colors.white),
-                        )
-                      ],
-                    ),
+          const SizedBox(height: 2),
+          datingUserReactions(dating_user),
+          const SizedBox(height: 20),
+          Container(
+            height: 50,
+            width: width - 70.0,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(22)),
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.pink.shade300,
+                    Colors.pink,
+                    Colors.orange.shade700
                   ],
-                ),
-              )),
-        ),
-        const SizedBox(height: 40),
-        Text(dating_user_posted_date)
-      ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                )),
+            child: OutlinedButton(
+                onPressed: () async {
+                  if (widget.app_user.email!.split('@')[0] == "guest") {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        duration: Duration(milliseconds: 400),
+                        content: Text("guest cannot chat with others..",
+                            style: TextStyle(color: Colors.white))));
+                  } else if (!widget.app_user.dating_profile!) {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        duration: Duration(milliseconds: 400),
+                        content: Text("Create Your profile to open chat.",
+                            style: TextStyle(color: Colors.white))));
+                  } else if (widget.app_user.email ==
+                      dating_user.username!.email) {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        duration: Duration(milliseconds: 400),
+                        content: Text("You can't chat with yourself.",
+                            style: TextStyle(color: Colors.white))));
+                  } else {
+                    ChatRoomModel? chatroomModel = await getChatRoomModel(
+                        dating_user.username!, dating_user);
+
+                    if (chatroomModel != null) {
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) {
+                        return DummychatRoomStream(
+                            dating_user: dating_user!,
+                            chatRoom: chatroomModel,
+                            app_user: widget.app_user);
+                      }));
+                    }
+                  }
+                },
+                child: Container(
+                  padding: EdgeInsets.only(left: 25, right: 25),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Row(
+                        children: [
+                          Text(
+                            "Say Hello",
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          ),
+                          const SizedBox(width: 5),
+                          Text(
+                            '👋',
+                            style: TextStyle(fontSize: 26, color: Colors.white),
+                          )
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          const Icon(Icons.send_to_mobile_outlined,
+                              color: Colors.white, size: 25),
+                          Text(
+                            "(" + dating_user.numChats.toString() + ")",
+                            style: const TextStyle(color: Colors.white),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                )),
+          ),
+          const SizedBox(height: 40),
+          Text(dating_user_posted_date)
+        ],
+      ),
     );
   }
 

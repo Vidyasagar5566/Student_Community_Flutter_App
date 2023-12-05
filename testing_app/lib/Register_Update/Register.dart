@@ -468,7 +468,7 @@ class _appUpdateState extends State<appUpdate> {
                 children: [
                   Container(
                     child: const Text(
-                      "Please Update The App inorder to ligin",
+                      "Please Update The App inorder to login",
                       style: TextStyle(fontWeight: FontWeight.w700),
                     ),
                   ),
