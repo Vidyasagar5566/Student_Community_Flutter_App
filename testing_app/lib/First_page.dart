@@ -31,6 +31,7 @@ import '/Mess_menus/Mess_menu.dart';
 import '/Posts/Models.dart';
 import '/Posts/Post.dart';
 import 'All_clubs/All_clubs.dart';
+import 'PartTimeJob/partTimeJob.dart';
 import 'User_profile/Profile.dart';
 import 'All_sports/All_sports.dart';
 import 'Activities/Activities.dart';
