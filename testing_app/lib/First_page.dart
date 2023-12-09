@@ -77,7 +77,7 @@ class _get_ueser_widgetState extends State<get_ueser_widget> {
 
             if (!app_user.isDetails!) {
               return LoginRegister(app_user);
-            } else if (app_user.updateMark != "instabook3") {
+            } else if (app_user.updateMark != "instabook4") {
               return appUpdate();
             } else {
               return firstpage(widget.curr_index, app_user);
@@ -167,102 +167,102 @@ class _firstpageState extends State<firstpage> {
                           style: const TextStyle(color: Colors.black),
                         )),
                   actions: [
-                    widget.curr_index == 2
-                    ||
+                    widget.curr_index == 2 ||
                             widget.curr_index == 1 ||
                             widget.curr_index == 3
-                    ? DropdownButton<String>(
-                        value: domain,
-                        underline: Container(),
-                        elevation: 0,
-                        iconEnabledColor: Colors.black,
-                        iconDisabledColor: Colors.black,
-                        items: domains_list
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(
-                              value,
-                              style: TextStyle(fontSize: 10),
-                            ),
-                          );
-                        }).toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            domain = value!;
-                          });
-                        })
-                    :
-                    Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              widget.app_user.notifCount = 0;
-                            });
-                            menu_bar_servers().notif_seen();
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (BuildContext context) {
-                              return notifications(widget.app_user);
-                            }));
-                          },
-                          child: Stack(children: [
-                            IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  widget.app_user.notifCount = 0;
-                                });
-                                menu_bar_servers().notif_seen();
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (BuildContext context) {
-                                  return notifications(widget.app_user);
-                                }));
-                              },
-                              icon: const Icon(
-                                Icons.notifications_on_rounded,
-                                size: 30,
-                                color: Colors.indigo,
-                              ),
-                            ),
-                            Positioned(
-                              right: 7,
-                              top: 7,
-                              child: Container(
-                                padding: EdgeInsets.all(2),
-                                decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                constraints: const BoxConstraints(
-                                  minWidth: 14,
-                                  minHeight: 14,
-                                ),
+                        ? DropdownButton<String>(
+                            value: domain,
+                            underline: Container(),
+                            elevation: 0,
+                            iconEnabledColor: Colors.black,
+                            iconDisabledColor: Colors.black,
+                            items: domains_list
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
                                 child: Text(
-                                  widget.app_user.notifCount.toString(),
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 8,
-                                  ),
-                                  textAlign: TextAlign.center,
+                                  value,
+                                  style: TextStyle(fontSize: 10),
                                 ),
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                domain = value!;
+                              });
+                            })
+                        : Row(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    widget.app_user.notifCount = 0;
+                                  });
+                                  menu_bar_servers().notif_seen();
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (BuildContext context) {
+                                    return notifications(widget.app_user);
+                                  }));
+                                },
+                                child: Stack(children: [
+                                  IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        widget.app_user.notifCount = 0;
+                                      });
+                                      menu_bar_servers().notif_seen();
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) {
+                                        return notifications(widget.app_user);
+                                      }));
+                                    },
+                                    icon: const Icon(
+                                      Icons.notifications_on_rounded,
+                                      size: 30,
+                                      color: Colors.indigo,
+                                    ),
+                                  ),
+                                  Positioned(
+                                    right: 7,
+                                    top: 7,
+                                    child: Container(
+                                      padding: EdgeInsets.all(2),
+                                      decoration: BoxDecoration(
+                                        color: Colors.red,
+                                        borderRadius: BorderRadius.circular(6),
+                                      ),
+                                      constraints: const BoxConstraints(
+                                        minWidth: 14,
+                                        minHeight: 14,
+                                      ),
+                                      child: Text(
+                                        widget.app_user.notifCount.toString(),
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 8,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  )
+                                ]),
                               ),
-                            )
-                          ]),
-                        ),
-                        IconButton(
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (BuildContext context) {
-                                return messanger(widget.app_user, 0);
-                              }));
-                            },
-                            icon: const FaIcon(
-                              FontAwesomeIcons.facebookMessenger,
-                              size: 26,
-                              color: Colors.indigo,
-                            ))
-                      ],
-                    )
+                              IconButton(
+                                  onPressed: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) {
+                                      return messanger(widget.app_user, 0);
+                                    }));
+                                  },
+                                  icon: const FaIcon(
+                                    FontAwesomeIcons.facebookMessenger,
+                                    size: 26,
+                                    color: Colors.indigo,
+                                  ))
+                            ],
+                          )
                   ],
                   backgroundColor: Colors.white,
                 ),
@@ -318,20 +318,20 @@ class _firstpageState extends State<firstpage> {
                   ? Container(
                       color: Colors.white,
                       child: calender(widget.app_user, domain))
-              : widget.curr_index == 2
-                  ? Container(
-                      color: Colors.white,
-                      child: activitieswidget(widget.app_user, domain))
-              : widget.curr_index == 3
-                  ? Container(
-                      color: Colors.white,
-                      child: alertwidget(widget.app_user, domain))
-                  : Container(
-                      color: Colors.white,
-                      child: userProfilePage(widget.app_user, widget.app_user)),
+                  : widget.curr_index == 2
+                      ? Container(
+                          color: Colors.white,
+                          child: activitieswidget(widget.app_user, domain))
+                      : widget.curr_index == 3
+                          ? Container(
+                              color: Colors.white,
+                              child: alertwidget(widget.app_user, domain))
+                          : Container(
+                              color: Colors.white,
+                              child: userProfilePage(
+                                  widget.app_user, widget.app_user)),
           floatingActionButton: widget.curr_index == 1
-              ? 
-              ElevatedButton.icon(
+              ? ElevatedButton.icon(
                   onPressed: () async {
                     showDialog(
                         context: context,
@@ -379,11 +379,11 @@ class _firstpageState extends State<firstpage> {
                           MaterialPageRoute(builder: (BuildContext context) {
                         return threadCategory(widget.app_user);
                       }));
-                      } else if (widget.curr_index == 2) {
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (BuildContext context) {
-                          return eventCategory(widget.app_user);
-                        }));
+                    } else if (widget.curr_index == 2) {
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (BuildContext context) {
+                        return eventCategory(widget.app_user);
+                      }));
                     } else {
                       showModalBottomSheet(
                           shape: const RoundedRectangleBorder(
@@ -563,13 +563,11 @@ class _firstpageState extends State<firstpage> {
                     Icons.local_activity,
                     size: 30,
                   )),
-
               BottomNavigationBarItem(
                   label: "Threads",
                   icon: FaIcon(
                     Icons.add_alert,
                   )),
-
               BottomNavigationBarItem(
                   label: "Profile",
                   icon: Icon(
@@ -688,33 +686,30 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
                   ),
                 ),
               ]),
-          Column(children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) {
-                            return AcademicTimings(
-                                domains[widget.app_user.domain]!,
-                                widget.app_user);
-                          }));
-                        },
-                        child: Column(
-                          children: [
-                            Container(
-                              width: div, //post.profile_pic
-                              child: const CircleAvatar(
-                                  backgroundImage:
-                                      AssetImage("images/timings.jpeg")),
-                            ),
-                            const SizedBox(height: 10),
-                            const Text("Timings",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w900, fontSize: 12))
-                          ],
-                        ),
+              Column(children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (BuildContext context) {
+                      return AcademicTimings(
+                          domains[widget.app_user.domain]!, widget.app_user);
+                    }));
+                  },
+                  child: Column(
+                    children: [
+                      Container(
+                        width: div, //post.profile_pic
+                        child: const CircleAvatar(
+                            backgroundImage: AssetImage("images/timings.jpeg")),
                       ),
-                    ])
-          
+                      const SizedBox(height: 10),
+                      const Text("Timings",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w900, fontSize: 12))
+                    ],
+                  ),
+                ),
+              ])
             ],
           ),
           const SizedBox(
@@ -801,75 +796,75 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
                 ),
               ]),
               extand
-                  ?
-               Column(children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (BuildContext context) {
-                      return branchAndSems(widget.app_user,
-                          domains[widget.app_user.domain]!, 'B.Tech');
-                    }));
-                  },
-                  child: Column(
-                    children: [
-                      Container(
-                        width: div, //post.profile_pic
-                        child: const CircleAvatar(
-                            radius: 21,
-                            backgroundImage: AssetImage("images/book.jpeg")),
-                      ),
-                      const SizedBox(height: 8),
-                      const Text("Notes",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w900, fontSize: 12))
-                    ],
-                  ),
-                ),
-              ])
-              // Column(children: [
-              //   GestureDetector(
-              //     onTap: () {},
-              //     child: Column(
-              //       children: [
-              //         Container(
-              //           width: div, //post.profile_pic
-              //           child: const CircleAvatar(
-              //               radius: 21,
-              //               backgroundImage: AssetImage("images/dating.jpg")),
-              //         ),
-              //         const SizedBox(height: 8),
-              //         const Text("Connect",
-              //             style: TextStyle(
-              //                 fontWeight: FontWeight.w900, fontSize: 12))
-              //       ],
-              //     ),
-              //   ),
-              // ]),
-              : Column(children: [
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        extand = true;
-                      });
-                    },
-                    child: Column(
-                      children: [
-                        Container(
-                          width: div, //post.profile_pic
-                          child: const Icon(
-                            Icons.keyboard_arrow_down,
-                            size: 38,
-                          ),
+                  ? Column(children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) {
+                            return branchAndSems(widget.app_user,
+                                domains[widget.app_user.domain]!, 'B.Tech');
+                          }));
+                        },
+                        child: Column(
+                          children: [
+                            Container(
+                              width: div, //post.profile_pic
+                              child: const CircleAvatar(
+                                  radius: 21,
+                                  backgroundImage:
+                                      AssetImage("images/book.jpeg")),
+                            ),
+                            const SizedBox(height: 8),
+                            const Text("Notes",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w900, fontSize: 12))
+                          ],
                         ),
-                        const SizedBox(height: 10),
-                        const Text("More",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w900, fontSize: 12))
-                      ],
-                    ),
-                  ),
-                ]),
+                      ),
+                    ])
+                  // Column(children: [
+                  //   GestureDetector(
+                  //     onTap: () {},
+                  //     child: Column(
+                  //       children: [
+                  //         Container(
+                  //           width: div, //post.profile_pic
+                  //           child: const CircleAvatar(
+                  //               radius: 21,
+                  //               backgroundImage: AssetImage("images/dating.jpg")),
+                  //         ),
+                  //         const SizedBox(height: 8),
+                  //         const Text("Connect",
+                  //             style: TextStyle(
+                  //                 fontWeight: FontWeight.w900, fontSize: 12))
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ]),
+                  : Column(children: [
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            extand = true;
+                          });
+                        },
+                        child: Column(
+                          children: [
+                            Container(
+                              width: div, //post.profile_pic
+                              child: const Icon(
+                                Icons.keyboard_arrow_down,
+                                size: 38,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            const Text("More",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w900, fontSize: 12))
+                          ],
+                        ),
+                      ),
+                    ]),
             ],
           ),
           extand
