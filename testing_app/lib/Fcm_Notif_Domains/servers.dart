@@ -31,16 +31,19 @@ class servers {
       );
 
       var data = json.decode(response.body) as Map;
-      print(data);
       return data['error'];
     } catch (e) {
-      print("error");
       return true;
     }
   }
 
-  Future<bool> send_announce_notifications(String title, String description,
-      int notiff_sett, String notif_year, String notif_branch) async {
+  Future<bool> send_announce_notifications(
+      String title,
+      String description,
+      int notiff_sett,
+      String notif_year,
+      String notif_branch,
+      String notif_courses) async {
     try {
       var token = storage.getItem('token');
       String finalUrl = "$base_url/send_notifications1";
@@ -56,7 +59,8 @@ class servers {
           'description': description,
           'notiff_sett': notiff_sett,
           'notif_branchs': notif_branch,
-          'notif_year': notif_year
+          'notif_year': notif_year,
+          'notif_courses': notif_courses
         }),
       );
 
@@ -68,7 +72,7 @@ class servers {
   }
 }
 
-var course_list = ['B.Tech', 'M.Tech', 'PG', 'Phd', 'MBA'];
+var course_list = ['B.Tech', 'B.Arch', 'M.Tech', 'PG', 'Phd', 'MBA'];
 
 var domains = {
   'All': 'All',
@@ -83,8 +87,8 @@ var domains = {
   '@mnit.ac.in': 'Nit Jaipur',
   '@mnnit.ac.in': 'Nit Allahabad',
   '@nitkkr.ac.in': 'Nit Kurukshetra',
-  '@nitj.ac.in': ' Nit Jalandhar',
-  '@svnit.ac.in': ' Nit Surat',
+  '@nitj.ac.in': 'Nit Jalandhar',
+  '@svnit.ac.in': 'Nit Surat',
   '@nitm.ac.in': 'Nit Meghalaya',
   '@nitp.ac.in': 'Nit Patna',
   '@nitrr.ac.in': 'Nit Raipur',
@@ -95,7 +99,7 @@ var domains = {
   '@nitjsr.ac.in': 'Nit Jamshedpur',
   '@nitmanipur.ac.in': 'Nit Manipur',
   '@nith.ac.in': 'Nit Hamipur',
-  '@nituk.ac.in': ' Nit Uttarakhand',
+  '@nituk.ac.in': 'Nit Uttarakhand',
   '@nitpy.ac.in': 'Nit Puducherry',
   '@nitap.ac.in': 'Nit ArunaChalPradesh',
   '@nitsikkim.ac.in': 'Nit Sikkim',

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '/First_page.dart';
 import '/User_profile/Models.dart';
-import '/Fcm_Notif_Domains/Servers.dart';
+import '/Fcm_Notif_Domains/servers.dart';
 import 'Servers.dart';
 import '/Year_Branch_Selection/Year_Branch_Selection.dart';
 
@@ -135,90 +135,78 @@ class _upload_notificationState extends State<upload_notification> {
                                           Radius.circular(15.0))),
                                   minWidth: double.infinity,
                                   onPressed: () async {
-                                    if (widget.app_user.email!.split('@')[0] ==
-                                            "guest" ||
-                                        !widget.app_user.isAdmin! ||
-                                        !widget.app_user.isStudentAdmin! ||
-                                        !widget.app_user.isFaculty!) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(const SnackBar(
-                                              duration:
-                                                  Duration(milliseconds: 400),
-                                              content: Text(
-                                                  "Students/Guest cannot share notifications..",
-                                                  style: TextStyle(
-                                                      color: Colors.white))));
-                                    } else {
-                                      if (widget.app_user.isAdmin!) {
-                                        showDialog(
-                                            context: context,
-                                            barrierDismissible: false,
-                                            builder: (context) {
-                                              return AlertDialog(
-                                                  contentPadding:
-                                                      EdgeInsets.all(15),
-                                                  content: Container(
-                                                    margin: EdgeInsets.all(10),
-                                                    child: Column(
-                                                        mainAxisSize:
-                                                            MainAxisSize.min,
-                                                        children: const [
-                                                          Text(
-                                                              "Please wait while uploading....."),
-                                                          SizedBox(height: 10),
-                                                          CircularProgressIndicator()
-                                                        ]),
-                                                  ));
-                                            });
-                                        bool error = await app_notif_servers()
-                                            .post_notification(
-                                                title,
-                                                description,
+                                    // if (widget.app_user.email!.split('@')[0] ==
+                                    //         "guest" ||
+                                    //     !widget.app_user.isAdmin! ||
+                                    //     !widget.app_user.isStudentAdmin! ||
+                                    //     !widget.app_user.isFaculty!) {
+                                    //   ScaffoldMessenger.of(context)
+                                    //       .showSnackBar(const SnackBar(
+                                    //           duration:
+                                    //               Duration(milliseconds: 400),
+                                    //           content: Text(
+                                    //               "Students/Guest cannot share notifications..",
+                                    //               style: TextStyle(
+                                    //                   color: Colors.white))));
+                                    // } else {
+                                    if (widget.app_user.isAdmin!) {
+                                      showDialog(
+                                          context: context,
+                                          barrierDismissible: false,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                                contentPadding:
+                                                    EdgeInsets.all(15),
+                                                content: Container(
+                                                  margin: EdgeInsets.all(10),
+                                                  child: Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: const [
+                                                        Text(
+                                                            "Please wait while uploading....."),
+                                                        SizedBox(height: 10),
+                                                        CircularProgressIndicator()
+                                                      ]),
+                                                ));
+                                          });
+                                      bool error = await app_notif_servers()
+                                          .post_notification(
+                                              title,
+                                              description,
+                                              notif_years.join(''),
+                                              notif_branchs.join("@"),
+                                              notif_courses.join('@'));
+                                      Navigator.pop(context);
+
+                                      if (!error) {
+                                        Navigator.of(context)
+                                            .pushAndRemoveUntil(
+                                                MaterialPageRoute(builder:
+                                                    (BuildContext context) {
+                                          return get_ueser_widget(0);
+                                        }), (Route<dynamic> route) => false);
+
+                                        await Future.delayed(
+                                            Duration(seconds: 1));
+                                        bool error = await servers()
+                                            .send_announce_notifications(
+                                                widget.app_user.email!,
+                                                title + " : " + description,
+                                                7,
                                                 notif_years.join(''),
-                                                notif_branchs.join("@"));
-                                        Navigator.pop(context);
-
-                                        if (!error) {
-                                          Navigator.of(context)
-                                              .pushAndRemoveUntil(
-                                                  MaterialPageRoute(builder:
-                                                      (BuildContext context) {
-                                            return get_ueser_widget(0);
-                                          }), (Route<dynamic> route) => false);
-
-                                          await Future.delayed(
-                                              Duration(seconds: 1));
-                                          bool error = await servers()
-                                              .send_announce_notifications(
-                                                  widget.app_user.email!,
-                                                  title + " : " + description,
-                                                  7,
-                                                  notif_years.join(''),
-                                                  notif_branchs.join("@"));
-                                          if (error) {
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(const SnackBar(
-                                                    duration: Duration(
-                                                        milliseconds: 400),
-                                                    content: Text(
-                                                        "Failed to send notifications",
-                                                        style: TextStyle(
-                                                            color: Colors
-                                                                .white))));
-                                          }
-                                        } else {
+                                                notif_branchs.join("@"),
+                                                notif_courses.join('@'));
+                                        if (error) {
                                           ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            const SnackBar(
-                                              duration:
-                                                  Duration(milliseconds: 400),
-                                              content: Text(
-                                                "Failed",
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                            ),
-                                          );
+                                              .showSnackBar(const SnackBar(
+                                                  duration: Duration(
+                                                      milliseconds: 400),
+                                                  content: Text(
+                                                      "Failed to send notifications",
+                                                      style: TextStyle(
+                                                          color:
+                                                              Colors.white))));
                                         }
                                       } else {
                                         ScaffoldMessenger.of(context)
@@ -227,14 +215,27 @@ class _upload_notificationState extends State<upload_notification> {
                                             duration:
                                                 Duration(milliseconds: 400),
                                             content: Text(
-                                              "Only Admin Can Share",
+                                              "Failed",
                                               style: TextStyle(
                                                   color: Colors.white),
                                             ),
                                           ),
                                         );
                                       }
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          duration: Duration(milliseconds: 400),
+                                          content: Text(
+                                            "Only Admin Can Share",
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                        ),
+                                      );
                                     }
+                                    // }
                                   },
                                   color: Colors.indigo[200],
                                   textColor: Colors.black,

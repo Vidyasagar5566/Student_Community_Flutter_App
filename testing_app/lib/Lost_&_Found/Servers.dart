@@ -160,10 +160,8 @@ class lf_servers {
         }),
       );
       var data = json.decode(response.body) as Map;
-      print(data);
       return [data['error'], data['id']];
     } catch (e) {
-      print(e);
       return [true, 0];
     }
   }

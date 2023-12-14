@@ -33,7 +33,7 @@ List<Tab> tabs = [
       child: Container(
     width: 105,
     child: const Text(
-      "Fest mem",
+      "Sport mem",
       textAlign: TextAlign.center,
       style: TextStyle(color: Colors.black),
     ),

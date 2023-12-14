@@ -49,7 +49,9 @@ class _lst_found_uploadState extends State<lst_found_upload> {
           child: Container(
             //color: Colors.pink[100],
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
+            constraints: BoxConstraints(
+              minHeight: MediaQuery.of(context).size.height,
+            ),
             decoration: const BoxDecoration(
               image: DecorationImage(
                   image: AssetImage("images/background.jpg"),

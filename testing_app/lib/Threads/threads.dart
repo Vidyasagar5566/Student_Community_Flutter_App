@@ -202,8 +202,9 @@ class _alertwidget1State extends State<alertwidget1> {
                   ],
                 ),
               ),
-              const SizedBox(height: 8),
-              SizedBox(
+              const SizedBox(height: 10),
+              Container(
+                margin: EdgeInsets.only(left: 70),
                 width: wid - 50,
                 child: Text(
                   alert.title!,
@@ -217,10 +218,11 @@ class _alertwidget1State extends State<alertwidget1> {
                 ),
               ),
               const SizedBox(height: 5),
-              SizedBox(
+              Container(
+                margin: EdgeInsets.only(left: 70),
                 width: wid - 50,
                 child: Text(
-                  alert.description!,
+                  utf8convert(alert.description!),
                   style: const TextStyle(
                     //    color: Colors.white,
                     fontSize: 13,
@@ -315,9 +317,17 @@ class _alert_commentwidgetState extends State<alert_commentwidget> {
                                         onPressed: () async {
                                           bool error = await threads_servers()
                                               .delete_alert(widget.alert.id!);
+
                                           if (!error) {
                                             Navigator.pop(context);
-                                            Navigator.of(context);
+                                            Navigator.of(context)
+                                                .pushAndRemoveUntil(
+                                                    MaterialPageRoute(builder:
+                                                        (BuildContext context) {
+                                              return get_ueser_widget(1);
+                                            }),
+                                                    (Route<dynamic> route) =>
+                                                        false);
                                           } else {
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(const SnackBar(
@@ -333,7 +343,7 @@ class _alert_commentwidgetState extends State<alert_commentwidget> {
                                         child: const Center(
                                             child: Text(
                                           "Delete",
-                                          style: TextStyle(color: Colors.white),
+                                          style: TextStyle(color: Colors.blue),
                                         ))),
                                   ),
                                 ],
@@ -344,7 +354,7 @@ class _alert_commentwidgetState extends State<alert_commentwidget> {
                     icon: const Icon(
                       Icons.delete_forever,
                       size: 25,
-                      color: Colors.white,
+                      color: Colors.blue,
                     ),
                   )
                 : Container()
@@ -359,7 +369,7 @@ class _alert_commentwidgetState extends State<alert_commentwidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                widget.alert.title!,
+                utf8convert(widget.alert.title!),
                 style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.w400,
@@ -379,7 +389,7 @@ class _alert_commentwidgetState extends State<alert_commentwidget> {
                       throw 'Could not launch $url';
                     }
                   },
-                  text: widget.alert.description!,
+                  text: utf8convert(widget.alert.description!),
                   style: const TextStyle(fontSize: 15)),
               const SizedBox(height: 30),
               all_files_display(

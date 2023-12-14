@@ -24,17 +24,16 @@ class app_notif_servers {
         Notifications notif = Notifications.fromJson(element);
         temp.add(notif);
       });
-      print(temp.length);
+
       return temp;
     } catch (e) {
-      print(e);
       List<Notifications> temp = [];
       return temp;
     }
   }
 
   Future<bool> post_notification(String title, String description,
-      String notif_year, String notif_branchs) async {
+      String notif_year, String notif_branchs, String notif_courses) async {
     try {
       var token = storage.getItem('token');
       String finalUrl = "$base_url/notifications1";
@@ -48,7 +47,8 @@ class app_notif_servers {
             'title': title,
             'description': description,
             'notif_year': notif_year,
-            'notif_branchs': notif_branchs
+            'notif_branchs': notif_branchs,
+            'notif_courses': notif_courses
           }));
       var data = json.decode(response.body) as Map;
 

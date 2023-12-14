@@ -30,12 +30,38 @@ class _messangerState extends State<messanger> {
   List<dynamic> messages = [];
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
+        centerTitle: false,
         iconTheme: IconThemeData(color: Colors.black),
-        title: Text(
-          widget.app_user.username!,
-          style: TextStyle(color: Colors.black),
+        title: Row(
+          children: [
+            widget.app_user.fileType == '1'
+                ? CircleAvatar(
+                    radius: 16,
+                    backgroundColor: Colors.white,
+                    child: CircleAvatar(
+                        radius: 15,
+                        backgroundImage:
+                            NetworkImage(widget.app_user.profilePic!)))
+                : const CircleAvatar(
+                    radius: 16,
+                    backgroundColor: Colors.white,
+                    child: CircleAvatar(
+                        radius: 15,
+                        backgroundImage: AssetImage("images/profile.jpg"))),
+            const SizedBox(width: 10),
+            Container(
+              width: width - 200,
+              child: Text(
+                widget.app_user.username!,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+          ],
         ),
         actions: [
           widget.bottom_navbar_index == 0
@@ -95,6 +121,7 @@ class _messangerState extends State<messanger> {
                   .collection("chatrooms")
                   .where("group", isEqualTo: false)
                   .where("participants.${app_user.userUuid}", isEqualTo: true)
+                  // .orderBy("lastmessagetime", descending: true)
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.active) {
@@ -144,6 +171,7 @@ class _messangerState extends State<messanger> {
                   .collection("chatrooms")
                   .where("group", isEqualTo: true)
                   .where("participants.${app_user.userUuid}", isEqualTo: true)
+                  // .orderBy("lastmessagetime", descending: true)
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.active) {
@@ -178,30 +206,30 @@ class _messangerState extends State<messanger> {
                   );
                 }
               }),
-      bottomNavigationBar: BottomNavigationBar(
-        fixedColor: Colors.blue,
-        backgroundColor: Colors.white70,
-        type: BottomNavigationBarType.fixed,
-        items: const [
-          BottomNavigationBarItem(
-              label: "Persons",
-              icon: Icon(
-                Icons.person_2_outlined,
-              )),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   fixedColor: Colors.blue,
+      //   backgroundColor: Colors.white70,
+      //   type: BottomNavigationBarType.fixed,
+      //   items: const [
+      //     BottomNavigationBarItem(
+      //         label: "Persons",
+      //         icon: Icon(
+      //           Icons.person_2_outlined,
+      //         )),
 
-          BottomNavigationBarItem(
-              label: "Communities",
-              icon: Icon(
-                Icons.group_add_outlined,
-              )), // */
-        ],
-        currentIndex: widget.bottom_navbar_index,
-        onTap: (int index) {
-          setState(() {
-            widget.bottom_navbar_index = index;
-          });
-        },
-      ),
+      //     BottomNavigationBarItem(
+      //         label: "Communities",
+      //         icon: Icon(
+      //           Icons.group_add_outlined,
+      //         )), // */
+      //   ],
+      //   currentIndex: widget.bottom_navbar_index,
+      //   onTap: (int index) {
+      //     setState(() {
+      //       widget.bottom_navbar_index = index;
+      //     });
+      //   },
+      // ),
     );
   }
 }
@@ -346,15 +374,23 @@ class _Personmessanger1State extends State<Personmessanger1> {
                             width: 48, //post.profile_pic
                             child: message_user.fileType == '1'
                                 ? CircleAvatar(
-                                    backgroundImage:
-                                        NetworkImage(message_user.profilePic!))
+                                    radius: 21,
+                                    backgroundColor: Colors.blue,
+                                    child: CircleAvatar(
+                                        backgroundImage: NetworkImage(
+                                            message_user.profilePic!)),
+                                  )
                                 : const CircleAvatar(
-                                    backgroundImage:
-                                        AssetImage("images/profile.jpg")),
+                                    radius: 22,
+                                    backgroundColor: Colors.white,
+                                    child: CircleAvatar(
+                                        backgroundImage:
+                                            AssetImage("images/profile.jpg")),
+                                  ),
                           ),
                           Container(
                             padding: EdgeInsets.only(left: 20),
-                            width: (width - 36) / 1.8,
+                            width: (width - 36) / 1.7,
                             child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [

@@ -52,7 +52,7 @@ class _upload_alertowidgetState extends State<upload_alertowidget> {
           ),
           centerTitle: true,
           title: const Text(
-            "Alerts",
+            "Threads",
             style: TextStyle(color: Colors.black),
           ),
           actions: [
@@ -97,7 +97,7 @@ class _upload_alertowidgetState extends State<upload_alertowidget> {
                     height: 50,
                   ),
                   const Text(
-                    "Upload Your alert",
+                    "Release New Thread",
                     style: TextStyle(
                         color: Colors.indigo,
                         fontSize: 20,
@@ -349,6 +349,7 @@ class _upload_alertowidgetState extends State<upload_alertowidget> {
                                               file_type,
                                               notif_years.join(''),
                                               notif_branchs.join("@"),
+                                              notif_courses.join('@'),
                                               all_university,
                                               widget.alert_category,
                                               widget.id);
@@ -363,7 +364,7 @@ class _upload_alertowidgetState extends State<upload_alertowidget> {
                                             .pushAndRemoveUntil(
                                                 MaterialPageRoute(builder:
                                                     (BuildContext context) {
-                                          return firstpage(3, widget.app_user);
+                                          return firstpage(1, widget.app_user);
                                         }), (Route<dynamic> route) => false);
 
                                         await Future.delayed(

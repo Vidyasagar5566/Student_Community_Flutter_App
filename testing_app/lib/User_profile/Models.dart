@@ -45,6 +45,7 @@ class Username {
   String? platform;
   String? domain;
   bool? isDetails;
+  bool? dating_profile;
   String? updateMark;
   bool? clzClubsHead;
   bool? clzSportsHead;
@@ -103,6 +104,7 @@ class Username {
       this.platform,
       this.domain,
       this.isDetails,
+      this.dating_profile,
       this.updateMark,
       this.clzClubsHead,
       this.clzSportsHead,
@@ -161,6 +163,7 @@ class Username {
     platform = json['platform'];
     domain = json['domain'];
     isDetails = json['is_details'];
+    dating_profile = json['dating_profile'];
     updateMark = json['update_mark'];
     clzClubsHead = json['clz_clubs_head'];
     clzSportsHead = json['clz_sports_head'];
@@ -221,6 +224,7 @@ class Username {
     data['platform'] = this.platform;
     data['domain'] = this.domain;
     data['is_details'] = this.isDetails;
+    data['dating_profile'] = this.dating_profile;
     data['update_mark'] = this.updateMark;
     data['clz_clubs_head'] = this.clzClubsHead;
     data['clz_sports_head'] = this.clzSportsHead;
@@ -311,6 +315,8 @@ SmallUsername user_min(Username app_user) {
   min_user.phnNum = app_user.phnNum;
   min_user.isAdmin = app_user.isAdmin;
   min_user.isStudentAdmin = app_user.isStudentAdmin;
+  min_user.userMark = app_user.userMark;
+  min_user.starMark = app_user.starMark;
   return min_user;
 }
 

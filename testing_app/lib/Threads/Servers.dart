@@ -20,7 +20,7 @@ class threads_servers {
         'domain': domain,
         'num_list': num_list.toString()
       };
-      print(num_list);
+
       String queryString = Uri(queryParameters: queryParameters).query;
       String finalUrl = "$base_url/alert/list1?$queryString";
       var url = Uri.parse(finalUrl);
@@ -29,7 +29,7 @@ class threads_servers {
         "Content-Type": "application/json",
       });
       var data = json.decode(response.body) as List;
-      print(data);
+
       List<ALERT_LIST> temp = [];
       data.forEach((element) {
         ALERT_LIST post = ALERT_LIST.fromJson(element);
@@ -49,6 +49,7 @@ class threads_servers {
       int file_type,
       String allow_years,
       String allow_branchs,
+      String allow_courses,
       String all_university,
       String category,
       String category_id) async {
@@ -79,6 +80,7 @@ class threads_servers {
             'file_type': file_type,
             'allow_years': allow_years,
             'allow_branchs': allow_branchs,
+            'allow_courses': allow_courses,
             'is_all_university': is_all_university,
             'category': category,
             'category_id': category_id

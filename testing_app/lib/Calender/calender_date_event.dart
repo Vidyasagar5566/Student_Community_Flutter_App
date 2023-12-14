@@ -353,6 +353,7 @@ class _calender_events_displayState extends State<calender_events_display> {
                                                         description,
                                                         temp_image,
                                                         '0',
+                                                        '@',
                                                         '0000',
                                                         '@',
                                                         'All',
@@ -893,6 +894,7 @@ class _calender_events_displayState extends State<calender_events_display> {
                                                                     description,
                                                                     temp_image,
                                                                     '0',
+                                                                    '@',
                                                                     '0000',
                                                                     '@',
                                                                     widget.date +

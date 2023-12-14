@@ -195,7 +195,7 @@ class _postwidget1State extends State<postwidget1> {
                           .postedDate!); // Converting into [DateTime] object
                       String post_posted_date =
                           GetTimeAgo.parse(_convertedTimestamp);
-                      return single_post(post, widget.app_user, widget.domain,
+                      return single_post(post, widget.app_user,
                           widget.post_list, post_posted_date, index);
                     }),
             const SizedBox(height: 10),
@@ -295,7 +295,7 @@ class _appBarPostListState extends State<appBarPostList> {
                           .postedDate!); // Converting into [DateTime] object
                       String post_posted_date =
                           GetTimeAgo.parse(_convertedTimestamp);
-                      return single_post(post, widget.app_user, widget.domain,
+                      return single_post(post, widget.app_user,
                           widget.post_list, post_posted_date, index);
                     }),
             const SizedBox(height: 10),
@@ -336,12 +336,11 @@ class _appBarPostListState extends State<appBarPostList> {
 class single_post extends StatefulWidget {
   POST_LIST post;
   Username app_user;
-  String domain;
   List<POST_LIST> post_list;
   String post_posted_date;
   int index;
-  single_post(this.post, this.app_user, this.domain, this.post_list,
-      this.post_posted_date, this.index);
+  single_post(this.post, this.app_user, this.post_list, this.post_posted_date,
+      this.index);
 
   @override
   State<single_post> createState() => _single_postState();
@@ -436,6 +435,73 @@ class _single_postState extends State<single_post> {
                                               fontSize: 14,
                                               color: Colors.blue))),
                                   const SizedBox(height: 20),
+                                  user.username == widget.app_user.username
+                                      ? Column(
+                                          children: [
+                                            const Center(
+                                                child: Text(
+                                                    "Do you want to delete this?",
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.bold))),
+                                            const SizedBox(height: 10),
+                                            Container(
+                                              margin: const EdgeInsets.all(30),
+                                              child: OutlinedButton(
+                                                  onPressed: () async {
+                                                    bool error =
+                                                        await post_servers()
+                                                            .delete_post(
+                                                                post.id!);
+
+                                                    if (!error) {
+                                                      Navigator.pop(context);
+                                                      Navigator.pop(context);
+                                                      Navigator.of(context)
+                                                          .pushAndRemoveUntil(
+                                                              MaterialPageRoute(
+                                                                  builder:
+                                                                      (BuildContext
+                                                                          context) {
+                                                        return get_ueser_widget(
+                                                            2);
+                                                      }),
+                                                              (Route<dynamic>
+                                                                      route) =>
+                                                                  false);
+                                                    } else {
+                                                      //post_list.add(post);
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                        const SnackBar(
+                                                          duration: Duration(
+                                                              milliseconds:
+                                                                  400),
+                                                          content: Text(
+                                                            "Failed",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white),
+                                                          ),
+                                                        ),
+                                                      );
+                                                    }
+                                                  },
+                                                  child: const Center(
+                                                      child: Text(
+                                                    "Delete",
+                                                    style: TextStyle(
+                                                        color: Colors.blue),
+                                                  ))),
+                                            ),
+                                            const SizedBox(height: 10),
+                                          ],
+                                        )
+                                      : Container(),
+                                  const SizedBox(height: 20),
                                   Center(
                                       child: Text(user.email!,
                                           style: const TextStyle(
@@ -461,113 +527,132 @@ class _single_postState extends State<single_post> {
                                     text: utf8convert(post.description!),
                                   ),
                                   const SizedBox(height: 15),
-                                  TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(builder:
-                                                (BuildContext context) {
-                                          return report_upload(
-                                              widget.app_user,
-                                              "post" +
-                                                  " with id: " +
-                                                  post.id.toString(),
-                                              post.username!.email!);
-                                        }));
-                                      },
-                                      child: const Text("Report this post?")),
-                                  TextButton(
-                                      onPressed: () async {
-                                        if (widget.app_user.email!
-                                                .split('@')[0] ==
-                                            "guest") {
-                                          Navigator.pop(context);
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(const SnackBar(
-                                                  duration: Duration(
-                                                      milliseconds: 400),
-                                                  content: Text(
-                                                      "guest cannot hide contents..",
-                                                      style: TextStyle(
-                                                          color:
-                                                              Colors.white))));
-                                        } else {
-                                          showDialog(
-                                              context: context,
-                                              barrierDismissible: false,
-                                              builder: (context) {
-                                                return AlertDialog(
-                                                    contentPadding:
-                                                        EdgeInsets.all(15),
-                                                    content: Container(
-                                                      margin:
-                                                          EdgeInsets.all(10),
-                                                      child: Column(
-                                                          mainAxisSize:
-                                                              MainAxisSize.min,
-                                                          children: const [
-                                                            Text(
-                                                                "Please wait while updating....."),
-                                                            SizedBox(
-                                                                height: 10),
-                                                            CircularProgressIndicator()
-                                                          ]),
-                                                    ));
-                                              });
-                                          bool error = await post_servers()
-                                              .hide_post(post.id!);
-                                          Navigator.pop(context);
-                                          if (!error) {
-                                            Navigator.of(context)
-                                                .pushAndRemoveUntil(
+                                  widget.app_user.email == post.username!.email
+                                      ? Container()
+                                      : Column(children: [
+                                          TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).push(
                                                     MaterialPageRoute(builder:
                                                         (BuildContext context) {
-                                              return firstpage(
-                                                  0, widget.app_user);
-                                            }),
-                                                    (Route<dynamic> route) =>
-                                                        false);
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(const SnackBar(
-                                              duration:
-                                                  Duration(milliseconds: 400),
-                                              content: Text(
-                                                  'This post will no longer in your feed',
-                                                  style: TextStyle(
-                                                      color: Colors.white)),
-                                            ));
-                                          } else {
-                                            Navigator.pop(context);
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                              const SnackBar(
-                                                duration:
-                                                    Duration(milliseconds: 400),
-                                                content: Text(
-                                                  'error occured try again',
-                                                  style: TextStyle(
-                                                      color: Colors.white),
-                                                ),
-                                              ),
-                                            );
-                                          }
-                                        }
-                                      },
-                                      child: const Text(
-                                          "Hide these type of content?")),
-                                  TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(builder:
-                                                (BuildContext context) {
-                                          return report_upload(
-                                              widget.app_user,
-                                              "User: " +
-                                                  post.username!.email
-                                                      .toString(),
-                                              post.username!.email!);
-                                        }));
-                                      },
-                                      child: const Text("Report This User?")),
+                                                  return report_upload(
+                                                      widget.app_user,
+                                                      "post" +
+                                                          " with id: " +
+                                                          post.id.toString(),
+                                                      post.username!.email!);
+                                                }));
+                                              },
+                                              child: const Text(
+                                                  "Report this post?")),
+                                          TextButton(
+                                              onPressed: () async {
+                                                if (widget.app_user.email!
+                                                        .split('@')[0] ==
+                                                    "guest") {
+                                                  Navigator.pop(context);
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(const SnackBar(
+                                                          duration: Duration(
+                                                              milliseconds:
+                                                                  400),
+                                                          content: Text(
+                                                              "guest cannot hide contents..",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white))));
+                                                } else {
+                                                  showDialog(
+                                                      context: context,
+                                                      barrierDismissible: false,
+                                                      builder: (context) {
+                                                        return AlertDialog(
+                                                            contentPadding:
+                                                                EdgeInsets.all(
+                                                                    15),
+                                                            content: Container(
+                                                              margin: EdgeInsets
+                                                                  .all(10),
+                                                              child: Column(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .min,
+                                                                  children: const [
+                                                                    Text(
+                                                                        "Please wait while updating....."),
+                                                                    SizedBox(
+                                                                        height:
+                                                                            10),
+                                                                    CircularProgressIndicator()
+                                                                  ]),
+                                                            ));
+                                                      });
+                                                  bool error =
+                                                      await post_servers()
+                                                          .hide_post(post.id!);
+                                                  Navigator.pop(context);
+                                                  if (!error) {
+                                                    Navigator.of(context)
+                                                        .pushAndRemoveUntil(
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (BuildContext
+                                                                        context) {
+                                                      return firstpage(
+                                                          0, widget.app_user);
+                                                    }),
+                                                            (Route<dynamic>
+                                                                    route) =>
+                                                                false);
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(
+                                                            const SnackBar(
+                                                      duration: Duration(
+                                                          milliseconds: 400),
+                                                      content: Text(
+                                                          'This post will no longer in your feed',
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .white)),
+                                                    ));
+                                                  } else {
+                                                    Navigator.pop(context);
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(
+                                                      const SnackBar(
+                                                        duration: Duration(
+                                                            milliseconds: 400),
+                                                        content: Text(
+                                                          'error occured try again',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  }
+                                                }
+                                              },
+                                              child: const Text(
+                                                  "Hide these type of content?")),
+                                          TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).push(
+                                                    MaterialPageRoute(builder:
+                                                        (BuildContext context) {
+                                                  return report_upload(
+                                                      widget.app_user,
+                                                      "User: " +
+                                                          post.username!.email
+                                                              .toString(),
+                                                      post.username!.email!);
+                                                }));
+                                              },
+                                              child: const Text(
+                                                  "Report This User?")),
+                                        ])
                                 ],
                               ),
                             ),
@@ -591,20 +676,10 @@ class _single_postState extends State<single_post> {
             endIndent: 5,
           ),
           const SizedBox(
-            height: 7,
-          ),
-          Container(
-            margin: EdgeInsets.only(left: 5),
-            child: Text(
-              utf8convert(post.description!),
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
-              maxLines: post.imgRatio == 0 ? 12 : 4,
-            ),
-          ),
-          const SizedBox(
             height: 5,
           ),
           Container(
+            margin: EdgeInsets.only(left: 15, right: 5),
             decoration: post.imgRatio == 1
                 ? BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
@@ -676,7 +751,7 @@ class _single_postState extends State<single_post> {
                   : post.imgRatio == 1
                       ? Center(
                           child: Container(
-                            height: width,
+                            height: width / 1.5,
                             width: width,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
@@ -745,13 +820,49 @@ class _single_postState extends State<single_post> {
             ),
           ),
           const SizedBox(
+            height: 7,
+          ),
+          Container(
+            margin: post.imgRatio == 0
+                ? EdgeInsets.only(left: 30)
+                : EdgeInsets.only(left: 8),
+            child: Text(
+              utf8convert(post.description!),
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+              maxLines: post.imgRatio == 0 ? 12 : 4,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          const SizedBox(
             height: 5,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              Container(
+                  padding: EdgeInsets.only(left: 10),
+                  child: Text(widget.post_posted_date,
+                      style: const TextStyle(
+                          fontSize: 14,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500))),
               Row(
                 children: [
+                  IconButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          return commentwidget(post, widget.app_user);
+                        }));
+                      },
+                      icon: const FaIcon(FontAwesomeIcons.comment, size: 28)),
+                  Text(
+                    post.commentCount.toString(),
+                    style: const TextStyle(
+                      fontSize: 16,
+                      //color: Colors.white70
+                    ),
+                  ),
                   const SizedBox(width: 5),
                   IconButton(
                     onPressed: () async {
@@ -796,14 +907,14 @@ class _single_postState extends State<single_post> {
                     },
                     icon: post.isLike!
                         ? const FaIcon(
-                            FontAwesomeIcons.solidThumbsUp,
-                            size: 25,
-                            color: Colors.blue,
+                            FontAwesomeIcons.heartCirclePlus,
+                            size: 28,
+                            color: Colors.green,
                           )
                         : const FaIcon(
-                            FontAwesomeIcons.thumbsUp,
-                            size: 25,
-                            color: Colors.blue,
+                            FontAwesomeIcons.heart,
+                            size: 28,
+                            color: Colors.green,
                           ),
                   ),
                   Text(
@@ -811,49 +922,10 @@ class _single_postState extends State<single_post> {
                     style: const TextStyle(fontSize: 16),
                   ),
                   const SizedBox(
-                    width: 7,
+                    width: 25,
                   ),
-                  IconButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (BuildContext context) {
-                          return commentwidget(post, widget.app_user);
-                        }));
-                      },
-                      icon: const FaIcon(FontAwesomeIcons.comment, size: 25)),
-                  Text(
-                    post.commentCount.toString(),
-                    style: const TextStyle(
-                      fontSize: 16,
-                      //color: Colors.white70
-                    ),
-                  ),
-                  IconButton(
-                      onPressed: () {},
-                      icon: const FaIcon(FontAwesomeIcons.share, size: 23)),
                 ],
               ),
-              // ElevatedButton.icon(
-              //   onPressed: () {},
-              //   icon: FaIcon(Icons.report_problem_rounded),
-              //   label: Text('Report?'),
-              // ),
-              // Container(
-              //   margin: const EdgeInsets.only(right: 20),
-              //   child: Transform.rotate(
-              //     angle: 0,
-              //     child: IconButton(
-              //       onPressed: () {
-              //         //Share.share(
-              //         //    'hey! check out this new app https://play.google.com/store/search?q=pub%3ADivTag&c=apps');
-              //       },
-              //       icon: const Icon(
-              //         Icons.send,
-              //         size: 24,
-              //       ),
-              //     ),
-              //   ),
-              // )
             ],
           ),
         ],

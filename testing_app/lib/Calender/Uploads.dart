@@ -408,6 +408,7 @@ class _upload_cal_eventState extends State<upload_cal_event> {
                                                   file_type,
                                                   notif_branchs.join('@'),
                                                   notif_years.join(''),
+                                                  notif_courses.join('@'),
                                                   all_university,
                                                   formattedDate +
                                                       'T' +

@@ -65,51 +65,51 @@ class CALENDER_EVENT {
   }
 }
 
-class TIMETABLE_LIST {
-  int? id;
-  String? branch;
-  String? sun;
-  String? mon;
-  String? tue;
-  String? wed;
-  String? thu;
-  String? fri;
-  String? sat;
+// class TIMETABLE_LIST {
+//   int? id;
+//   String? branch;
+//   String? sun;
+//   String? mon;
+//   String? tue;
+//   String? wed;
+//   String? thu;
+//   String? fri;
+//   String? sat;
 
-  TIMETABLE_LIST(
-      {this.id,
-      this.branch,
-      this.sun,
-      this.mon,
-      this.tue,
-      this.wed,
-      this.thu,
-      this.fri,
-      this.sat});
+//   TIMETABLE_LIST(
+//       {this.id,
+//       this.branch,
+//       this.sun,
+//       this.mon,
+//       this.tue,
+//       this.wed,
+//       this.thu,
+//       this.fri,
+//       this.sat});
 
-  TIMETABLE_LIST.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    branch = json['branch_name'];
-    sun = json['sun'];
-    mon = json['mon'];
-    tue = json['tue'];
-    wed = json['wed'];
-    thu = json['thu'];
-    fri = json['fri'];
-    sat = json['sat'];
-  }
+//   TIMETABLE_LIST.fromJson(Map<String, dynamic> json) {
+//     id = json['id'];
+//     branch = json['branch_name'];
+//     sun = json['sun'];
+//     mon = json['mon'];
+//     tue = json['tue'];
+//     wed = json['wed'];
+//     thu = json['thu'];
+//     fri = json['fri'];
+//     sat = json['sat'];
+//   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['branch_name'] = this.branch;
-    data['sun'] = this.sun;
-    data['mon'] = this.mon;
-    data['tue'] = this.tue;
-    data['wed'] = this.wed;
-    data['thu'] = this.thu;
-    data['fri'] = this.fri;
-    data['sat'] = this.sat;
-    return data;
-  }
-}
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = new Map<String, dynamic>();
+//     data['id'] = this.id;
+//     data['branch_name'] = this.branch;
+//     data['sun'] = this.sun;
+//     data['mon'] = this.mon;
+//     data['tue'] = this.tue;
+//     data['wed'] = this.wed;
+//     data['thu'] = this.thu;
+//     data['fri'] = this.fri;
+//     data['sat'] = this.sat;
+//     return data;
+//   }
+// }

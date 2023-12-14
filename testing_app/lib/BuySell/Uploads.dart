@@ -49,7 +49,9 @@ class _buy_sell_uploadState extends State<buy_sell_upload> {
           child: Container(
             //color: Colors.pink[100],
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
+            constraints: BoxConstraints(
+              minHeight: MediaQuery.of(context).size.height,
+            ),
             decoration: const BoxDecoration(
               image: DecorationImage(
                   image: AssetImage("images/background.jpg"),
@@ -243,7 +245,8 @@ class _buy_sell_uploadState extends State<buy_sell_upload> {
                                           Radius.circular(15.0))),
                                   minWidth: double.infinity,
                                   onPressed: () async {
-                              if (widget.app_user.email!.split('@')[0] == "guest") {
+                                    if (widget.app_user.email!.split('@')[0] ==
+                                        "guest") {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(
                                               duration:
@@ -276,14 +279,13 @@ class _buy_sell_uploadState extends State<buy_sell_upload> {
                                       if (image_ratio == "0") {
                                         image = File("images/background.jpg");
                                       }
-                                      bool error = await bs_servers()
-                                          .post_lst(
-                                              title,
-                                              description,
-                                              image,
-                                              image_ratio,
-                                              widget.tag,
-                                              widget.category);
+                                      bool error = await bs_servers().post_lst(
+                                          title,
+                                          description,
+                                          image,
+                                          image_ratio,
+                                          widget.tag,
+                                          widget.category);
                                       Navigator.pop(context);
                                       if (!error) {
                                         widget.app_user.buyCount =

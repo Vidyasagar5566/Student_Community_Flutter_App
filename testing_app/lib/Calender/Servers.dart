@@ -78,6 +78,7 @@ class calendar_servers {
       String file_type,
       String branch,
       String year,
+      String course,
       String all_university,
       String event_date) async {
     try {
@@ -108,6 +109,7 @@ class calendar_servers {
             'file_type': file_type,
             'branch': branch,
             'year': year,
+            'course': course,
             'all_universities': is_all_university,
             'event_date': event_date
           }));
@@ -149,6 +151,7 @@ class calendar_servers {
       String file_type,
       String branch,
       String year,
+      String course,
       String event_date) async {
     try {
       print(event_date);
@@ -176,6 +179,7 @@ class calendar_servers {
             'file_type': file_type,
             'branch': branch,
             'year': year,
+            'course': course,
             'event_date': event_date
           }));
       var data = json.decode(response.body) as Map;
@@ -188,93 +192,93 @@ class calendar_servers {
 
 // TIME TABLE THINGS
 
-  Future<bool> get_timetable(int calender_event_id) async {
-    try {
-      var token = storage.getItem('token');
-      Map<String, String> queryParameters = {
-        'calender_event_id': calender_event_id.toString()
-      };
-      String queryString = Uri(queryParameters: queryParameters).query;
-      String finalUrl = "$base_url/cal_events/list1?$queryString";
-      var url = Uri.parse(finalUrl);
-      http.Response response = await http.delete(url, headers: {
-        'Authorization': 'token $token',
-        "Content-Type": "application/json",
-      });
-      var data = json.decode(response.body) as Map;
+//   Future<bool> get_timetable(int calender_event_id) async {
+//     try {
+//       var token = storage.getItem('token');
+//       Map<String, String> queryParameters = {
+//         'calender_event_id': calender_event_id.toString()
+//       };
+//       String queryString = Uri(queryParameters: queryParameters).query;
+//       String finalUrl = "$base_url/cal_events/list1?$queryString";
+//       var url = Uri.parse(finalUrl);
+//       http.Response response = await http.delete(url, headers: {
+//         'Authorization': 'token $token',
+//         "Content-Type": "application/json",
+//       });
+//       var data = json.decode(response.body) as Map;
 
-      return data['error'];
-    } catch (e) {
-      return true;
-    }
-  }
+//       return data['error'];
+//     } catch (e) {
+//       return true;
+//     }
+//   }
 
-  Future<List<dynamic>> post_time_table(
-      int id,
-      String cal_event_type,
-      String title,
-      String description,
-      File file,
-      String file_type,
-      String branch,
-      String year,
-      String event_date) async {
-    try {
-      print(event_date);
-      var token = storage.getItem('token');
-      String finalUrl = "$base_url/cal_events/list1";
-      String base64file = "";
-      String fileName = "";
-      if (file_type != "0") {
-        base64file = base64Encode(file.readAsBytesSync());
-        fileName = file.path.split("/").last;
-      }
-      var url = Uri.parse(finalUrl);
-      http.Response response = await http.put(url,
-          headers: {
-            'Authorization': 'token $token',
-            "Content-Type": "application/json",
-          },
-          body: jsonEncode({
-            'id': id,
-            'cal_event_type': cal_event_type,
-            'title': title,
-            'description': description,
-            'file': base64file,
-            'file_name': fileName,
-            'file_type': file_type,
-            'branch': branch,
-            'year': year,
-            'event_date': event_date
-          }));
-      var data = json.decode(response.body) as Map;
-      print(data);
-      return [data['error'], data['id']];
-    } catch (e) {
-      return [true, 0];
-    }
-  }
+//   Future<List<dynamic>> post_time_table(
+//       int id,
+//       String cal_event_type,
+//       String title,
+//       String description,
+//       File file,
+//       String file_type,
+//       String branch,
+//       String year,
+//       String event_date) async {
+//     try {
+//       print(event_date);
+//       var token = storage.getItem('token');
+//       String finalUrl = "$base_url/cal_events/list1";
+//       String base64file = "";
+//       String fileName = "";
+//       if (file_type != "0") {
+//         base64file = base64Encode(file.readAsBytesSync());
+//         fileName = file.path.split("/").last;
+//       }
+//       var url = Uri.parse(finalUrl);
+//       http.Response response = await http.put(url,
+//           headers: {
+//             'Authorization': 'token $token',
+//             "Content-Type": "application/json",
+//           },
+//           body: jsonEncode({
+//             'id': id,
+//             'cal_event_type': cal_event_type,
+//             'title': title,
+//             'description': description,
+//             'file': base64file,
+//             'file_name': fileName,
+//             'file_type': file_type,
+//             'branch': branch,
+//             'year': year,
+//             'event_date': event_date
+//           }));
+//       var data = json.decode(response.body) as Map;
+//       print(data);
+//       return [data['error'], data['id']];
+//     } catch (e) {
+//       return [true, 0];
+//     }
+//   }
 
-//subscription to subjects
+// //subscription to subjects
 
-  Future<bool> edit_timetable_subscription(String notif_ids) async {
-    try {
-      var token = storage.getItem('token');
-      Map<String, String> queryParameters = {
-        'notif_ids': notif_ids,
-      };
-      String queryString = Uri(queryParameters: queryParameters).query;
-      String finalUrl = "$base_url/edit_notif_settings1?$queryString";
-      var url = Uri.parse(finalUrl);
-      http.Response response = await http.get(url, headers: {
-        'Authorization': 'token $token',
-        "Content-Type": "application/json",
-      });
-      var data = json.decode(response.body) as Map;
+//   Future<bool> edit_timetable_subscription(String notif_ids) async {
+//     try {
+//       var token = storage.getItem('token');
+//       Map<String, String> queryParameters = {
+//         'notif_ids': notif_ids,
+//       };
+//       String queryString = Uri(queryParameters: queryParameters).query;
+//       String finalUrl = "$base_url/edit_notif_settings1?$queryString";
+//       var url = Uri.parse(finalUrl);
+//       http.Response response = await http.get(url, headers: {
+//         'Authorization': 'token $token',
+//         "Content-Type": "application/json",
+//       });
+//       var data = json.decode(response.body) as Map;
 
-      return data['error'];
-    } catch (e) {
-      return true;
-    }
-  }
+//       return data['error'];
+//     } catch (e) {
+//       return true;
+//     }
+//   }
 }

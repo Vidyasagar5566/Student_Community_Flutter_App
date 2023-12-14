@@ -1,44 +1,39 @@
-import 'dart:async';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import '/Login/Servers.dart';
-import '/User_Star_Mark/User_Profile_Star_Mark.dart';
-import '/User_profile/profile.dart';
-import '/Fcm_Notif_Domains/Servers.dart';
-import '/Messanger/Servers.dart';
+import 'package:testing_app/Dating/models.dart';
+import 'servers.dart';
 import '/Messanger/Single_message.dart';
-import '/Messanger/search_bar.dart';
 import '/Files_disply_download/pdf_videos_images.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import '/First_page.dart';
 import '/User_profile/Models.dart';
 import 'package:video_player/video_player.dart';
-import 'Models.dart';
 import 'package:uuid/uuid.dart';
+import '/Messanger/Models.dart';
 
 var uuid = Uuid();
 
-class chatRoomStream extends StatefulWidget {
-  final SmallUsername targetuser;
+class DummychatRoomStream extends StatefulWidget {
+  final DatingUser dating_user;
   final ChatRoomModel chatRoom;
   final Username app_user;
 
-  const chatRoomStream(
+  const DummychatRoomStream(
       {Key? key,
-      required this.targetuser,
+      required this.dating_user,
       required this.chatRoom,
       required this.app_user})
       : super(key: key);
 
   @override
-  State<chatRoomStream> createState() => _chatRoomStreamState();
+  State<DummychatRoomStream> createState() => _DummychatRoomStreamState();
 }
 
-class _chatRoomStreamState extends State<chatRoomStream> {
+class _DummychatRoomStreamState extends State<DummychatRoomStream> {
   List<MessageModel> all_messages = [];
   @override
   Widget build(BuildContext context) {
@@ -46,18 +41,15 @@ class _chatRoomStreamState extends State<chatRoomStream> {
         appBar: AppBar(
           title: Row(
             children: [
-              widget.targetuser.fileType == '1'
-                  ? CircleAvatar(
-                      backgroundImage:
-                          NetworkImage(widget.targetuser.profilePic!))
-                  : const CircleAvatar(
-                      backgroundImage: AssetImage("images/profile.jpg")),
+              CircleAvatar(
+                  backgroundImage:
+                      NetworkImage(widget.dating_user.dummyProfile!)),
               const SizedBox(
                 width: 20,
               ),
               Container(
                   width: 140,
-                  child: Text(widget.targetuser.username.toString(),
+                  child: Text(widget.dating_user.dummyName.toString(),
                       overflow: TextOverflow.ellipsis))
             ],
           ),
@@ -103,7 +95,7 @@ class _chatRoomStreamState extends State<chatRoomStream> {
                                                 widget.app_user.userUuid!];
                                       });
                                       await FirebaseFirestore.instance
-                                          .collection("chatrooms")
+                                          .collection("dummyChatrooms")
                                           .doc(widget.chatRoom.chatroomid)
                                           .set(widget.chatRoom.toMap());
                                       Navigator.pop(context);
@@ -137,7 +129,7 @@ class _chatRoomStreamState extends State<chatRoomStream> {
         ),
         body: StreamBuilder(
             stream: FirebaseFirestore.instance
-                .collection("chatrooms")
+                .collection("dummyChatrooms")
                 .doc(widget.chatRoom.chatroomid)
                 .collection("messages")
                 .orderBy("createdon", descending: true)
@@ -161,7 +153,7 @@ class _chatRoomStreamState extends State<chatRoomStream> {
                       if (all_messages[i].seen == false) {
                         all_messages[i].seen = true;
                         FirebaseFirestore.instance
-                            .collection("chatrooms")
+                            .collection("dummyChatrooms")
                             .doc(widget.chatRoom.chatroomid)
                             .collection("messages")
                             .doc(all_messages[i].messageid)
@@ -177,13 +169,14 @@ class _chatRoomStreamState extends State<chatRoomStream> {
                       widget.app_user.email) {
                     widget.chatRoom.lastmessageseen = true;
                     FirebaseFirestore.instance
-                        .collection("chatrooms")
+                        .collection("dummyChatrooms")
                         .doc(widget.chatRoom.chatroomid)
                         .set(widget.chatRoom.toMap());
                   }
 
                   return chatroom(
-                    targetuser_uuids: [widget.targetuser.userUuid!],
+                    datingUser_uuid:
+                        widget.dating_user.username!.userUuid.toString(),
                     chatRoom: widget.chatRoom,
                     app_user: widget.app_user,
                     all_messages: widget
@@ -206,230 +199,14 @@ class _chatRoomStreamState extends State<chatRoomStream> {
   }
 }
 
-class GroupChatRoomStream extends StatefulWidget {
-  ChatRoomModel chatRoom;
-  Username app_user;
-  GroupChatRoomStream(this.chatRoom, this.app_user);
-
-  @override
-  State<GroupChatRoomStream> createState() => _GroupChatRoomStreamState();
-}
-
-class _GroupChatRoomStreamState extends State<GroupChatRoomStream> {
-  List<MessageModel> all_messages = [];
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: GestureDetector(
-            onTap: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (BuildContext context) {
-                return groupUsersDisplay(widget.chatRoom, widget.app_user);
-              }));
-            },
-            child: Row(
-              children: [
-                CircleAvatar(
-                    backgroundImage: NetworkImage(widget.chatRoom.group_icon!)),
-                const SizedBox(
-                  width: 20,
-                ),
-                Container(
-                  width: 140,
-                  child: Text(widget.chatRoom.group_name.toString(),
-                      overflow: TextOverflow.ellipsis),
-                )
-              ],
-            ),
-          ),
-          actions: [
-            widget.chatRoom.group_creator == widget.app_user.email
-                ? Row(
-                    children: [
-                      IconButton(
-                          onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (BuildContext context) {
-                              return search_bar(
-                                  widget.app_user,
-                                  domains[widget.app_user.domain]!,
-                                  'edit_group',
-                                  widget.chatRoom);
-                            }));
-                          },
-                          icon: Icon(Icons.edit, color: Colors.blue)),
-                      const SizedBox(width: 1),
-                      IconButton(
-                          onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    contentPadding: EdgeInsets.all(15),
-                                    content: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Container(),
-                                            IconButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                icon: const Icon(Icons.close))
-                                          ],
-                                        ),
-                                        const SizedBox(height: 20),
-                                        const Center(
-                                            child: Text(
-                                                "Are you sure do you want to Delete group?",
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.black,
-                                                    fontWeight:
-                                                        FontWeight.bold))),
-                                        const SizedBox(height: 10),
-                                        Container(
-                                          margin: const EdgeInsets.all(30),
-                                          child: OutlinedButton(
-                                              onPressed: () async {
-                                                Navigator.pop(context);
-                                                Navigator.pop(context);
-                                                await FirebaseFirestore.instance
-                                                    .collection("chatrooms")
-                                                    .doc(widget
-                                                        .chatRoom.chatroomid)
-                                                    .delete();
-                                              },
-                                              child: const Center(
-                                                  child: Text(
-                                                "Delete",
-                                                style: TextStyle(
-                                                    color: Colors.blue),
-                                              ))),
-                                        )
-                                      ],
-                                    ),
-                                  );
-                                });
-                          },
-                          icon: Icon(Icons.delete_forever, color: Colors.blue))
-                    ],
-                  )
-                : TextButton(
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              contentPadding: EdgeInsets.all(15),
-                              content: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(),
-                                      IconButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          icon: const Icon(Icons.close))
-                                    ],
-                                  ),
-                                  const SizedBox(height: 20),
-                                  const Center(
-                                      child: Text(
-                                          "Are you sure do you want to Exit group?",
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold))),
-                                  const SizedBox(height: 10),
-                                  Container(
-                                    margin: const EdgeInsets.all(30),
-                                    child: OutlinedButton(
-                                        onPressed: () async {
-                                          setState(() {
-                                            widget.chatRoom.participants!
-                                                .remove(
-                                                    widget.app_user.userUuid);
-                                          });
-                                          await FirebaseFirestore.instance
-                                              .collection("chatrooms")
-                                              .doc(widget.chatRoom.chatroomid)
-                                              .set(widget.chatRoom.toMap());
-                                          Navigator.pop(context);
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Center(
-                                            child: Text(
-                                          "Exit",
-                                          style: TextStyle(color: Colors.blue),
-                                        ))),
-                                  )
-                                ],
-                              ),
-                            );
-                          });
-                    },
-                    child: Text("Exit Group"))
-          ],
-        ),
-        body: StreamBuilder(
-            stream: FirebaseFirestore.instance
-                .collection("chatrooms")
-                .doc(widget.chatRoom.chatroomid)
-                .collection("messages")
-                .orderBy("createdon", descending: true)
-                .snapshots(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.active) {
-                if (snapshot.hasData) {
-                  QuerySnapshot datasnapshot = snapshot.data as QuerySnapshot;
-                  all_messages = [];
-
-                  /// loop to get all chat room messages
-                  for (int i = 0; i < datasnapshot.docs.length; i++) {
-                    MessageModel currentmessage = MessageModel.FromMap(
-                        datasnapshot.docs[i].data() as Map<String, dynamic>);
-                    all_messages.add(currentmessage);
-                  }
-
-                  return chatroom(
-                    targetuser_uuids:
-                        widget.chatRoom.participants!.keys.toList(),
-                    chatRoom: widget.chatRoom,
-                    app_user: widget.app_user,
-                    all_messages: all_messages,
-                  );
-                } else if (snapshot.hasError) {
-                  return const Text(
-                      "An error occured please check your internet connection");
-                } else {
-                  return const Text("Send a Hi to your beloved friend");
-                }
-              } else {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-            }));
-  }
-}
-
 class chatroom extends StatefulWidget {
-  final List<String> targetuser_uuids;
+  final String datingUser_uuid;
   final ChatRoomModel chatRoom;
   final Username app_user;
   List<MessageModel> all_messages;
   chatroom(
       {Key? key,
-      required this.targetuser_uuids,
+      required this.datingUser_uuid,
       required this.chatRoom,
       required this.app_user,
       required this.all_messages})
@@ -460,61 +237,75 @@ class _chatroomState extends State<chatroom> {
   int file_type = 0;
 
   void sendMessage() async {
-    String target_uuid;
-    if (widget.targetuser_uuids[0] == widget.app_user.userUuid) {
-      target_uuid = widget.targetuser_uuids[1];
+    if (!widget.chatRoom.participants!.values.elementAt(0) ||
+        !widget.chatRoom.participants!.values.elementAt(1)) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          duration: Duration(milliseconds: 400),
+          content: Text("You cannot send message to this user..",
+              style: TextStyle(color: Colors.white))));
     } else {
-      target_uuid = widget.targetuser_uuids[0];
-    }
-
-    Stream<QuerySnapshot<Map<String, dynamic>>> chatroomsnapshot =
-        await FirebaseFirestore.instance
-            .collection("chatrooms")
-            .where("group", isEqualTo: false)
-            .where("participants.${app_user.userUuid}", isEqualTo: true)
-            .where("participants.${target_uuid}", isEqualTo: true)
-            .snapshots();
-
-    chatroomsnapshot.elementAt(0).then((value) async {
-      if (value.docs[0]['participants'][target_uuid] == true &&
-          value.docs[0]['participants'][app_user.userUuid] == true) {
-        String msg = messagecontroller.text.trim();
-        messagecontroller.clear();
-        int type = file_type;
+      String msg = messagecontroller.text.trim();
+      messagecontroller.clear();
+      int type = file_type;
+      setState(() {
+        file_type = 0;
+      });
+      if (imagefile != null) {
+        File temp_img_file = imagefile!;
         setState(() {
-          file_type = 0;
+          imagefile = null;
         });
-        if (imagefile != null) {
-          File temp_img_file = imagefile!;
-          setState(() {
-            imagefile = null;
-          });
+        MessageModel newmessage = MessageModel(
+            messageid: uuid.v1(),
+            seen: false,
+            createdon: DateTime.now(),
+            sender: app_user.email,
+            text: msg,
+            photo: '',
+            type: type,
+            sent: false,
+            offline_file: temp_img_file,
+            insert: true);
+        setState(() {
+          widget.all_messages.insert(0, newmessage);
+        });
+        String uid = uuid.v1();
+        UploadTask uploadtask = FirebaseStorage.instance
+            .ref("photo_messages")
+            .child(uid.toString())
+            .putFile(temp_img_file);
+        TaskSnapshot snapshot = await uploadtask;
+        String imageurl = await snapshot.ref.getDownloadURL();
+        setState(() {
+          newmessage.photo = imageurl;
+        });
+        await FirebaseFirestore.instance
+            .collection("dummyChatrooms")
+            .doc(widget.chatRoom.chatroomid)
+            .collection("messages")
+            .doc(newmessage.messageid)
+            .set(newmessage.toMap());
+        widget.chatRoom.lastmessage = msg;
+        widget.chatRoom.lastmessagetype = type;
+        widget.chatRoom.lastmessageseen = false;
+        widget.chatRoom.lastmessagetime = DateTime.now();
+        widget.chatRoom.lastmessagesender = app_user.email;
+        await FirebaseFirestore.instance
+            .collection("dummyChatrooms")
+            .doc(widget.chatRoom.chatroomid)
+            .set(widget.chatRoom.toMap());
+      } else {
+        if (msg != "") {
           MessageModel newmessage = MessageModel(
               messageid: uuid.v1(),
               seen: false,
               createdon: DateTime.now(),
               sender: app_user.email,
               text: msg,
-              photo: '',
-              type: type,
-              sent: false,
-              offline_file: temp_img_file,
-              insert: true);
-          setState(() {
-            widget.all_messages.insert(0, newmessage);
-          });
-          String uid = uuid.v1();
-          UploadTask uploadtask = FirebaseStorage.instance
-              .ref("photo_messages")
-              .child(uid.toString())
-              .putFile(temp_img_file);
-          TaskSnapshot snapshot = await uploadtask;
-          String imageurl = await snapshot.ref.getDownloadURL();
-          setState(() {
-            newmessage.photo = imageurl;
-          });
-          await FirebaseFirestore.instance
-              .collection("chatrooms")
+              photo: "",
+              type: 0);
+          FirebaseFirestore.instance
+              .collection("dummyChatrooms")
               .doc(widget.chatRoom.chatroomid)
               .collection("messages")
               .doc(newmessage.messageid)
@@ -524,57 +315,15 @@ class _chatroomState extends State<chatroom> {
           widget.chatRoom.lastmessageseen = false;
           widget.chatRoom.lastmessagetime = DateTime.now();
           widget.chatRoom.lastmessagesender = app_user.email;
-          await FirebaseFirestore.instance
-              .collection("chatrooms")
+          FirebaseFirestore.instance
+              .collection("dummyChatrooms")
               .doc(widget.chatRoom.chatroomid)
               .set(widget.chatRoom.toMap());
-        } else {
-          if (msg != "") {
-            MessageModel newmessage = MessageModel(
-                messageid: uuid.v1(),
-                seen: false,
-                createdon: DateTime.now(),
-                sender: app_user.email,
-                text: msg,
-                photo: "",
-                type: 0);
-            FirebaseFirestore.instance
-                .collection("chatrooms")
-                .doc(widget.chatRoom.chatroomid)
-                .collection("messages")
-                .doc(newmessage.messageid)
-                .set(newmessage.toMap());
-            widget.chatRoom.lastmessage = msg;
-            widget.chatRoom.lastmessagetype = type;
-            widget.chatRoom.lastmessageseen = false;
-            widget.chatRoom.lastmessagetime = DateTime.now();
-            widget.chatRoom.lastmessagesender = app_user.email;
-            FirebaseFirestore.instance
-                .collection("chatrooms")
-                .doc(widget.chatRoom.chatroomid)
-                .set(widget.chatRoom.toMap());
-          }
         }
-
-        if (widget.targetuser_uuids.length == 1) {
-          messanger_servers()
-              .user_messages_notif(widget.targetuser_uuids.join("#"), msg);
-        } else {
-          messanger_servers().user_messages_notif(
-              widget.targetuser_uuids.join("#"),
-              msg + " : From " + widget.chatRoom.group_name!);
-        }
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            duration: Duration(milliseconds: 400),
-            content: Text("You cannot send message to this user..",
-                style: TextStyle(color: Colors.white))));
       }
-    });
 
-    // if (!widget.chatRoom.participants!.values.elementAt(0) ||
-    //     !widget.chatRoom.participants!.values.elementAt(1)) {
-    // } else {}
+      dating_servers().user_messages_notif(widget.datingUser_uuid, msg);
+    }
   }
 
   @override
@@ -596,12 +345,8 @@ class _chatroomState extends State<chatroom> {
                             reverse: true,
                             itemCount: widget.all_messages.length,
                             itemBuilder: (context, index) {
-                              bool groupChatroom =
-                                  widget.targetuser_uuids.length == 1
-                                      ? false
-                                      : true;
                               return single_message(widget.app_user,
-                                  widget.all_messages[index], groupChatroom);
+                                  widget.all_messages[index], false);
                             },
                           ))),
             Container(
@@ -939,278 +684,5 @@ class _chatroomState extends State<chatroom> {
         ),
       ),
     );
-  }
-}
-
-class groupUsersDisplay extends StatefulWidget {
-  ChatRoomModel group_chat_room;
-  Username app_user;
-  groupUsersDisplay(this.group_chat_room, this.app_user);
-
-  @override
-  State<groupUsersDisplay> createState() => _groupUsersDisplayState();
-}
-
-class _groupUsersDisplayState extends State<groupUsersDisplay> {
-  List<SmallUsername> group_users = [];
-
-  @override
-  Widget build(BuildContext context) {
-    List<String> user_uuids =
-        widget.group_chat_room.participants!.keys.toList();
-    return Scaffold(
-      appBar: AppBar(title: Text("Group_Users")),
-      body: FutureBuilder<List<SmallUsername>>(
-        future: messanger_servers()
-            .get_fire_base_uuids_to_backend_users(user_uuids.join('#')),
-        builder: (ctx, AsyncSnapshot snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.hasError) {
-              return Center(
-                child: Text(
-                  '${snapshot.error} occurred',
-                  style: TextStyle(fontSize: 18),
-                ),
-              );
-            } else if (snapshot.hasData) {
-              group_users = snapshot.data;
-              if (group_users.isEmpty) {
-                return Container(
-                    margin: EdgeInsets.all(30),
-                    padding: EdgeInsets.all(30),
-                    child: const Text("No conversations started yet",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500, fontSize: 24)));
-              } else {
-                return SingleChildScrollView(
-                  child: ListView.builder(
-                      itemCount: group_users.length,
-                      shrinkWrap: true,
-                      padding: EdgeInsets.zero,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemBuilder: (BuildContext context, int index) {
-                        SmallUsername group_user = group_users[index];
-                        return _buildLoadingScreen(group_user, index);
-                      }),
-                );
-              }
-            }
-          }
-
-          return Center(child: CircularProgressIndicator());
-        },
-      ),
-    );
-  }
-
-  Widget _buildLoadingScreen(SmallUsername search_user, int index) {
-    var width = MediaQuery.of(context).size.width;
-    return Container(
-        margin: EdgeInsets.all(2),
-        padding: EdgeInsets.all(20),
-        decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(20)),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GestureDetector(
-                  onTap: () async {
-                    if (widget.app_user.email != search_user.email) {
-                      showDialog(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (context) {
-                            return AlertDialog(
-                                contentPadding: EdgeInsets.all(15),
-                                content: Container(
-                                  margin: EdgeInsets.all(10),
-                                  child: const Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Text("Please wait while loading....."),
-                                        SizedBox(height: 10),
-                                        CircularProgressIndicator()
-                                      ]),
-                                ));
-                          });
-                      Username all_profile_user =
-                          await login_servers().get_user(search_user.email!);
-                      Navigator.pop(context);
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (BuildContext context) {
-                        return Scaffold(
-                            body: userProfilePage(
-                                widget.app_user, all_profile_user));
-                      }));
-                    }
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            width: 48, //post.profile_pic
-                            child: search_user.fileType == '1'
-                                ? CircleAvatar(
-                                    backgroundImage:
-                                        NetworkImage(search_user.profilePic!))
-                                : const CircleAvatar(
-                                    backgroundImage:
-                                        AssetImage("images/profile.jpg")),
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(left: 20),
-                            width: (width - 36) / 1.4,
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        constraints: BoxConstraints(
-                                            maxWidth: (width - 36) / 2.4),
-                                        child: Text(
-                                          search_user.username!,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 16,
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      userMarkNotation(search_user.starMark!),
-                                      const SizedBox(width: 6),
-                                      widget.group_chat_room.group_creator ==
-                                              search_user.email
-                                          ? const Text(
-                                              "(GroupAdmin)",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.blue),
-                                            )
-                                          : Container()
-                                    ],
-                                  ),
-                                  Text(
-                                    domains[search_user.domain!]! +
-                                        " (" +
-                                        search_user.userMark! +
-                                        ")",
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                  ),
-                                ]),
-                          ),
-                        ],
-                      ),
-                      widget.app_user.email ==
-                              widget.group_chat_room.group_creator
-                          ? IconButton(
-                              onPressed: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        contentPadding: EdgeInsets.all(15),
-                                        content: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Container(),
-                                                IconButton(
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                    icon:
-                                                        const Icon(Icons.close))
-                                              ],
-                                            ),
-                                            const SizedBox(height: 20),
-                                            const Center(
-                                                child: Text(
-                                                    "Do you want to Remove this User?",
-                                                    style: TextStyle(
-                                                        fontSize: 14,
-                                                        color: Colors.black,
-                                                        fontWeight:
-                                                            FontWeight.bold))),
-                                            const SizedBox(height: 10),
-                                            Container(
-                                              margin: const EdgeInsets.all(30),
-                                              child: OutlinedButton(
-                                                  onPressed: () async {
-                                                    widget.group_chat_room
-                                                        .participants!
-                                                        .remove(search_user
-                                                            .userUuid);
-                                                    await FirebaseFirestore
-                                                        .instance
-                                                        .collection("chatrooms")
-                                                        .doc(widget
-                                                            .group_chat_room
-                                                            .chatroomid)
-                                                        .set(widget
-                                                            .group_chat_room
-                                                            .toMap());
-                                                    setState(() {
-                                                      group_users
-                                                          .remove(search_user);
-                                                    });
-
-                                                    Navigator.pop(context);
-                                                    ScaffoldMessenger.of(
-                                                            context)
-                                                        .showSnackBar(const SnackBar(
-                                                            duration: Duration(
-                                                                milliseconds:
-                                                                    400),
-                                                            content: Text(
-                                                                "User was removed successfully",
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .white))));
-                                                  },
-                                                  child: const Text(
-                                                    "Remove",
-                                                    style: TextStyle(
-                                                        color: Colors.blue),
-                                                  )),
-                                            )
-                                          ],
-                                        ),
-                                      );
-                                    });
-                              },
-                              icon: Icon(Icons.more_vert))
-                          : Container()
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 5),
-            Text(
-              "Contact no " + search_user.phnNum!,
-              //post.description,
-              style: TextStyle(fontSize: 15),
-            ),
-            const SizedBox(height: 5),
-            Text(
-              " Email : " + search_user.email!,
-              //post.description,
-              style: TextStyle(fontSize: 15),
-            ),
-          ],
-        ));
   }
 }

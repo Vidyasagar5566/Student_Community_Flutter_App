@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../Posts/Post.dart';
+import '/Posts/post.dart';
 import 'Servers.dart';
 import 'Models.dart';
 import '/Posts/Models.dart';
@@ -102,521 +102,521 @@ class _user_postwidget1State extends State<user_postwidget1> {
               post.postedDate!); // Converting into [DateTime] object
           String post_posted_date = GetTimeAgo.parse(_convertedTimestamp);
           return single_post(
-              post, widget.post_list, widget.app_user, post_posted_date);
+              post, widget.app_user, widget.post_list, post_posted_date, index);
         });
   }
 }
 
-class single_post extends StatefulWidget {
-  POST_LIST post;
-  List<POST_LIST> post_list;
-  Username app_user;
-  String post_posted_date;
-  single_post(this.post, this.post_list, this.app_user, this.post_posted_date);
+// class single_post extends StatefulWidget {
+//   POST_LIST post;
+//   List<POST_LIST> post_list;
+//   Username app_user;
+//   String post_posted_date;
+//   single_post(this.post, this.post_list, this.app_user, this.post_posted_date);
 
-  @override
-  State<single_post> createState() => _single_postState();
-}
+//   @override
+//   State<single_post> createState() => _single_postState();
+// }
 
-class _single_postState extends State<single_post> {
-  bool _showController = true;
-  VideoPlayerController? _videoPlayerController;
+// class _single_postState extends State<single_post> {
+//   bool _showController = true;
+//   VideoPlayerController? _videoPlayerController;
 
-  void initState() {
-    super.initState();
-    if (_videoPlayerController != null) {
-      _videoPlayerController!.dispose();
-    }
+//   void initState() {
+//     super.initState();
+//     if (_videoPlayerController != null) {
+//       _videoPlayerController!.dispose();
+//     }
 
-    if (widget.post.imgRatio == 2) {
-      _videoPlayerController = VideoPlayerController.network(widget.post.img!,
-          videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true));
-      _videoPlayerController!.initialize().then((value) {
-        setState(() {});
-      });
-    }
-  }
+//     if (widget.post.imgRatio == 2) {
+//       _videoPlayerController = VideoPlayerController.network(widget.post.img!,
+//           videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true));
+//       _videoPlayerController!.initialize().then((value) {
+//         setState(() {});
+//       });
+//     }
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    POST_LIST post = widget.post;
-    SmallUsername user = post.username!;
-    var width = MediaQuery.of(context).size.width;
-    return Container(
-      margin: EdgeInsets.only(top: 10),
-      padding: const EdgeInsets.only(top: 20, bottom: 20, left: 5, right: 5),
-      decoration: BoxDecoration(boxShadow: const [
-        BoxShadow(
-          color: Colors.grey, // Shadow color
-          offset: Offset(0, 1), // Offset of the shadow (horizontal, vertical)
-          blurRadius: 4, // Spread of the shadow
-          spreadRadius: 0, // Expansion of the shadow
-        ),
-      ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    width: 48, //post.profile_pic
-                    child: user.fileType == '1'
-                        ? CircleAvatar(
-                            backgroundImage: NetworkImage(user.profilePic!))
-                        : const CircleAvatar(
-                            backgroundImage: AssetImage("images/profile.jpg")),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(left: 20),
-                    width: (width - 36) / 1.8,
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Container(
-                                constraints: BoxConstraints(
-                                    maxWidth: (width - 36) / 2.4),
-                                child: Text(
-                                  user.username!,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  //"Vidya Sagar",
-                                  //lst_list[index].username,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 16,
-                                    //color: Colors.white
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 10),
-                              9 % 9 == 0
-                                  ? const Icon(
-                                      Icons
-                                          .verified_rounded, //verified_rounded,verified_outlined
-                                      color: Colors.green,
-                                      size: 18,
-                                    )
-                                  : Container()
-                            ],
-                          ),
-                          Text(
-                            //"B190838EC",
-                            domains[user.domain!]! +
-                                " (" +
-                                user.userMark! +
-                                ")",
-                            overflow: TextOverflow.ellipsis,
-                            //lst_list.username.rollNum,
-                            //style: const TextStyle(color: Colors.white),
-                            maxLines: 1,
-                          )
-                        ]),
-                  )
-                ],
-              ),
-              IconButton(
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (dialogContex) {
-                        return AlertDialog(
-                          contentPadding: EdgeInsets.all(15),
-                          content: SingleChildScrollView(
-                            child: Container(
-                              padding: EdgeInsets.all(10),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  const SizedBox(height: 4),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(),
-                                      IconButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          icon: const Icon(Icons.close))
-                                    ],
-                                  ),
-                                  const SizedBox(height: 20),
-                                  user.username == widget.app_user.username
-                                      ? Column(
-                                          children: [
-                                            const Center(
-                                                child: Text(
-                                                    "Do you want to delete this?",
-                                                    style: TextStyle(
-                                                        fontSize: 14,
-                                                        color: Colors.black,
-                                                        fontWeight:
-                                                            FontWeight.bold))),
-                                            const SizedBox(height: 10),
-                                            Container(
-                                              margin: const EdgeInsets.all(30),
-                                              child: OutlinedButton(
-                                                  onPressed: () async {
-                                                    Navigator.pop(context);
-                                                    bool error =
-                                                        await post_servers()
-                                                            .delete_post(
-                                                                post.id!);
-                                                    user_posts.remove(post);
+//   @override
+//   Widget build(BuildContext context) {
+//     POST_LIST post = widget.post;
+//     SmallUsername user = post.username!;
+//     var width = MediaQuery.of(context).size.width;
+//     return Container(
+//       margin: EdgeInsets.only(top: 10),
+//       padding: const EdgeInsets.only(top: 20, bottom: 20, left: 5, right: 5),
+//       decoration: BoxDecoration(boxShadow: const [
+//         BoxShadow(
+//           color: Colors.grey, // Shadow color
+//           offset: Offset(0, 1), // Offset of the shadow (horizontal, vertical)
+//           blurRadius: 4, // Spread of the shadow
+//           spreadRadius: 0, // Expansion of the shadow
+//         ),
+//       ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
+//       child: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           Row(
+//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//             children: [
+//               Row(
+//                 children: [
+//                   Container(
+//                     width: 48, //post.profile_pic
+//                     child: user.fileType == '1'
+//                         ? CircleAvatar(
+//                             backgroundImage: NetworkImage(user.profilePic!))
+//                         : const CircleAvatar(
+//                             backgroundImage: AssetImage("images/profile.jpg")),
+//                   ),
+//                   Container(
+//                     padding: EdgeInsets.only(left: 20),
+//                     width: (width - 36) / 1.8,
+//                     child: Column(
+//                         crossAxisAlignment: CrossAxisAlignment.start,
+//                         children: [
+//                           Row(
+//                             children: [
+//                               Container(
+//                                 constraints: BoxConstraints(
+//                                     maxWidth: (width - 36) / 2.4),
+//                                 child: Text(
+//                                   user.username!,
+//                                   maxLines: 1,
+//                                   overflow: TextOverflow.ellipsis,
+//                                   //"Vidya Sagar",
+//                                   //lst_list[index].username,
+//                                   style: const TextStyle(
+//                                     fontWeight: FontWeight.w600,
+//                                     fontSize: 16,
+//                                     //color: Colors.white
+//                                   ),
+//                                 ),
+//                               ),
+//                               const SizedBox(width: 10),
+//                               9 % 9 == 0
+//                                   ? const Icon(
+//                                       Icons
+//                                           .verified_rounded, //verified_rounded,verified_outlined
+//                                       color: Colors.green,
+//                                       size: 18,
+//                                     )
+//                                   : Container()
+//                             ],
+//                           ),
+//                           Text(
+//                             //"B190838EC",
+//                             domains[user.domain!]! +
+//                                 " (" +
+//                                 user.userMark! +
+//                                 ")",
+//                             overflow: TextOverflow.ellipsis,
+//                             //lst_list.username.rollNum,
+//                             //style: const TextStyle(color: Colors.white),
+//                             maxLines: 1,
+//                           )
+//                         ]),
+//                   )
+//                 ],
+//               ),
+//               IconButton(
+//                 onPressed: () {
+//                   showDialog(
+//                       context: context,
+//                       barrierDismissible: false,
+//                       builder: (dialogContex) {
+//                         return AlertDialog(
+//                           contentPadding: EdgeInsets.all(15),
+//                           content: SingleChildScrollView(
+//                             child: Container(
+//                               padding: EdgeInsets.all(10),
+//                               child: Column(
+//                                 mainAxisSize: MainAxisSize.min,
+//                                 children: [
+//                                   const SizedBox(height: 4),
+//                                   Row(
+//                                     mainAxisAlignment:
+//                                         MainAxisAlignment.spaceBetween,
+//                                     children: [
+//                                       Container(),
+//                                       IconButton(
+//                                           onPressed: () {
+//                                             Navigator.pop(context);
+//                                           },
+//                                           icon: const Icon(Icons.close))
+//                                     ],
+//                                   ),
+//                                   const SizedBox(height: 20),
+//                                   user.username == widget.app_user.username
+//                                       ? Column(
+//                                           children: [
+//                                             const Center(
+//                                                 child: Text(
+//                                                     "Do you want to delete this?",
+//                                                     style: TextStyle(
+//                                                         fontSize: 14,
+//                                                         color: Colors.black,
+//                                                         fontWeight:
+//                                                             FontWeight.bold))),
+//                                             const SizedBox(height: 10),
+//                                             Container(
+//                                               margin: const EdgeInsets.all(30),
+//                                               child: OutlinedButton(
+//                                                   onPressed: () async {
+//                                                     Navigator.pop(context);
+//                                                     bool error =
+//                                                         await post_servers()
+//                                                             .delete_post(
+//                                                                 post.id!);
+//                                                     user_posts.remove(post);
 
-                                                    if (!error) {
-                                                      Navigator.of(context)
-                                                          .pushAndRemoveUntil(
-                                                              MaterialPageRoute(
-                                                                  builder:
-                                                                      (BuildContext
-                                                                          context) {
-                                                        return firstpage(
-                                                          2,
-                                                          widget.app_user,
-                                                        );
-                                                      }),
-                                                              (Route<dynamic>
-                                                                      route) =>
-                                                                  false);
-                                                    } else {
-                                                      //post_list.add(post);
-                                                      ScaffoldMessenger.of(
-                                                              context)
-                                                          .showSnackBar(
-                                                        const SnackBar(
-                                                          duration: Duration(
-                                                              milliseconds:
-                                                                  400),
-                                                          content: Text(
-                                                            "Failed",
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white),
-                                                          ),
-                                                        ),
-                                                      );
-                                                    }
-                                                  },
-                                                  child: const Center(
-                                                      child: Text(
-                                                    "Delete",
-                                                    style: TextStyle(
-                                                        color: Colors.blue),
-                                                  ))),
-                                            ),
-                                            const SizedBox(height: 10),
-                                          ],
-                                        )
-                                      : Container(),
-                                  const Center(
-                                      child: Text("Post details",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 14,
-                                              color: Colors.blue))),
-                                  const SizedBox(height: 20),
-                                  Center(
-                                      child: Text(user.email!,
-                                          style: const TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold))),
-                                  const SizedBox(height: 10),
-                                  Center(
-                                      child: Text(widget.post_posted_date,
-                                          style: const TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold))),
-                                  const SizedBox(height: 4),
-                                  const SizedBox(height: 10),
-                                  //Link
-                                  Text(
-                                    //"Description about the post",
-                                    utf8convert(post.description!),
-                                    //style: const TextStyle(fontSize: 14),
-                                  ),
-                                  const SizedBox(height: 15),
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
-                      });
-                },
-                icon: const Icon(
-                  Icons.more_horiz,
-                  size: 31,
-                  color: Colors.black,
-                ),
-              )
-            ],
-          ),
-          const Divider(
-            color: Colors.white,
-            height: 5,
-            thickness: 2,
-            indent: 5,
-            endIndent: 5,
-          ),
-          const SizedBox(
-            height: 3,
-          ),
-          Text(
-            utf8convert(post.description!),
-            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          Container(
-            decoration: post.imgRatio == 1
-                ? BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    image: const DecorationImage(
-                        scale: 10, image: AssetImage('images/loading.png')))
-                : BoxDecoration(),
-            child: GestureDetector(
-              onDoubleTap: () async {
-                if (widget.app_user.email!.split('@')[0] == "guest") {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      duration: Duration(milliseconds: 400),
-                      content: Text("guests are not allowed to like..",
-                          style: TextStyle(color: Colors.white))));
-                } else {
-                  setState(() {
-                    post.isLike = !post.isLike!;
-                    SystemSound.play(SystemSoundType.click);
-                  });
-                  if (post.isLike!) {
-                    setState(() {
-                      post.likeCount = post.likeCount! + 1;
-                    });
-                    bool error = await post_servers().post_post_like(post.id!);
-                    if (error) {
-                      setState(() {
-                        post.likeCount = post.likeCount! - 1;
-                        post.isLike = !post.isLike!;
-                      });
-                    }
-                  } else {
-                    setState(() {
-                      post.likeCount = post.likeCount! - 1;
-                    });
-                    bool error =
-                        await post_servers().delete_post_like(post.id!);
-                    if (error) {
-                      setState(() {
-                        post.likeCount = post.likeCount! + 1;
-                        post.isLike = !post.isLike!;
-                      });
-                    }
-                  }
-                }
-              },
-              onTap: () {
-                if (post.imgRatio == 2) {
-                  _videoPlayerController!.play();
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (BuildContext context) {
-                    return video_display3(post.img!, _videoPlayerController!);
-                  }));
-                }
-                if (post.imgRatio == 1) {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (BuildContext context) {
-                    return image_display(
-                        false, File('images/icon.png'), post.img!);
-                  }));
-                }
-                if (post.imgRatio == 3) {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (BuildContext context) {
-                    return pdfviewer1(post.img!, true);
-                  }));
-                }
-              },
-              child: post.imgRatio == 1
-                  ? Center(
-                      child: Container(
-                        height: width,
-                        width: width,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            image: DecorationImage(
-                                image: NetworkImage(post.img!),
-                                fit: BoxFit.cover)),
-                        /*child: CircularProgressIndicator(
-                            color: Colors.grey[400],
-                            strokeWidth: 2,
-                          )*/
-                      ),
-                    )
-                  : post.imgRatio == 2
-                      ? AspectRatio(
-                          aspectRatio:
-                              _videoPlayerController!.value.aspectRatio,
-                          child: Stack(
-                            alignment: Alignment.bottomCenter,
-                            children: <Widget>[
-                              VideoPlayer(_videoPlayerController!),
-                              ClosedCaption(text: null),
-                              _showController == true
-                                  ? Center(
-                                      child: InkWell(
-                                      child: Icon(
-                                        _videoPlayerController!.value.isPlaying
-                                            ? Icons.pause_circle_outline
-                                            : Icons.play_circle_outline,
-                                        color: Colors.blue,
-                                        size: 60,
-                                      ),
-                                      onTap: () {
-                                        _videoPlayerController!.play();
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(builder:
-                                                (BuildContext context) {
-                                          return video_display3(post.img!,
-                                              _videoPlayerController!);
-                                        }));
-                                      },
-                                    ))
-                                  : Container(),
-                              // Here you can also add Overlay capacities
-                              VideoProgressIndicator(
-                                _videoPlayerController!,
-                                allowScrubbing: true,
-                                padding: EdgeInsets.all(3),
-                                colors: const VideoProgressColors(
-                                  backgroundColor: Colors.black,
-                                  playedColor: Colors.white,
-                                  bufferedColor: Colors.white70,
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                      : GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (BuildContext context) {
-                              return pdfviewer1(post.img!, true);
-                            }));
-                          },
-                          child: Center(
-                            child: Container(
-                                height: width * (0.7),
-                                width: width,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    image: const DecorationImage(
-                                        image:
-                                            AssetImage("images/Explorer.png"),
-                                        fit: BoxFit.cover))),
-                          )),
-            ),
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  IconButton(
-                    onPressed: () async {
-                      if (widget.app_user.email!.split('@')[0] == "guest") {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                duration: Duration(milliseconds: 400),
-                                content: Text(
-                                    "guests are not allowed to like..",
-                                    style: TextStyle(color: Colors.white))));
-                      } else {
-                        setState(() {
-                          post.isLike = !post.isLike!;
-                          SystemSound.play(SystemSoundType.click);
-                        });
-                        if (post.isLike!) {
-                          setState(() {
-                            post.likeCount = post.likeCount! + 1;
-                          });
-                          bool error =
-                              await post_servers().post_post_like(post.id!);
-                          if (error) {
-                            setState(() {
-                              post.likeCount = post.likeCount! - 1;
-                              post.isLike = !post.isLike!;
-                            });
-                          }
-                        } else {
-                          setState(() {
-                            post.likeCount = post.likeCount! - 1;
-                          });
-                          bool error =
-                              await post_servers().delete_post_like(post.id!);
-                          if (error) {
-                            setState(() {
-                              post.likeCount = post.likeCount! + 1;
-                              post.isLike = !post.isLike!;
-                            });
-                          }
-                        }
-                      }
-                    },
-                    icon: post.isLike!
-                        ? const FaIcon(
-                            FontAwesomeIcons.solidThumbsUp,
-                            size: 25,
-                            color: Colors.blue,
-                          )
-                        : const FaIcon(
-                            FontAwesomeIcons.thumbsUp,
-                            size: 25,
-                            color: Colors.blue,
-                          ),
-                  ),
-                  Text(
-                    post.likeCount.toString(),
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                  const SizedBox(
-                    width: 7,
-                  ),
-                  IconButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (BuildContext context) {
-                          return commentwidget(post, widget.app_user);
-                        }));
-                      },
-                      icon: const FaIcon(FontAwesomeIcons.comment, size: 25)),
-                  Text(
-                    post.commentCount.toString(),
-                    style: const TextStyle(
-                      fontSize: 16,
-                      //color: Colors.white70
-                    ),
-                  ),
-                  IconButton(
-                      onPressed: () {},
-                      icon: const FaIcon(FontAwesomeIcons.share, size: 23)),
-                ],
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
+//                                                     if (!error) {
+//                                                       Navigator.of(context)
+//                                                           .pushAndRemoveUntil(
+//                                                               MaterialPageRoute(
+//                                                                   builder:
+//                                                                       (BuildContext
+//                                                                           context) {
+//                                                         return firstpage(
+//                                                           2,
+//                                                           widget.app_user,
+//                                                         );
+//                                                       }),
+//                                                               (Route<dynamic>
+//                                                                       route) =>
+//                                                                   false);
+//                                                     } else {
+//                                                       //post_list.add(post);
+//                                                       ScaffoldMessenger.of(
+//                                                               context)
+//                                                           .showSnackBar(
+//                                                         const SnackBar(
+//                                                           duration: Duration(
+//                                                               milliseconds:
+//                                                                   400),
+//                                                           content: Text(
+//                                                             "Failed",
+//                                                             style: TextStyle(
+//                                                                 color: Colors
+//                                                                     .white),
+//                                                           ),
+//                                                         ),
+//                                                       );
+//                                                     }
+//                                                   },
+//                                                   child: const Center(
+//                                                       child: Text(
+//                                                     "Delete",
+//                                                     style: TextStyle(
+//                                                         color: Colors.blue),
+//                                                   ))),
+//                                             ),
+//                                             const SizedBox(height: 10),
+//                                           ],
+//                                         )
+//                                       : Container(),
+//                                   const Center(
+//                                       child: Text("Post details",
+//                                           style: TextStyle(
+//                                               fontWeight: FontWeight.bold,
+//                                               fontSize: 14,
+//                                               color: Colors.blue))),
+//                                   const SizedBox(height: 20),
+//                                   Center(
+//                                       child: Text(user.email!,
+//                                           style: const TextStyle(
+//                                               fontSize: 14,
+//                                               color: Colors.black,
+//                                               fontWeight: FontWeight.bold))),
+//                                   const SizedBox(height: 10),
+//                                   Center(
+//                                       child: Text(widget.post_posted_date,
+//                                           style: const TextStyle(
+//                                               fontSize: 14,
+//                                               color: Colors.black,
+//                                               fontWeight: FontWeight.bold))),
+//                                   const SizedBox(height: 4),
+//                                   const SizedBox(height: 10),
+//                                   //Link
+//                                   Text(
+//                                     //"Description about the post",
+//                                     utf8convert(post.description!),
+//                                     //style: const TextStyle(fontSize: 14),
+//                                   ),
+//                                   const SizedBox(height: 15),
+//                                 ],
+//                               ),
+//                             ),
+//                           ),
+//                         );
+//                       });
+//                 },
+//                 icon: const Icon(
+//                   Icons.more_horiz,
+//                   size: 31,
+//                   color: Colors.black,
+//                 ),
+//               )
+//             ],
+//           ),
+//           const Divider(
+//             color: Colors.white,
+//             height: 5,
+//             thickness: 2,
+//             indent: 5,
+//             endIndent: 5,
+//           ),
+//           const SizedBox(
+//             height: 3,
+//           ),
+//           Text(
+//             utf8convert(post.description!),
+//             style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
+//             maxLines: 2,
+//             overflow: TextOverflow.ellipsis,
+//           ),
+//           const SizedBox(
+//             height: 5,
+//           ),
+//           Container(
+//             decoration: post.imgRatio == 1
+//                 ? BoxDecoration(
+//                     borderRadius: BorderRadius.circular(8),
+//                     image: const DecorationImage(
+//                         scale: 10, image: AssetImage('images/loading.png')))
+//                 : BoxDecoration(),
+//             child: GestureDetector(
+//               onDoubleTap: () async {
+//                 if (widget.app_user.email!.split('@')[0] == "guest") {
+//                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+//                       duration: Duration(milliseconds: 400),
+//                       content: Text("guests are not allowed to like..",
+//                           style: TextStyle(color: Colors.white))));
+//                 } else {
+//                   setState(() {
+//                     post.isLike = !post.isLike!;
+//                     SystemSound.play(SystemSoundType.click);
+//                   });
+//                   if (post.isLike!) {
+//                     setState(() {
+//                       post.likeCount = post.likeCount! + 1;
+//                     });
+//                     bool error = await post_servers().post_post_like(post.id!);
+//                     if (error) {
+//                       setState(() {
+//                         post.likeCount = post.likeCount! - 1;
+//                         post.isLike = !post.isLike!;
+//                       });
+//                     }
+//                   } else {
+//                     setState(() {
+//                       post.likeCount = post.likeCount! - 1;
+//                     });
+//                     bool error =
+//                         await post_servers().delete_post_like(post.id!);
+//                     if (error) {
+//                       setState(() {
+//                         post.likeCount = post.likeCount! + 1;
+//                         post.isLike = !post.isLike!;
+//                       });
+//                     }
+//                   }
+//                 }
+//               },
+//               onTap: () {
+//                 if (post.imgRatio == 2) {
+//                   _videoPlayerController!.play();
+//                   Navigator.of(context)
+//                       .push(MaterialPageRoute(builder: (BuildContext context) {
+//                     return video_display3(post.img!, _videoPlayerController!);
+//                   }));
+//                 }
+//                 if (post.imgRatio == 1) {
+//                   Navigator.of(context)
+//                       .push(MaterialPageRoute(builder: (BuildContext context) {
+//                     return image_display(
+//                         false, File('images/icon.png'), post.img!);
+//                   }));
+//                 }
+//                 if (post.imgRatio == 3) {
+//                   Navigator.of(context)
+//                       .push(MaterialPageRoute(builder: (BuildContext context) {
+//                     return pdfviewer1(post.img!, true);
+//                   }));
+//                 }
+//               },
+//               child: post.imgRatio == 1
+//                   ? Center(
+//                       child: Container(
+//                         height: width,
+//                         width: width,
+//                         decoration: BoxDecoration(
+//                             borderRadius: BorderRadius.circular(8),
+//                             image: DecorationImage(
+//                                 image: NetworkImage(post.img!),
+//                                 fit: BoxFit.cover)),
+//                         /*child: CircularProgressIndicator(
+//                             color: Colors.grey[400],
+//                             strokeWidth: 2,
+//                           )*/
+//                       ),
+//                     )
+//                   : post.imgRatio == 2
+//                       ? AspectRatio(
+//                           aspectRatio:
+//                               _videoPlayerController!.value.aspectRatio,
+//                           child: Stack(
+//                             alignment: Alignment.bottomCenter,
+//                             children: <Widget>[
+//                               VideoPlayer(_videoPlayerController!),
+//                               ClosedCaption(text: null),
+//                               _showController == true
+//                                   ? Center(
+//                                       child: InkWell(
+//                                       child: Icon(
+//                                         _videoPlayerController!.value.isPlaying
+//                                             ? Icons.pause_circle_outline
+//                                             : Icons.play_circle_outline,
+//                                         color: Colors.blue,
+//                                         size: 60,
+//                                       ),
+//                                       onTap: () {
+//                                         _videoPlayerController!.play();
+//                                         Navigator.of(context).push(
+//                                             MaterialPageRoute(builder:
+//                                                 (BuildContext context) {
+//                                           return video_display3(post.img!,
+//                                               _videoPlayerController!);
+//                                         }));
+//                                       },
+//                                     ))
+//                                   : Container(),
+//                               // Here you can also add Overlay capacities
+//                               VideoProgressIndicator(
+//                                 _videoPlayerController!,
+//                                 allowScrubbing: true,
+//                                 padding: EdgeInsets.all(3),
+//                                 colors: const VideoProgressColors(
+//                                   backgroundColor: Colors.black,
+//                                   playedColor: Colors.white,
+//                                   bufferedColor: Colors.white70,
+//                                 ),
+//                               ),
+//                             ],
+//                           ),
+//                         )
+//                       : GestureDetector(
+//                           onTap: () {
+//                             Navigator.of(context).push(MaterialPageRoute(
+//                                 builder: (BuildContext context) {
+//                               return pdfviewer1(post.img!, true);
+//                             }));
+//                           },
+//                           child: Center(
+//                             child: Container(
+//                                 height: width * (0.7),
+//                                 width: width,
+//                                 decoration: BoxDecoration(
+//                                     borderRadius: BorderRadius.circular(8),
+//                                     image: const DecorationImage(
+//                                         image:
+//                                             AssetImage("images/Explorer.png"),
+//                                         fit: BoxFit.cover))),
+//                           )),
+//             ),
+//           ),
+//           const SizedBox(
+//             height: 5,
+//           ),
+//           Row(
+//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//             children: [
+//               Row(
+//                 children: [
+//                   IconButton(
+//                     onPressed: () async {
+//                       if (widget.app_user.email!.split('@')[0] == "guest") {
+//                         ScaffoldMessenger.of(context).showSnackBar(
+//                             const SnackBar(
+//                                 duration: Duration(milliseconds: 400),
+//                                 content: Text(
+//                                     "guests are not allowed to like..",
+//                                     style: TextStyle(color: Colors.white))));
+//                       } else {
+//                         setState(() {
+//                           post.isLike = !post.isLike!;
+//                           SystemSound.play(SystemSoundType.click);
+//                         });
+//                         if (post.isLike!) {
+//                           setState(() {
+//                             post.likeCount = post.likeCount! + 1;
+//                           });
+//                           bool error =
+//                               await post_servers().post_post_like(post.id!);
+//                           if (error) {
+//                             setState(() {
+//                               post.likeCount = post.likeCount! - 1;
+//                               post.isLike = !post.isLike!;
+//                             });
+//                           }
+//                         } else {
+//                           setState(() {
+//                             post.likeCount = post.likeCount! - 1;
+//                           });
+//                           bool error =
+//                               await post_servers().delete_post_like(post.id!);
+//                           if (error) {
+//                             setState(() {
+//                               post.likeCount = post.likeCount! + 1;
+//                               post.isLike = !post.isLike!;
+//                             });
+//                           }
+//                         }
+//                       }
+//                     },
+//                     icon: post.isLike!
+//                         ? const FaIcon(
+//                             FontAwesomeIcons.solidThumbsUp,
+//                             size: 25,
+//                             color: Colors.blue,
+//                           )
+//                         : const FaIcon(
+//                             FontAwesomeIcons.thumbsUp,
+//                             size: 25,
+//                             color: Colors.blue,
+//                           ),
+//                   ),
+//                   Text(
+//                     post.likeCount.toString(),
+//                     style: const TextStyle(fontSize: 16),
+//                   ),
+//                   const SizedBox(
+//                     width: 7,
+//                   ),
+//                   IconButton(
+//                       onPressed: () {
+//                         Navigator.of(context).push(
+//                             MaterialPageRoute(builder: (BuildContext context) {
+//                           return commentwidget(post, widget.app_user);
+//                         }));
+//                       },
+//                       icon: const FaIcon(FontAwesomeIcons.comment, size: 25)),
+//                   Text(
+//                     post.commentCount.toString(),
+//                     style: const TextStyle(
+//                       fontSize: 16,
+//                       //color: Colors.white70
+//                     ),
+//                   ),
+//                   IconButton(
+//                       onPressed: () {},
+//                       icon: const FaIcon(FontAwesomeIcons.share, size: 23)),
+//                 ],
+//               ),
+//             ],
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }

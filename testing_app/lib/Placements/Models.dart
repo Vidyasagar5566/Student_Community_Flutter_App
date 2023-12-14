@@ -12,6 +12,7 @@ class CAL_SUB_NAMES {
   int? numRatings;
   SmallUsername? username;
   bool? InternCompany;
+  bool? PlacementCompany;
 
   CAL_SUB_NAMES(
       {this.id,
@@ -23,7 +24,8 @@ class CAL_SUB_NAMES {
       this.totRatingsVal,
       this.numRatings,
       this.username,
-      this.InternCompany});
+      this.InternCompany,
+      this.PlacementCompany});
 
   CAL_SUB_NAMES.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -38,6 +40,7 @@ class CAL_SUB_NAMES {
         ? new SmallUsername.fromJson(json['username'])
         : null;
     InternCompany = json["InternCompany"];
+    PlacementCompany = json['PlacementCompany'];
   }
 
   Map<String, dynamic> toJson() {
@@ -54,6 +57,7 @@ class CAL_SUB_NAMES {
       data['username'] = this.username!.toJson();
     }
     data["InternCompany"] = this.InternCompany;
+    data['PlacementCompany'] = this.PlacementCompany;
     return data;
   }
 }
@@ -66,6 +70,7 @@ class CAL_SUB_YEARS {
   String? description;
   String? postedDate;
   SmallUsername? username;
+  bool? InternCompany;
 
   CAL_SUB_YEARS(
       {this.id,
@@ -74,7 +79,8 @@ class CAL_SUB_YEARS {
       this.yearName,
       this.description,
       this.postedDate,
-      this.username});
+      this.username,
+      this.InternCompany});
 
   CAL_SUB_YEARS.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -86,6 +92,7 @@ class CAL_SUB_YEARS {
     username = json['username'] != null
         ? new SmallUsername.fromJson(json['username'])
         : null;
+    InternCompany = json['InternCompany'];
   }
 
   Map<String, dynamic> toJson() {
@@ -99,6 +106,7 @@ class CAL_SUB_YEARS {
     if (this.username != null) {
       data['username'] = this.username!.toJson();
     }
+    data["InternCompany"] = this.InternCompany;
     return data;
   }
 }
