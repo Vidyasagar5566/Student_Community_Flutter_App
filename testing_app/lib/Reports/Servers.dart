@@ -4,7 +4,7 @@ import 'dart:convert';
 
 class report_servers {
   LocalStorage storage = LocalStorage("usertoken");
-  String base_url = 'http://StudentCommunity.pythonanywhere.com';
+  String base_url = 'https://StudentCommunity.pythonanywhere.com';
 
   Future<List<dynamic>> report_upload(
       String description, String report_belongs) async {
