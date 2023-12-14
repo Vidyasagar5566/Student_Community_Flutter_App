@@ -6,7 +6,7 @@ import 'dart:io';
 
 class lf_servers {
   LocalStorage storage = LocalStorage("usertoken");
-  String base_url = 'http://StudentCommunity.pythonanywhere.com';
+  String base_url = 'https://StudentCommunity.pythonanywhere.com';
 
 //  LOST AND FOUNDS POST FUNCTIONS
 

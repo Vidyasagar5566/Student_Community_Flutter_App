@@ -5,7 +5,7 @@ import 'Models.dart';
 
 class menu_bar_servers {
   LocalStorage storage = LocalStorage("usertoken");
-  String base_url = 'http://StudentCommunity.pythonanywhere.com';
+  String base_url = 'https://StudentCommunity.pythonanywhere.com';
 
 // EDIT NOTIFICATION SETTINGS AND NOTIFICATION SEEN ,COUNT
 
