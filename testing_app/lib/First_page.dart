@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '/Dating/dating.dart';
 import '/Login/login.dart';
 import '/Lost_&_Found/Lost_Found.dart';
 import 'Lost_&_Found/Upload.dart';
@@ -77,10 +80,19 @@ class _get_ueser_widgetState extends State<get_ueser_widget> {
 
             if (!app_user.isDetails!) {
               return LoginRegister(app_user);
-            } else if (app_user.updateMark != "instabook4") {
-              return appUpdate();
-            } else {
-              return firstpage(widget.curr_index, app_user);
+            }
+            if (Platform.isAndroid) {
+              if (app_user.updateMark != "instabook4") {
+                return appUpdate();
+              } else {
+                return firstpage(widget.curr_index, app_user);
+              }
+            } else if (Platform.isIOS) {
+              if (app_user.updateMark != "instabook4") {
+                return appUpdate();
+              } else {
+                return firstpage(widget.curr_index, app_user);
+              }
             }
           }
         }
@@ -539,9 +551,6 @@ class _firstpageState extends State<firstpage> {
                   ),
                   elevation: 4.0,
                 ),
-
-          //floatingActionButtonLocation: FloatingActionButtonLocation.,
-
           bottomNavigationBar: BottomNavigationBar(
             fixedColor: Colors.blue,
             backgroundColor: Colors.white70,
@@ -611,6 +620,186 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
         margin: EdgeInsets.all(2),
         padding: EdgeInsets.all(2),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Row(
+            children: [
+              Column(children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (BuildContext context) {
+                      return placements(widget.app_user, [],
+                          domains[widget.app_user.domain]!);
+                    }));
+                  },
+                  child: Column(
+                    children: [
+                      Container(
+                        width: div, //post.profile_pic
+                        // child: const CircleAvatar(
+                        //   radius: 27,
+                        //   backgroundColor: Colors.orangeAccent,
+                        child: const CircleAvatar(
+                            radius: 26,
+                            backgroundImage:
+                                AssetImage("images/placement.jpeg")),
+                        // )
+                      ),
+                      const SizedBox(height: 3),
+                      const Center(
+                        child: Text("Placements",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w900, fontSize: 12)),
+                      ),
+                    ],
+                  ),
+                ),
+              ]),
+              Column(children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (BuildContext context) {
+                      return all_buySellwidget1(widget.app_user, "All", "All",
+                          [], domains[widget.app_user.domain]!, '');
+                    }));
+                  },
+                  child: Column(
+                    children: [
+                      Container(
+                        width: div, //post.profile_pic
+                        // child: const CircleAvatar(
+                        //   radius: 23,
+                        //   backgroundColor: Colors.orangeAccent,
+                        child: const CircleAvatar(
+                            radius: 22,
+                            backgroundImage: AssetImage("images/buysell.png")),
+                        // ),
+                      ),
+                      const SizedBox(height: 10),
+                      const Text("Sharings",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w900, fontSize: 12))
+                    ],
+                  ),
+                ),
+              ]),
+              Column(children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (BuildContext context) {
+                      return all_lostwidget1(widget.app_user, "All", "All", [],
+                          domains[widget.app_user.domain]!, '');
+                    }));
+                  },
+                  child: Column(
+                    children: [
+                      Container(
+                        width: div, //post.profile_pic
+                        // child: const CircleAvatar(
+                        //   radius: 23,
+                        //   backgroundColor: Colors.orangeAccent,
+                        child: const CircleAvatar(
+                            radius: 22,
+                            backgroundImage:
+                                AssetImage("images/lostfound.jpeg")),
+                        // ),
+                      ),
+                      const SizedBox(height: 10),
+                      const Center(
+                        child: Text("lost&found",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w900, fontSize: 12)),
+                      ),
+                    ],
+                  ),
+                ),
+              ]),
+              // extand
+              //     ?
+              //  Column(children: [
+              //   GestureDetector(
+              //     onTap: () {
+              //       Navigator.of(context).push(
+              //           MaterialPageRoute(builder: (BuildContext context) {
+              //         return branchAndSems(widget.app_user,
+              //             domains[widget.app_user.domain]!, 'B.Tech');
+              //       }));
+              //     },
+              //     child: Column(
+              //       children: [
+              //         Container(
+              //           width: div, //post.profile_pic
+              //           child: const CircleAvatar(
+              //               radius: 21,
+              //               backgroundImage: AssetImage("images/book.jpeg")),
+              //         ),
+              //         const SizedBox(height: 8),
+              //         const Text("Notes",
+              //             style: TextStyle(
+              //                 fontWeight: FontWeight.w900, fontSize: 12))
+              //       ],
+              //     ),
+              //   ),
+              // ]),
+              Column(children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (BuildContext context) {
+                      return datingUser(
+                          domain: 'All', app_user: widget.app_user);
+                    }));
+                  },
+                  child: Column(
+                    children: [
+                      Container(
+                        width: div, //post.profile_pic
+                        // child: const CircleAvatar(
+                        //   radius: 24,
+                        //   backgroundColor: Colors.orangeAccent,
+                        child: const CircleAvatar(
+                            radius: 23,
+                            backgroundImage: AssetImage("images/dating.jpg")),
+                        // ),
+                      ),
+                      const SizedBox(height: 8),
+                      const Text("Connect",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w900, fontSize: 12))
+                    ],
+                  ),
+                ),
+              ]),
+              // : Column(children: [
+              //     GestureDetector(
+              //       onTap: () {
+              //         setState(() {
+              //           extand = true;
+              //         });
+              //       },
+              //       child: Column(
+              //         children: [
+              //           Container(
+              //             width: div, //post.profile_pic
+              //             child: const Icon(
+              //               Icons.keyboard_arrow_down,
+              //               size: 38,
+              //             ),
+              //           ),
+              //           const SizedBox(height: 10),
+              //           const Text("More",
+              //               style: TextStyle(
+              //                   fontWeight: FontWeight.w900, fontSize: 12))
+              //         ],
+              //       ),
+              //     ),
+              //   ]),
+            ],
+          ),
+          const SizedBox(
+            height: 50,
+          ),
           Row(
             children: [
               Column(children: [
@@ -691,291 +880,138 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
                   onTap: () {
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (BuildContext context) {
-                      return AcademicTimings(
-                          domains[widget.app_user.domain]!, widget.app_user);
+                      return sacpagewidget(widget.app_user,
+                          'All'); // domains[widget.app_user.domain]!);
                     }));
                   },
                   child: Column(
                     children: [
                       Container(
-                        width: div, //post.profile_pic
+                        width: div,
+                        //post.profile_pic
                         child: const CircleAvatar(
-                            backgroundImage: AssetImage("images/timings.jpeg")),
+                            radius: 22,
+                            backgroundImage: AssetImage("images/sac.png")),
                       ),
                       const SizedBox(height: 10),
-                      const Text("Timings",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w900, fontSize: 12))
-                    ],
-                  ),
-                ),
-              ])
-            ],
-          ),
-          const SizedBox(
-            height: 50,
-          ),
-          Row(
-            children: [
-              Column(children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (BuildContext context) {
-                      return placements(widget.app_user, [],
-                          domains[widget.app_user.domain]!);
-                    }));
-                  },
-                  child: Column(
-                    children: [
-                      Container(
-                          width: div, //post.profile_pic
-                          child: const CircleAvatar(
-                              radius: 24,
-                              backgroundImage:
-                                  AssetImage("images/placement.jpeg"))),
-                      const SizedBox(height: 3),
-                      const Center(
-                        child: Text("Placements",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w900, fontSize: 12)),
-                      ),
-                    ],
-                  ),
-                ),
-              ]),
-              Column(children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (BuildContext context) {
-                      return all_buySellwidget1(widget.app_user, "All", "All",
-                          [], domains[widget.app_user.domain]!, '');
-                    }));
-                  },
-                  child: Column(
-                    children: [
-                      Container(
-                        width: div, //post.profile_pic
-                        child: const CircleAvatar(
-                            backgroundImage: AssetImage("images/buysell.png")),
-                      ),
-                      const SizedBox(height: 10),
-                      const Text("Sharings",
+                      const Text("SC",
                           style: TextStyle(
                               fontWeight: FontWeight.w900, fontSize: 12))
                     ],
                   ),
                 ),
               ]),
-              Column(children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (BuildContext context) {
-                      return all_lostwidget1(widget.app_user, "All", "All", [],
-                          domains[widget.app_user.domain]!, '');
-                    }));
-                  },
-                  child: Column(
-                    children: [
-                      Container(
-                        width: div, //post.profile_pic
-                        child: const CircleAvatar(
-                            backgroundImage:
-                                AssetImage("images/lostfound.jpeg")),
-                      ),
-                      const SizedBox(height: 10),
-                      const Center(
-                        child: Text("lost&found",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w900, fontSize: 12)),
-                      ),
-                    ],
-                  ),
-                ),
-              ]),
-              extand
-                  ? Column(children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) {
-                            return branchAndSems(widget.app_user,
-                                domains[widget.app_user.domain]!, 'B.Tech');
-                          }));
-                        },
-                        child: Column(
-                          children: [
-                            Container(
-                              width: div, //post.profile_pic
-                              child: const CircleAvatar(
-                                  radius: 21,
-                                  backgroundImage:
-                                      AssetImage("images/book.jpeg")),
-                            ),
-                            const SizedBox(height: 8),
-                            const Text("Notes",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w900, fontSize: 12))
-                          ],
-                        ),
-                      ),
-                    ])
-                  // Column(children: [
-                  //   GestureDetector(
-                  //     onTap: () {},
-                  //     child: Column(
-                  //       children: [
-                  //         Container(
-                  //           width: div, //post.profile_pic
-                  //           child: const CircleAvatar(
-                  //               radius: 21,
-                  //               backgroundImage: AssetImage("images/dating.jpg")),
-                  //         ),
-                  //         const SizedBox(height: 8),
-                  //         const Text("Connect",
-                  //             style: TextStyle(
-                  //                 fontWeight: FontWeight.w900, fontSize: 12))
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ]),
-                  : Column(children: [
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            extand = true;
-                          });
-                        },
-                        child: Column(
-                          children: [
-                            Container(
-                              width: div, //post.profile_pic
-                              child: const Icon(
-                                Icons.keyboard_arrow_down,
-                                size: 38,
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            const Text("More",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w900, fontSize: 12))
-                          ],
-                        ),
-                      ),
-                    ]),
             ],
           ),
-          extand
-              ? const SizedBox(
-                  height: 50,
-                )
-              : Container(),
-          extand
-              ? Row(
-                  children: [
-                    Column(children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) {
-                            return messMenu(domains[widget.app_user.domain]!);
-                          }));
-                        },
-                        child: Column(
-                          children: [
-                            Container(
-                              width: div, //post.profile_pic
-                              child: const CircleAvatar(
-                                backgroundImage: AssetImage("images/menu.jpg"),
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            const Text("Menu",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w900, fontSize: 12))
-                          ],
-                        ),
-                      ),
-                    ]),
-                    Column(children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) {
-                            return PostWithappBar(widget.app_user,
-                                domains[widget.app_user.domain]!);
-                          }));
-                        },
-                        child: Column(
-                          children: [
-                            Container(
-                              width: div, //post.profile_pic
-                              child: const CircleAvatar(
-                                  backgroundImage:
-                                      AssetImage("images/student.png")),
-                            ),
-                            const SizedBox(height: 10),
-                            const Text("Campus",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w900, fontSize: 12))
-                          ],
-                        ),
-                      ),
-                    ]),
-                    Column(children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) {
-                            return sacpagewidget(widget.app_user,
-                                'All'); // domains[widget.app_user.domain]!);
-                          }));
-                        },
-                        child: Column(
-                          children: [
-                            Container(
-                              width: div,
-                              //post.profile_pic
-                              child: const CircleAvatar(
-                                  radius: 22,
-                                  backgroundImage:
-                                      AssetImage("images/sac.png")),
-                            ),
-                            const SizedBox(height: 10),
-                            const Text("SC",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w900, fontSize: 12))
-                          ],
-                        ),
-                      ),
-                    ]),
-                    Column(children: [
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            extand = false;
-                          });
-                        },
-                        child: Column(
-                          children: [
-                            Container(
-                              width: div, //post.profile_pic
-                              child:
-                                  const Icon(Icons.keyboard_arrow_up, size: 38),
-                            ),
-                            const SizedBox(height: 10),
-                            const Text("Less",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w900, fontSize: 12))
-                          ],
-                        ),
-                      ),
-                    ]),
-                  ],
-                )
-              : Container()
+
+          // extand
+          //     ? const SizedBox(
+          //         height: 50,
+          //       )
+          //     : Container(),
+          // extand
+          //     ? Row(
+          //         children: [
+          //           Column(children: [
+          //             GestureDetector(
+          //               onTap: () {
+          //                 Navigator.of(context).push(MaterialPageRoute(
+          //                     builder: (BuildContext context) {
+          //                   return messMenu(domains[widget.app_user.domain]!);
+          //                 }));
+          //               },
+          //               child: Column(
+          //                 children: [
+          //                   Container(
+          //                     width: div, //post.profile_pic
+          //                     child: const CircleAvatar(
+          //                       backgroundImage: AssetImage("images/menu.jpg"),
+          //                     ),
+          //                   ),
+          //                   const SizedBox(height: 10),
+          //                   const Text("Menu",
+          //                       style: TextStyle(
+          //                           fontWeight: FontWeight.w900, fontSize: 12))
+          //                 ],
+          //               ),
+          //             ),
+          //           ]),
+          //           Column(children: [
+          //             GestureDetector(
+          //               onTap: () {
+          //                 Navigator.of(context).push(MaterialPageRoute(
+          //                     builder: (BuildContext context) {
+          //                   return PostWithappBar(widget.app_user,
+          //                       domains[widget.app_user.domain]!);
+          //                 }));
+          //               },
+          //               child: Column(
+          //                 children: [
+          //                   Container(
+          //                     width: div, //post.profile_pic
+          //                     child: const CircleAvatar(
+          //                         backgroundImage:
+          //                             AssetImage("images/student.png")),
+          //                   ),
+          //                   const SizedBox(height: 10),
+          //                   const Text("Campus",
+          //                       style: TextStyle(
+          //                           fontWeight: FontWeight.w900, fontSize: 12))
+          //                 ],
+          //               ),
+          //             ),
+          //           ]),
+          //  Column(children: [
+          //             GestureDetector(
+          //               onTap: () {
+          //                 Navigator.of(context).push(MaterialPageRoute(
+          //                     builder: (BuildContext context) {
+          //                   return AcademicTimings(
+          //                       domains[widget.app_user.domain]!,
+          //                       widget.app_user);
+          //                 }));
+          //               },
+          //               child: Column(
+          //                 children: [
+          //                   Container(
+          //                     width: div, //post.profile_pic
+          //                     child: const CircleAvatar(
+          //                         backgroundImage:
+          //                             AssetImage("images/timings.jpeg")),
+          //                   ),
+          //                   const SizedBox(height: 10),
+          //                   const Text("Timings",
+          //                       style: TextStyle(
+          //                           fontWeight: FontWeight.w900, fontSize: 12))
+          //                 ],
+          //               ),
+          //             ),
+          //           ])
+          //           Column(children: [
+          //             GestureDetector(
+          //               onTap: () {
+          //                 setState(() {
+          //                   extand = false;
+          //                 });
+          //               },
+          //               child: Column(
+          //                 children: [
+          //                   Container(
+          //                     width: div, //post.profile_pic
+          //                     child:
+          //                         const Icon(Icons.keyboard_arrow_up, size: 38),
+          //                   ),
+          //                   const SizedBox(height: 10),
+          //                   const Text("Less",
+          //                       style: TextStyle(
+          //                           fontWeight: FontWeight.w900, fontSize: 12))
+          //                 ],
+          //               ),
+          //             ),
+          //           ]),
+          //         ],
+          //       )
+          //     : Container()
         ]));
   }
 }
