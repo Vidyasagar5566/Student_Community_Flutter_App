@@ -163,9 +163,8 @@ class _firstpageState extends State<firstpage> {
         },
 
         child: Scaffold(
-          appBar: widget.curr_index == 4
-              ? null
-              : AppBar(
+          appBar: widget.curr_index == 0
+              ? AppBar(
                   iconTheme: IconThemeData(color: Colors.black),
                   centerTitle: false,
                   title: ((widget.app_user.email == "shiva@gmail.com" ||
@@ -179,10 +178,85 @@ class _firstpageState extends State<firstpage> {
                           style: const TextStyle(color: Colors.black),
                         )),
                   actions: [
-                    widget.curr_index == 2 ||
-                            widget.curr_index == 1 ||
-                            widget.curr_index == 3
-                        ? DropdownButton<String>(
+                    Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              widget.app_user.notifCount = 0;
+                            });
+                            menu_bar_servers().notif_seen();
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (BuildContext context) {
+                              return notifications(widget.app_user);
+                            }));
+                          },
+                          child: Stack(children: [
+                            IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  widget.app_user.notifCount = 0;
+                                });
+                                menu_bar_servers().notif_seen();
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                  return notifications(widget.app_user);
+                                }));
+                              },
+                              icon: const Icon(
+                                Icons.notifications_on_rounded,
+                                size: 30,
+                                color: Colors.indigo,
+                              ),
+                            ),
+                            Positioned(
+                              right: 7,
+                              top: 7,
+                              child: Container(
+                                padding: EdgeInsets.all(2),
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                constraints: const BoxConstraints(
+                                  minWidth: 14,
+                                  minHeight: 14,
+                                ),
+                                child: Text(
+                                  widget.app_user.notifCount.toString(),
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 8,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            )
+                          ]),
+                        ),
+                        IconButton(
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                                return messanger(widget.app_user, 0);
+                              }));
+                            },
+                            icon: const FaIcon(
+                              FontAwesomeIcons.facebookMessenger,
+                              size: 26,
+                              color: Colors.indigo,
+                            ))
+                      ],
+                    )
+                  ],
+                  backgroundColor: Colors.white,
+                )
+              : widget.curr_index == 1
+                  ? AppBar(
+                      title: Text("Calendar"),
+                      centerTitle: false,
+                      actions: [
+                        DropdownButton<String>(
                             value: domain,
                             underline: Container(),
                             elevation: 0,
@@ -203,82 +277,68 @@ class _firstpageState extends State<firstpage> {
                                 domain = value!;
                               });
                             })
-                        : Row(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
+                      ],
+                    )
+                  : widget.curr_index == 2
+                      ? AppBar(
+                          title: Text("Events"),
+                          centerTitle: false,
+                          actions: [
+                            DropdownButton<String>(
+                                value: domain,
+                                underline: Container(),
+                                elevation: 0,
+                                iconEnabledColor: Colors.black,
+                                iconDisabledColor: Colors.black,
+                                items: domains_list
+                                    .map<DropdownMenuItem<String>>(
+                                        (String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(
+                                      value,
+                                      style: TextStyle(fontSize: 10),
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (value) {
                                   setState(() {
-                                    widget.app_user.notifCount = 0;
+                                    domain = value!;
                                   });
-                                  menu_bar_servers().notif_seen();
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (BuildContext context) {
-                                    return notifications(widget.app_user);
-                                  }));
-                                },
-                                child: Stack(children: [
-                                  IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        widget.app_user.notifCount = 0;
-                                      });
-                                      menu_bar_servers().notif_seen();
-                                      Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                              builder: (BuildContext context) {
-                                        return notifications(widget.app_user);
-                                      }));
-                                    },
-                                    icon: const Icon(
-                                      Icons.notifications_on_rounded,
-                                      size: 30,
-                                      color: Colors.indigo,
-                                    ),
-                                  ),
-                                  Positioned(
-                                    right: 7,
-                                    top: 7,
-                                    child: Container(
-                                      padding: EdgeInsets.all(2),
-                                      decoration: BoxDecoration(
-                                        color: Colors.red,
-                                        borderRadius: BorderRadius.circular(6),
-                                      ),
-                                      constraints: const BoxConstraints(
-                                        minWidth: 14,
-                                        minHeight: 14,
-                                      ),
-                                      child: Text(
-                                        widget.app_user.notifCount.toString(),
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 8,
+                                })
+                          ],
+                        )
+                      : widget.curr_index == 3
+                          ? AppBar(
+                              title: Text("Threads"),
+                              centerTitle: false,
+                              actions: [
+                                DropdownButton<String>(
+                                    value: domain,
+                                    underline: Container(),
+                                    elevation: 0,
+                                    iconEnabledColor: Colors.black,
+                                    iconDisabledColor: Colors.black,
+                                    items: domains_list
+                                        .map<DropdownMenuItem<String>>(
+                                            (String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(
+                                          value,
+                                          style: TextStyle(fontSize: 10),
                                         ),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                  )
-                                ]),
-                              ),
-                              IconButton(
-                                  onPressed: () {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) {
-                                      return messanger(widget.app_user, 0);
-                                    }));
-                                  },
-                                  icon: const FaIcon(
-                                    FontAwesomeIcons.facebookMessenger,
-                                    size: 26,
-                                    color: Colors.indigo,
-                                  ))
-                            ],
-                          )
-                  ],
-                  backgroundColor: Colors.white,
-                ),
-          drawer: NavDrawer(widget.app_user),
+                                      );
+                                    }).toList(),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        domain = value!;
+                                      });
+                                    })
+                              ],
+                            )
+                          : null,
+          drawer: widget.curr_index == 0 ? NavDrawer(widget.app_user) : null,
           body: widget.curr_index == 0
               ? SingleChildScrollView(
                   child: Container(
@@ -715,33 +775,6 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
                   ),
                 ),
               ]),
-              // extand
-              //     ?
-              //  Column(children: [
-              //   GestureDetector(
-              //     onTap: () {
-              //       Navigator.of(context).push(
-              //           MaterialPageRoute(builder: (BuildContext context) {
-              //         return branchAndSems(widget.app_user,
-              //             domains[widget.app_user.domain]!, 'B.Tech');
-              //       }));
-              //     },
-              //     child: Column(
-              //       children: [
-              //         Container(
-              //           width: div, //post.profile_pic
-              //           child: const CircleAvatar(
-              //               radius: 21,
-              //               backgroundImage: AssetImage("images/book.jpeg")),
-              //         ),
-              //         const SizedBox(height: 8),
-              //         const Text("Notes",
-              //             style: TextStyle(
-              //                 fontWeight: FontWeight.w900, fontSize: 12))
-              //       ],
-              //     ),
-              //   ),
-              // ]),
               Column(children: [
                 GestureDetector(
                   onTap: () {
@@ -771,30 +804,6 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
                   ),
                 ),
               ]),
-              // : Column(children: [
-              //     GestureDetector(
-              //       onTap: () {
-              //         setState(() {
-              //           extand = true;
-              //         });
-              //       },
-              //       child: Column(
-              //         children: [
-              //           Container(
-              //             width: div, //post.profile_pic
-              //             child: const Icon(
-              //               Icons.keyboard_arrow_down,
-              //               size: 38,
-              //             ),
-              //           ),
-              //           const SizedBox(height: 10),
-              //           const Text("More",
-              //               style: TextStyle(
-              //                   fontWeight: FontWeight.w900, fontSize: 12))
-              //         ],
-              //       ),
-              //     ),
-              //   ]),
             ],
           ),
           const SizedBox(
@@ -875,44 +884,178 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
                   ),
                 ),
               ]),
-              Column(children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (BuildContext context) {
-                      return sacpagewidget(widget.app_user,
-                          'All'); // domains[widget.app_user.domain]!);
-                    }));
-                  },
-                  child: Column(
-                    children: [
-                      Container(
-                        width: div,
-                        //post.profile_pic
-                        child: const CircleAvatar(
-                            radius: 22,
-                            backgroundImage: AssetImage("images/sac.png")),
+              extand
+                  ? Column(children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) {
+                            return sacpagewidget(widget.app_user,
+                                'All'); // domains[widget.app_user.domain]!);
+                          }));
+                        },
+                        child: Column(
+                          children: [
+                            Container(
+                              width: div,
+                              //post.profile_pic
+                              child: const CircleAvatar(
+                                  radius: 22,
+                                  backgroundImage:
+                                      AssetImage("images/sac.png")),
+                            ),
+                            const SizedBox(height: 10),
+                            const Text("SC",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w900, fontSize: 12))
+                          ],
+                        ),
                       ),
-                      const SizedBox(height: 10),
-                      const Text("SC",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w900, fontSize: 12))
-                    ],
-                  ),
-                ),
-              ]),
+                    ])
+                  : Column(children: [
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            extand = true;
+                          });
+                        },
+                        child: Column(
+                          children: [
+                            Container(
+                              width: div, //post.profile_pic
+                              child: const Icon(
+                                Icons.keyboard_arrow_down,
+                                size: 38,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            const Text("More",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w900, fontSize: 12))
+                          ],
+                        ),
+                      ),
+                    ]),
             ],
           ),
+          extand
+              ? const SizedBox(
+                  height: 50,
+                )
+              : Container(),
+          extand
+              ? Row(
+                  children: [
+                    Column(children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) {
+                            return PostWithappBar(widget.app_user,
+                                domains[widget.app_user.domain]!);
+                          }));
+                        },
+                        child: Column(
+                          children: [
+                            Container(
+                              width: div, //post.profile_pic
+                              child: const CircleAvatar(
+                                  backgroundImage:
+                                      AssetImage("images/student.png")),
+                            ),
+                            const SizedBox(height: 10),
+                            const Text("Campus",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w900, fontSize: 12))
+                          ],
+                        ),
+                      ),
+                    ]),
+                    Column(children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) {
+                            return branchAndSems(widget.app_user,
+                                domains[widget.app_user.domain]!, 'B.Tech');
+                          }));
+                        },
+                        child: Column(
+                          children: [
+                            Container(
+                              width: div, //post.profile_pic
+                              child: const CircleAvatar(
+                                  radius: 21,
+                                  backgroundImage:
+                                      AssetImage("images/book.jpeg")),
+                            ),
+                            const SizedBox(height: 8),
+                            const Text("Notes",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w900, fontSize: 12))
+                          ],
+                        ),
+                      ),
+                    ]),
+                    Column(children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) {
+                            return AcademicTimings(
+                                domains[widget.app_user.domain]!,
+                                widget.app_user);
+                          }));
+                        },
+                        child: Column(
+                          children: [
+                            Container(
+                              width: div, //post.profile_pic
+                              child: const CircleAvatar(
+                                  backgroundImage:
+                                      AssetImage("images/timings.jpeg")),
+                            ),
+                            const SizedBox(height: 10),
+                            const Text("Timings",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w900, fontSize: 12))
+                          ],
+                        ),
+                      ),
+                    ]),
+                    Column(children: [
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            extand = false;
+                          });
+                        },
+                        child: Column(
+                          children: [
+                            Container(
+                              width: div, //post.profile_pic
+                              child:
+                                  const Icon(Icons.keyboard_arrow_up, size: 38),
+                            ),
+                            const SizedBox(height: 10),
+                            const Text("Less",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w900, fontSize: 12))
+                          ],
+                        ),
+                      ),
+                    ]),
+                  ],
+                )
+              : Container()
+        ]));
+  }
+}
 
-          // extand
-          //     ? const SizedBox(
-          //         height: 50,
-          //       )
-          //     : Container(),
-          // extand
-          //     ? Row(
-          //         children: [
-          //           Column(children: [
+
+
+
+          // Column(children: [
           //             GestureDetector(
           //               onTap: () {
           //                 Navigator.of(context).push(MaterialPageRoute(
@@ -936,84 +1079,3 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
           //               ),
           //             ),
           //           ]),
-          //           Column(children: [
-          //             GestureDetector(
-          //               onTap: () {
-          //                 Navigator.of(context).push(MaterialPageRoute(
-          //                     builder: (BuildContext context) {
-          //                   return PostWithappBar(widget.app_user,
-          //                       domains[widget.app_user.domain]!);
-          //                 }));
-          //               },
-          //               child: Column(
-          //                 children: [
-          //                   Container(
-          //                     width: div, //post.profile_pic
-          //                     child: const CircleAvatar(
-          //                         backgroundImage:
-          //                             AssetImage("images/student.png")),
-          //                   ),
-          //                   const SizedBox(height: 10),
-          //                   const Text("Campus",
-          //                       style: TextStyle(
-          //                           fontWeight: FontWeight.w900, fontSize: 12))
-          //                 ],
-          //               ),
-          //             ),
-          //           ]),
-          //  Column(children: [
-          //             GestureDetector(
-          //               onTap: () {
-          //                 Navigator.of(context).push(MaterialPageRoute(
-          //                     builder: (BuildContext context) {
-          //                   return AcademicTimings(
-          //                       domains[widget.app_user.domain]!,
-          //                       widget.app_user);
-          //                 }));
-          //               },
-          //               child: Column(
-          //                 children: [
-          //                   Container(
-          //                     width: div, //post.profile_pic
-          //                     child: const CircleAvatar(
-          //                         backgroundImage:
-          //                             AssetImage("images/timings.jpeg")),
-          //                   ),
-          //                   const SizedBox(height: 10),
-          //                   const Text("Timings",
-          //                       style: TextStyle(
-          //                           fontWeight: FontWeight.w900, fontSize: 12))
-          //                 ],
-          //               ),
-          //             ),
-          //           ])
-          //           Column(children: [
-          //             GestureDetector(
-          //               onTap: () {
-          //                 setState(() {
-          //                   extand = false;
-          //                 });
-          //               },
-          //               child: Column(
-          //                 children: [
-          //                   Container(
-          //                     width: div, //post.profile_pic
-          //                     child:
-          //                         const Icon(Icons.keyboard_arrow_up, size: 38),
-          //                   ),
-          //                   const SizedBox(height: 10),
-          //                   const Text("Less",
-          //                       style: TextStyle(
-          //                           fontWeight: FontWeight.w900, fontSize: 12))
-          //                 ],
-          //               ),
-          //             ),
-          //           ]),
-          //         ],
-          //       )
-          //     : Container()
-        ]));
-  }
-}
-
-//Alerts

@@ -101,3 +101,36 @@ class EVENT_LIST {
     return data;
   }
 }
+
+class EVENT_LIKES {
+  int? id;
+  String? postedDate;
+  String? domain;
+  int? eventId;
+  SmallUsername? username;
+
+  EVENT_LIKES(
+      {this.id, this.postedDate, this.domain, this.eventId, this.username});
+
+  EVENT_LIKES.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    postedDate = json['posted_date'];
+    domain = json['domain'];
+    eventId = json['event_id'];
+    username = json['username'] != null
+        ? new SmallUsername.fromJson(json['username'])
+        : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['posted_date'] = this.postedDate;
+    data['domain'] = this.domain;
+    data['event_id'] = this.eventId;
+    if (this.username != null) {
+      data['username'] = this.username!.toJson();
+    }
+    return data;
+  }
+}

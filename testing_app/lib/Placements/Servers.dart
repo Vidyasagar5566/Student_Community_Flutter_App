@@ -41,8 +41,8 @@ class placemeny_servers {
     }
   }
 
-  Future<List<dynamic>> post_cal_sub(
-      String sub_name, String sub_id, bool InternCompany) async {
+  Future<List<dynamic>> post_cal_sub(String sub_name, String sub_id,
+      bool InternCompany, bool PlacementCompany) async {
     try {
       var token = storage.getItem('token');
       String finalUrl = "$base_url/cal_dates_subs/list1";
@@ -55,7 +55,8 @@ class placemeny_servers {
           body: jsonEncode({
             'sub_name': sub_name,
             'sub_id': sub_id,
-            "InternCompany": InternCompany
+            "InternCompany": InternCompany,
+            "PlacementCompany": PlacementCompany
           }));
       var data = json.decode(response.body) as Map;
 
@@ -65,7 +66,8 @@ class placemeny_servers {
     }
   }
 
-  Future<bool> edit_cal_sub(String sub_name, String sub_id) async {
+  Future<bool> edit_cal_sub(String sub_name, String sub_id, bool InternCompany,
+      bool PlacementCompany) async {
     try {
       var token = storage.getItem('token');
       String finalUrl = "$base_url/cal_dates_subs/list1";
@@ -75,7 +77,12 @@ class placemeny_servers {
             'Authorization': 'token $token',
             "Content-Type": "application/json",
           },
-          body: jsonEncode({'sub_name': sub_name, 'sub_id': sub_id}));
+          body: jsonEncode({
+            'sub_name': sub_name,
+            'sub_id': sub_id,
+            "InternCompany": InternCompany,
+            "PlacementCompany": PlacementCompany
+          }));
       var data = json.decode(response.body) as Map;
 
       return data['error'];
@@ -86,11 +93,13 @@ class placemeny_servers {
 
 // CALENDER SUB YEARS
 
-  Future<List<CAL_SUB_YEARS>> get_sub_years_list(String sub_id) async {
+  Future<List<CAL_SUB_YEARS>> get_sub_years_list(
+      String sub_id, String inter_placement) async {
     try {
       var token = storage.getItem('token');
       Map<String, String> queryParameters = {
         'sub_id': sub_id,
+        'inter_placement': inter_placement,
       };
       String queryString = Uri(queryParameters: queryParameters).query;
       String finalUrl = "$base_url/cal_sub_years/list1?$queryString";
@@ -109,14 +118,13 @@ class placemeny_servers {
 
       return temp;
     } catch (e) {
-      print("error");
       List<CAL_SUB_YEARS> temp = [];
       return temp;
     }
   }
 
-  Future<List<dynamic>> add_cal_sub_year(
-      String sub_id, String year_name, bool private) async {
+  Future<List<dynamic>> add_cal_sub_year(String sub_id, String year_name,
+      bool private, String inter_placement) async {
     try {
       var token = storage.getItem('token');
       String finalUrl = "$base_url/cal_sub_years/list1";
@@ -126,15 +134,16 @@ class placemeny_servers {
             'Authorization': 'token $token',
             "Content-Type": "application/json",
           },
-          body: jsonEncode(
-              {'sub_id': sub_id, 'year_name': year_name, 'private': private}));
+          body: jsonEncode({
+            'sub_id': sub_id,
+            'year_name': year_name,
+            'private': private,
+            'inter_placement': inter_placement,
+          }));
       var data = json.decode(response.body) as Map;
-
-      print(data);
 
       return [data['error'], data['id']];
     } catch (e) {
-      print('error');
       return [true, '-1'];
     }
   }
@@ -189,7 +198,7 @@ class placemeny_servers {
       return temp;
     } catch (e) {
       List<CAL_SUB_FILES> temp = [];
-      print(temp);
+
       //return temp;
       return [];
     }
@@ -216,9 +225,10 @@ class placemeny_servers {
             "file_type": file_type,
           }));
       var data = json.decode(response.body) as Map;
-
+      print(data);
       return [data['error'], data['id']];
     } catch (e) {
+      print(e);
       return [true, -1];
     }
   }
@@ -236,10 +246,8 @@ class placemeny_servers {
           body: jsonEncode({'id': id}));
       var data = json.decode(response.body) as Map;
 
-      print(data);
       return data['error'];
     } catch (e) {
-      print('error');
       return true;
     }
   }
@@ -300,7 +308,7 @@ class placemeny_servers {
       return temp;
     } catch (e) {
       List<RATINGS> temp = [];
-      print(e);
+
       return temp;
     }
   }
@@ -339,10 +347,8 @@ class placemeny_servers {
           body: jsonEncode({'id': id}));
       var data = json.decode(response.body) as Map;
 
-      print(data);
       return data['error'];
     } catch (e) {
-      print('error');
       return true;
     }
   }

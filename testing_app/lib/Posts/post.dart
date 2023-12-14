@@ -147,7 +147,7 @@ class _postwidget1State extends State<postwidget1> {
   bool total_loaded = true;
   void load_data_fun() async {
     List<POST_LIST> latest_post_list = await post_servers().get_post_list(
-        domains1[widget.domain]!, all_posts.length, widget.admin_posts);
+        domains1[widget.domain]!, widget.post_list.length, widget.admin_posts);
     if (latest_post_list.length != 0) {
       all_posts += latest_post_list;
       setState(() {
@@ -248,7 +248,7 @@ class _appBarPostListState extends State<appBarPostList> {
   bool total_loaded = true;
   void load_data_fun() async {
     List<POST_LIST> latest_post_list = await post_servers().get_post_list(
-        domains1[widget.domain]!, all_posts.length, widget.admin_posts);
+        domains1[widget.domain]!, widget.post_list.length, widget.admin_posts);
     if (latest_post_list.length != 0) {
       setState(() {
         widget.post_list += latest_post_list;
