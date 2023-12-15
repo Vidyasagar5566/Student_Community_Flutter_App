@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:get_time_ago/get_time_ago.dart';
+import '/Login/Servers.dart';
+import '/User_profile/profile.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '/First_page.dart';
 import 'Models.dart';
@@ -481,9 +483,18 @@ class _single_eventState extends State<single_event> {
                           ),
                     // Text(post.likes.toString() + "likes")
                     const SizedBox(width: 6),
-                    Text(
-                      event.likeCount.toString(),
-                      style: const TextStyle(fontSize: 16),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          return eventParticipants(
+                              widget.event.id!, widget.app_user);
+                        }));
+                      },
+                      child: Text(
+                        event.likeCount.toString(),
+                        style: const TextStyle(fontSize: 16),
+                      ),
                     ),
                   ],
                 ),
@@ -516,18 +527,6 @@ class _event_photowidgetState extends State<event_photowidget> {
   bool _showController = true;
   TextEditingController _controller1 = TextEditingController();
 
-  bool event_like_list_load = true;
-  List<EVENT_LIKES> event_likes = [];
-  Future<List<EVENT_LIKES>> get_event_likes() async {
-    List<EVENT_LIKES> new_event_likes =
-        await activity_servers().get_likes_list(widget.event.id!);
-    setState(() {
-      event_like_list_load = true;
-      event_likes = new_event_likes;
-    });
-    return event_likes;
-  }
-
   @override
   Widget build(BuildContext context) {
     EVENT_LIST event = widget.event;
@@ -548,44 +547,12 @@ class _event_photowidgetState extends State<event_photowidget> {
           actions: [
             TextButton(
                 onPressed: () async {
-                  setState(() {
-                    event_like_list_load = false;
-                  });
-                  await get_event_likes();
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (BuildContext context) {
-                    return Scaffold(
-                      appBar: AppBar(
-                          title: Text("participents"), centerTitle: false),
-                      body: event_likes.isEmpty
-                          ? Container(
-                              child: const Center(
-                                child: Text("No users was joined."),
-                              ),
-                            )
-                          : ListView.builder(
-                              itemCount: event_likes.length,
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              padding: EdgeInsets.only(bottom: 10),
-                              itemBuilder: (BuildContext context, int index) {
-                                var _convertedTimestamp = DateTime.parse(
-                                    event_likes[index]
-                                        .postedDate!); // Converting into [DateTime] object
-                                String user_joined_date =
-                                    GetTimeAgo.parse(_convertedTimestamp);
-                                return _build_event_participents(
-                                    event_likes[index], user_joined_date);
-                              }),
-                    );
+                    return eventParticipants(widget.event.id!, widget.app_user);
                   }));
                 },
-                child: event_like_list_load
-                    ? const Text("View Participants")
-                    : const SizedBox(
-                        height: 30,
-                        width: 30,
-                        child: CircularProgressIndicator()))
+                child: const Text("View Participants"))
           ],
           backgroundColor: Colors.white70,
         ),
@@ -977,88 +944,177 @@ class _event_photowidgetState extends State<event_photowidget> {
           ),
         ));
   }
+}
+
+class eventParticipants extends StatefulWidget {
+  int event_id;
+  Username app_user;
+  eventParticipants(this.event_id, this.app_user);
+
+  @override
+  State<eventParticipants> createState() => _eventParticipantsState();
+}
+
+class _eventParticipantsState extends State<eventParticipants> {
+  bool event_like_list_load = false;
+  List<EVENT_LIKES> event_likes = [];
+  Future<List<EVENT_LIKES>> get_event_likes() async {
+    print("object");
+    List<EVENT_LIKES> new_event_likes =
+        await activity_servers().get_likes_list(widget.event_id);
+
+    setState(() {
+      event_like_list_load = true;
+      event_likes = new_event_likes;
+    });
+    return event_likes;
+  }
+
+  void initState() {
+    super.initState();
+    get_event_likes();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("participants"), centerTitle: false),
+      body: event_like_list_load
+          ? event_likes.isEmpty
+              ? Container(
+                  child: const Center(
+                    child: Text("No users was joined."),
+                  ),
+                )
+              : ListView.builder(
+                  itemCount: event_likes.length,
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  padding: EdgeInsets.only(bottom: 10),
+                  itemBuilder: (BuildContext context, int index) {
+                    var _convertedTimestamp = DateTime.parse(event_likes[index]
+                        .postedDate!); // Converting into [DateTime] object
+                    String user_joined_date =
+                        GetTimeAgo.parse(_convertedTimestamp);
+                    return _build_event_participents(
+                        event_likes[index], user_joined_date);
+                  })
+          : Center(child: CircularProgressIndicator()),
+    );
+  }
 
   Widget _build_event_participents(
       EVENT_LIKES event_like, String user_joined_date) {
     SmallUsername search_user = event_like.username!;
     var width = MediaQuery.of(context).size.width;
-    return Container(
-        margin: EdgeInsets.all(2),
-        padding: EdgeInsets.all(20),
-        decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(20)),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                        width: 48,
-                        child: search_user.fileType! == '1'
-                            ? CircleAvatar(
-                                backgroundImage:
-                                    NetworkImage(search_user.profilePic!))
-                            : const CircleAvatar(
-                                backgroundImage:
-                                    AssetImage("images/profile.jpg"))),
-                    Container(
-                      padding: EdgeInsets.only(left: 20),
-                      width: (width - 36) / 1.8,
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+    return GestureDetector(
+      onTap: () async {
+        if (widget.app_user.email != search_user.email) {
+          showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) {
+                return AlertDialog(
+                    contentPadding: EdgeInsets.all(15),
+                    content: Container(
+                      margin: EdgeInsets.all(10),
+                      child: const Column(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            Row(
-                              children: [
-                                Container(
-                                  constraints: BoxConstraints(
-                                      maxWidth: (width - 36) / 2.4),
-                                  child: Text(
-                                    search_user.username!,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16,
+                            Text("Please wait while loading....."),
+                            SizedBox(height: 10),
+                            CircularProgressIndicator()
+                          ]),
+                    ));
+              });
+          Username all_profile_user =
+              await login_servers().get_user(search_user.email!);
+          Navigator.pop(context);
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (BuildContext context) {
+            return Scaffold(
+                body: userProfilePage(widget.app_user, all_profile_user));
+          }));
+        }
+      },
+      child: Container(
+          margin: EdgeInsets.all(2),
+          padding: EdgeInsets.all(20),
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(20)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                          width: 48,
+                          child: search_user.fileType! == '1'
+                              ? CircleAvatar(
+                                  backgroundImage:
+                                      NetworkImage(search_user.profilePic!))
+                              : const CircleAvatar(
+                                  backgroundImage:
+                                      AssetImage("images/profile.jpg"))),
+                      Container(
+                        padding: EdgeInsets.only(left: 20),
+                        width: (width - 100),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    constraints:
+                                        BoxConstraints(maxWidth: (width - 100)),
+                                    child: Text(
+                                      search_user.username!,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 16,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                const SizedBox(width: 10),
-                                userMarkNotation(search_user.starMark!)
-                              ],
-                            ),
-                            Text(
-                              domains[search_user.domain!]! +
-                                  " (" +
-                                  search_user.userMark! +
-                                  ")",
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
-                            )
-                          ]),
-                    )
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(height: 5),
-            Text(
-              "Contact no " + search_user.phnNum!,
-              //post.description,
-              style: TextStyle(fontSize: 15),
-            ),
-            const SizedBox(height: 5),
-            Text(
-              " Email : " + search_user.email!,
-              //post.description,
-              style: TextStyle(fontSize: 15),
-            ),
-            const SizedBox(height: 5),
-            Text(user_joined_date)
-          ],
-        ));
+                                  const SizedBox(width: 10),
+                                  userMarkNotation(search_user.starMark!)
+                                ],
+                              ),
+                              Text(
+                                domains[search_user.domain!]! +
+                                    " (" +
+                                    search_user.userMark! +
+                                    ")",
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                              )
+                            ]),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 5),
+              Text(
+                "Contact no " + search_user.phnNum!,
+                //post.description,
+                style: TextStyle(fontSize: 15),
+              ),
+              const SizedBox(height: 5),
+              Text(
+                " Email : " + search_user.email!,
+                //post.description,
+                style: TextStyle(fontSize: 15),
+              ),
+              const SizedBox(height: 5),
+              Text(user_joined_date)
+            ],
+          )),
+    );
   }
 }
 

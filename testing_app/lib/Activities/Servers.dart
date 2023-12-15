@@ -121,8 +121,10 @@ class activity_servers {
         EVENT_LIKES post = EVENT_LIKES.fromJson(element);
         temp.add(post);
       });
+      print(temp);
       return temp;
     } catch (e) {
+      print(e);
       List<EVENT_LIKES> temp = [];
       return temp;
     }
