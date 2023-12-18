@@ -283,8 +283,9 @@ class _allEventsState extends State<allEvents> {
                                 ));
                           });
                       Map<List<CALENDER_EVENT>, List<EVENT_LIST>> total_data =
-                          await calendar_servers()
-                              .get_calender_event_list(temp, widget.domain);
+                          await calendar_servers().get_calender_event_list(
+                              temp, //today.toString().split(" ")[0],
+                              domains1[widget.domain]!);
                       Navigator.pop(context);
                       List<CALENDER_EVENT> cal_event_data =
                           total_data.keys.toList()[0];
@@ -293,8 +294,11 @@ class _allEventsState extends State<allEvents> {
 
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (BuildContext context) =>
-                              calender_events_display(widget.app_user,
-                                  cal_event_data, activity_data, temp)));
+                              calender_events_display(
+                                  widget.app_user,
+                                  cal_event_data,
+                                  activity_data,
+                                  today.toString().split(" ")[0])));
                     },
                     child: Container(
                         margin:

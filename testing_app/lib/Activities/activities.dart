@@ -986,19 +986,22 @@ class _eventParticipantsState extends State<eventParticipants> {
                     child: Text("No users was joined."),
                   ),
                 )
-              : ListView.builder(
-                  itemCount: event_likes.length,
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  padding: EdgeInsets.only(bottom: 10),
-                  itemBuilder: (BuildContext context, int index) {
-                    var _convertedTimestamp = DateTime.parse(event_likes[index]
-                        .postedDate!); // Converting into [DateTime] object
-                    String user_joined_date =
-                        GetTimeAgo.parse(_convertedTimestamp);
-                    return _build_event_participents(
-                        event_likes[index], user_joined_date);
-                  })
+              : SingleChildScrollView(
+                  child: ListView.builder(
+                      itemCount: event_likes.length,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      padding: EdgeInsets.only(bottom: 10),
+                      itemBuilder: (BuildContext context, int index) {
+                        var _convertedTimestamp = DateTime.parse(event_likes[
+                                index]
+                            .postedDate!); // Converting into [DateTime] object
+                        String user_joined_date =
+                            GetTimeAgo.parse(_convertedTimestamp);
+                        return _build_event_participents(
+                            event_likes[index], user_joined_date);
+                      }),
+                )
           : Center(child: CircularProgressIndicator()),
     );
   }
