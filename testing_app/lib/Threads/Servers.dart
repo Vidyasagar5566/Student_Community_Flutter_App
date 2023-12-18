@@ -6,7 +6,7 @@ import 'dart:io';
 
 class threads_servers {
   LocalStorage storage = LocalStorage("usertoken");
-  String base_url = 'http://StudentCommunity.pythonanywhere.com';
+  String base_url = 'https://StudentCommunity.pythonanywhere.com';
 
 // ALERT LIST FUNCTIONS
 

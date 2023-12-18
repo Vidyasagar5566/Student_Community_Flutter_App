@@ -872,36 +872,37 @@ class _placementsState extends State<placements> {
                                           )),
                                 ],
                               ),
-                              // _extand[index]
-                              //     ? Container()
-                              //     : Row(
-                              //         mainAxisAlignment:
-                              //             MainAxisAlignment.spaceBetween,
-                              //         children: [
-                              //           IconButton(
-                              //               onPressed: () {
-                              //                 Navigator.of(context).push(
-                              //                     MaterialPageRoute(
-                              //                         builder: (BuildContext
-                              //                                 context) =>
-                              //                             place_years(
-                              //                                 widget.app_user,
-                              //                                 widget.cal_sub_names[
-                              //                                     index],
-                              //                                 [])));
-                              //               },
-                              //               icon: Given_Rating(sub_rating)),
-                              //           Container(
-                              //             margin: EdgeInsets.only(right: 10),
-                              //             child: Text(
-                              //                 sub_rating
-                              //                     .toString()
-                              //                     .substring(0, 3),
-                              //                 style: TextStyle(
-                              //                     color: Colors.white)),
-                              //           )
-                              //         ],
-                              //       ),
+                              _extand[index]
+                                  ? Container()
+                                  : Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        IconButton(
+                                            onPressed: () {
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: (BuildContext
+                                                              context) =>
+                                                          place_years(
+                                                              widget.app_user,
+                                                              widget.cal_sub_names[
+                                                                  index],
+                                                              [],
+                                                              inter_placement)));
+                                            },
+                                            icon: Given_Rating(sub_rating)),
+                                        Container(
+                                          margin: EdgeInsets.only(right: 10),
+                                          child: Text(
+                                              sub_rating
+                                                  .toString()
+                                                  .substring(0, 3),
+                                              style: TextStyle(
+                                                  color: Colors.white)),
+                                        )
+                                      ],
+                                    ),
                               _extand[index]
                                   ? Row(
                                       mainAxisAlignment:
@@ -1077,122 +1078,122 @@ class _placementsState extends State<placements> {
                                               ))
                                         ])
                                   : Container(),
-                              // _extand[index]
-                              //     ? Column(children: [
-                              //         Row(
-                              //             mainAxisAlignment:
-                              //                 MainAxisAlignment.spaceBetween,
-                              //             children: [
-                              //               Text(
-                              //                 "Ratings" +
-                              //                     "(" +
-                              //                     widget.cal_sub_names[index]
-                              //                         .numRatings
-                              //                         .toString() +
-                              //                     ") : " +
-                              //                     sub_rating
-                              //                         .toString()
-                              //                         .substring(0, 3),
-                              //                 style: const TextStyle(
-                              //                     color: Colors.white),
-                              //               ),
-                              //               TextButton(
-                              //                   onPressed: () async {
-                              //                     if (_loaded[index]) {
-                              //                       showDialog(
-                              //                           context: context,
-                              //                           barrierDismissible:
-                              //                               false,
-                              //                           builder: (context) {
-                              //                             return AlertDialog(
-                              //                                 content: Show_all_sub_ratings(
-                              //                                     all_sub_ratings,
-                              //                                     widget
-                              //                                         .app_user));
-                              //                           });
-                              //                     } else {
-                              //                       ScaffoldMessenger.of(
-                              //                               context)
-                              //                           .showSnackBar(
-                              //                               const SnackBar(
-                              //                                   duration: Duration(
-                              //                                       milliseconds:
-                              //                                           400),
-                              //                                   content: Text(
-                              //                                     "please wait data is loading.",
-                              //                                     style: TextStyle(
-                              //                                         color: Colors
-                              //                                             .white),
-                              //                                   )));
-                              //                     }
-                              //                   },
-                              //                   child: Given_Rating(sub_rating))
-                              //             ]),
-                              //         const SizedBox(height: 10),
-                              //         _loaded[index]
-                              //             ? Column(
-                              //                 children: [
-                              //                   Row(
-                              //                     mainAxisAlignment:
-                              //                         MainAxisAlignment
-                              //                             .spaceBetween,
-                              //                     children: [
-                              //                       const Text(
-                              //                         "Update your Rating : ",
-                              //                         style: TextStyle(
-                              //                             color: Colors.white),
-                              //                       ),
-                              //                       Container(
-                              //                         margin: EdgeInsets.only(
-                              //                             left: 5),
-                              //                         child: OutlinedButton(
-                              //                             style: OutlinedButton
-                              //                                 .styleFrom(
-                              //                               minimumSize:
-                              //                                   Size(30, 30),
-                              //                               side:
-                              //                                   const BorderSide(
-                              //                                       color: Colors
-                              //                                           .white),
-                              //                             ),
-                              //                             onPressed: () {
-                              //                               showDialog(
-                              //                                   context:
-                              //                                       context,
-                              //                                   barrierDismissible:
-                              //                                       false,
-                              //                                   builder:
-                              //                                       (context) {
-                              //                                     return AlertDialog(
-                              //                                         content: Show_all_sub_ratings(
-                              //                                             all_sub_ratings,
-                              //                                             widget
-                              //                                                 .app_user));
-                              //                                   });
-                              //                             },
-                              //                             child: const Text(
-                              //                                 "See All",
-                              //                                 style: TextStyle(
-                              //                                     color: Colors
-                              //                                         .white))),
-                              //                       )
-                              //                     ],
-                              //                   ),
-                              //                   const SizedBox(height: 7),
-                              //                   Giving_Rating(
-                              //                       widget.cal_sub_names[index]
-                              //                           .id!,
-                              //                       widget.app_user)
-                              //                 ],
-                              //               )
-                              //             : const SizedBox(
-                              //                 height: 20,
-                              //                 width: 20,
-                              //                 child: CircularProgressIndicator(
-                              //                   color: Colors.white,
-                              //                 )),
-                              //       ])
-                              //     : Container()
+                              _extand[index]
+                                  ? Column(children: [
+                                      Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "Ratings" +
+                                                  "(" +
+                                                  widget.cal_sub_names[index]
+                                                      .numRatings
+                                                      .toString() +
+                                                  ") : " +
+                                                  sub_rating
+                                                      .toString()
+                                                      .substring(0, 3),
+                                              style: const TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            TextButton(
+                                                onPressed: () async {
+                                                  if (_loaded[index]) {
+                                                    showDialog(
+                                                        context: context,
+                                                        barrierDismissible:
+                                                            false,
+                                                        builder: (context) {
+                                                          return AlertDialog(
+                                                              content: Show_all_sub_ratings(
+                                                                  all_sub_ratings,
+                                                                  widget
+                                                                      .app_user));
+                                                        });
+                                                  } else {
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(
+                                                            const SnackBar(
+                                                                duration: Duration(
+                                                                    milliseconds:
+                                                                        400),
+                                                                content: Text(
+                                                                  "please wait data is loading.",
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white),
+                                                                )));
+                                                  }
+                                                },
+                                                child: Given_Rating(sub_rating))
+                                          ]),
+                                      const SizedBox(height: 10),
+                                      _loaded[index]
+                                          ? Column(
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    const Text(
+                                                      "Update your Rating : ",
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          left: 5),
+                                                      child: OutlinedButton(
+                                                          style: OutlinedButton
+                                                              .styleFrom(
+                                                            minimumSize:
+                                                                Size(30, 30),
+                                                            side:
+                                                                const BorderSide(
+                                                                    color: Colors
+                                                                        .white),
+                                                          ),
+                                                          onPressed: () {
+                                                            showDialog(
+                                                                context:
+                                                                    context,
+                                                                barrierDismissible:
+                                                                    false,
+                                                                builder:
+                                                                    (context) {
+                                                                  return AlertDialog(
+                                                                      content: Show_all_sub_ratings(
+                                                                          all_sub_ratings,
+                                                                          widget
+                                                                              .app_user));
+                                                                });
+                                                          },
+                                                          child: const Text(
+                                                              "See All",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white))),
+                                                    )
+                                                  ],
+                                                ),
+                                                const SizedBox(height: 7),
+                                                Giving_Rating(
+                                                    widget.cal_sub_names[index]
+                                                        .id!,
+                                                    widget.app_user)
+                                              ],
+                                            )
+                                          : const SizedBox(
+                                              height: 20,
+                                              width: 20,
+                                              child: CircularProgressIndicator(
+                                                color: Colors.white,
+                                              )),
+                                    ])
+                                  : Container()
                             ],
                           ),
                         ),

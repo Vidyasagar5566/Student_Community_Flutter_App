@@ -4,11 +4,9 @@ import 'dart:convert';
 import 'Models.dart';
 import 'dart:io';
 
-
 class notes_servers {
   LocalStorage storage = LocalStorage("usertoken");
-  String base_url = 'http://StudentCommunity.pythonanywhere.com';
-
+  String base_url = 'https://StudentCommunity.pythonanywhere.com';
 
 // BRANCHES OF A COURSES.
 
@@ -160,11 +158,9 @@ class notes_servers {
               {'sub_id': sub_id, 'year_name': year_name, 'private': private}));
       var data = json.decode(response.body) as Map;
 
-      print(data);
-
       return [data['error'], data['id']];
     } catch (e) {
-      print('error');
+      print(e);
       return [true, '-1'];
     }
   }

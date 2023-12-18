@@ -12,7 +12,7 @@ import '/Activities/Models.dart';
 
 class user_profile_servers {
   LocalStorage storage = LocalStorage("usertoken");
-  String base_url = 'http://StudentCommunity.pythonanywhere.com';
+  String base_url = 'https://StudentCommunity.pythonanywhere.com';
 
   // USER PROFILE UPDATE
   Future<bool> edit_profile2(

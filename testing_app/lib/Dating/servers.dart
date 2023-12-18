@@ -7,7 +7,7 @@ import 'dart:io';
 
 class dating_servers {
   LocalStorage storage = LocalStorage("usertoken");
-  String base_url = 'http://StudentCommunity.pythonanywhere.com';
+  String base_url = 'https://StudentCommunity.pythonanywhere.com';
 
 //  Dating FUNCTIONS
 

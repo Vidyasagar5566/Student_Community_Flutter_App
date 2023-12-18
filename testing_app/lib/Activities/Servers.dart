@@ -1,12 +1,13 @@
 import 'package:http/http.dart' as http;
 import 'package:localstorage/localstorage.dart';
+import 'package:testing_app/User_profile/Models.dart';
 import 'dart:convert';
 import 'Models.dart';
 import 'dart:io';
 
 class activity_servers {
   LocalStorage storage = LocalStorage("usertoken");
-  String base_url = 'http://StudentCommunity.pythonanywhere.com';
+  String base_url = 'https://StudentCommunity.pythonanywhere.com';
 
 // EVENT FUNCTIONS
 
@@ -103,6 +104,32 @@ class activity_servers {
 
 // EVENT LIKES
 
+  Future<List<EVENT_LIKES>> get_likes_list(int event_id) async {
+    try {
+      var token = storage.getItem('token');
+      Map<String, String> queryParameters = {'event_id': event_id.toString()};
+      String queryString = Uri(queryParameters: queryParameters).query;
+      String finalUrl = "$base_url/event/like_list1?$queryString";
+      var url = Uri.parse(finalUrl);
+      http.Response response = await http.get(url, headers: {
+        'Authorization': 'token $token',
+        "Content-Type": "application/json",
+      });
+      var data = json.decode(response.body) as List;
+      List<EVENT_LIKES> temp = [];
+      data.forEach((element) {
+        EVENT_LIKES post = EVENT_LIKES.fromJson(element);
+        temp.add(post);
+      });
+      print(temp);
+      return temp;
+    } catch (e) {
+      print(e);
+      List<EVENT_LIKES> temp = [];
+      return temp;
+    }
+  }
+
   Future<bool> post_event_like(int event_id) async {
     try {
       var token = storage.getItem('token');
@@ -157,7 +184,7 @@ class activity_servers {
       String queryString = Uri(queryParameters: queryParameters).query;
       String finalUrl = "$base_url/event/like_list1?$queryString";
       var url = Uri.parse(finalUrl);
-      http.Response response = await http.get(url, headers: {
+      http.Response response = await http.put(url, headers: {
         'Authorization': 'token $token',
         "Content-Type": "application/json",
       });

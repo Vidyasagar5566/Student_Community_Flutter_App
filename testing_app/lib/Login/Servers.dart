@@ -8,7 +8,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 
 class login_servers {
   LocalStorage storage = LocalStorage("usertoken");
-  String base_url = 'http://StudentCommunity.pythonanywhere.com';
+  String base_url = 'https://StudentCommunity.pythonanywhere.com';
 
   // CHECK EMAIL OR CREATE EMAIL ACCOUNT FOR NEW USERS
 

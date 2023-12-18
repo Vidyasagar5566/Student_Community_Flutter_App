@@ -431,7 +431,8 @@ class _cal_subjectsState extends State<cal_subjects> {
                   ]),
             )),
       ),
-      floatingActionButton: widget.app_user.isStudentAdmin! &&
+      floatingActionButton: (widget.app_user.isStudentAdmin! ||
+                  widget.app_user.isFaculty!) &&
               widget.app_user.branch == widget.branch
           ? ElevatedButton.icon(
               onPressed: () {

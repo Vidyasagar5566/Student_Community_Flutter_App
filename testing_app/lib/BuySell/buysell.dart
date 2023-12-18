@@ -466,10 +466,8 @@ class _all_lostwidget1State extends State<all_buySellwidget1> {
                                 if (lst.imgRatio == 1.0) {
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (BuildContext context) {
-                                    return image_display(
-                                        false,
-                                        File('images/buy sell avatar.png'),
-                                        lst.img!);
+                                    return image_display(false,
+                                        File('images/Buy&Sell.png'), lst.img!);
                                   }));
                                 }
                               },
@@ -490,7 +488,7 @@ class _all_lostwidget1State extends State<all_buySellwidget1> {
                                     image: lst.imgRatio == 0
                                         ? const DecorationImage(
                                             image: AssetImage(
-                                                'images/buy sell avatar.png'),
+                                                'images/Buy&Sell.png'),
                                             fit: BoxFit.cover)
                                         : DecorationImage(
                                             image: NetworkImage(lst.img!),

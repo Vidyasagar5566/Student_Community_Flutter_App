@@ -7,7 +7,7 @@ import '/User_profile/Models.dart';
 
 class sac_servers {
   LocalStorage storage = LocalStorage("usertoken");
-  String base_url = 'http://StudentCommunity.pythonanywhere.com';
+  String base_url = 'https://StudentCommunity.pythonanywhere.com';
 
 // SAC LIST FUNCTIONS
   Future<List<SAC_MEMS>> get_sac_list(String domain) async {

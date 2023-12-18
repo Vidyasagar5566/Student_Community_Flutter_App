@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:testing_app/Placements/placements.dart';
 import 'dart:io';
 import '../Circular_designs/Cure_clip.dart';
 import 'Servers.dart';
@@ -197,7 +198,7 @@ class _CalSubFilesState extends State<CalSubFiles> {
                   ])))),
       floatingActionButton: ElevatedButton.icon(
         onPressed: () async {
-         if (widget.app_user.email!.split('@')[0] == "guest") {
+          if (widget.app_user.email!.split('@')[0] == "guest") {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 duration: Duration(milliseconds: 400),
@@ -313,7 +314,7 @@ class _CalSubFilesState extends State<CalSubFiles> {
     var wid = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () {
-         if (widget.app_user.email!.split('@')[0] == "guest") {
+        if (widget.app_user.email!.split('@')[0] == "guest") {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               duration: Duration(milliseconds: 400),
@@ -364,11 +365,13 @@ class _CalSubFilesState extends State<CalSubFiles> {
         padding: const EdgeInsets.only(top: 7, left: 20, bottom: 7),
         child: Column(
           children: [
-            Container(
-              child: Text(widget.cal_sub_files[index].username!.email!,
-                  style: const TextStyle(color: Colors.white),
-                  textAlign: TextAlign.left),
-            ),
+            Place_UserProfileMark(
+                widget.app_user, widget.cal_sub_files[index].username!),
+            // Container(
+            //   child: Text(widget.cal_sub_files[index].username!.email!,
+            //       style: const TextStyle(color: Colors.white),
+            //       textAlign: TextAlign.left),
+            // ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -392,7 +395,8 @@ class _CalSubFilesState extends State<CalSubFiles> {
                             widget.cal_sub_files[index].username!.email
                         ? IconButton(
                             onPressed: () async {
-                     if (widget.app_user.email!.split('@')[0] == "guest") {
+                              if (widget.app_user.email!.split('@')[0] ==
+                                  "guest") {
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(const SnackBar(
                                         duration: Duration(milliseconds: 400),

@@ -157,7 +157,8 @@ class _cal_sub_yearsState extends State<cal_sub_years> {
                       ),
                       build_screen()
                     ])))),
-        floatingActionButton: widget.app_user.isStudentAdmin! &&
+        floatingActionButton: (widget.app_user.isStudentAdmin! ||
+                    widget.app_user.isFaculty!) &&
                 widget.app_user.branch == widget.branch
             ? ElevatedButton.icon(
                 onPressed: () {
@@ -250,7 +251,6 @@ class _cal_sub_yearsState extends State<cal_sub_years> {
                                                           .toString(),
                                                       year_name,
                                                       _lights);
-
                                           if (!error[0]) {
                                             CAL_SUB_YEARS new_sub_year =
                                                 CAL_SUB_YEARS();

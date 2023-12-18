@@ -182,6 +182,12 @@ class _search_barState extends State<search_bar> {
           : Container(),
     );
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+    group_mems = {};
+  }
 }
 
 class user_list_display extends StatefulWidget {
@@ -209,6 +215,7 @@ class _user_list_displayState extends State<user_list_display> {
       if (select_all == true) {
         for (int i = 0; i < latest_search_users.length; i++) {
           latest_search_users[i].isTeamMem = true;
+          group_mems[latest_search_users[i].userUuid!] = true;
         }
       }
       setState(() {
@@ -547,6 +554,7 @@ class _user_list_displayState extends State<user_list_display> {
   Widget _buildLoadingScreen_create_group(
       SmallUsername search_user, int index) {
     var width = MediaQuery.of(context).size.width;
+    search_user.isTeamMem = group_mems.containsKey(search_user.userUuid);
     return GestureDetector(
       onTap: () async {},
       child: Container(
@@ -651,6 +659,7 @@ class _user_list_displayState extends State<user_list_display> {
 
   Widget _buildLoadingScreen_edit_group(SmallUsername search_user, int index) {
     var width = MediaQuery.of(context).size.width;
+    search_user.isTeamMem = group_mems.containsKey(search_user.userUuid);
     return GestureDetector(
       onTap: () async {},
       child: Container(
@@ -720,9 +729,6 @@ class _user_list_displayState extends State<user_list_display> {
                   Checkbox(
                     value: search_user.isTeamMem,
                     onChanged: (bool? value) {
-                      setState(() {
-                        search_user.isTeamMem = value!;
-                      });
                       if (value == true) {
                         setState(() {
                           group_mems[search_user.userUuid!] = true;
@@ -732,6 +738,9 @@ class _user_list_displayState extends State<user_list_display> {
                           group_mems.remove(search_user.userUuid);
                         });
                       }
+                      setState(() {
+                        search_user.isTeamMem = value!;
+                      });
                     },
                   )
                 ],
