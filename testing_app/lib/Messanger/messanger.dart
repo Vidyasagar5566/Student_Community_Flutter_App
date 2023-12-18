@@ -271,9 +271,10 @@ class _fireBaseUuids_to_backendUsersState
                     return Container(
                         margin: EdgeInsets.all(30),
                         padding: EdgeInsets.all(30),
-                        child: const Text("No conversations started yet",
+                        child: const Text(
+                            "Start coversations (tap on top right Icon to select students/faculty)",
                             style: TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 24)));
+                                fontWeight: FontWeight.w400, fontSize: 14)));
                   } else {
                     return Personmessanger1(
                         widget.app_user, widget.user_messages, message_users);

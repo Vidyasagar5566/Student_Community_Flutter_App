@@ -289,7 +289,7 @@ class _single_eventState extends State<single_event> {
                 utf8convert(widget.event.title!),
                 //"Description",
                 style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
             ),
             const SizedBox(height: 10),

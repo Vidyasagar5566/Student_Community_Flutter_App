@@ -108,7 +108,7 @@ class _calenderwidget1State extends State<calenderwidget1> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 10,
+        length: 2,
         child: Column(
           children: [
             Padding(
