@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:testing_app/Fcm_Notif_Domains/Servers.dart';
+import '../Servers_Fcm_Notif_Domains/servers.dart';
 import '/First_page.dart';
 import '../Circular_designs/Cure_clip.dart';
 import '../Circular_designs/Circular_Indicator.dart';

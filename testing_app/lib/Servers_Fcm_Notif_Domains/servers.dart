@@ -3,9 +3,11 @@ import 'package:http/http.dart' as http;
 import 'package:localstorage/localstorage.dart';
 import 'dart:convert';
 
+String base_url = 'https://StudentCommunity.pythonanywhere.com';
+//"http://54.151.167.214:8000";
+
 class servers {
   LocalStorage storage = LocalStorage("usertoken");
-  String base_url = 'https://StudentCommunity.pythonanywhere.com';
 
 // NOTIFICATIONS
 
@@ -369,7 +371,6 @@ List<String> domains_list_ex_all = [
   'IIT Dharwad',
   'IIT Bhilai',
 ];
-
 
 //    path('', views.testing.as_view(),name = 'login'),
 //    path('login', obtain_auth_token),

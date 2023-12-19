@@ -6,7 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'Servers.dart';
 import 'Models.dart';
 import '/User_profile/Models.dart';
-import '/Fcm_Notif_Domains/Servers.dart';
+import '../Servers_Fcm_Notif_Domains/servers.dart';
 //import 'package:link_text/link_text.dart';
 import 'package:flutter/services.dart';
 import 'package:video_player/video_player.dart';

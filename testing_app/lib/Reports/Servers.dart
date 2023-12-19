@@ -1,10 +1,10 @@
 import 'package:http/http.dart' as http;
 import 'package:localstorage/localstorage.dart';
 import 'dart:convert';
+import '../Servers_Fcm_Notif_Domains/servers.dart';
 
 class report_servers {
   LocalStorage storage = LocalStorage("usertoken");
-  String base_url = 'https://StudentCommunity.pythonanywhere.com';
 
   Future<List<dynamic>> report_upload(
       String description, String report_belongs) async {

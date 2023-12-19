@@ -4,10 +4,10 @@ import '/User_profile/Models.dart';
 import 'dart:convert';
 import 'models.dart';
 import 'dart:io';
+import '../Servers_Fcm_Notif_Domains/servers.dart';
 
 class dating_servers {
   LocalStorage storage = LocalStorage("usertoken");
-  String base_url = 'https://StudentCommunity.pythonanywhere.com';
 
 //  Dating FUNCTIONS
 

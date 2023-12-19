@@ -5,10 +5,10 @@ import '/User_profile/Models.dart';
 import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import '../Servers_Fcm_Notif_Domains/servers.dart';
 
 class login_servers {
   LocalStorage storage = LocalStorage("usertoken");
-  String base_url = 'https://StudentCommunity.pythonanywhere.com';
 
   // CHECK EMAIL OR CREATE EMAIL ACCOUNT FOR NEW USERS
 

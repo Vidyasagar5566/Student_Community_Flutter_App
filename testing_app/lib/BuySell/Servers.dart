@@ -3,10 +3,10 @@ import 'package:localstorage/localstorage.dart';
 import 'dart:convert';
 import 'Models.dart';
 import 'dart:io';
+import '../Servers_Fcm_Notif_Domains/servers.dart';
 
 class bs_servers {
   LocalStorage storage = LocalStorage("usertoken");
-  String base_url = 'https://StudentCommunity.pythonanywhere.com';
 
 //  LOST AND FOUNDS POST FUNCTIONS
 

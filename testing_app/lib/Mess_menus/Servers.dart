@@ -2,10 +2,10 @@ import 'package:http/http.dart' as http;
 import 'package:localstorage/localstorage.dart';
 import 'dart:convert';
 import 'Models.dart';
+import '../Servers_Fcm_Notif_Domains/servers.dart';
 
 class mess_menu_servers {
   LocalStorage storage = LocalStorage("usertoken");
-  String base_url = 'https://StudentCommunity.pythonanywhere.com';
 
 // MESS LIST FUNCTIONS
 

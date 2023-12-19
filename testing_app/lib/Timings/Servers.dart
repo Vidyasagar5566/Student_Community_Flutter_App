@@ -2,10 +2,10 @@ import 'package:http/http.dart' as http;
 import 'package:localstorage/localstorage.dart';
 import 'Models.dart';
 import 'dart:convert';
+import '../Servers_Fcm_Notif_Domains/servers.dart';
 
 class timings_servers {
   LocalStorage storage = LocalStorage("usertoken");
-  String base_url = 'https://StudentCommunity.pythonanywhere.com';
 
 // ACADEMIC LIST FUNCTIONS
 

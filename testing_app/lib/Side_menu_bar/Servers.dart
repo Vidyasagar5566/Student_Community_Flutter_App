@@ -2,10 +2,10 @@ import 'package:http/http.dart' as http;
 import 'package:localstorage/localstorage.dart';
 import 'dart:convert';
 import 'Models.dart';
+import '../Servers_Fcm_Notif_Domains/servers.dart';
 
 class menu_bar_servers {
   LocalStorage storage = LocalStorage("usertoken");
-  String base_url = 'https://StudentCommunity.pythonanywhere.com';
 
 // EDIT NOTIFICATION SETTINGS AND NOTIFICATION SEEN ,COUNT
 

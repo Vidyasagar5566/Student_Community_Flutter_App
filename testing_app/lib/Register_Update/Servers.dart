@@ -1,11 +1,10 @@
 import 'package:http/http.dart' as http;
 import 'package:localstorage/localstorage.dart';
 import 'dart:convert';
+import '../Servers_Fcm_Notif_Domains/servers.dart';
 
 class register_servers {
   LocalStorage storage = LocalStorage("usertoken");
-  String base_url = 'https://StudentCommunity.pythonanywhere.com';
-
   // CREATE USER BY SUPER USER
 
   Future<bool> updating_required_user_details(String email, String username,

@@ -9,10 +9,10 @@ import 'dart:convert';
 import 'dart:io';
 import '/Threads/Models.dart';
 import '/Activities/Models.dart';
+import '../Servers_Fcm_Notif_Domains/servers.dart';
 
 class user_profile_servers {
   LocalStorage storage = LocalStorage("usertoken");
-  String base_url = 'https://StudentCommunity.pythonanywhere.com';
 
   // USER PROFILE UPDATE
   Future<bool> edit_profile2(

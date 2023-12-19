@@ -4,10 +4,10 @@ import 'dart:convert';
 import 'Models.dart';
 import 'dart:io';
 import '/User_profile/Models.dart';
+import '../Servers_Fcm_Notif_Domains/servers.dart';
 
 class sac_servers {
   LocalStorage storage = LocalStorage("usertoken");
-  String base_url = 'https://StudentCommunity.pythonanywhere.com';
 
 // SAC LIST FUNCTIONS
   Future<List<SAC_MEMS>> get_sac_list(String domain) async {

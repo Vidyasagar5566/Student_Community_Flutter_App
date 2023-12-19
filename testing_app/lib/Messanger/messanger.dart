@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get_time_ago/get_time_ago.dart';
 import '../First_page.dart';
-import '/Fcm_Notif_Domains/servers.dart';
+import '../Servers_Fcm_Notif_Domains/servers.dart';
 import 'Servers.dart';
 import 'Models.dart';
 import '/User_profile/Models.dart';

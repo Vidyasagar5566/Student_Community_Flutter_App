@@ -1,5 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'package:localstorage/localstorage.dart';
+import '../Servers_Fcm_Notif_Domains/servers.dart';
 import 'dart:convert';
 import 'Models.dart';
 import '/User_profile/Models.dart';
@@ -7,7 +8,6 @@ import 'dart:io';
 
 class all_clubs_servers {
   LocalStorage storage = LocalStorage("usertoken");
-  String base_url = 'https://StudentCommunity.pythonanywhere.com';
 
 // CLUBS LIST FUNCTIONS
 
