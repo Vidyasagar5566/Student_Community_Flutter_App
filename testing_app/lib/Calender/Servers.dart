@@ -5,6 +5,7 @@ import 'Models.dart';
 import '/Activities/Models.dart';
 import 'dart:io';
 import '../Servers_Fcm_Notif_Domains/servers.dart';
+
 class calendar_servers {
   LocalStorage storage = LocalStorage("usertoken");
 
@@ -45,7 +46,7 @@ class calendar_servers {
     }
   }
 
-  Future<List<String>> get_cal_list(String domain) async {
+  Future<List<String>> get_cal_dates(String domain) async {
     try {
       var token = storage.getItem('token');
       Map<String, String> queryParameters = {'domain': domain};
@@ -62,9 +63,9 @@ class calendar_servers {
       data.forEach((element) {
         temp.add(element);
       });
+
       return temp;
     } catch (e) {
-      print("error");
       return [];
     }
   }

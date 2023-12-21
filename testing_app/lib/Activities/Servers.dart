@@ -48,6 +48,7 @@ class activity_servers {
       String category,
       String category_id) async {
     try {
+      print(category);
       var token = storage.getItem('token');
       String finalUrl = "$base_url/event/list1";
       var url = Uri.parse(finalUrl);
@@ -77,6 +78,7 @@ class activity_servers {
       );
       var data = json.decode(response.body) as Map;
 
+      print(data);
       return data['error'];
     } catch (e) {
       return true;

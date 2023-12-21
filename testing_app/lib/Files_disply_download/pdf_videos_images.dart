@@ -542,11 +542,11 @@ class _video_display3State extends State<video_display3> {
   var platform;
   var _localPath;
   String ret = "";
-  VideoPlayerController? _videoPlayerController;
 
   @override
   void initState() {
     super.initState();
+    widget._videoPlayerController.play();
     if (Platform.isAndroid) {
       platform = TargetPlatform.android;
     } else {
@@ -714,7 +714,7 @@ class _video_display3State extends State<video_display3> {
   @override
   void dispose() {
     super.dispose();
-    _videoPlayerController!.pause();
+    widget._videoPlayerController.pause();
   }
 }
 

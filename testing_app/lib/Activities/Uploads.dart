@@ -323,8 +323,7 @@ class _upload_eventwidgetState extends State<upload_eventwidget> {
                                   minWidth: double.infinity,
                                   onPressed: () async {
                                     if (widget.app_user.email!.split('@')[0] ==
-                                            "guest" ||
-                                        !widget.app_user.isAdmin!) {
+                                        "guest") {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(
                                               duration:
@@ -362,8 +361,7 @@ class _upload_eventwidgetState extends State<upload_eventwidget> {
                                               image_ratio,
                                               formattedDate +
                                                   'T' +
-                                                  formattedTime +
-                                                  'Z',
+                                                  formattedTime,
                                               all_university,
                                               widget.event_category,
                                               widget.id);

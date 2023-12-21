@@ -51,7 +51,7 @@ class calender extends StatefulWidget {
 class _calenderState extends State<calender> {
   Widget build(BuildContext context) {
     return FutureBuilder<List<String>>(
-      future: calendar_servers().get_cal_list(domains1[widget.domain]!),
+      future: calendar_servers().get_cal_dates(domains1[widget.domain]!),
       builder: (ctx, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {

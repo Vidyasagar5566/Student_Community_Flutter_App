@@ -291,6 +291,7 @@ class _appBarPostListState extends State<appBarPostList> {
                     physics: ClampingScrollPhysics(),
                     itemBuilder: (BuildContext context, int index) {
                       POST_LIST post = widget.post_list[index];
+
                       var _convertedTimestamp = DateTime.parse(post
                           .postedDate!); // Converting into [DateTime] object
                       String post_posted_date =
@@ -466,7 +467,7 @@ class _single_postState extends State<single_post> {
                                                                       (BuildContext
                                                                           context) {
                                                         return get_ueser_widget(
-                                                            2);
+                                                            4);
                                                       }),
                                                               (Route<dynamic>
                                                                       route) =>
@@ -726,7 +727,7 @@ class _single_postState extends State<single_post> {
               },
               onTap: () {
                 if (post.imgRatio == 2) {
-                  _videoPlayerController!.play();
+                  // _videoPlayerController!.play();
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (BuildContext context) {
                     return video_display3(post.img!, _videoPlayerController!);

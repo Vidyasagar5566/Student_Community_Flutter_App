@@ -144,6 +144,7 @@ class _activitieswidget1State extends State<activitieswidget1> {
                         padding: EdgeInsets.only(bottom: 10),
                         itemBuilder: (BuildContext context, int index) {
                           EVENT_LIST event = widget.event_list[index];
+                          print(event.postedDate);
                           return single_event(event, widget.app_user);
                         })),
                 total_loaded
@@ -499,7 +500,10 @@ class _single_eventState extends State<single_event> {
                   ],
                 ),
               ),
-              UserProfileMarkAdmin(event, event.username, widget.app_user),
+              event.category == "student"
+                  ? UserProfileMark(app_user, event.username!)
+                  : UserProfileMarkAdmin(
+                      event, event.username, widget.app_user),
             ]),
             const SizedBox(height: 4)
           ],
