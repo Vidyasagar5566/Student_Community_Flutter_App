@@ -423,7 +423,7 @@ class _single_eventState extends State<single_event> {
                                 },
                                 child: const Center(
                                     child: Text(
-                                  "Exit",
+                                  "Joined",
                                   style: TextStyle(color: Colors.white),
                                 ))),
                           )

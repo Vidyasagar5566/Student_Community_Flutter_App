@@ -346,71 +346,161 @@ class _Allfestspagewidget1State extends State<Allfestspagewidget1> {
                             smallUserProfileMark(widget.app_user, fest.head!),
                             Container(
                               margin: EdgeInsets.only(right: 10),
-                              child: Row(
+                              child: Column(
                                 children: [
-                                  IconButton(
-                                    onPressed: () async {
-                                     if (widget.app_user.email!.split('@')[0] == "guest") {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(const SnackBar(
-                                                duration:
-                                                    Duration(milliseconds: 400),
-                                                content: Text(
-                                                    "guests are not allowed to like..",
-                                                    style: TextStyle(
-                                                        color: Colors.white))));
-                                      } else {
-                                        setState(() {
-                                          fest.isLike = !fest.isLike!;
-                                        });
-                                        if (fest.isLike!) {
-                                          setState(() {
-                                            fest.likeCount =
-                                                fest.likeCount! + 1;
-                                          });
-                                          bool error = await all_fests_servers()
-                                              .post_fest_like(fest.id!);
-                                          if (error) {
-                                            setState(() {
-                                              fest.likeCount =
-                                                  fest.likeCount! - 1;
-                                              fest.isLike = !fest.isLike!;
-                                            });
-                                          }
-                                        } else {
-                                          setState(() {
-                                            fest.likeCount =
-                                                fest.likeCount! - 1;
-                                          });
-                                          bool error = await all_fests_servers()
-                                              .delete_fest_like(fest.id!);
-                                          if (error) {
-                                            setState(() {
-                                              fest.likeCount =
-                                                  fest.likeCount! + 1;
-                                              fest.isLike = !fest.isLike!;
-                                            });
-                                          }
-                                        }
-                                        SystemSound.play(SystemSoundType.click);
-                                      }
-                                    },
-                                    icon: fest.isLike!
-                                        ? const Icon(
-                                            Icons.favorite,
-                                            size: 28,
-                                            color: Colors.red,
-                                          )
-                                        : const Icon(
-                                            Icons.favorite_border_outlined,
-                                            size: 28,
-                                            color: Colors.red,
-                                          ),
-                                  ),
-                                  // Text(post.likes.toString() + "likes")
+                                  fest.isLike!
+                                      ? Container(
+                                          margin: EdgeInsets.only(left: 4),
+                                          height: 30,
+                                          decoration: BoxDecoration(
+                                              color: Colors.blue,
+                                              borderRadius:
+                                                  BorderRadius.circular(25)),
+                                          child: OutlinedButton(
+                                              onPressed: () async {
+                                                if (widget.app_user.email!
+                                                        .split('@')[0] ==
+                                                    "guest") {
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    const SnackBar(
+                                                      duration: Duration(
+                                                          milliseconds: 400),
+                                                      content: Text(
+                                                        "Guests are not allowed",
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                    ),
+                                                  );
+                                                } else {
+                                                  setState(() {
+                                                    fest.isLike = !fest.isLike!;
+                                                  });
+                                                  if (fest.isLike!) {
+                                                    setState(() {
+                                                      fest.likeCount =
+                                                          fest.likeCount! + 1;
+                                                    });
+                                                    bool error =
+                                                        await all_fests_servers()
+                                                            .post_fest_like(
+                                                                fest.id!);
+                                                    if (error) {
+                                                      setState(() {
+                                                        fest.likeCount =
+                                                            fest.likeCount! - 1;
+                                                        fest.isLike =
+                                                            !fest.isLike!;
+                                                      });
+                                                    }
+                                                  } else {
+                                                    setState(() {
+                                                      fest.likeCount =
+                                                          fest.likeCount! - 1;
+                                                    });
+                                                    bool error =
+                                                        await all_fests_servers()
+                                                            .delete_fest_like(
+                                                                fest.id!);
+                                                    if (error) {
+                                                      setState(() {
+                                                        fest.likeCount =
+                                                            fest.likeCount! + 1;
+                                                        fest.isLike =
+                                                            !fest.isLike!;
+                                                      });
+                                                    }
+                                                    SystemSound.play(
+                                                        SystemSoundType.click);
+                                                  }
+                                                }
+                                              },
+                                              child: const Center(
+                                                  child: Text(
+                                                "Fallowing",
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ))),
+                                        )
+                                      : Container(
+                                          margin: EdgeInsets.only(left: 4),
+                                          height: 30,
+                                          child: OutlinedButton(
+                                              onPressed: () async {
+                                                if (widget.app_user.email!
+                                                        .split('@')[0] ==
+                                                    "guest") {
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    const SnackBar(
+                                                      duration: Duration(
+                                                          milliseconds: 400),
+                                                      content: Text(
+                                                        "Guests are not allowed",
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                    ),
+                                                  );
+                                                } else {
+                                                  setState(() {
+                                                    fest.isLike = !fest.isLike!;
+                                                  });
+                                                  if (fest.isLike!) {
+                                                    setState(() {
+                                                      fest.likeCount =
+                                                          fest.likeCount! + 1;
+                                                    });
+                                                    bool error =
+                                                        await all_fests_servers()
+                                                            .post_fest_like(
+                                                                fest.id!);
+                                                    if (error) {
+                                                      setState(() {
+                                                        fest.likeCount =
+                                                            fest.likeCount! - 1;
+                                                        fest.isLike =
+                                                            !fest.isLike!;
+                                                      });
+                                                    }
+                                                  } else {
+                                                    setState(() {
+                                                      fest.likeCount =
+                                                          fest.likeCount! - 1;
+                                                    });
+                                                    bool error =
+                                                        await all_fests_servers()
+                                                            .delete_fest_like(
+                                                                fest.id!);
+                                                    if (error) {
+                                                      setState(() {
+                                                        fest.likeCount =
+                                                            fest.likeCount! + 1;
+                                                        fest.isLike =
+                                                            !fest.isLike!;
+                                                      });
+                                                    }
+                                                    SystemSound.play(
+                                                        SystemSoundType.click);
+                                                  }
+                                                }
+                                              },
+                                              child: const Center(
+                                                  child: Text(
+                                                "Fallow",
+                                                style: TextStyle(
+                                                    color: Colors.blue),
+                                              ))),
+                                        ),
+                                  const SizedBox(height: 4),
                                   Text(
-                                    fest.likeCount.toString(),
-                                    style: const TextStyle(fontSize: 10),
+                                    fest.likeCount.toString() + " Fallowers",
+                                    style: const TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                 ],
                               ),
