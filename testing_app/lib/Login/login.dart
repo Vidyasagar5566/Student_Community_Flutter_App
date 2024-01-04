@@ -85,6 +85,7 @@ class _loginpageState extends State<loginpage> {
   var password;
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
     return Scaffold(
         body: SingleChildScrollView(
       child: Container(
@@ -114,20 +115,36 @@ class _loginpageState extends State<loginpage> {
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         )),
-                        child: const Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SizedBox(height: 90),
-                            Text(
-                              "Students",
+                      )),
+                  Positioned(
+                      left: 25,
+                      top: 75,
+                      child: Row(
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            icon: const Icon(
+                              Icons.arrow_back_ios_new_outlined,
+                              color: Colors.white,
+                              size: 30,
+                            ),
+                          ),
+                          const SizedBox(width: 20),
+                          SizedBox(
+                            width: width / 2,
+                            child: const Text(
+                              "Admins",
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 35,
+                                  fontSize: 25,
                                   fontWeight: FontWeight.w700),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       )),
                 ],
               ),
@@ -195,7 +212,7 @@ class _loginpageState extends State<loginpage> {
                         },
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 50),
                     (email != null && password != null)
                         ? Container(
                             padding: EdgeInsets.only(left: 40, right: 40),
@@ -316,137 +333,137 @@ class _loginpageState extends State<loginpage> {
                           FontAwesomeIcons.google,
                           color: Colors.red,
                         ),
-                        label: Text("Sign In With Student Email")),
+                        label: Text("Sign In With Email")),
                   ),
                 ],
               ),
-              const SizedBox(height: 10),
-              Center(
-                child: TextButton(
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return StatefulBuilder(builder:
-                                (BuildContext context, StateSetter setState) {
-                              return AlertDialog(
-                                contentPadding: EdgeInsets.all(25),
-                                content: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(),
-                                        TextButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            child: Text("close"))
-                                      ],
-                                    ),
-                                    const SizedBox(height: 20),
-                                    const Center(
-                                        child: Text(
-                                            "1. If you continue as guest, you are not allowed to receive any notifications and updates from this app",
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w400))),
-                                    const SizedBox(height: 20),
-                                    const Center(
-                                        child: Text(
-                                            "2. Also You are not allowed to share any type of posts, and liking any contents",
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w400))),
-                                    const SizedBox(height: 20),
-                                    const Center(
-                                        child: Text(
-                                            "3. Guests are only allowed to read the data inside the app shared by students",
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w400))),
-                                    const SizedBox(height: 30),
-                                    Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          const Text("Institute : ",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w400)),
-                                          DropdownButton<String>(
-                                              value: widget.domain,
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.black),
-                                              underline: Container(),
-                                              elevation: 0,
-                                              items: domains_list_ex_all.map<
-                                                      DropdownMenuItem<String>>(
-                                                  (String value) {
-                                                return DropdownMenuItem<String>(
-                                                  value: value,
-                                                  child: Text(
-                                                    value,
-                                                    style:
-                                                        TextStyle(fontSize: 10),
-                                                  ),
-                                                );
-                                              }).toList(),
-                                              onChanged: (value) {
-                                                setState(() {
-                                                  widget.domain = value!;
-                                                });
-                                              })
-                                        ]),
-                                    const SizedBox(height: 1),
-                                    Container(
-                                      margin: const EdgeInsets.all(30),
-                                      decoration: BoxDecoration(
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(10))),
-                                      child: OutlinedButton(
-                                          onPressed: () async {
-                                            Navigator.pop(context);
-                                            Navigator.of(context)
-                                                .pushAndRemoveUntil(
-                                                    MaterialPageRoute(builder:
-                                                        (BuildContext context) {
-                                              if (widget.domain != "All") {
-                                                return logincheck1(
-                                                    "guest" +
-                                                        domains1[
-                                                            widget.domain]!,
-                                                    "@Vidyasag5566");
-                                              } else {
-                                                return logincheck1(
-                                                    "guest@nitc.ac.in",
-                                                    "@Vidyasag5566");
-                                              }
-                                            }),
-                                                    (Route<dynamic> route) =>
-                                                        false);
-                                          },
-                                          child: const Center(
-                                              child: Text(
-                                            "Continue as guest?",
-                                            style:
-                                                TextStyle(color: Colors.blue),
-                                          ))),
-                                    ),
-                                    const SizedBox(height: 10),
-                                  ],
-                                ),
-                              );
-                            });
-                          });
-                    },
-                    child: Text("Continue As Guest")),
-              )
+              // const SizedBox(height: 10),
+              // Center(
+              //   child: TextButton(
+              //       onPressed: () {
+              //         showDialog(
+              //             context: context,
+              //             builder: (context) {
+              //               return StatefulBuilder(builder:
+              //                   (BuildContext context, StateSetter setState) {
+              //                 return AlertDialog(
+              //                   contentPadding: EdgeInsets.all(25),
+              //                   content: Column(
+              //                     mainAxisSize: MainAxisSize.min,
+              //                     children: [
+              //                       Row(
+              //                         mainAxisAlignment:
+              //                             MainAxisAlignment.spaceBetween,
+              //                         children: [
+              //                           Container(),
+              //                           TextButton(
+              //                               onPressed: () {
+              //                                 Navigator.pop(context);
+              //                               },
+              //                               child: Text("close"))
+              //                         ],
+              //                       ),
+              //                       const SizedBox(height: 20),
+              //                       const Center(
+              //                           child: Text(
+              //                               "1. If you continue as guest, you are not allowed to receive any notifications and updates from this app",
+              //                               style: TextStyle(
+              //                                   fontSize: 14,
+              //                                   color: Colors.black,
+              //                                   fontWeight: FontWeight.w400))),
+              //                       const SizedBox(height: 20),
+              //                       const Center(
+              //                           child: Text(
+              //                               "2. Also You are not allowed to share any type of posts, and liking any contents",
+              //                               style: TextStyle(
+              //                                   fontSize: 14,
+              //                                   color: Colors.black,
+              //                                   fontWeight: FontWeight.w400))),
+              //                       const SizedBox(height: 20),
+              //                       const Center(
+              //                           child: Text(
+              //                               "3. Guests are only allowed to read the data inside the app shared by students",
+              //                               style: TextStyle(
+              //                                   fontSize: 14,
+              //                                   color: Colors.black,
+              //                                   fontWeight: FontWeight.w400))),
+              //                       const SizedBox(height: 30),
+              //                       Row(
+              //                           mainAxisAlignment:
+              //                               MainAxisAlignment.spaceBetween,
+              //                           children: [
+              //                             const Text("Institute : ",
+              //                                 style: TextStyle(
+              //                                     fontWeight: FontWeight.w400)),
+              //                             DropdownButton<String>(
+              //                                 value: widget.domain,
+              //                                 style: const TextStyle(
+              //                                     fontWeight: FontWeight.bold,
+              //                                     color: Colors.black),
+              //                                 underline: Container(),
+              //                                 elevation: 0,
+              //                                 items: domains_list_ex_all.map<
+              //                                         DropdownMenuItem<String>>(
+              //                                     (String value) {
+              //                                   return DropdownMenuItem<String>(
+              //                                     value: value,
+              //                                     child: Text(
+              //                                       value,
+              //                                       style:
+              //                                           TextStyle(fontSize: 10),
+              //                                     ),
+              //                                   );
+              //                                 }).toList(),
+              //                                 onChanged: (value) {
+              //                                   setState(() {
+              //                                     widget.domain = value!;
+              //                                   });
+              //                                 })
+              //                           ]),
+              //                       const SizedBox(height: 1),
+              //                       Container(
+              //                         margin: const EdgeInsets.all(30),
+              //                         decoration: BoxDecoration(
+              //                             borderRadius: const BorderRadius.all(
+              //                                 Radius.circular(10))),
+              //                         child: OutlinedButton(
+              //                             onPressed: () async {
+              //                               Navigator.pop(context);
+              //                               Navigator.of(context)
+              //                                   .pushAndRemoveUntil(
+              //                                       MaterialPageRoute(builder:
+              //                                           (BuildContext context) {
+              //                                 if (widget.domain != "All") {
+              //                                   return logincheck1(
+              //                                       "guest" +
+              //                                           domains1[
+              //                                               widget.domain]!,
+              //                                       "@Vidyasag5566");
+              //                                 } else {
+              //                                   return logincheck1(
+              //                                       "guest@nitc.ac.in",
+              //                                       "@Vidyasag5566");
+              //                                 }
+              //                               }),
+              //                                       (Route<dynamic> route) =>
+              //                                           false);
+              //                             },
+              //                             child: const Center(
+              //                                 child: Text(
+              //                               "Continue as guest?",
+              //                               style:
+              //                                   TextStyle(color: Colors.blue),
+              //                             ))),
+              //                       ),
+              //                       const SizedBox(height: 10),
+              //                     ],
+              //                   ),
+              //                 );
+              //               });
+              //             });
+              //       },
+              //       child: Text("Continue As Guest")),
+              // )
             ],
           ),
         ),

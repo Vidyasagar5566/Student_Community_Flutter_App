@@ -3,8 +3,9 @@ import 'package:http/http.dart' as http;
 import 'package:localstorage/localstorage.dart';
 import 'dart:convert';
 
-String base_url = 'https://StudentCommunity.pythonanywhere.com';
-    // "http://54.151.167.214:8000";
+String base_url =
+// 'https://StudentCommunity.pythonanywhere.com';
+    "http://3.110.92.194";
 
 class servers {
   LocalStorage storage = LocalStorage("usertoken");

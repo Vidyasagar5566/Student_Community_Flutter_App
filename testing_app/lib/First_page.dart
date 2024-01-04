@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:testing_app/Login/latest_login.dart';
 import '/Dating/dating.dart';
 import '/Login/login.dart';
 import '/Lost_&_Found/Lost_Found.dart';
@@ -45,6 +46,7 @@ import 'dart:async';
 import 'Calender/Servers.dart';
 
 List<POST_LIST> all_posts = [];
+List<POST_LIST> all_admin_posts = [];
 List<ALERT_LIST> all_alerts = [];
 List<EVENT_LIST> all_events = [];
 List<POST_LIST> user_posts = [];
@@ -71,7 +73,7 @@ class _get_ueser_widgetState extends State<get_ueser_widget> {
           } else if (snapshot.hasData) {
             app_user = snapshot.data;
             if (app_user.email == null) {
-              return loginpage(
+              return latest_loginpage(
                   "error occured please login again", 'Nit Calicut');
             }
             app_user = app_user;
@@ -82,15 +84,22 @@ class _get_ueser_widgetState extends State<get_ueser_widget> {
               return LoginRegister(app_user);
             }
             if (Platform.isAndroid) {
-              if (app_user.updateMark != "instabook4") {
+              if (app_user.updateMark != "instabook5") {
                 return appUpdate();
               } else {
                 return firstpage(widget.curr_index, app_user);
               }
             } else if (Platform.isIOS) {
-              if (app_user.updateMark != "instabook4") {
+              if (app_user.updateMark != "instabook5") {
                 return appUpdate();
               } else {
+                all_posts = [];
+                all_admin_posts = [];
+                all_alerts = [];
+                all_dates = [];
+                all_events = [];
+                user_posts = [];
+                all_search_users = [];
                 return firstpage(widget.curr_index, app_user);
               }
             }
@@ -382,22 +391,33 @@ class _firstpageState extends State<firstpage> {
                           //     })
                         ],
                       ),
-                      Flexible(child: postwidget(widget.app_user, 'All'))
+                      Flexible(
+                          child: all_posts.isEmpty
+                              ? postwidget(widget.app_user, 'All')
+                              : postwidget1(all_posts, app_user, domain, false))
                     ]),
                   ),
                 )
               : widget.curr_index == 1
                   ? Container(
                       color: Colors.white,
-                      child: calender(widget.app_user, domain))
+                      child: all_dates.isEmpty
+                          ? calender(widget.app_user, domain)
+                          : calenderwidget1(app_user, domain))
                   : widget.curr_index == 2
                       ? Container(
                           color: Colors.white,
-                          child: activitieswidget(widget.app_user, domain))
+                          child: all_events.isEmpty
+                              ? activitieswidget(widget.app_user, domain)
+                              : activitieswidget1(
+                                  all_events, app_user, domain, false))
                       : widget.curr_index == 3
                           ? Container(
                               color: Colors.white,
-                              child: alertwidget(widget.app_user, domain))
+                              child: all_alerts.isEmpty
+                                  ? alertwidget(widget.app_user, domain)
+                                  : alertwidget1(
+                                      all_alerts, app_user, domain, false))
                           : Container(
                               color: Colors.white,
                               child: userProfilePage(
@@ -951,8 +971,22 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (BuildContext context) {
-                            return PostWithappBar(widget.app_user,
-                                domains[widget.app_user.domain]!);
+                            return all_admin_posts.isEmpty
+                                ? PostWithappBar(widget.app_user,
+                                    domains[widget.app_user.domain]!)
+                                : Scaffold(
+                                    appBar: AppBar(
+                                        centerTitle: true,
+                                        title: Text(
+                                            domains[widget.app_user.domain]!,
+                                            style:
+                                                TextStyle(color: Colors.black)),
+                                        backgroundColor:
+                                            Colors.white //indigoAccent[700],
+                                        ),
+                                    body: postwidget1(all_admin_posts, app_user,
+                                        domains[widget.app_user.domain]!, true),
+                                  );
                           }));
                         },
                         child: Column(

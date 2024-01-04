@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
+import 'package:testing_app/Login/latest_login.dart';
 import 'package:testing_app/User_Star_Mark/Edit_User_star_mark.dart';
 import '/Side_menu_bar/Settings.dart';
 import '/User_profile/Models.dart';
@@ -91,7 +92,7 @@ class _NavDrawerState extends State<NavDrawer> {
 
               Navigator.of(context).pushReplacement(MaterialPageRoute(
                   builder: (BuildContext context) =>
-                      loginpage("", 'Nit Calicut')));
+                      latest_loginpage("", 'Nit Calicut')));
             },
           ),
           ListTile(

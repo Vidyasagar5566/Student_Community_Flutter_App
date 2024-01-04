@@ -5,6 +5,7 @@ class SAC_MEMS {
   String? logo;
   double? imgRatio;
   String? name;
+  String? title = "";
   String? description;
   String? phoneNum;
   String? email;
@@ -22,6 +23,7 @@ class SAC_MEMS {
       this.logo,
       this.imgRatio,
       this.name,
+      this.title,
       this.description,
       this.phoneNum,
       this.email,

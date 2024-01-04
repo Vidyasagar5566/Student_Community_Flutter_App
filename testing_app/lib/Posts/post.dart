@@ -115,7 +115,7 @@ class _PostWithappBarState extends State<PostWithappBar> {
                                 fontWeight: FontWeight.w500, fontSize: 24)),
                       ));
                 } else {
-                  all_posts = post_list;
+                  all_admin_posts = post_list;
                   return appBarPostList(
                       post_list, widget.app_user, widget.domain, true);
                 }
@@ -250,8 +250,9 @@ class _appBarPostListState extends State<appBarPostList> {
     List<POST_LIST> latest_post_list = await post_servers().get_post_list(
         domains1[widget.domain]!, widget.post_list.length, widget.admin_posts);
     if (latest_post_list.length != 0) {
+      all_admin_posts += latest_post_list;
       setState(() {
-        widget.post_list += latest_post_list;
+        widget.post_list = all_admin_posts;
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

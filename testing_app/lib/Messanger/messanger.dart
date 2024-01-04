@@ -272,7 +272,7 @@ class _fireBaseUuids_to_backendUsersState
                         margin: EdgeInsets.all(30),
                         padding: EdgeInsets.all(30),
                         child: const Text(
-                            "Start coversations (tap on top right Icon to select students/faculty)",
+                            "Start coversations without phone numbers.(tap on top right Icon to select students/faculty)",
                             style: TextStyle(
                                 fontWeight: FontWeight.w400, fontSize: 14)));
                   } else {
@@ -540,8 +540,9 @@ class _Groupmessanger1State extends State<Groupmessanger1> {
           ? Container(
               margin: EdgeInsets.all(30),
               padding: EdgeInsets.all(30),
-              child: const Text("No conversations started yet",
-                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 24)))
+              child: const Text(
+                "Create communities for campus works without collecting phone numbers.(tap on top right Icon to select students/faculty)",
+              ))
           : Container(
               color: Colors.white,
               width: MediaQuery.of(context).size.width,

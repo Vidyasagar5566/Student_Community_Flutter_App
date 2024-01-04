@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'login/latest_login.dart';
 import 'First_page.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -76,7 +77,7 @@ class _MyAppState extends State<MyApp> {
             );
           }
           if (storage.getItem('token') == null) {
-            return loginpage("", 'Nit Calicut');
+            return latest_loginpage("", 'Nit Calicut');
           }
           return get_ueser_widget(0);
         },

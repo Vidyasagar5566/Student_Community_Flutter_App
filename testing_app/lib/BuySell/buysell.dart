@@ -386,6 +386,10 @@ class _all_lostwidget1State extends State<all_buySellwidget1> {
                                                                                 Colors.white),
                                                                       )));
                                                         } else {
+                                                          setState(() {
+                                                            sending_cmnt[
+                                                                index] = false;
+                                                          });
                                                           ScaffoldMessenger.of(
                                                                   context)
                                                               .showSnackBar(
