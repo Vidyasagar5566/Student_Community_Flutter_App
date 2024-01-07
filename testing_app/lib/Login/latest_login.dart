@@ -29,9 +29,16 @@ class _latest_loginpageState extends State<latest_loginpage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("ESMUS",
-              style:
-                  TextStyle(fontWeight: FontWeight.bold, color: Colors.blue)),
+          title: const Column(
+            children: [
+              Text("ESMUS",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.blue)),
+              Text("IIT, NIT Community",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.blue)),
+            ],
+          ),
           centerTitle: true,
         ),
         body: Column(
@@ -59,6 +66,7 @@ class _latest_loginpageState extends State<latest_loginpage> {
                       options: CarouselOptions(
                         scrollPhysics: const BouncingScrollPhysics(),
                         autoPlay: true,
+                        autoPlayInterval: Duration(milliseconds: 1500),
                         // aspectRatio: 1,
                         // viewportFraction: 1,
                         onPageChanged: (index, reason) {

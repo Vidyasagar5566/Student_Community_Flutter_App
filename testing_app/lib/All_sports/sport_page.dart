@@ -85,7 +85,7 @@ class _sportpagewidgetState extends State<sportpagewidget> {
             ),
             centerTitle: true,
             title: Text(
-              widget.sport.head!.username!,
+              widget.sport.name!,
               style: TextStyle(color: Colors.black),
             ),
             backgroundColor: Colors.white70,
@@ -136,7 +136,7 @@ class _sportpagewidgetState extends State<sportpagewidget> {
                     height: 4,
                   ),
                   Text(
-                    head.username! + " SPORT",
+                    widget.sport.name! + " SPORT",
                     style: const TextStyle(
                         fontWeight: FontWeight.w600, color: Colors.white),
                   ),

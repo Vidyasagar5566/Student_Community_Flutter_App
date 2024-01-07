@@ -164,6 +164,13 @@ class _firstpageState extends State<firstpage> {
         triggerMode: RefreshIndicatorTriggerMode.onEdge,
         onRefresh: () async {
           await Future.delayed(Duration(milliseconds: 400));
+          all_posts = [];
+          all_admin_posts = [];
+          all_alerts = [];
+          all_dates = [];
+          all_events = [];
+          user_posts = [];
+          all_search_users = [];
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                   builder: (BuildContext context) =>
