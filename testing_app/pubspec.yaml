@@ -59,6 +59,7 @@ dependencies:
   url_launcher: ^6.1.14
   flutter_linkify: ^6.0.0
   uuid: ^4.1.0
+  google_fonts: ^6.1.0
   
 
 

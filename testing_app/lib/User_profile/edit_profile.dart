@@ -6,6 +6,8 @@ import 'dart:io';
 import '/First_page.dart';
 import '/Register_Update/Register.dart';
 
+//GoogleFonts.alegreya(
+
 class editprofile extends StatefulWidget {
   Username app_user;
   editprofile(this.app_user);
