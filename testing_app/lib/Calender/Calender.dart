@@ -240,16 +240,32 @@ class _allEventsState extends State<allEvents> {
     var wid = MediaQuery.of(context).size.width;
     event_filter_from_today(widget.selected_today);
     return filter_all_dates.length == 0
-        ? Container(
-            decoration: const BoxDecoration(
-                image: DecorationImage(
-                    //image: post.post_pic,
-                    image: AssetImage("images/background.jpg"),
-                    fit: BoxFit.cover)),
-            child: const Center(
-              child: Text("Not found any Events",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-            ),
+        ? const Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(
+                child: Text("😔",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30,
+                        color: Colors.yellow)),
+              ),
+              const SizedBox(height: 5),
+              Center(
+                child: Text(
+                  "Not found any Events",
+                  //style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)
+                ),
+              ),
+              const SizedBox(height: 5),
+              Center(
+                child: Text(
+                  "Start create you own or campus activities.",
+                  //style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)
+                ),
+              ),
+            ],
           )
         : SingleChildScrollView(
             child: ListView.builder(
@@ -387,19 +403,22 @@ class _dailyTimeTableState extends State<dailyTimeTable> {
   Widget build(BuildContext context) {
     var wid = MediaQuery.of(context).size.width;
     event_filter_from_today(widget.selected_today);
-    return filter_all_dates.length == 0
-        ? Container(
-            decoration: const BoxDecoration(
-                image: DecorationImage(
-                    //image: post.post_pic,
-                    image: AssetImage("images/background.jpg"),
-                    fit: BoxFit.cover)),
-            child: const Center(
-              child: Text("Not found any Events",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-            ),
-          )
-        : Container(
+    return
+        //filter_all_dates.length == 0
+        // ? Container(
+        //     decoration: const BoxDecoration(
+        //         image: DecorationImage(
+        //             //image: post.post_pic,
+        //             image: AssetImage("images/background.jpg"),
+        //             fit: BoxFit.cover)),
+        //     child: const Center(
+        //       child: Text("Not found any Events",
+        //           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+        //     ),
+        //   )
+        // :
+
+        Container(
             padding: EdgeInsets.only(top: 30),
             decoration: const BoxDecoration(
                 image: DecorationImage(
@@ -473,15 +492,6 @@ class _dailyTimeTableState extends State<dailyTimeTable> {
                     })));
   }
 }
-
-
-
-
-
-
-
-
-
 
 /*
 
@@ -1125,4 +1135,3 @@ class _edit_timetableState extends State<edit_timetable> {
 
 
 */
-

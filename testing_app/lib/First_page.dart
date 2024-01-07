@@ -93,13 +93,6 @@ class _get_ueser_widgetState extends State<get_ueser_widget> {
               if (app_user.updateMark != "instabook5") {
                 return appUpdate();
               } else {
-                all_posts = [];
-                all_admin_posts = [];
-                all_alerts = [];
-                all_dates = [];
-                all_events = [];
-                user_posts = [];
-                all_search_users = [];
                 return firstpage(widget.curr_index, app_user);
               }
             }
@@ -126,6 +119,13 @@ class _firstpageState extends State<firstpage> {
 
   @override
   void initState() {
+    all_posts = [];
+    all_admin_posts = [];
+    all_alerts = [];
+    all_dates = [];
+    all_events = [];
+    user_posts = [];
+    all_search_users = [];
     super.initState();
   }
 
@@ -291,6 +291,7 @@ class _firstpageState extends State<firstpage> {
                             onChanged: (value) {
                               setState(() {
                                 domain = value!;
+                                all_dates = [];
                               });
                             })
                       ],
@@ -319,6 +320,7 @@ class _firstpageState extends State<firstpage> {
                                 }).toList(),
                                 onChanged: (value) {
                                   setState(() {
+                                    all_events = [];
                                     domain = value!;
                                   });
                                 })
@@ -348,6 +350,7 @@ class _firstpageState extends State<firstpage> {
                                     }).toList(),
                                     onChanged: (value) {
                                       setState(() {
+                                        all_alerts = [];
                                         domain = value!;
                                       });
                                     })

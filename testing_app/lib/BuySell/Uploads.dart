@@ -294,7 +294,7 @@ class _buy_sell_uploadState extends State<buy_sell_upload> {
                                             .pushAndRemoveUntil(
                                                 MaterialPageRoute(builder:
                                                     (BuildContext context) {
-                                          return firstpage(0, widget.app_user);
+                                          return get_ueser_widget(0);
                                         }), (Route<dynamic> route) => false);
 
                                         await Future.delayed(

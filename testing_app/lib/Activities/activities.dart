@@ -749,10 +749,8 @@ class _event_photowidgetState extends State<event_photowidget> {
                                                                   MaterialPageRoute(builder:
                                                                       (BuildContext
                                                                           context) {
-                                                                return firstpage(
-                                                                    2,
-                                                                    widget
-                                                                        .app_user);
+                                                                return get_ueser_widget(
+                                                                    2);
                                                               }),
                                                                   (Route<dynamic>
                                                                           route) =>
