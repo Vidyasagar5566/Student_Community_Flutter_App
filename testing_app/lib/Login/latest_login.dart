@@ -34,7 +34,7 @@ class _latest_loginpageState extends State<latest_loginpage> {
               Text("ESMUS",
                   style: TextStyle(
                       fontWeight: FontWeight.bold, color: Colors.blue)),
-              Text("IIT, NIT Community",
+              Text("University Community",
                   style: TextStyle(
                       fontWeight: FontWeight.bold, color: Colors.blue)),
             ],
