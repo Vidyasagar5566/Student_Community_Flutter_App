@@ -261,7 +261,7 @@ class _allEventsState extends State<allEvents> {
               const SizedBox(height: 5),
               Center(
                 child: Text(
-                  "Start create you own or campus activities.",
+                  "Start adding you own or campus events and remainders.",
                   //style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)
                 ),
               ),

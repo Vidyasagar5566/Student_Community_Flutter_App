@@ -49,10 +49,33 @@ class _alertwidgetState extends State<alertwidget> {
                   margin: EdgeInsets.all(30),
                   padding: EdgeInsets.all(30),
                   child: const Center(
-                    child: Text(
-                      "No Data Was Found",
-                    ),
-                  ));
+                      child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: Text("😔",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 30,
+                                color: Colors.yellow)),
+                      ),
+                      const SizedBox(height: 5),
+                      Center(
+                        child: Text(
+                          "Not found any Threads",
+                          //style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)
+                        ),
+                      ),
+                      const SizedBox(height: 5),
+                      Center(
+                        child: Text(
+                          "Start creating Threads.",
+                          //style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)
+                        ),
+                      ),
+                    ],
+                  )));
             } else {
               all_alerts = alert_list;
               return alertwidget1(

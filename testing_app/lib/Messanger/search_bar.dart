@@ -69,26 +69,43 @@ class _search_barState extends State<search_bar> {
         ),
         actions: [
           widget.group_create_edit == ""
-              ? DropdownButton<String>(
-                  value: widget.domain,
-                  underline: Container(),
-                  iconEnabledColor: Colors.white,
-                  elevation: 0,
-                  items: domains_list
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(
-                        value,
-                        style: TextStyle(fontSize: 10),
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      widget.domain = value!;
-                    });
-                  })
+              ? Container(
+                  height: 25,
+                  margin: EdgeInsets.only(right: 10),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Colors.blueGrey, width: 1),
+                      borderRadius: BorderRadius.circular(8),
+                      boxShadow: const <BoxShadow>[
+                        BoxShadow(
+                            color: Color.fromRGBO(0, 0, 0, 0.2), blurRadius: 5)
+                      ]),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 15, right: 15),
+                    child: DropdownButton<String>(
+                        value: widget.domain,
+                        underline: Container(),
+                        elevation: 0,
+                        iconEnabledColor: Colors.black,
+                        iconDisabledColor: Colors.black,
+                        items: ['All', domains[widget.app_user.domain]!]
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(
+                              value,
+                              style: TextStyle(fontSize: 10),
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            widget.domain = value!;
+                          });
+                        },
+                        dropdownColor: Colors.grey),
+                  ),
+                )
               : Container()
         ],
         backgroundColor: Colors.white70,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:testing_app/Login/guestLogin.dart';
 import '../Servers_Fcm_Notif_Domains/servers.dart';
 import '/First_page.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -19,24 +21,39 @@ class latest_loginpage extends StatefulWidget {
 
 class _latest_loginpageState extends State<latest_loginpage> {
   List imageList = [
-    {"id": 1, "image_path": 'images/sliders/events.png'},
-    {"id": 2, "image_path": 'images/sliders/academic.png'},
-    {"id": 3, "image_path": 'images/sliders/parents.png'}
+    {
+      "id": 1,
+      "image_path": 'images/sliders/events.png',
+      "name": "Campus Activities"
+    },
+    {
+      "id": 2,
+      "image_path": 'images/sliders/academic.png',
+      "name": "Clubs, Fests, Sports"
+    },
+    {
+      "id": 3,
+      "image_path": 'images/sliders/parents.png',
+      "name": "Placements, Announcements, Chattings"
+    }
   ];
+
   final CarouselController carouselController = CarouselController();
   int currentIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Column(
+          title: Column(
             children: [
               Text("ESMUS",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.blue)),
+                  style: GoogleFonts.alegreya(
+                      textStyle: const TextStyle(
+                          color: Colors.blue, fontWeight: FontWeight.bold))),
               Text("University Community",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.blue)),
+                  style: GoogleFonts.alegreya(
+                      textStyle: const TextStyle(
+                          color: Colors.blue, fontWeight: FontWeight.bold))),
             ],
           ),
           centerTitle: true,
@@ -52,15 +69,17 @@ class _latest_loginpageState extends State<latest_loginpage> {
                     onTap: () {},
                     child: CarouselSlider(
                       items: imageList
-                          .map((item) => Container(
-                                margin: EdgeInsets.only(
-                                    left: 20, right: 20, bottom: 40),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    image: DecorationImage(
-                                        image: AssetImage(item['image_path']),
-                                        fit: BoxFit.cover)),
-                              ))
+                          .map(
+                            (item) => Container(
+                              margin: EdgeInsets.only(
+                                  left: 20, right: 20, bottom: 40),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  image: DecorationImage(
+                                      image: AssetImage(item['image_path']),
+                                      fit: BoxFit.cover)),
+                            ),
+                          )
                           .toList(),
                       carouselController: carouselController,
                       options: CarouselOptions(
@@ -151,143 +170,147 @@ class _latest_loginpageState extends State<latest_loginpage> {
                       Center(
                         child: TextButton(
                             onPressed: () {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return StatefulBuilder(builder:
-                                        (BuildContext context,
-                                            StateSetter setState) {
-                                      return AlertDialog(
-                                        contentPadding: EdgeInsets.all(25),
-                                        content: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Container(),
-                                                TextButton(
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                    child: Text("close"))
-                                              ],
-                                            ),
-                                            const SizedBox(height: 20),
-                                            const Center(
-                                                child: Text(
-                                                    "1. If you continue as guest, you are not allowed to receive any notifications and updates from this app",
-                                                    style: TextStyle(
-                                                        fontSize: 14,
-                                                        color: Colors.black,
-                                                        fontWeight:
-                                                            FontWeight.w400))),
-                                            const SizedBox(height: 20),
-                                            const Center(
-                                                child: Text(
-                                                    "2. Also You are not allowed to share any type of posts, and liking any contents",
-                                                    style: TextStyle(
-                                                        fontSize: 14,
-                                                        color: Colors.black,
-                                                        fontWeight:
-                                                            FontWeight.w400))),
-                                            const SizedBox(height: 20),
-                                            const Center(
-                                                child: Text(
-                                                    "3. Guests are only allowed to read the data inside the app shared by students",
-                                                    style: TextStyle(
-                                                        fontSize: 14,
-                                                        color: Colors.black,
-                                                        fontWeight:
-                                                            FontWeight.w400))),
-                                            const SizedBox(height: 30),
-                                            Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  const Text("Institute : ",
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w400)),
-                                                  DropdownButton<String>(
-                                                      value: widget.domain,
-                                                      style: const TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: Colors.black),
-                                                      underline: Container(),
-                                                      elevation: 0,
-                                                      items: domains_list_ex_all
-                                                          .map<
-                                                              DropdownMenuItem<
-                                                                  String>>((String
-                                                              value) {
-                                                        return DropdownMenuItem<
-                                                            String>(
-                                                          value: value,
-                                                          child: Text(
-                                                            value,
-                                                            style: TextStyle(
-                                                                fontSize: 10),
-                                                          ),
-                                                        );
-                                                      }).toList(),
-                                                      onChanged: (value) {
-                                                        setState(() {
-                                                          widget.domain =
-                                                              value!;
-                                                        });
-                                                      })
-                                                ]),
-                                            const SizedBox(height: 1),
-                                            Container(
-                                              margin: const EdgeInsets.all(30),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      const BorderRadius.all(
-                                                          Radius.circular(10))),
-                                              child: OutlinedButton(
-                                                  onPressed: () async {
-                                                    Navigator.pop(context);
-                                                    Navigator.of(context)
-                                                        .pushAndRemoveUntil(
-                                                            MaterialPageRoute(
-                                                                builder:
-                                                                    (BuildContext
-                                                                        context) {
-                                                      if (widget.domain !=
-                                                          "All") {
-                                                        return logincheck1(
-                                                            "guest" +
-                                                                domains1[widget
-                                                                    .domain]!,
-                                                            "@Vidyasag5566");
-                                                      } else {
-                                                        return logincheck1(
-                                                            "guest@nitc.ac.in",
-                                                            "@Vidyasag5566");
-                                                      }
-                                                    }),
-                                                            (Route<dynamic>
-                                                                    route) =>
-                                                                false);
-                                                  },
-                                                  child: const Center(
-                                                      child: Text(
-                                                    "Continue as guest?",
-                                                    style: TextStyle(
-                                                        color: Colors.blue),
-                                                  ))),
-                                            ),
-                                            const SizedBox(height: 10),
-                                          ],
-                                        ),
-                                      );
-                                    });
-                                  });
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                                return guestLogin();
+                              }));
+                              // showDialog(
+                              //     context: context,
+                              //     builder: (context) {
+                              //       return StatefulBuilder(builder:
+                              //           (BuildContext context,
+                              //               StateSetter setState) {
+                              //         return AlertDialog(
+                              //           contentPadding: EdgeInsets.all(25),
+                              //           content: Column(
+                              //             mainAxisSize: MainAxisSize.min,
+                              //             children: [
+                              //               Row(
+                              //                 mainAxisAlignment:
+                              //                     MainAxisAlignment
+                              //                         .spaceBetween,
+                              //                 children: [
+                              //                   Container(),
+                              //                   TextButton(
+                              //                       onPressed: () {
+                              //                         Navigator.pop(context);
+                              //                       },
+                              //                       child: Text("close"))
+                              //                 ],
+                              //               ),
+                              //               const SizedBox(height: 20),
+                              //               const Center(
+                              //                   child: Text(
+                              //                       "1. If you continue as guest, you are not allowed to receive any notifications and updates from this app",
+                              //                       style: TextStyle(
+                              //                           fontSize: 14,
+                              //                           color: Colors.black,
+                              //                           fontWeight:
+                              //                               FontWeight.w400))),
+                              //               const SizedBox(height: 20),
+                              //               const Center(
+                              //                   child: Text(
+                              //                       "2. Also You are not allowed to share any type of posts, and liking any contents",
+                              //                       style: TextStyle(
+                              //                           fontSize: 14,
+                              //                           color: Colors.black,
+                              //                           fontWeight:
+                              //                               FontWeight.w400))),
+                              //               const SizedBox(height: 20),
+                              //               const Center(
+                              //                   child: Text(
+                              //                       "3. Guests are only allowed to read the data inside the app shared by students",
+                              //                       style: TextStyle(
+                              //                           fontSize: 14,
+                              //                           color: Colors.black,
+                              //                           fontWeight:
+                              //                               FontWeight.w400))),
+                              //               const SizedBox(height: 30),
+                              //               Row(
+                              //                   mainAxisAlignment:
+                              //                       MainAxisAlignment
+                              //                           .spaceBetween,
+                              //                   children: [
+                              //                     const Text("Institute : ",
+                              //                         style: TextStyle(
+                              //                             fontWeight:
+                              //                                 FontWeight.w400)),
+                              //                     DropdownButton<String>(
+                              //                         value: widget.domain,
+                              //                         style: const TextStyle(
+                              //                             fontWeight:
+                              //                                 FontWeight.bold,
+                              //                             color: Colors.black),
+                              //                         underline: Container(),
+                              //                         elevation: 0,
+                              //                         items: domains_list_ex_all
+                              //                             .map<
+                              //                                 DropdownMenuItem<
+                              //                                     String>>((String
+                              //                                 value) {
+                              //                           return DropdownMenuItem<
+                              //                               String>(
+                              //                             value: value,
+                              //                             child: Text(
+                              //                               value,
+                              //                               style: TextStyle(
+                              //                                   fontSize: 10),
+                              //                             ),
+                              //                           );
+                              //                         }).toList(),
+                              //                         onChanged: (value) {
+                              //                           setState(() {
+                              //                             widget.domain =
+                              //                                 value!;
+                              //                           });
+                              //                         })
+                              //                   ]),
+                              //               const SizedBox(height: 1),
+                              //               Container(
+                              //                 margin: const EdgeInsets.all(30),
+                              //                 decoration: BoxDecoration(
+                              //                     borderRadius:
+                              //                         const BorderRadius.all(
+                              //                             Radius.circular(10))),
+                              //                 child: OutlinedButton(
+                              //                     onPressed: () async {
+                              //                       Navigator.pop(context);
+                              //                       Navigator.of(context)
+                              //                           .pushAndRemoveUntil(
+                              //                               MaterialPageRoute(
+                              //                                   builder:
+                              //                                       (BuildContext
+                              //                                           context) {
+                              //                         if (widget.domain !=
+                              //                             "All") {
+                              //                           return logincheck1(
+                              //                               "guest" +
+                              //                                   domains1[widget
+                              //                                       .domain]!,
+                              //                               "@Vidyasag5566");
+                              //                         } else {
+                              //                           return logincheck1(
+                              //                               "guest@nitc.ac.in",
+                              //                               "@Vidyasag5566");
+                              //                         }
+                              //                       }),
+                              //                               (Route<dynamic>
+                              //                                       route) =>
+                              //                                   false);
+                              //                     },
+                              //                     child: const Center(
+                              //                         child: Text(
+                              //                       "Continue as guest?",
+                              //                       style: TextStyle(
+                              //                           color: Colors.blue),
+                              //                     ))),
+                              //               ),
+                              //               const SizedBox(height: 10),
+                              //             ],
+                              //           ),
+                              //         );
+                              //       });
+                              //     });
                             },
                             child: const Text("Guest Login?",
                                 style: TextStyle(

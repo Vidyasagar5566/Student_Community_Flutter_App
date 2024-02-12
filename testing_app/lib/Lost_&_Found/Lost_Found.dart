@@ -21,7 +21,7 @@ String utf8convert(String text) {
 }
 
 List<String> lostCategory = [
-  "All",
+  "Category",
   "cards",
   "essentials",
   "smartDevices",
@@ -92,55 +92,90 @@ class _all_lostwidget1State extends State<all_lostwidget1> {
           actions: [
             Row(
               children: [
-                DropdownButton<String>(
-                    value: widget.tag,
-                    underline: Container(),
-                    elevation: 0,
-                    items: ["All", "lost", "found"]
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(
-                          value,
-                          style: TextStyle(fontSize: 10),
-                        ),
-                      );
-                    }).toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        widget.tag = value!;
-                        setState(() {
-                          widget.lst_buy_list = [];
-                          total_loaded = false;
-                          load_data_fun();
-                        });
-                      });
-                    }),
+                Container(
+                  height: 25,
+                  margin: EdgeInsets.only(right: 2),
+                  padding: EdgeInsets.all(0),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Colors.blueGrey, width: 1),
+                      borderRadius: BorderRadius.circular(8),
+                      boxShadow: const <BoxShadow>[
+                        BoxShadow(
+                            color: Color.fromRGBO(0, 0, 0, 0.2), blurRadius: 5)
+                      ]),
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 4),
+                    child: DropdownButton<String>(
+                        value: widget.tag == "All" ? "Tag" : widget.tag,
+                        underline: Container(),
+                        elevation: 0,
+                        items: ["Tag", "lost", "found"]
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(
+                              value,
+                              style: TextStyle(fontSize: 10),
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            widget.tag = value == "Tag" ? "All" : value!;
+                            setState(() {
+                              widget.lst_buy_list = [];
+                              total_loaded = false;
+                              load_data_fun();
+                            });
+                          });
+                        }),
+                  ),
+                ),
                 const SizedBox(width: 5),
-                DropdownButton<String>(
-                    value: widget.category,
-                    underline: Container(),
-                    elevation: 0,
-                    items: lostCategory
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(
-                          value,
-                          style: TextStyle(fontSize: 10),
-                        ),
-                      );
-                    }).toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        widget.category = value!;
-                        setState(() {
-                          widget.lst_buy_list = [];
-                          total_loaded = false;
-                          load_data_fun();
-                        });
-                      });
-                    }),
+                Container(
+                  height: 25,
+                  margin: EdgeInsets.only(right: 2),
+                  padding: EdgeInsets.all(0),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Colors.blueGrey, width: 1),
+                      borderRadius: BorderRadius.circular(8),
+                      boxShadow: const <BoxShadow>[
+                        BoxShadow(
+                            color: Color.fromRGBO(0, 0, 0, 0.2), blurRadius: 5)
+                      ]),
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 4),
+                    child: DropdownButton<String>(
+                        value: widget.category == "All"
+                            ? "Category"
+                            : widget.category,
+                        underline: Container(),
+                        elevation: 0,
+                        items: lostCategory
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(
+                              value,
+                              style: TextStyle(fontSize: 10),
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            widget.category =
+                                value == "Category" ? "All" : value!;
+                            setState(() {
+                              widget.lst_buy_list = [];
+                              total_loaded = false;
+                              load_data_fun();
+                            });
+                          });
+                        }),
+                  ),
+                ),
               ],
             )
           ],

@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import '../Servers_Fcm_Notif_Domains/servers.dart';
+import 'Models.dart';
 
 class login_servers {
   LocalStorage storage = LocalStorage("usertoken");
@@ -28,7 +29,7 @@ class login_servers {
     }
   }
 
-// LOGIN FUNCTION
+// LOGIN FUNCTION   ... GET TOKEN FUNCTION IN BACK
   Future<bool> loginNow(String username, String password) async {
     try {
 //      if (username == "VidyaSagar") {
@@ -51,6 +52,28 @@ class login_servers {
       return true;
     } catch (e) {
       return true;
+    }
+  }
+
+// GETTING UNIVERSITIES LIST
+  Future<List<Universities>> getUniversities() async {
+    try {
+      var path = Uri.parse("$base_url/login2_token");
+      var response = await http.get(
+        path,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      );
+      var data = jsonDecode(response.body) as List;
+      List<Universities> temp = [];
+      data.forEach((element) {
+        Universities post = Universities.fromJson(element);
+        temp.add(post);
+      });
+      return temp;
+    } catch (e) {
+      return [];
     }
   }
 
@@ -82,6 +105,7 @@ class login_servers {
       });
       var data = json.decode(response.body);
       Username user = Username.fromJson(data);
+      await universitySetup();
       return user;
     } catch (e) {
       Username user = Username();
@@ -106,4 +130,16 @@ class login_servers {
       return true;
     }
   }
+}
+
+Future<bool> universitySetup() async {
+  List<Universities> universities = await login_servers().getUniversities();
+  for (int i = 0; i < universities.length; i++) {
+    domains[universities[i].domain!] = universities[i].unvName!;
+    domains1[universities[i].unvName!] = universities[i].domain!;
+    domains_list2.add(universities[i].domain!);
+    domains_list.add(universities[i].unvName!);
+    domains_list_ex_all.add(universities[i].unvName!);
+  }
+  return true;
 }

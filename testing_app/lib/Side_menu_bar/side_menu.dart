@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:testing_app/Login/latest_login.dart';
 import 'package:testing_app/User_Star_Mark/Edit_User_star_mark.dart';
@@ -51,7 +52,9 @@ class _NavDrawerState extends State<NavDrawer> {
           ),
           ListTile(
             leading: Icon(Icons.verified_user),
-            title: Text('Edit profile'),
+            title: Text('Edit profile',
+                style: GoogleFonts.alegreya(
+                    textStyle: TextStyle(color: Colors.black))),
             onTap: () {
               Navigator.of(context)
                   .push(MaterialPageRoute(builder: (BuildContext context) {
@@ -74,7 +77,9 @@ class _NavDrawerState extends State<NavDrawer> {
               : Container(),
           ListTile(
             leading: Icon(Icons.settings),
-            title: Text('Settings'),
+            title: Text('Settings',
+                style: GoogleFonts.alegreya(
+                    textStyle: TextStyle(color: Colors.black))),
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (BuildContext context) => notif_settings(
@@ -84,7 +89,9 @@ class _NavDrawerState extends State<NavDrawer> {
           ),
           ListTile(
             leading: const Icon(Icons.exit_to_app),
-            title: const Text('Logout'),
+            title: Text('Logout',
+                style: GoogleFonts.alegreya(
+                    textStyle: TextStyle(color: Colors.black))),
             onTap: () async {
               await GoogleSignIn().signOut();
               LocalStorage storage = LocalStorage("usertoken");
@@ -97,7 +104,9 @@ class _NavDrawerState extends State<NavDrawer> {
           ),
           ListTile(
             leading: Icon(Icons.border_color),
-            title: Text('Help Center'),
+            title: Text('Help Center',
+                style: GoogleFonts.alegreya(
+                    textStyle: TextStyle(color: Colors.black))),
             onTap: () => {
               setState(() {
                 Navigator.of(context)

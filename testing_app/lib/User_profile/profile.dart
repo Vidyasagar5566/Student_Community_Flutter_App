@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '/BuySell/buysell.dart';
 import '/Lost_&_Found/Lost_Found.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -71,15 +72,16 @@ class _userProfilePageState extends State<userProfilePage> {
                               builder: (BuildContext context) =>
                                   editprofile(widget.profile_user)));
                         },
-                        child: const Row(
+                        child: Row(
                           children: [
                             Text("Edit",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold)),
+                                style: GoogleFonts.alegreya(
+                                    textStyle: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold))),
                             SizedBox(width: 4),
-                            Icon(
+                            const Icon(
                               Icons.edit,
                               color: Colors.white,
                             ),
@@ -376,26 +378,26 @@ class _userProfilePageState extends State<userProfilePage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    children: [
-                      const Text("Clubs",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              fontSize: 15)),
-                      GestureDetector(
-                        onTap: () {
-                          for (int i = 1; i < 4; i++) {
-                            setState(() {
-                              club_sport_fest_sac[i] = false;
-                            });
-                          }
-                          setState(() {
-                            widget.app_user = widget.app_user;
-                            club_sport_fest_sac[0] = !club_sport_fest_sac[0];
-                          });
-                        },
-                        child: Row(
+                  GestureDetector(
+                    onTap: () {
+                      for (int i = 1; i < 4; i++) {
+                        setState(() {
+                          club_sport_fest_sac[i] = false;
+                        });
+                      }
+                      setState(() {
+                        widget.app_user = widget.app_user;
+                        club_sport_fest_sac[0] = !club_sport_fest_sac[0];
+                      });
+                    },
+                    child: Column(
+                      children: [
+                        const Text("Clubs",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: 15)),
+                        Row(
                           children: [
                             Text(
                               (widget.profile_user.clzClubs!['head'].length +
@@ -416,29 +418,29 @@ class _userProfilePageState extends State<userProfilePage> {
                                   )
                           ],
                         ),
-                      )
-                    ],
+                      ],
+                    ),
                   ),
-                  Column(
-                    children: [
-                      const Text("Sports",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              fontSize: 15)),
-                      GestureDetector(
-                        onTap: () {
-                          for (int i = 0; i < 4; i++) {
-                            setState(() {
-                              if (i != 1) club_sport_fest_sac[i] = false;
-                            });
-                          }
-                          setState(() {
-                            widget.app_user = widget.app_user;
-                            club_sport_fest_sac[1] = !club_sport_fest_sac[1];
-                          });
-                        },
-                        child: Row(
+                  GestureDetector(
+                    onTap: () {
+                      for (int i = 0; i < 4; i++) {
+                        setState(() {
+                          if (i != 1) club_sport_fest_sac[i] = false;
+                        });
+                      }
+                      setState(() {
+                        widget.app_user = widget.app_user;
+                        club_sport_fest_sac[1] = !club_sport_fest_sac[1];
+                      });
+                    },
+                    child: Column(
+                      children: [
+                        const Text("Sports",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: 15)),
+                        Row(
                           children: [
                             Text(
                               (widget.profile_user.clzSports!['head'].length +
@@ -459,29 +461,29 @@ class _userProfilePageState extends State<userProfilePage> {
                                   )
                           ],
                         ),
-                      )
-                    ],
+                      ],
+                    ),
                   ),
-                  Column(
-                    children: [
-                      const Text("Fests",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              fontSize: 15)),
-                      GestureDetector(
-                        onTap: () {
-                          for (int i = 0; i < 4; i++) {
-                            setState(() {
-                              if (i != 2) club_sport_fest_sac[i] = false;
-                            });
-                          }
-                          setState(() {
-                            widget.app_user = widget.app_user;
-                            club_sport_fest_sac[2] = !club_sport_fest_sac[2];
-                          });
-                        },
-                        child: Row(
+                  GestureDetector(
+                    onTap: () {
+                      for (int i = 0; i < 4; i++) {
+                        setState(() {
+                          if (i != 2) club_sport_fest_sac[i] = false;
+                        });
+                      }
+                      setState(() {
+                        widget.app_user = widget.app_user;
+                        club_sport_fest_sac[2] = !club_sport_fest_sac[2];
+                      });
+                    },
+                    child: Column(
+                      children: [
+                        const Text("Fests",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: 15)),
+                        Row(
                           children: [
                             Text(
                               (widget.profile_user.clzFests!['head'].length +
@@ -502,29 +504,29 @@ class _userProfilePageState extends State<userProfilePage> {
                                   )
                           ],
                         ),
-                      )
-                    ],
+                      ],
+                    ),
                   ),
-                  Column(
-                    children: [
-                      const Text("SAC",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              fontSize: 15)),
-                      GestureDetector(
-                        onTap: () {
-                          for (int i = 0; i < 4; i++) {
-                            setState(() {
-                              if (i != 3) club_sport_fest_sac[i] = false;
-                            });
-                          }
-                          setState(() {
-                            widget.app_user = widget.app_user;
-                            club_sport_fest_sac[3] = !club_sport_fest_sac[3];
-                          });
-                        },
-                        child: Row(
+                  GestureDetector(
+                    onTap: () {
+                      for (int i = 0; i < 4; i++) {
+                        setState(() {
+                          if (i != 3) club_sport_fest_sac[i] = false;
+                        });
+                      }
+                      setState(() {
+                        widget.app_user = widget.app_user;
+                        club_sport_fest_sac[3] = !club_sport_fest_sac[3];
+                      });
+                    },
+                    child: Column(
+                      children: [
+                        const Text("SAC",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: 15)),
+                        Row(
                           children: [
                             Text(
                               (widget.profile_user.clzSacs!['head'].length +
@@ -545,8 +547,8 @@ class _userProfilePageState extends State<userProfilePage> {
                                   )
                           ],
                         ),
-                      )
-                    ],
+                      ],
+                    ),
                   )
                 ],
               ),

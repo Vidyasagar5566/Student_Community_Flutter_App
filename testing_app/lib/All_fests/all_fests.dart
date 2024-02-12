@@ -39,24 +39,42 @@ class _AllfestspagewidgetState extends State<Allfestspagewidget> {
           style: TextStyle(color: Colors.black),
         ),
         actions: [
-          DropdownButton<String>(
-              value: widget.domain,
-              underline: Container(),
-              elevation: 0,
-              items: domains_list.map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(
-                    value,
-                    style: TextStyle(fontSize: 10),
-                  ),
-                );
-              }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  widget.domain = value!;
-                });
-              })
+          Container(
+            height: 25,
+            margin: EdgeInsets.only(right: 10),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(color: Colors.blueGrey, width: 1),
+                borderRadius: BorderRadius.circular(8),
+                boxShadow: const <BoxShadow>[
+                  BoxShadow(color: Color.fromRGBO(0, 0, 0, 0.2), blurRadius: 5)
+                ]),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 15, right: 15),
+              child: DropdownButton<String>(
+                  value: widget.domain,
+                  underline: Container(),
+                  elevation: 0,
+                  iconEnabledColor: Colors.black,
+                  iconDisabledColor: Colors.black,
+                  items: ['All', domains[widget.app_user.domain]!]
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(
+                        value,
+                        style: TextStyle(fontSize: 10),
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      widget.domain = value!;
+                    });
+                  },
+                  dropdownColor: Colors.grey),
+            ),
+          )
         ],
         backgroundColor: Colors.white70,
       ),
@@ -75,8 +93,36 @@ class _AllfestspagewidgetState extends State<Allfestspagewidget> {
               List<ALL_FESTS> Allfests = snapshot.data;
               if (Allfests.isEmpty) {
                 return Container(
-                  child: Center(child: Text("No Fests Was Joined")),
-                );
+                    margin: const EdgeInsets.all(30),
+                    padding: const EdgeInsets.all(30),
+                    child: const Center(
+                        child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Center(
+                          child: Text("😔",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 30,
+                                  color: Colors.yellow)),
+                        ),
+                        const SizedBox(height: 5),
+                        Center(
+                          child: Text(
+                            "No Fests were Joined",
+                            //style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        Center(
+                          child: Text(
+                            "Contact you Fest admins to join.",
+                            //style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)
+                          ),
+                        ),
+                      ],
+                    )));
               } else {
                 return Allfestspagewidget1(Allfests, widget.app_user);
               }

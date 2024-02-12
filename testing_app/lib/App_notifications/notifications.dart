@@ -50,13 +50,37 @@ class _notificationsState extends State<notifications> {
                 List<Notifications> notif_list = snapshot.data;
                 if (notif_list.length == 0) {
                   return Container(
-                      margin: EdgeInsets.all(30),
-                      padding: EdgeInsets.all(30),
+                      margin: const EdgeInsets.all(30),
+                      padding: const EdgeInsets.all(30),
                       child: const Center(
-                        child: Text("No Announcements yet",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 24)),
-                      ));
+                          child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Center(
+                            child: Text("😔",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 30,
+                                    color: Colors.yellow)),
+                          ),
+                          const SizedBox(height: 5),
+                          Center(
+                            child: Text(
+                              "Not Found Any Announcements Yet",
+                              //style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)
+                            ),
+                          ),
+                          const SizedBox(height: 5),
+                          Center(
+                            child: Text(
+                              "Start Sharing...",
+                              //style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)
+                            ),
+                          ),
+                        ],
+                      )));
+                  ;
                 } else {
                   return notifications1(notif_list, widget.app_user);
                 }

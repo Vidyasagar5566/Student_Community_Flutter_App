@@ -47,20 +47,10 @@ class _postwidgetState extends State<postwidget> {
             );
           } else if (snapshot.hasData) {
             List<POST_LIST> post_list = snapshot.data;
-            if (post_list.length == 0) {
-              return Container(
-                  margin: EdgeInsets.all(30),
-                  padding: EdgeInsets.all(30),
-                  child: const Center(
-                    child: Text(
-                      "No Data Was Found",
-                    ),
-                  ));
-            } else {
-              all_posts = post_list;
-              return postwidget1(
-                  post_list, widget.app_user, widget.domain, false);
-            }
+
+            all_posts = post_list;
+            return postwidget1(
+                post_list, widget.app_user, widget.domain, false);
           }
         }
         return Center(
@@ -105,20 +95,10 @@ class _PostWithappBarState extends State<PostWithappBar> {
                 );
               } else if (snapshot.hasData) {
                 List<POST_LIST> post_list = snapshot.data;
-                if (post_list.length == 0) {
-                  return Container(
-                      margin: EdgeInsets.all(30),
-                      padding: EdgeInsets.all(30),
-                      child: const Center(
-                        child: Text("No posts yet",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 24)),
-                      ));
-                } else {
-                  all_admin_posts = post_list;
-                  return appBarPostList(
-                      post_list, widget.app_user, widget.domain, true);
-                }
+
+                all_admin_posts = post_list;
+                return appBarPostList(
+                    post_list, widget.app_user, widget.domain, true);
               }
             }
             return Center(
@@ -179,11 +159,37 @@ class _postwidget1State extends State<postwidget1> {
           children: [
             widget.post_list.isEmpty
                 ? Container(
-                    margin: EdgeInsets.only(top: height / 3),
+                    height: 500,
+                    margin: const EdgeInsets.all(30),
+                    padding: const EdgeInsets.all(30),
                     child: const Center(
-                      child: Text("No Data Was Found"),
-                    ),
-                  )
+                        child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Center(
+                          child: Text("😔",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 30,
+                                  color: Colors.yellow)),
+                        ),
+                        const SizedBox(height: 5),
+                        Center(
+                          child: Text(
+                            "Not Shared any Post Yet",
+                            //style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        Center(
+                          child: Text(
+                            "Start Sharing Your Campus Feed.",
+                            //style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)
+                          ),
+                        ),
+                      ],
+                    )))
                 : ListView.builder(
                     itemCount: widget.post_list.length,
                     shrinkWrap: true,
@@ -200,27 +206,29 @@ class _postwidget1State extends State<postwidget1> {
                     }),
             const SizedBox(height: 10),
             total_loaded
-                ? Container(
-                    width: width,
-                    height: 100,
-                    child: Center(
-                        child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                total_loaded = false;
-                              });
-                              load_data_fun();
-                            },
-                            child: const Column(
-                              children: [
-                                Icon(Icons.add_circle_outline,
-                                    size: 40, color: Colors.blue),
-                                Text(
-                                  "Tap To Load more",
-                                  style: TextStyle(color: Colors.blue),
-                                )
-                              ],
-                            ))))
+                ? widget.post_list.isEmpty
+                    ? Container()
+                    : Container(
+                        width: width,
+                        height: 100,
+                        child: Center(
+                            child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    total_loaded = false;
+                                  });
+                                  load_data_fun();
+                                },
+                                child: const Column(
+                                  children: [
+                                    Icon(Icons.add_circle_outline,
+                                        size: 40, color: Colors.blue),
+                                    Text(
+                                      "Tap To Load more",
+                                      style: TextStyle(color: Colors.blue),
+                                    )
+                                  ],
+                                ))))
                 : Container(
                     width: 100,
                     height: 100,
@@ -280,11 +288,37 @@ class _appBarPostListState extends State<appBarPostList> {
           children: [
             widget.post_list.isEmpty
                 ? Container(
-                    margin: EdgeInsets.only(top: height / 3),
+                    height: 500,
+                    margin: const EdgeInsets.all(30),
+                    padding: const EdgeInsets.all(30),
                     child: const Center(
-                      child: Text("No Data Was Found"),
-                    ),
-                  )
+                        child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Center(
+                          child: Text("😔",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 30,
+                                  color: Colors.yellow)),
+                        ),
+                        const SizedBox(height: 5),
+                        Center(
+                          child: Text(
+                            "Not Shared any Post Yet",
+                            //style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        Center(
+                          child: Text(
+                            "Start Sharing Your Campus Feed.",
+                            //style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)
+                          ),
+                        ),
+                      ],
+                    )))
                 : ListView.builder(
                     itemCount: widget.post_list.length,
                     shrinkWrap: true,
@@ -302,27 +336,29 @@ class _appBarPostListState extends State<appBarPostList> {
                     }),
             const SizedBox(height: 10),
             total_loaded
-                ? Container(
-                    width: width,
-                    height: 100,
-                    child: Center(
-                        child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                total_loaded = false;
-                              });
-                              load_data_fun();
-                            },
-                            child: const Column(
-                              children: [
-                                Icon(Icons.add_circle_outline,
-                                    size: 40, color: Colors.blue),
-                                Text(
-                                  "Tap To Load more",
-                                  style: TextStyle(color: Colors.blue),
-                                )
-                              ],
-                            ))))
+                ? widget.post_list.isEmpty
+                    ? Container()
+                    : Container(
+                        width: width,
+                        height: 100,
+                        child: Center(
+                            child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    total_loaded = false;
+                                  });
+                                  load_data_fun();
+                                },
+                                child: const Column(
+                                  children: [
+                                    Icon(Icons.add_circle_outline,
+                                        size: 40, color: Colors.blue),
+                                    Text(
+                                      "Tap To Load more",
+                                      style: TextStyle(color: Colors.blue),
+                                    )
+                                  ],
+                                ))))
                 : Container(
                     width: 100,
                     height: 100,

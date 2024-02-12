@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '/First_page.dart';
 import '../Login/Login.dart';
 
@@ -83,9 +84,10 @@ class _crclr_ind_appbarState extends State<crclr_ind_appbar> {
     return Scaffold(
       appBar: AppBar(
           centerTitle: true,
-          title: const Text(
+          title: Text(
             "ESMUS",
-            style: TextStyle(color: Colors.black),
+            style:
+                GoogleFonts.alegreya(textStyle: TextStyle(color: Colors.black)),
           ),
           backgroundColor: Colors.white //indigoAccent[700],
           ),
@@ -127,9 +129,10 @@ class _crclr_ind_errorState extends State<crclr_ind_error> {
       appBar: AppBar(
           centerTitle: true,
           iconTheme: IconThemeData(color: Colors.blue),
-          title: const Text(
+          title: Text(
             "ESMUS",
-            style: TextStyle(color: Colors.black),
+            style:
+                GoogleFonts.alegreya(textStyle: TextStyle(color: Colors.black)),
           ),
           backgroundColor: Colors.white //indigoAccent[700],
           ),
@@ -170,7 +173,8 @@ class _crclr_ind_errorState extends State<crclr_ind_error> {
             TextButton(
                 onPressed: () {
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (BuildContext context) => loginpage("",'Nit Calicut')));
+                      builder: (BuildContext context) =>
+                          loginpage("", 'Nit Calicut')));
                 },
                 child: const Text(
                   "Return to login page",
@@ -197,9 +201,10 @@ class _check_connect_errorState extends State<check_connect_error> {
     return Scaffold(
       appBar: AppBar(
           centerTitle: true,
-          title: const Text(
+          title: Text(
             "ESMUS",
-            style: TextStyle(color: Colors.black),
+            style:
+                GoogleFonts.alegreya(textStyle: TextStyle(color: Colors.black)),
           ),
           backgroundColor: Colors.white //indigoAccent[700],
           ),
@@ -239,9 +244,10 @@ class _networl_errorState extends State<networl_error> {
     return Scaffold(
         appBar: AppBar(
             centerTitle: true,
-            title: const Text(
+            title: Text(
               "ESMUS",
-              style: TextStyle(color: Colors.black),
+              style: GoogleFonts.alegreya(
+                  textStyle: TextStyle(color: Colors.black)),
             ),
             backgroundColor: Colors.white //indigoAccent[700],
             ),

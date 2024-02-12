@@ -1,7 +1,7 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:testing_app/Login/latest_login.dart';
 import '/Dating/dating.dart';
 import '/Login/login.dart';
@@ -114,7 +114,7 @@ class firstpage extends StatefulWidget {
 }
 
 class _firstpageState extends State<firstpage> {
-  String domain = 'All';
+  String domain = domains[app_user.domain]!; //'All';
   bool drop_colors = true;
 
   @override
@@ -258,91 +258,88 @@ class _firstpageState extends State<firstpage> {
                   centerTitle: false,
                   title: ((widget.app_user.email == "shiva@gmail.com" ||
                           widget.app_user.email == "guest@gmail.com")
-                      ? const Text(
+                      ? Text(
                           "ESMUS",
-                          style: TextStyle(color: Colors.black),
+                          style: GoogleFonts.alegreya(
+                              textStyle: TextStyle(color: Colors.black)),
                         )
                       : Text(
                           domains[widget.app_user.domain!]!,
-                          style: const TextStyle(color: Colors.black),
+                          style: GoogleFonts.alegreya(
+                              textStyle: TextStyle(color: Colors.black)),
                         )),
                   actions: [_actions()],
                   backgroundColor: Colors.white,
                 )
               : widget.curr_index == 1
                   ? AppBar(
-                      title: Text("Calendar"),
+                      title: Text(
+                        "Calendar",
+                        style: GoogleFonts.alegreya(
+                            textStyle: TextStyle(color: Colors.black)),
+                      ),
                       centerTitle: false,
                       actions: [
-                        _actions()
-                        // DropdownButton<String>(
-                        //     value: domain,
-                        //     underline: Container(),
-                        //     elevation: 0,
-                        //     iconEnabledColor: Colors.black,
-                        //     iconDisabledColor: Colors.black,
-                        //     items: domains_list
-                        //         .map<DropdownMenuItem<String>>((String value) {
-                        //       return DropdownMenuItem<String>(
-                        //         value: value,
-                        //         child: Text(
-                        //           value,
-                        //           style: TextStyle(fontSize: 10),
-                        //         ),
-                        //       );
-                        //     }).toList(),
-                        //     onChanged: (value) {
-                        //       setState(() {
-                        //         domain = value!;
-                        //         all_dates = [];
-                        //       });
-                        //     })
-                      ],
-                    )
+                          _actions()
+                          // DropdownButton<String>(
+                          //     value: domain,
+                          //     underline: Container(),
+                          //     elevation: 0,
+                          //     iconEnabledColor: Colors.black,
+                          //     iconDisabledColor: Colors.black,
+                          //     items: domains_list
+                          //         .map<DropdownMenuItem<String>>((String value) {
+                          //       return DropdownMenuItem<String>(
+                          //         value: value,
+                          //         child: Text(
+                          //           value,
+                          //           style: TextStyle(fontSize: 10),
+                          //         ),
+                          //       );
+                          //     }).toList(),
+                          //     onChanged: (value) {
+                          //       setState(() {
+                          //         domain = value!;
+                          //         all_dates = [];
+                          //       });
+                          //     })
+                        ])
                   : widget.curr_index == 2
                       ? AppBar(
-                          title: Text("Events"),
+                          title: Text(
+                            "Events",
+                            style: GoogleFonts.alegreya(
+                                textStyle: TextStyle(color: Colors.black)),
+                          ),
                           centerTitle: false,
                           actions: [
-                            DropdownButton<String>(
-                                value: domain,
-                                underline: Container(),
-                                elevation: 0,
-                                iconEnabledColor: Colors.black,
-                                iconDisabledColor: Colors.black,
-                                items: domains_list
-                                    .map<DropdownMenuItem<String>>(
-                                        (String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(
-                                      value,
-                                      style: TextStyle(fontSize: 10),
-                                    ),
-                                  );
-                                }).toList(),
-                                onChanged: (value) {
-                                  setState(() {
-                                    all_events = [];
-                                    domain = value!;
-                                  });
-                                })
-                          ],
-                        )
-                      : widget.curr_index == 3
-                          ? AppBar(
-                              title: Text("Threads"),
-                              centerTitle: false,
-                              actions: [
-                                DropdownButton<String>(
+                            Container(
+                              height: 25,
+                              margin: EdgeInsets.only(right: 10),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(
+                                      color: Colors.blueGrey, width: 1),
+                                  borderRadius: BorderRadius.circular(8),
+                                  boxShadow: const <BoxShadow>[
+                                    BoxShadow(
+                                        color: Color.fromRGBO(0, 0, 0, 0.2),
+                                        blurRadius: 5)
+                                  ]),
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 15, right: 15),
+                                child: DropdownButton<String>(
                                     value: domain,
                                     underline: Container(),
                                     elevation: 0,
                                     iconEnabledColor: Colors.black,
                                     iconDisabledColor: Colors.black,
-                                    items: domains_list
-                                        .map<DropdownMenuItem<String>>(
-                                            (String value) {
+                                    items: [
+                                      'All',
+                                      domains[widget.app_user.domain]!
+                                    ].map<DropdownMenuItem<String>>(
+                                        (String value) {
                                       return DropdownMenuItem<String>(
                                         value: value,
                                         child: Text(
@@ -353,10 +350,69 @@ class _firstpageState extends State<firstpage> {
                                     }).toList(),
                                     onChanged: (value) {
                                       setState(() {
-                                        all_alerts = [];
+                                        all_events = [];
                                         domain = value!;
                                       });
-                                    })
+                                    },
+                                    dropdownColor: Colors.grey),
+                              ),
+                            )
+                          ],
+                        )
+                      : widget.curr_index == 3
+                          ? AppBar(
+                              title: Text(
+                                "Threads",
+                                style: GoogleFonts.alegreya(
+                                    textStyle: TextStyle(color: Colors.black)),
+                              ),
+                              centerTitle: false,
+                              actions: [
+                                Container(
+                                  height: 25,
+                                  margin: EdgeInsets.only(right: 10),
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      border: Border.all(
+                                          color: Colors.blueGrey, width: 1),
+                                      borderRadius: BorderRadius.circular(8),
+                                      boxShadow: const <BoxShadow>[
+                                        BoxShadow(
+                                            color: Color.fromRGBO(0, 0, 0, 0.2),
+                                            blurRadius: 5)
+                                      ]),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 15, right: 15),
+                                    child: DropdownButton<String>(
+                                      value: domain,
+                                      underline: Container(),
+                                      elevation: 0,
+                                      iconEnabledColor: Colors.black,
+                                      iconDisabledColor: Colors.black,
+                                      items: [
+                                        'All',
+                                        domains[widget.app_user.domain]!
+                                      ].map<DropdownMenuItem<String>>(
+                                          (String value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Text(
+                                            value,
+                                            style: TextStyle(fontSize: 10),
+                                          ),
+                                        );
+                                      }).toList(),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          all_events = [];
+                                          domain = value!;
+                                        });
+                                      },
+                                      dropdownColor: Colors.grey,
+                                    ),
+                                  ),
+                                )
                               ],
                             )
                           : null,
@@ -370,43 +426,80 @@ class _firstpageState extends State<firstpage> {
                         margin: const EdgeInsets.only(top: 20, bottom: 10),
                         child: MAINBUTTONSwidget1(widget.app_user),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                              margin: const EdgeInsets.all(8),
-                              child: const Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    "Posts",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 15),
-                                  ))),
-                          // DropdownButton<String>(
-                          //     value: domain,
-                          //     underline: Container(),
-                          //     elevation: 0,
-                          //     items: domains_list.map<DropdownMenuItem<String>>(
-                          //         (String value) {
-                          //       return DropdownMenuItem<String>(
-                          //         value: value,
-                          //         child: Text(
-                          //           value,
-                          //           style: TextStyle(fontSize: 10),
-                          //         ),
-                          //       );
-                          //     }).toList(),
-                          //     onChanged: (value) {
-                          //       setState(() {
-                          //         domain = value!;
-                          //       });
-                          //     })
-                        ],
+                      Container(
+                        margin: EdgeInsets.all(8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                                margin: const EdgeInsets.all(8),
+                                child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      "Posts",
+                                      style: GoogleFonts.alegreya(
+                                          textStyle: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w500)),
+                                    ))),
+                            Container(
+                              height: 25,
+                              margin: EdgeInsets.only(right: 10),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(
+                                      color: Colors.blueGrey, width: 1),
+                                  borderRadius: BorderRadius.circular(8),
+                                  boxShadow: const <BoxShadow>[
+                                    BoxShadow(
+                                        color: Color.fromRGBO(0, 0, 0, 0.2),
+                                        blurRadius: 5)
+                                  ]),
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 15, right: 15),
+                                child: DropdownButton<String>(
+                                  value: domain,
+                                  underline: Container(),
+                                  elevation: 0,
+                                  iconEnabledColor: Colors.black,
+                                  iconDisabledColor: Colors.black,
+                                  items: [
+                                    'All',
+                                    domains[widget.app_user.domain]!
+                                  ].map<DropdownMenuItem<String>>(
+                                      (String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(
+                                        value,
+                                        style: GoogleFonts.alegreya(
+                                            textStyle: const TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.w400)),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      domain = value!;
+                                      all_posts = [];
+                                      all_events = [];
+                                      all_alerts = [];
+                                    });
+                                  },
+                                  dropdownColor: Colors.grey,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                       Flexible(
                           child: all_posts.isEmpty
-                              ? postwidget(widget.app_user, 'All')
+                              ? postwidget(widget.app_user, domain) //'All')
                               : postwidget1(all_posts, app_user, domain, false))
                     ]),
                   ),
@@ -420,17 +513,21 @@ class _firstpageState extends State<firstpage> {
                   : widget.curr_index == 2
                       ? Container(
                           color: Colors.white,
-                          child: all_events.isEmpty
-                              ? activitieswidget(widget.app_user, domain)
-                              : activitieswidget1(
-                                  all_events, app_user, domain, false))
+                          child: activitieswidget(widget.app_user, domain)
+                          // all_events.isEmpty
+                          // ? activitieswidget(widget.app_user, domain)
+                          // : activitieswidget1(
+                          //     all_events, app_user, domain, false)
+                          )
                       : widget.curr_index == 3
                           ? Container(
                               color: Colors.white,
-                              child: all_alerts.isEmpty
-                                  ? alertwidget(widget.app_user, domain)
-                                  : alertwidget1(
-                                      all_alerts, app_user, domain, false))
+                              child: alertwidget(widget.app_user, domain)
+                              // all_alerts.isEmpty
+                              //     ? alertwidget(widget.app_user, domain)
+                              //     : alertwidget1(
+                              //         all_alerts, app_user, domain, false)
+                              )
                           : Container(
                               color: Colors.white,
                               child: userProfilePage(
@@ -679,13 +776,12 @@ class _firstpageState extends State<firstpage> {
             currentIndex: widget.curr_index,
             onTap: (int index) {
               setState(() {
-                domain = 'All';
+                // domain = 'All';
+                domain = domains[widget.app_user.domain]!;
                 if (index == 1) {
                   today = DateTime.now();
-                  domain = domains[widget.app_user.domain]!;
                 }
                 widget.curr_index = index;
-                // }
               });
             },
           ),
@@ -738,10 +834,14 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
                         // )
                       ),
                       const SizedBox(height: 3),
-                      const Center(
-                        child: Text("Placements",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w900, fontSize: 12)),
+                      Center(
+                        child: Text(
+                          "Placements",
+                          style: GoogleFonts.alegreya(
+                              textStyle: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500)),
+                        ),
                       ),
                     ],
                   ),
@@ -769,9 +869,13 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
                         // ),
                       ),
                       const SizedBox(height: 10),
-                      const Text("Sharings",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w900, fontSize: 12))
+                      Text(
+                        "Sharings",
+                        style: GoogleFonts.alegreya(
+                            textStyle: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500)),
+                      )
                     ],
                   ),
                 ),
@@ -799,153 +903,21 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
                         // ),
                       ),
                       const SizedBox(height: 10),
-                      const Center(
-                        child: Text("lost&found",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w900, fontSize: 12)),
-                      ),
-                    ],
-                  ),
-                ),
-              ]),
-              Column(children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (BuildContext context) {
-                      return datingUser(
-                          domain: 'All', app_user: widget.app_user);
-                    }));
-                  },
-                  child: Column(
-                    children: [
-                      Container(
-                        width: div, //post.profile_pic
-                        // child: const CircleAvatar(
-                        //   radius: 24,
-                        //   backgroundColor: Colors.orangeAccent,
-                        child: const CircleAvatar(
-                            radius: 23,
-                            backgroundImage: AssetImage("images/dating.jpg")),
-                        // ),
-                      ),
-                      const SizedBox(height: 8),
-                      const Text("Connect",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w900, fontSize: 12))
-                    ],
-                  ),
-                ),
-              ]),
-            ],
-          ),
-          const SizedBox(
-            height: 50,
-          ),
-          Row(
-            children: [
-              Column(children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (BuildContext context) {
-                      return Allclubpagewidget(widget.app_user,
-                          'All'); //domains[widget.app_user.domain]!);
-                    }));
-                  },
-                  child: Column(
-                    children: [
-                      Container(
-                        width: div, //post.profile_pic
-                        child: const CircleAvatar(
-                            backgroundImage: AssetImage("images/club.jpg")),
-                      ),
-                      const SizedBox(height: 10),
-                      const Text("Clubs",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w900, fontSize: 12))
-                    ],
-                  ),
-                ),
-              ]),
-              Column(children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (BuildContext context) {
-                      return Allsportpagewidget(widget.app_user,
-                          'All'); //domains[widget.app_user.domain]!);
-                    }));
-                  },
-                  child: Column(
-                    children: [
-                      Container(
-                        width: div, //post.profile_pic
-                        child: const CircleAvatar(
-                            backgroundImage:
-                                AssetImage("images/sport.jpg")), //sport.jpg
-                      ),
-                      const SizedBox(height: 10),
-                      const Text("Sports",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w900, fontSize: 12))
-                    ],
-                  ),
-                ),
-              ]),
-              Column(children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (BuildContext context) {
-                      return Allfestspagewidget(widget.app_user,
-                          'All'); //domains[widget.app_user.domain]!);
-                    }));
-                  },
-                  child: Column(
-                    children: [
-                      Container(
-                        width: div, //post.profile_pic
-                        child: CircleAvatar(
-                            backgroundImage: AssetImage("images/fest.png")),
-                      ),
-                      SizedBox(height: 10),
-                      Text("Fests",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w900, fontSize: 12))
-                    ],
-                  ),
-                ),
-              ]),
-              extand
-                  ? Column(children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) {
-                            return sacpagewidget(widget.app_user,
-                                'All'); // domains[widget.app_user.domain]!);
-                          }));
-                        },
-                        child: Column(
-                          children: [
-                            Container(
-                              width: div,
-                              //post.profile_pic
-                              child: const CircleAvatar(
-                                  radius: 22,
-                                  backgroundImage:
-                                      AssetImage("images/sac.png")),
-                            ),
-                            const SizedBox(height: 10),
-                            const Text("SC",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w900, fontSize: 12))
-                          ],
+                      Center(
+                        child: Text(
+                          "lost&found",
+                          style: GoogleFonts.alegreya(
+                              textStyle: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500)),
                         ),
                       ),
-                    ])
-                  : Column(children: [
+                    ],
+                  ),
+                ),
+              ]),
+              !extand
+                  ? Column(children: [
                       GestureDetector(
                         onTap: () {
                           setState(() {
@@ -962,15 +934,216 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
                               ),
                             ),
                             const SizedBox(height: 10),
-                            const Text("More",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w900, fontSize: 12))
+                            Text(
+                              "More",
+                              style: GoogleFonts.alegreya(
+                                  textStyle: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500)),
+                            )
+                          ],
+                        ),
+                      ),
+                    ])
+                  : Column(children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) {
+                            return datingUser(
+                                domain: 'All', app_user: widget.app_user);
+                          }));
+                        },
+                        child: Column(
+                          children: [
+                            Container(
+                              width: div, //post.profile_pic
+                              // child: const CircleAvatar(
+                              //   radius: 24,
+                              //   backgroundColor: Colors.orangeAccent,
+                              child: const CircleAvatar(
+                                  radius: 23,
+                                  backgroundImage:
+                                      AssetImage("images/dating.jpg")),
+                              // ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              "Connect",
+                              style: GoogleFonts.alegreya(
+                                  textStyle: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500)),
+                            )
                           ],
                         ),
                       ),
                     ]),
             ],
           ),
+          !extand
+              ? Container()
+              : const SizedBox(
+                  height: 50,
+                ),
+          !extand
+              ? Container()
+              : Row(
+                  children: [
+                    Column(children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) {
+                            return Allclubpagewidget(
+                                widget.app_user,
+                                domains[widget.app_user
+                                    .domain]!); //domains[widget.app_user.domain]!);
+                          }));
+                        },
+                        child: Column(
+                          children: [
+                            Container(
+                              width: div, //post.profile_pic
+                              child: const CircleAvatar(
+                                  backgroundImage:
+                                      AssetImage("images/club.jpg")),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              "Clubs",
+                              style: GoogleFonts.alegreya(
+                                  textStyle: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500)),
+                            )
+                          ],
+                        ),
+                      ),
+                    ]),
+                    Column(children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) {
+                            return Allsportpagewidget(
+                                widget.app_user,
+                                domains[widget.app_user
+                                    .domain]!); //domains[widget.app_user.domain]!);
+                          }));
+                        },
+                        child: Column(
+                          children: [
+                            Container(
+                              width: div, //post.profile_pic
+                              child: const CircleAvatar(
+                                  backgroundImage: AssetImage(
+                                      "images/sport.jpg")), //sport.jpg
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              "Sports",
+                              style: GoogleFonts.alegreya(
+                                  textStyle: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500)),
+                            )
+                          ],
+                        ),
+                      ),
+                    ]),
+                    Column(children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) {
+                            return Allfestspagewidget(
+                                widget.app_user,
+                                domains[widget.app_user
+                                    .domain]!); //domains[widget.app_user.domain]!);
+                          }));
+                        },
+                        child: Column(
+                          children: [
+                            Container(
+                              width: div, //post.profile_pic
+                              child: CircleAvatar(
+                                  backgroundImage:
+                                      AssetImage("images/fest.png")),
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              "Fests",
+                              style: GoogleFonts.alegreya(
+                                  textStyle: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500)),
+                            )
+                          ],
+                        ),
+                      ),
+                    ]),
+                    // !extand
+                    //     ? Column(children: [
+                    //         GestureDetector(
+                    //           onTap: () {
+                    //             setState(() {
+                    //               extand = true;
+                    //             });
+                    //           },
+                    //           child: Column(
+                    //             children: [
+                    //               Container(
+                    //                 width: div, //post.profile_pic
+                    //                 child: const Icon(
+                    //                   Icons.keyboard_arrow_down,
+                    //                   size: 38,
+                    //                 ),
+                    //               ),
+                    //               const SizedBox(height: 10),
+                    //               const Text("More",
+                    //                   style: TextStyle(
+                    //                       fontWeight: FontWeight.w900, fontSize: 12))
+                    //             ],
+                    //           ),
+                    //         ),
+                    //       ])
+                    //     :
+                    Column(children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) {
+                            return sacpagewidget(
+                                widget.app_user,
+                                domains[widget.app_user
+                                    .domain]!); // domains[widget.app_user.domain]!);
+                          }));
+                        },
+                        child: Column(
+                          children: [
+                            Container(
+                              width: div,
+                              //post.profile_pic
+                              child: const CircleAvatar(
+                                  radius: 22,
+                                  backgroundImage:
+                                      AssetImage("images/sac.png")),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              "SC",
+                              style: GoogleFonts.alegreya(
+                                  textStyle: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500)),
+                            )
+                          ],
+                        ),
+                      ),
+                    ])
+                  ],
+                ),
           extand
               ? const SizedBox(
                   height: 50,
@@ -1011,9 +1184,13 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
                                       AssetImage("images/student.png")),
                             ),
                             const SizedBox(height: 10),
-                            const Text("Campus",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w900, fontSize: 12))
+                            Text(
+                              "Campus",
+                              style: GoogleFonts.alegreya(
+                                  textStyle: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500)),
+                            )
                           ],
                         ),
                       ),
@@ -1037,9 +1214,13 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
                                       AssetImage("images/book.jpeg")),
                             ),
                             const SizedBox(height: 8),
-                            const Text("Notes",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w900, fontSize: 12))
+                            Text(
+                              "Notes",
+                              style: GoogleFonts.alegreya(
+                                  textStyle: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500)),
+                            )
                           ],
                         ),
                       ),
@@ -1063,9 +1244,13 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
                                       AssetImage("images/timings.jpeg")),
                             ),
                             const SizedBox(height: 10),
-                            const Text("Timings",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w900, fontSize: 12))
+                            Text(
+                              "Timings",
+                              style: GoogleFonts.alegreya(
+                                  textStyle: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500)),
+                            )
                           ],
                         ),
                       ),
@@ -1085,9 +1270,13 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
                                   const Icon(Icons.keyboard_arrow_up, size: 38),
                             ),
                             const SizedBox(height: 10),
-                            const Text("Less",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w900, fontSize: 12))
+                            Text(
+                              "Less",
+                              style: GoogleFonts.alegreya(
+                                  textStyle: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500)),
+                            )
                           ],
                         ),
                       ),
@@ -1099,27 +1288,21 @@ class _MAINBUTTONSwidget1State extends State<MAINBUTTONSwidget1> {
   }
 }
 
-// Column(children: [
-//             GestureDetector(
-//               onTap: () {
-//                 Navigator.of(context).push(MaterialPageRoute(
-//                     builder: (BuildContext context) {
-//                   return messMenu(domains[widget.app_user.domain]!);
-//                 }));
-//               },
-//               child: Column(
-//                 children: [
-//                   Container(
-//                     width: div, //post.profile_pic
-//                     child: const CircleAvatar(
-//                       backgroundImage: AssetImage("images/menu.jpg"),
-//                     ),
-//                   ),
-//                   const SizedBox(height: 10),
-//                   const Text("Menu",
-//                       style: TextStyle(
-//                           fontWeight: FontWeight.w900, fontSize: 12))
-//                 ],
-//               ),
-//             ),
-//           ]),
+List<String> timetable_list = ["University", "Community"];
+List<Tab> get_tabs() {
+  List<Tab> tabs = [];
+  for (int i = 0; i < timetable_list.length; i++) {
+    tabs.add(
+      Tab(
+        child: Container(
+          padding: EdgeInsets.all(6),
+          child: Text(
+            timetable_list[i],
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
+      ),
+    );
+  }
+  return tabs;
+}
