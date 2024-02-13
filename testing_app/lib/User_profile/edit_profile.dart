@@ -92,6 +92,7 @@ class _editprofileState extends State<editprofile> {
                                             fit: BoxFit.cover))
                                     : widget.app_user.fileType == "1"
                                         ? BoxDecoration(
+                                            color: Colors.grey,
                                             borderRadius:
                                                 BorderRadius.circular(60),
                                             image: DecorationImage(

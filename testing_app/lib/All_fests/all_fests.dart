@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'Fest_page.dart';
 import 'Models.dart';
 import '/User_profile/Models.dart';
@@ -235,157 +236,184 @@ class _Allfestspagewidget1State extends State<Allfestspagewidget1> {
             child: Container(
                 margin: EdgeInsets.all(8),
                 padding: EdgeInsets.all(5),
-                decoration: BoxDecoration(boxShadow: const [
-                  BoxShadow(
-                    color: Colors.grey, // Shadow color
-                    offset: Offset(
-                        0, 1), // Offset of the shadow (horizontal, vertical)
-                    blurRadius: 4, // Spread of the shadow
-                    spreadRadius: 0, // Expansion of the shadow
-                  ),
-                ], color: Colors.white, borderRadius: BorderRadius.circular(8)),
+                decoration: BoxDecoration(
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.grey, // Shadow color
+                        offset: Offset(0,
+                            1), // Offset of the shadow (horizontal, vertical)
+                        blurRadius: 4, // Spread of the shadow
+                        spreadRadius: 0, // Expansion of the shadow
+                      ),
+                    ],
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12)),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  width: 48,
-                                  child: CircleAvatar(
-                                      backgroundImage: NetworkImage(fest.logo!
-                                          //'images/DND-clun-profile.png'
-                                          )),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.only(left: 20),
-                                  width: (width - 36) / 1.8,
-                                  child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Container(
-                                              constraints: BoxConstraints(
-                                                  maxWidth: (width - 36) / 2.4),
-                                              child: Text(
-                                                fest.name!,
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: const TextStyle(
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 16,
-                                                ),
-                                              ),
-                                            ),
-                                            const SizedBox(width: 10),
-                                            userMarkNotation(fest.starMark!)
-                                          ],
-                                        ),
-                                        Text(
-                                          domains[fest.domain!]! +
-                                              " (" +
-                                              fest.title! +
-                                              ") ",
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
-                                        )
-                                      ]),
-                                )
-                              ],
-                            ),
-                            IconButton(
-                                onPressed: () {
-                                  List<String> team =
-                                      fest.teamMembers!.split('#');
-                                  for (int i = 0; i < team.length; i++) {
-                                    team_mems[team[i]] = true;
-                                  }
-                                  if (widget.app_user.username ==
-                                      fest.head!.username) {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) {
-                                      return edit_fest(
-                                          widget.app_user,
-                                          fest.id!,
-                                          fest.title,
-                                          fest.description,
-                                          fest.logo,
-                                          fest.name,
-                                          fest.websites);
-                                    })).then((value) {
-                                      setState(() {
-                                        team_mems.clear();
-                                      });
-                                    });
-                                    ;
-                                  } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        duration: Duration(milliseconds: 400),
-                                        content: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            const Text(
-                                              'Only for fest admin',
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                            TextButton(
-                                                onPressed: () {
-                                                  Navigator.of(context).push(
-                                                      MaterialPageRoute(builder:
-                                                          (BuildContext
-                                                              context) {
-                                                    return report_upload(
-                                                        widget.app_user,
-                                                        'fest' +
-                                                            " :" +
-                                                            head.username!,
-                                                        head.username!);
-                                                  }));
-                                                },
-                                                child: const Text(
-                                                  "Report",
-                                                  style: TextStyle(
-                                                      color: Colors.red),
-                                                ))
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  }
-                                },
-                                icon: const Icon(Icons.more_horiz))
-                          ]),
-                      const SizedBox(height: 6),
-                      Container(
-                        margin: EdgeInsets.only(left: 10),
-                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              padding: const EdgeInsets.all(3),
-                              child: Text(utf8convert(fest.description!),
-                                  style: const TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500),
-                                  softWrap: false,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 4),
+                              width: 130,
+                              height: 130,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.grey,
+                                  image: DecorationImage(
+                                      image: NetworkImage(fest.logo!),
+                                      fit: BoxFit.cover)),
                             ),
-                            const SizedBox(height: 7),
-                            const Text("fest Head : ",
-                                style: TextStyle(fontWeight: FontWeight.w600)),
-                            const SizedBox(height: 4),
-                          ],
-                        ),
-                      ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.only(left: 10),
+                                      width: (width - 36) / 1.8,
+                                      child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Container(
+                                                  constraints: BoxConstraints(
+                                                      maxWidth:
+                                                          (width - 36) / 2.4),
+                                                  child: Text(
+                                                    fest.name!,
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: GoogleFonts.alegreya(
+                                                        textStyle:
+                                                            const TextStyle(
+                                                      color: Colors.black,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 16,
+                                                    )),
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 10),
+                                                userMarkNotation(fest.starMark!)
+                                              ],
+                                            ),
+                                            Text(
+                                              domains[fest.domain!]! +
+                                                  " (" +
+                                                  fest.title! +
+                                                  ") ",
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                              style: TextStyle(fontSize: 15),
+                                            )
+                                          ]),
+                                    ),
+                                    IconButton(
+                                        onPressed: () {
+                                          List<String> team =
+                                              fest.teamMembers!.split('#');
+                                          for (int i = 0;
+                                              i < team.length;
+                                              i++) {
+                                            team_mems[team[i]] = true;
+                                          }
+
+                                          if (widget.app_user.username ==
+                                              fest.head!.username) {
+                                            Navigator.of(context).push(
+                                                MaterialPageRoute(builder:
+                                                    (BuildContext context) {
+                                              return edit_fest(
+                                                  widget.app_user,
+                                                  fest.id!,
+                                                  fest.title,
+                                                  fest.description,
+                                                  fest.logo,
+                                                  fest.name,
+                                                  fest.websites);
+                                            })).then((value) {
+                                              setState(() {
+                                                team_mems.clear();
+                                              });
+                                            });
+                                          } else {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                duration:
+                                                    Duration(milliseconds: 400),
+                                                content: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    const Text(
+                                                      'Only for fest admin',
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                    TextButton(
+                                                        onPressed: () {
+                                                          Navigator.of(context).push(
+                                                              MaterialPageRoute(
+                                                                  builder:
+                                                                      (BuildContext
+                                                                          context) {
+                                                            return report_upload(
+                                                                widget.app_user,
+                                                                'fest' +
+                                                                    " :" +
+                                                                    head.username!,
+                                                                head.username!);
+                                                          }));
+                                                        },
+                                                        child: const Text(
+                                                          "Report",
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.red),
+                                                        ))
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                        },
+                                        icon: const Icon(Icons.more_horiz))
+                                  ],
+                                ),
+                                const SizedBox(height: 6),
+                                Container(
+                                  width: width - 180,
+                                  margin: EdgeInsets.only(left: 10),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.all(3),
+                                        child: Text(
+                                            utf8convert(fest.description!),
+                                            style: const TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500),
+                                            softWrap: false,
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 4),
+                                      ),
+                                      const SizedBox(height: 10),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ]),
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [

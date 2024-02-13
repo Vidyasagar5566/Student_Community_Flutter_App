@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:testing_app/Login/latest_login.dart';
 import '../Servers_Fcm_Notif_Domains/servers.dart';
 import '/First_page.dart';
 import '../Circular_designs/Cure_clip.dart';
@@ -123,7 +124,11 @@ class _loginpageState extends State<loginpage> {
                         children: [
                           IconButton(
                             onPressed: () {
-                              Navigator.pop(context);
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          latest_loginpage("", 'Nit Calicut')),
+                                  (Route<dynamic> route) => false);
                             },
                             icon: const Icon(
                               Icons.arrow_back_ios_new_outlined,
