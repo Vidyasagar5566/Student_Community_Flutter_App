@@ -40,8 +40,21 @@ class _latest_loginpageState extends State<latest_loginpage> {
 
   final CarouselController carouselController = CarouselController();
   int currentIndex = 0;
+  bool errorShowed = false;
   @override
   Widget build(BuildContext context) {
+    if (widget.error != "" && errorShowed == false) {
+      Future.delayed(Duration.zero, () {
+        setState(() {
+          errorShowed = true;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            duration: Duration(milliseconds: 1000),
+            content:
+                Text(widget.error, style: TextStyle(color: Colors.white))));
+      });
+    }
+
     return Scaffold(
         appBar: AppBar(
           title: Column(
