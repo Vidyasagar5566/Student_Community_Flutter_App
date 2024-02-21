@@ -84,7 +84,7 @@ class _latest_loginpageState extends State<latest_loginpage> {
                           .map(
                             (item) => Container(
                               margin: EdgeInsets.only(
-                                  left: 20, right: 20, bottom: 40),
+                                  left: 20, right: 20, bottom: 10),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),
                                   image: DecorationImage(

@@ -77,8 +77,11 @@ class servers {
 
 var course_list = ['B.Tech', 'B.Arch', 'M.Tech', 'PG', 'Phd', 'MBA'];
 
-var domains = {
-  'All': 'All',
+var domains = {'All': 'All'};
+var domains1 = {'All': 'All'};
+List<String> domains_list2 = ['All'];
+List<String> domains_list = ['All'];
+List<String> domains_list_ex_all = [];
 //   '@nitt.edu': 'Nit Trichy',
 //   '@nitk.edu.in': 'Nit Surathkal',
 //   '@nitrkl.ac.in': 'Nit Rourkela',
@@ -133,10 +136,8 @@ var domains = {
 //   '@iitjammu.ac.in': 'IIT Jammu',
 //   '@iitdh.ac.in': 'IIT Dharwad',
 //   '@iitbhilai.ac.in': 'IIT Bhilai',
-};
 
-var domains1 = {
-  'All': 'All',
+
 //   'Nit Trichy': '@nitt.edu',
 //   'Nit Surathkal': '@nitk.edu.in',
 //   'Nit Rourkela': '@nitrkl.ac.in',
@@ -193,10 +194,8 @@ var domains1 = {
 //   'IIT Jammu': '@iitjammu.ac.in',
 //   'IIT Dharwad': '@iitdh.ac.in',
 //   'IIT Bhilai': '@iitbhilai.ac.in'
-};
 
-List<String> domains_list2 = [
-  'All',
+
 //   '@nitt.edu',
 //   '@nitk.edu.in',
 //   '@nitrkl.ac.in',
@@ -253,10 +252,8 @@ List<String> domains_list2 = [
 //   '@iitjammu.ac.in',
 //   '@iitdh.ac.in',
 //   '@iitbhilai.ac.in',
-];
 
-List<String> domains_list = [
-  'All',
+
 //   'Nit Trichy',
 //   'Nit Surathkal',
 //   'Nit Rourkela',
@@ -313,8 +310,8 @@ List<String> domains_list = [
 //   'IIT Jammu',
 //   'IIT Dharwad',
 //   'IIT Bhilai',
-];
-List<String> domains_list_ex_all = [
+
+
 //   'Nit Trichy',
 //   'Nit Surathkal',
 //   'Nit Rourkela',
@@ -371,7 +368,7 @@ List<String> domains_list_ex_all = [
 //   'IIT Jammu',
 //   'IIT Dharwad',
 //   'IIT Bhilai',
-];
+
 
 //    path('', views.testing.as_view(),name = 'login'),
 //    path('login', obtain_auth_token),

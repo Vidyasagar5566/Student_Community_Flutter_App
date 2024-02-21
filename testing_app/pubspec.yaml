@@ -60,6 +60,7 @@ dependencies:
   flutter_linkify: ^6.0.0
   uuid: ^4.1.0
   google_fonts: ^6.1.0
+  animated_text_kit: ^4.2.2
   
 
 

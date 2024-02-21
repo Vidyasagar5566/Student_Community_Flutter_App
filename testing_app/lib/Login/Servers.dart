@@ -1,12 +1,12 @@
 import 'package:http/http.dart' as http;
 import 'package:localstorage/localstorage.dart';
+import 'package:testing_app/Universities/Models.dart';
 import 'dart:convert';
 import '/User_profile/Models.dart';
 import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import '../Servers_Fcm_Notif_Domains/servers.dart';
-import 'Models.dart';
 
 class login_servers {
   LocalStorage storage = LocalStorage("usertoken");
@@ -71,6 +71,7 @@ class login_servers {
         Universities post = Universities.fromJson(element);
         temp.add(post);
       });
+      await universitySetup(temp);
       return temp;
     } catch (e) {
       return [];
@@ -105,7 +106,8 @@ class login_servers {
       });
       var data = json.decode(response.body);
       Username user = Username.fromJson(data);
-      await universitySetup();
+      // List<Universities> universities = await login_servers().getUniversities();
+      // await universitySetup(universities);
       return user;
     } catch (e) {
       Username user = Username();
@@ -132,8 +134,7 @@ class login_servers {
   }
 }
 
-Future<bool> universitySetup() async {
-  List<Universities> universities = await login_servers().getUniversities();
+Future<bool> universitySetup(List<Universities> universities) async {
   for (int i = 0; i < universities.length; i++) {
     domains[universities[i].domain!] = universities[i].unvName!;
     domains1[universities[i].unvName!] = universities[i].domain!;
